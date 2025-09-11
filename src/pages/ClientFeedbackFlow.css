@@ -1,0 +1,160 @@
+.clientDashboardWrp {
+  padding: 0px;
+}
+
+.clientDashboardWrp .mainBox1 {
+  background: #fff;
+  border-radius: 5px;
+  /* margin: 10px 0; */
+}
+
+.clientDashboardWrp .mainBox1 .mainHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.clientDashboardWrp .mainBox1 .mainHeader h4 {
+  color: #05004e;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.clientDashboardWrp .mainBox1 .mainHeader p {
+  color: #737791;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.clientDashboardWrp .mainBox1 .mainBoxes {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  /* justify-content: space-between; */
+}
+
+.clientDashboardWrp .mainBox1 .mainBoxes .box1 {
+  border-radius: 10px;
+  padding: 10px;
+  background-color: #ffe2e5;
+  border-radius: 10px;
+  padding: 10px;
+  flex: 1 1 30%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.clientDashboardWrp .mainBox1 .mainBoxes .box2d {
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #f1f1f1;
+}
+
+.clientDashboardWrp .mainBox1 .mainBoxes .box1 img {
+  margin-bottom: 5px;
+  width: 32px;
+}
+
+.clientDashboardWrp .mainBox1 .mainBoxes .box1 h4 {
+  font-size: 13px;
+  color: #151d48;
+  font-weight: 600;
+  word-break: break-word;
+  margin: 0;
+}
+
+.clientDashboardWrp .mainBox1 .mainBoxes .box1 p {
+  margin: 0px 0;
+  font-size: 14px;
+  font-weight: 800;
+  color: #425166;
+}
+
+.clientDashboardWrp .mainBox1 .mainBoxes .box1 span {
+  color: #4079ed;
+  font-size: 13px;
+}
+
+.clientDashboardWrp .mainBox1 .mainBoxes .box1 .pi {
+  padding: 7px;
+  border-radius: 50%;
+  font-weight: bolder;
+  font-size: 10px;
+  margin-bottom: 13px;
+  width: 7px;
+  height: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media only screen and (max-width: 767px) {
+  .clientDashboardWrp .mainBox1 .mainBoxes {
+    display: block;
+  }
+
+  .clientDashboardWrp .mainBox1 .mainBoxes .box1 {
+    margin: 10px 0;
+    width: 100%;
+  }
+
+  .clientDashboardWrp .col-md-1 {
+    margin: 5px 0;
+    max-width: 30%;
+  }
+
+  .clientDashboardWrp .row {
+    justify-content: center;
+  }
+
+  .mobileNONE {
+    display: none;
+  }
+
+  .clientDashboardWrp .heightSec {
+    height: 100%;
+    min-height: 100%;
+    margin: 10px 0;
+  }
+}
+
+.Newfeedback55 {
+  font-weight: bold;
+  /* margin-top: 7px; */
+  font-size: 16px !important;
+}
+
+.textfontSize {
+  font-size: 17px;
+  /* margin-top: 8px; */
+}
+
+.titlefont {
+  font-weight: bold;
+  font-size: 14px !important;
+}
+
+.keyFeedbackTopics {
+  font-size: 16px !important;
+  font-weight: bold;
+}
+
+.hover-shadow {
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+.hover-shadow:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+  cursor: pointer;
+}
+
+.custom-thead th {
+  text-align: left;
+  font-size: 16px;
+  font-weight: bold !important;
+}

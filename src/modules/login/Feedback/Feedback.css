@@ -1,0 +1,68 @@
+
+.feedback_conatiner{
+    width: 100%;
+    height: fit-content;
+    margin: 0 auto;
+}
+.header_box{
+    background-color: hsl(259.37deg 51.84% 48.04%);
+    width: 100%;
+    color: #fff;
+    font-weight: 600;
+    font-size: 24px;
+    letter-spacing: 0.6px;
+}
+
+
+.que-para {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+.que-para > h1{
+    font-size: 22px;
+    font-weight: 700;
+    color: #000000;
+    letter-spacing: 0.1px;
+}
+
+.formButton button{
+    font-size: 15px !important;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+    border: none;
+    outline: none;
+
+}
+
+.formButton > div{
+    width: 200px;
+    justify-content: space-between;
+}
+
+.formButton button:first-child, .formButton button:nth-child(2){
+    background-color: hsl(259.37deg 51.84% 48.04%);
+    padding: 7px 15px;
+    min-width: 40px;
+    width: fit-content;
+    border-radius: 5px !important;
+    color: #fff;
+}
+
+.formButton > button:last-child{
+    color: hsl(259.37deg 51.84% 48.04%);
+    font-size: 15px;
+    font-weight: 500;
+    background-color: transparent;
+}
+
+.formButton button:first-child:hover, .formButton button:last-child:hover{
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    opacity: 0.9;
+}
+
+.que-para > div > span{
+    font-size: 14px !important;
+}
+
+.addChildWidth > div:first-child{
+    width: 400px;
+}

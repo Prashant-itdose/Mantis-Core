@@ -1,0 +1,100 @@
+import React, { useState } from "react";
+import Input from "../components/formComponent/Input";
+import { toast } from "react-toastify";
+import { headers } from "../utils/apitools";
+import axios from "axios";
+import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
+import { apiUrls } from "../networkServices/apiEndpoints";
+import Loading from "../components/loader/Loading";
+import Heading from "../components/UI/Heading";
+
+const LeadDeadModal = (showData) => {
+  // console.log("showData", showData);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+  
+    Reason: "",
+  });
+  const handleSelectChange = (e) => {
+    const { name, value, checked, type } = e?.target;
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? (checked ? 1 : 0) : value,
+    });
+  };
+  const handleDead = () => {
+    if (!formData?.Reason) {
+      toast.error("Please Enter Dead Reason.");
+      return;
+    }
+    setLoading(true);
+    let form = new FormData();
+    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
+    form.append("LeadID", showData?.visible?.showData?.ID),
+    form.append("DeadReason", formData?.Reason),
+      axios
+        .post(apiUrls?.DeadSalesLead, form, { headers })
+        .then((res) => {
+          if (res?.data?.status === true) {
+            toast.success(res?.data?.message);
+            setLoading(false);
+            showData?.setVisible(false);
+            showData.handleSearch();
+          } else {
+            toast.error(res?.data?.message);
+            setLoading(false);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  };
+  return (
+    <>
+       {/* <Heading
+        title={
+          <span style={{ fontWeight: "bold" }}>Sales Lead Dead Details</span>
+        }
+      /> */}
+      <div className="card  p-2">
+        <span style={{ fontWeight: "bold" }}>
+          Organization Name : {showData?.visible?.showData?.OrganizationName} &nbsp; &nbsp;
+          &nbsp; &nbsp; &nbsp; Created By : {showData?.visible?.showData?.CreatedBy} &nbsp; &nbsp;
+          &nbsp; &nbsp; &nbsp; Created Date : {new Date(showData?.visible?.showData?.dtEntry).toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              })}
+        </span>
+      </div>
+      <div className="card">
+        <div className="row p-2">
+          <Input
+            type="text"
+            className="form-control"
+            id="Reason"
+            name="Reason"
+            lable="Dead Reason"
+            placeholder=" "
+            onChange={handleSelectChange}
+            value={formData?.Reason}
+            respclass="col-xl-8 col-md-4 col-sm-4 col-12"
+          />
+
+          {loading ? (
+            <Loading />
+          ) : (
+            <button
+              className="btn btn-sm btn-primary ml-2"
+              onClick={handleDead}
+            >
+              Save
+            </button>
+          )}
+        </div>
+      </div>
+    </>
+  );
+};
+export default LeadDeadModal;

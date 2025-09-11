@@ -1,0 +1,26 @@
+import { useTranslation } from 'react-i18next';
+import { DateTime } from 'luxon';
+
+const Footer = () => {
+  const [t] = useTranslation();
+
+  return (
+    <footer className="main-footer">
+      <strong>
+        <span>Copyright © {DateTime.now().toFormat('y')} </span>
+        <a href="https://www.itdoseinfo.com" target="_blank" rel="noopener noreferrer">
+        ITDOSE INFOSYSTEMS PVT LTD
+        </a>
+        {/* <span>.</span> */}
+      </strong>
+      <div className="float-right d-none d-sm-inline-block">
+        {/* <b>{t('footer.version')}  </b> */}
+        <b>Noida</b>
+        {/* <span>&nbsp; 13.0.0</span> */}
+        {/* <span>&nbsp;&#127970;201301</span> */}
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;

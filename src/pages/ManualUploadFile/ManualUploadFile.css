@@ -1,0 +1,51 @@
+.upload-manauloption  > span:first-child{
+    background-color: #00000050;
+    padding: 1px 5px;
+    border-radius: 6px;
+    height: fit-content;
+}
+
+.modal-Title{
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    font-size: 14px !important;
+}
+
+.uploadFile_input{
+    padding: 3px 3px 3px 6px;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+
+.uploadFile_input:hover{
+    cursor: pointer;
+}
+
+.uploadFile_input > span{
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.select_manaul{
+    padding: 3px 3px;
+    border: 1px solid #00000015;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+option .opionHover:hover{
+    background-color: #00000015;
+    background: #00000015;
+    width: 100%;
+    height: 100%;
+}
+
+.uploadDatafile{
+    max-height: fit-content;
+    overflow-x: auto;
+}
+
+.uploadDatafile > table{
+    min-width: 450px;
+}
