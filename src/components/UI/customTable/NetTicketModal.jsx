@@ -18,12 +18,8 @@ import TextEditor from "../../formComponent/TextEditor";
 import ReactSelect from "../../formComponent/ReactSelect";
 import { apiUrls } from "../../../networkServices/apiEndpoints";
 import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorage";
-const NewTicketModal = ({
-  visible,
-  setVisible,
-  tableData,
-  id,
-}) => {
+import { axiosInstances } from "../../../networkServices/axiosInstance";
+const NewTicketModal = ({ visible, setVisible, tableData, id }) => {
   // console.log(visible,id)
   const [t] = useTranslation();
   const { VITE_DATE_FORMAT } = import.meta.env;
@@ -68,13 +64,17 @@ const NewTicketModal = ({
 
   const handleSearchNote = () => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("TicketID", visible?.showData?.TicketID);
-    axios
-      .post(apiUrls?.ViewNote, form, {
-        headers,
-      })
+    axiosInstances
+      .post(apiUrls.ViewNote, {
+  "TicketID": visible?.showData?.TicketID
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("TicketID", visible?.showData?.TicketID);
+    // axios
+    //   .post(apiUrls?.ViewNote, form, {
+    //     headers,
+    //   })
       .then((res) => {
         const data = res?.data?.data;
         const updateddata = data?.map((ele, index) => {
@@ -98,13 +98,17 @@ const NewTicketModal = ({
 
   const handleSearchHistory = () => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("TicketID", visible?.showData?.TicketID);
-    axios
-      .post(apiUrls?.ViewHistory, form, {
-        headers,
-      })
+    axiosInstances
+      .post(apiUrls.ViewHistory, {
+  "TicketID":  visible?.showData?.TicketID
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("TicketID", visible?.showData?.TicketID);
+    // axios
+    //   .post(apiUrls?.ViewHistory, form, {
+    //     headers,
+    //   })
       .then((res) => {
         setTableData1(res?.data?.data);
         setLoading(false);
@@ -121,13 +125,9 @@ const NewTicketModal = ({
   };
 
   const handleIssueSearch = (ticket) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    form.append("TicketID", ticket);
-
-    axios
-      .post(apiUrls?.ViewTicket, form, {
-        headers,
+    axiosInstances
+      .post(apiUrls.Attendence_Search, {
+        TicketID: ticket,
       })
       .then((res) => {
         if (res?.data?.status === true) {
@@ -154,9 +154,9 @@ const NewTicketModal = ({
             Note: "",
             ReferenceCode: res?.data.data[0]?.ReferenceCode,
           });
-        }else{
-          toast.error("You are not authorised to view this ticket")
-          setVisible(false)
+        } else {
+          toast.error("You are not authorised to view this ticket");
+          setVisible(false);
         }
       })
       .catch((err) => {
@@ -176,10 +176,12 @@ const NewTicketModal = ({
   const [priority, setPriority] = useState([]);
   const [status, setStatus] = useState([]);
   const getStatus = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Status_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.Status_Select, {})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Status_Select, form, { headers })
         .then((res) => {
           const poc3s = res?.data.data.map((item) => {
             return { label: item?.STATUS, value: item?.id };
@@ -191,12 +193,23 @@ const NewTicketModal = ({
         });
   };
   const getProject = () => {
-    let form = new FormData();
-    console.log("ram","1")
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-      axios
-        .post(apiUrls?.ProjectSelect, form, { headers })
+    axiosInstances
+      .post(apiUrls.ProjectSelect, {
+  "ProjectID": 0,
+  "IsMaster": "0",
+  "VerticalID": 0,
+  "TeamID": 0,
+  "WingID": 0
+})
+    // let form = new FormData();
+    // console.log("ram", "1");
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   axios
+    //     .post(apiUrls?.ProjectSelect, form, { headers })
         .then((res) => {
           const poc3s = res?.data.data.map((item) => {
             return { label: item?.Project, value: item?.ProjectId };
@@ -209,10 +222,12 @@ const NewTicketModal = ({
         });
   };
   const getPriority = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Priority_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.Priority_Select, {})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Priority_Select, form, { headers })
         .then((res) => {
           const assigntos = res?.data.data.map((item) => {
             return { label: item?.NAME, value: item?.ID };
@@ -224,11 +239,16 @@ const NewTicketModal = ({
         });
   };
   const getCategory = (proj) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("ProjectID", proj),
-      axios
-        .post(apiUrls?.Category_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.Category_Select, {
+  "RoleID": 0,
+  "ProjectID": proj
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("ProjectID", proj),
+    //   axios
+    //     .post(apiUrls?.Category_Select, form, { headers })
         .then((res) => {
           const poc3s = res?.data.data.map((item) => {
             return { label: item?.NAME, value: item?.ID };
@@ -240,10 +260,14 @@ const NewTicketModal = ({
         });
   };
   const getAssignTo = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.AssignTo_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.AssignTo_Select, {
+  "ProjectID": 0
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.AssignTo_Select, form, { headers })
         .then((res) => {
           const assigntos = res?.data.data.map((item) => {
             return { label: item?.NAME, value: item?.ID };

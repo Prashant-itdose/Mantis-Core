@@ -9,6 +9,7 @@ import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorag
 import NoRecordFound from "../../formComponent/NoRecordFound";
 import Heading from "../Heading";
 import Tables from ".";
+import { axiosInstances } from "../../../networkServices/axiosInstance";
 const ViewIssueDocModal = ({ visible, setVisible, handleViewSearch }) => {
   // console.log("lotus ", visible);
   const [loading, setLoading] = useState(false);
@@ -48,16 +49,26 @@ const ViewIssueDocModal = ({ visible, setVisible, handleViewSearch }) => {
         FileExtension: formData?.FileExtension,
       },
     ]);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("TicketID", visible?.showData?.TicketID),
-      form.append("ImageDetails", picsDocsJson);
-    axios
-      .post(apiUrls?.InsertAttachment, form, { headers })
+    axiosInstances
+      .post(apiUrls.InsertAttachment, {
+  "TicketID": visible?.showData?.TicketID,
+  "ImageDetails": [
+      {
+        Document_Base64: formData?.Document_Base64,
+        FileExtension: formData?.FileExtension,
+      },
+    ]
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("TicketID", visible?.showData?.TicketID),
+    //   form.append("ImageDetails", picsDocsJson);
+    // axios
+    //   .post(apiUrls?.InsertAttachment, form, { headers })
       .then((res) => {
         if (res?.data?.status === true) {
           toast.success(res?.data?.message);
@@ -72,11 +83,15 @@ const ViewIssueDocModal = ({ visible, setVisible, handleViewSearch }) => {
       });
   };
   const handleDetails = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("TicketID", visible?.showData?.TicketID),
-      axios
-        .post(apiUrls?.ViewAttachment, form, { headers })
+    axiosInstances
+      .post(apiUrls.ViewAttachment, {
+  "TicketID": visible?.showData?.TicketID
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("TicketID", visible?.showData?.TicketID),
+    //   axios
+    //     .post(apiUrls?.ViewAttachment, form, { headers })
         .then((res) => {
           setTableData(res?.data?.data);
         })
@@ -86,20 +101,25 @@ const ViewIssueDocModal = ({ visible, setVisible, handleViewSearch }) => {
   };
   const handleRemove = (ele) => {
     // console.log("ele", ele);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "RoleID",
-        useCryptoLocalStorage("user_Data", "get", "RoleID")
-      ),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("TicketID", ele?.TicketID),
-      form.append("AttachmentID", ele?.ID),
-      axios
-        .post(apiUrls?.DeleteAttachment, form, { headers })
+    axiosInstances
+      .post(apiUrls.DeleteAttachment, {
+  "TicketID": ele?.TicketID,
+  "AttachmentID": ele?.ID
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "RoleID",
+    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+    //   ),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("TicketID", ele?.TicketID),
+    //   form.append("AttachmentID", ele?.ID),
+    //   axios
+    //     .post(apiUrls?.DeleteAttachment, form, { headers })
         .then((res) => {
           toast.success(res?.data?.message);
           handleDetails();

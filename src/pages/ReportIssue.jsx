@@ -31,6 +31,7 @@ import BrowseButton from "../components/formComponent/BrowseButton";
 import BrowseInput from "../components/formComponent/BrowseInput";
 
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../networkServices/axiosInstance";
 const ReportIssue = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErros] = useState({});
@@ -143,105 +144,98 @@ const ReportIssue = () => {
     }));
   };
   const getProject = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      axios
-        .post(apiUrls?.ProjectSelect, form, { headers })
-        .then((res) => {
-          const datas = res?.data.data;
-          const poc3s = datas.map((item) => {
-            return { label: item?.Project, value: item?.ProjectId };
-          });
-          setProject(poc3s);
-          if (datas.length > 0) {
-            const singleProject = datas[0]?.ProjectId;
-            setFormData((prev) => ({
-              ...prev,
-              ProjectID: singleProject,
-            }));
-            getAssignTo(singleProject);
-            getCategory(singleProject);
-            getModule(singleProject);
-            getPage(singleProject);
-            getGetProjectInfo(singleProject);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls.ProjectSelect, {
+        ProjectID: 0,
+        IsMaster: "string",
+        VerticalID: 0,
+        TeamID: 0,
+        WingID: 0,
+      })
+      .then((res) => {
+        const datas = res?.data.data;
+        const poc3s = datas.map((item) => {
+          return { label: item?.Project, value: item?.ProjectId };
         });
+        setProject(poc3s);
+        if (datas.length > 0) {
+          const singleProject = datas[0]?.ProjectId;
+          setFormData((prev) => ({
+            ...prev,
+            ProjectID: singleProject,
+          }));
+          getAssignTo(singleProject);
+          getCategory(singleProject);
+          getModule(singleProject);
+          getPage(singleProject);
+          getGetProjectInfo(singleProject);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   function removeHtmlTags(text) {
     return text?.replace(/<[^>]*>?/gm, "");
   }
 
   const getCategory = (proj) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("ProjectID", proj),
-      axios
-        .post(apiUrls?.Category_Select, form, { headers })
-        .then((res) => {
-          handleReactSelectDropDownOptions(res?.data.data, "NAME", "ID");
-          // const poc3s = res?.data.data.map((item) => {
-          //   return { label: item?.NAME, value: item?.ID };
-          // });
-          setCategory(
-            handleReactSelectDropDownOptions(res?.data.data, "NAME", "ID")
-          );
-          // setFormData({ ...formData, Category: poc3s[0]?.value,ProjectID:proj });
-          setDisplayModulePage(res?.data.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    axiosInstances
+      .post(apiUrls.Category_Select, {
+        RoleID: 0,
+        ProjectID: proj,
+      })
+
+      .then((res) => {
+        handleReactSelectDropDownOptions(res?.data.data, "NAME", "ID");
+        // const poc3s = res?.data.data.map((item) => {
+        //   return { label: item?.NAME, value: item?.ID };
+        // });
+        setCategory(
+          handleReactSelectDropDownOptions(res?.data.data, "NAME", "ID")
+        );
+        // setFormData({ ...formData, Category: poc3s[0]?.value,ProjectID:proj });
+        setDisplayModulePage(res?.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getModule = (proj) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "RoleID",
-        useCryptoLocalStorage("user_Data", "get", "RoleID")
-      ),
-      form.append("ProjectID", proj),
-      form.append("IsActive", "1"),
-      form.append("IsMaster", "2"),
-      axios
-        .post(apiUrls?.Module_Select, form, { headers })
-        .then((res) => {
-          const poc3s = res?.data.data.map((item) => {
-            return { label: item?.ModuleName, value: item?.ModuleID };
-          });
-          setModuleName(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls.Module_Select, {
+        RoleID: useCryptoLocalStorage("user_Data", "get", "RoleID"),
+        ProjectID: proj,
+        IsActive: 1,
+        IsMaster: 1,
+      })
+      .then((res) => {
+        const poc3s = res?.data.data.map((item) => {
+          return { label: item?.ModuleName, value: item?.ModuleID };
         });
+        setModuleName(poc3s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getPage = (proj) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "RoleID",
-        useCryptoLocalStorage("user_Data", "get", "RoleID")
-      ),
-      form.append("ProjectID", proj),
-      form.append("IsActive", "1"),
-      form.append("IsMaster", "0"),
-      axios
-        .post(apiUrls?.Pages_Select, form, { headers })
-        .then((res) => {
-          const poc3s = res?.data.data.map((item) => {
-            return { label: item?.PagesName, value: item?.ID };
-          });
-          setPageName(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls.Pages_Select, {
+        RoleID: useCryptoLocalStorage("user_Data", "get", "RoleID"),
+        ProjectID: proj,
+        IsActive: 1,
+        IsMaster: 0,
+      })
+      .then((res) => {
+        const poc3s = res?.data.data.map((item) => {
+          return { label: item?.PagesName, value: item?.ID };
         });
+        setPageName(poc3s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const handlerefresh = () => {
     getPage(formData?.ProjectID);
@@ -250,20 +244,19 @@ const ReportIssue = () => {
     getModule(formData?.ProjectID);
   };
   const getAssignTo = (value) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("ProjectID", value),
-      axios
-        .post(apiUrls?.AssignTo_Select, form, { headers })
-        .then((res) => {
-          const assigntos = res?.data.data.map((item) => {
-            return { label: item?.NAME, value: item?.ID };
-          });
-          setAssignedto(assigntos);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls.AssignTo_Select, {
+        ProjectID: value,
+      })
+      .then((res) => {
+        const assigntos = res?.data.data.map((item) => {
+          return { label: item?.Name, value: item?.ID };
         });
+        setAssignedto(assigntos);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const handleIndicator = (state) => {
     return (
@@ -275,10 +268,14 @@ const ReportIssue = () => {
   };
 
   const getPriority = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Priority_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.Priority_Select, {
+       
+      })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Priority_Select, form, { headers })
         .then((res) => {
           const assigntos = res?.data.data.map((item) => {
             return { label: item?.NAME, value: item?.ID };
@@ -342,42 +339,87 @@ const ReportIssue = () => {
         FileExtension: formData?.FileExtension,
       },
     ]);
+    console.log("picDocsJson", picsDocsJson);
     setIsSubmitting(true);
 
     try {
-      const form = new FormData();
-      form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      );
-      form.append(
-        "RoleID",
-        useCryptoLocalStorage("user_Data", "get", "RoleID")
-      );
-      form.append("ProjectID", formData.ProjectID || "");
-      form.append("CategoryID", formData.Category.value || "");
-      form.append("AssignTo", formData.AssignedTo || "");
-      form.append("Summary", formData.Summary || "");
-      form.append("ReporterMobileNo", formData.ReportedMobile);
-      form.append("ReporterName", formData.ReportedName);
-      form.append("OtherReferenceNo", "");
-      form.append(
-        "ModuleName",
-        getlabel(formData?.ModuleName, moduleName) || ""
-      );
-      form.append("ModuleID", formData.ModuleName || "");
-      form.append("PagesName", getlabel(formData?.PageName, pageName) || "");
-      form.append("PagesID", formData.PageName || "");
-      form.append("Description", formData.Description || "");
+      // axiosInstances.post(apiUrls.NewTicket, {
+      //   ID: useCryptoLocalStorage("user_Data", "get", "ID"),
+      //   LoginName: useCryptoLocalStorage("user_Data", "get", "realname"),
+      //   ProjectID: formData.ProjectID || "",
+      //   CategoryID: formData.Category.value || "",
+      //   AssignTo: formData.AssignedTo || "",
+      //   PriorityID: formData.ProjectID || "",
+      //   Summary: formData.Summary || "",
+      //   ReporterMobileNo: formData.ReportedMobile,
+      //   ReporterName: formData.ReportedName,
+      //   Description: formData.Description || "",
+      //   ModuleID: formData.ModuleName || "",
+      //   ModuleName: getlabel(formData?.ModuleName, moduleName) || "",
+      //   PagesID: formData.PageName || "",
+      //   PagesName: getlabel(formData?.PageName, pageName) || "",
+      //   ImageDetails: picsDocsJson,
+      // });
+      // const form = new FormData();
+      // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
       // form.append(
-      //   "Description",
-      //   formData.Description ? removeHtmlTags(formData.Description) : ""
+      //   "LoginName",
+      //   useCryptoLocalStorage("user_Data", "get", "realname")
       // );
-      form.append("PriorityID", formData.Priority || "");
-      form.append("ImageDetails", picsDocsJson);
+      // form.append(
+      //   "RoleID",
+      //   useCryptoLocalStorage("user_Data", "get", "RoleID")
+      // );
+      // form.append("ProjectID", formData.ProjectID || "");
+      // form.append("CategoryID", formData.Category.value || "");
+      // form.append("AssignTo", formData.AssignedTo || "");
+      // form.append("Summary", formData.Summary || "");
+      // form.append("ReporterMobileNo", formData.ReportedMobile);
+      // form.append("ReporterName", formData.ReportedName);
+      // form.append("OtherReferenceNo", "");
+      // form.append(
+      //   "ModuleName",
+      //   getlabel(formData?.ModuleName, moduleName) || ""
+      // );
+      // form.append("ModuleID", formData.ModuleName || "");
+      // form.append("PagesName", getlabel(formData?.PageName, pageName) || "");
+      // form.append("PagesID", formData.PageName || "");
+      // form.append("Description", formData.Description || "");
+      // // form.append(
+      // //   "Description",
+      // //   formData.Description ? removeHtmlTags(formData.Description) : ""
+      // // );
+      // form.append("PriorityID", formData.Priority || "");
+      // form.append("ImageDetails", picsDocsJson);
 
-      const response = await axios.post(apiUrls.NewTicket, form, { headers });
+      const response = await axiosInstances.post(apiUrls.NewTicket, {
+        ID: Number(useCryptoLocalStorage("user_Data", "get", "ID") || 0),
+        LoginName: String(
+          useCryptoLocalStorage("user_Data", "get", "realname") || ""
+        ),
+        ProjectID: Number(formData.ProjectID || 0),
+        CategoryID: Number(formData.Category?.value || 0),
+        AssignTo: String(formData.AssignedTo || ""),
+        PriorityID: String(formData.ProjectID || ""),
+        Summary: String(formData.Summary || ""),
+        ReporterMobileNo: String(formData.ReportedMobile || ""),
+        ReporterName: String(formData.ReportedName || ""),
+        Description: String(formData.Description || ""),
+        ModuleID: String(formData.ModuleName || ""),
+        ModuleName: String(getlabel(formData?.ModuleName, moduleName) || ""),
+        PagesID: String(formData.PageName || ""),
+        PagesName: String(getlabel(formData?.PageName, pageName) || ""),
+        // ImageDetails: picsDocsJson?.map((item) => ({
+        //   FileExtension: "string",
+        //   Document_Base64: "string",
+        // })),
+        ImageDetails: [
+          {
+            FileExtension: String(formData?.FileExtension || ""),
+            Document_Base64: String(formData?.Document_Base64 || ""),
+          },
+        ],
+      });
 
       toast.success(response?.data?.message);
 
@@ -396,9 +438,9 @@ const ReportIssue = () => {
           ...prev,
           Summary: "",
           Description: "",
-          Document_Base64:"",
-          SelectFile:"",
-          FileExtension:""
+          Document_Base64: "",
+          SelectFile: "",
+          FileExtension: "",
         }));
       }, 0);
     }
@@ -437,59 +479,54 @@ const ReportIssue = () => {
   console.log("leveldATA", levelData);
 
   const getGetProjectInfo = (id) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "RoleID",
-        useCryptoLocalStorage("user_Data", "get", "RoleID")
-      ),
-      form.append("ProjectID", id),
-      axios
-        .post(apiUrls?.GetProjectInfo, form, { headers })
-        .then((res) => {
-          // console.log("datatata", res?.data?.data?.[0]);
-          let newData = [];
-          // let newlevelData = []
-          // "ItPerson", "SPOC_", "Owner_"
-          ["ItPerson", "SPOC", "Owner"].forEach((type) => {
-            let obj = {
-              type: type,
-              name: res?.data?.data?.[0]?.[`${type}Name`],
-              mobile: res?.data?.data?.[0]?.[`${type}Mobile`],
-              email: res?.data?.data?.[0]?.[`${type}Email`],
-            };
-            newData.push(obj);
-          });
-
-          let itArr = [];
-
-          // for (let i = 1; i <= 3; i++) {
-          //   let obj = {
-          //     type: `Level${i}`,
-          //     name: res?.data?.data?.[0]?.[`POC1${i}Name`] || "",
-          //     mobile: res?.data?.data?.[0]?.[`POC2${i}Mobile`] || "",
-          //     email: res?.data?.data?.[0]?.[`POC3${i}Email`] || "",
-
-          //   };
-          //   itArr.push(obj);
-          // }
-          ["Level1", "Level2", "Level3"].forEach((type) => {
-            let obj = {
-              type: type,
-              name: res?.data?.data?.[0]?.[`${type}Name`],
-              mobile: res?.data?.data?.[0]?.[`${type}Mobile`],
-              email: res?.data?.data?.[0]?.[`${type}Email`],
-            };
-            itArr.push(obj);
-          });
-          console.log("itArr::", itArr);
-
-          setTableData(newData);
-          setLevelData(itArr);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls.GetProjectInfo, {
+        ProjectID: id,
+      })
+      .then((res) => {
+        // console.log("datatata", res?.data?.data?.[0]);
+        let newData = [];
+        // let newlevelData = []
+        // "ItPerson", "SPOC_", "Owner_"
+        ["ItPerson", "SPOC", "Owner"].forEach((type) => {
+          let obj = {
+            type: type,
+            name: res?.data?.data?.[0]?.[`${type}Name`],
+            mobile: res?.data?.data?.[0]?.[`${type}Mobile`],
+            email: res?.data?.data?.[0]?.[`${type}Email`],
+          };
+          newData.push(obj);
         });
+
+        let itArr = [];
+
+        // for (let i = 1; i <= 3; i++) {
+        //   let obj = {
+        //     type: `Level${i}`,
+        //     name: res?.data?.data?.[0]?.[`POC1${i}Name`] || "",
+        //     mobile: res?.data?.data?.[0]?.[`POC2${i}Mobile`] || "",
+        //     email: res?.data?.data?.[0]?.[`POC3${i}Email`] || "",
+
+        //   };
+        //   itArr.push(obj);
+        // }
+        ["Level1", "Level2", "Level3"].forEach((type) => {
+          let obj = {
+            type: type,
+            name: res?.data?.data?.[0]?.[`${type}Name`],
+            mobile: res?.data?.data?.[0]?.[`${type}Mobile`],
+            email: res?.data?.data?.[0]?.[`${type}Email`],
+          };
+          itArr.push(obj);
+        });
+        console.log("itArr::", itArr);
+
+        setTableData(newData);
+        setLevelData(itArr);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleImageChange = (e) => {
@@ -556,7 +593,7 @@ const ReportIssue = () => {
             visible={visible}
             id={ticketid}
             setVisible={setVisible}
-           onCloseInnerModal={handlerefresh}
+            onCloseInnerModal={handlerefresh}
           />
         </Modal>
       )}

@@ -23,6 +23,7 @@ import ReactSelect from "../components/formComponent/ReactSelect";
 import moment from "moment/moment";
 import { toast } from "react-toastify";
 import SummaryFilter from "./SummaryFilter";
+import { axiosInstances } from "../networkServices/axiosInstance";
 
 const Summary = () => {
   const [t] = useTranslation();
@@ -42,7 +43,7 @@ const Summary = () => {
   const [module2, setModule2] = useState([]);
   const [module3, setModule3] = useState([]);
   const [module4, setModule4] = useState([]);
-   const [columnConfig, setColumnConfig] = useState([]);
+  const [columnConfig, setColumnConfig] = useState([]);
 
   const [listVisible, setListVisible] = useState(false);
   const searchFilter = [
@@ -76,8 +77,8 @@ const Summary = () => {
     POC2: [],
     POC3: [],
     AsDate: "",
-    FromDate: "",
-    ToDate: "",
+    FromDate: new Date(),
+    ToDate: new Date(),
     SearchFilter: searchFilter.map((option) => option.code),
   });
 
@@ -122,10 +123,13 @@ const Summary = () => {
   };
 
   const getPOC1 = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.POC_1_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.POC_1_Select, {
+      })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.POC_1_Select, form, { headers })
         .then((res) => {
           const poc1s = res?.data.data.map((item) => {
             return { name: item?.POC_1_Name, code: item?.POC_1_ID };
@@ -138,10 +142,14 @@ const Summary = () => {
   };
 
   const getPOC2 = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.POC_2_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.POC_2_Select, {
+        
+      })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.POC_2_Select, form, { headers })
         .then((res) => {
           const poc2s = res?.data.data.map((item) => {
             return { name: item?.POC_2_Name, code: item?.POC_2_ID };
@@ -154,10 +162,14 @@ const Summary = () => {
   };
 
   const getPOC3 = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.POC_3_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.POC_3_Select, {
+        
+      })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.POC_3_Select, form, { headers })
         .then((res) => {
           const poc3s = res?.data.data.map((item) => {
             return { name: item?.POC_3_Name, code: item?.POC_3_ID };
@@ -170,10 +182,14 @@ const Summary = () => {
   };
 
   const getVertical = () => {
-    let form = new FormData();
-    form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Vertical_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.Vertical_Select, {
+        
+      })
+    // let form = new FormData();
+    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Vertical_Select, form, { headers })
         .then((res) => {
           const verticals = res?.data.data.map((item) => {
             return { name: item?.Vertical, code: item?.VerticalID };
@@ -186,10 +202,13 @@ const Summary = () => {
   };
 
   const getTeam = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Team_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.Team_Select, { 
+      })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Team_Select, form, { headers })
         .then((res) => {
           const teams = res?.data.data.map((item) => {
             return { name: item?.Team, code: item?.TeamID };
@@ -202,10 +221,14 @@ const Summary = () => {
   };
 
   const getWing = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Wing_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.Wing_Select, {
+        
+      })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Wing_Select, form, { headers })
         .then((res) => {
           const wings = res?.data.data.map((item) => {
             return { name: item?.Wing, code: item?.WingID };
@@ -218,23 +241,31 @@ const Summary = () => {
   };
 
   const getProject = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      axios
-        .post(apiUrls?.ProjectSelect, form, { headers })
-        .then((res) => {
-          const poc3s = res?.data.data.map((item) => {
-            return { name: item?.Project, code: item?.ProjectId };
-          });
-          setProject(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls.ProjectSelect, {
+        ProjectID: 0,
+        IsMaster: "0",
+        VerticalID: 0,
+        TeamID: 0,
+        WingID: 0,
+      })
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append(
+      //     "LoginName",
+      //     useCryptoLocalStorage("user_Data", "get", "realname")
+      //   ),
+      //   axios
+      //     .post(apiUrls?.ProjectSelect, form, { headers })
+      .then((res) => {
+        const poc3s = res?.data.data.map((item) => {
+          return { name: item?.Project, code: item?.ProjectId };
         });
+        setProject(poc3s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleSummaryDetails = () => {
@@ -256,47 +287,46 @@ const Summary = () => {
       }
     }
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("WingID", formData?.WingID),
-      form.append("TeamID", formData?.TeamID),
-      form.append("ProjectID", formData?.ProjectID),
-      form.append("POC1", formData?.POC1),
-      form.append("VerticalID", formData?.VerticalID),
-      form.append("POC2", formData?.POC2),
-      form.append("POC3", formData?.POC3),
-      form.append("DateType", formData?.DateType),
-      form.append("DateRange", formData?.DateRange),
-      form.append("Fromdate", moment(formData?.FromDate).format("YYYY-MM-DD")),
-      form.append("ToDate", moment(formData?.ToDate).format("YYYY-MM-DD")),
-      axios
-        .post(apiUrls?.MantisSummary_Search, form, { headers })
-        .then((res) => {
-          const data = res?.data;
-          setByProject(data?.dtProject);
-          setbyStatus(data?.dtStatus);
-          setbyCategory(data?.dtCategory);
-          setdeveloperStatus(data?.dtAssignTo);
-          setlongestOpen(data?.dtLongestOpen);
-          setreporterStatus(data?.dtReporter);
-          setageingSheet(data?.dtAgeing);
-          setReporterByResolution(data?.dtReporterResolution);
-          setDeveloperByResolution(data?.dtAssignToResolution);
-          setbyPriority(data?.dtPriority);
-          setModule1(data?.dtModule4);
-          setModule2(data?.dtModule3);
-          setModule3(data?.dtModule2);
-          setModule4(data?.dtModule1);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-          setLoading(false);
-        });
+    axiosInstances
+      .post(apiUrls.MantisSummary_Search, {
+        ID: useCryptoLocalStorage("user_Data", "get", "ID"),
+        DateType: formData?.DateType,
+        DateRange: formData?.DateRange,
+        FromDate: moment(formData?.FromDate).format("YYYY-MM-DD")
+          ? moment(formData?.FromDate).format("YYYY-MM-DD")
+          : "",
+        ToDate: moment(formData?.ToDate).format("YYYY-MM-DD"),
+        ProjectIDs: formData?.ProjectID,
+        VerticalIDs: formData?.VerticalID,
+        TeamIDs: formData?.TeamID,
+        WingIDs: formData?.WingID,
+        POC1s: formData?.POC1,
+        POC2s: formData?.POC2,
+        POC3s: formData?.POC3,
+        DeveloperID: useCryptoLocalStorage("user_Data", "get", "ID"),
+      })
+      .then((res) => {
+        const data = res?.data;
+        setByProject(data?.dtProject);
+        setbyStatus(data?.dtStatus);
+        setbyCategory(data?.dtCategory);
+        setdeveloperStatus(data?.dtAssignTo);
+        setlongestOpen(data?.dtLongestOpen);
+        setreporterStatus(data?.dtReporter);
+        setageingSheet(data?.dtAgeing);
+        setReporterByResolution(data?.dtReporterResolution);
+        setDeveloperByResolution(data?.dtAssignToResolution);
+        setbyPriority(data?.dtPriority);
+        setModule1(data?.dtModule4);
+        setModule2(data?.dtModule3);
+        setModule3(data?.dtModule2);
+        setModule4(data?.dtModule1);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
   const shortenName = (name) => {
     return name.length > 95 ? name.substring(0, 25) + "..." : name;
