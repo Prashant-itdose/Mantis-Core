@@ -9,6 +9,7 @@ import Heading from "../Heading";
 import NoRecordFound from "../../formComponent/NoRecordFound";
 import Loading from "../../loader/Loading";
 import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../../../networkServices/axiosInstance";
 
 const ViewIssueNotesModal = ({ visible, setVisible, handleViewSearch }) => {
   const { VITE_DATE_FORMAT } = import.meta.env;
@@ -26,13 +27,17 @@ const ViewIssueNotesModal = ({ visible, setVisible, handleViewSearch }) => {
     TicketNote: "",
   });
   const handleSearchNote = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("TicketID", visible?.showData?.TicketID);
-    axios
-      .post(apiUrls?.ViewNote, form, {
-        headers,
-      })
+    axiosInstances
+      .post(apiUrls.ViewNote,{
+  "TicketID": visible?.showData?.TicketID
+})
+//     let form = new FormData();
+//     form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+//       form.append("TicketID", visible?.showData?.TicketID);
+//     axios
+//       .post(apiUrls?.ViewNote, form, {
+//         headers,
+//       })
       .then((res) => {
         const data = res?.data?.data;
         setTableData(data);
@@ -51,18 +56,23 @@ const ViewIssueNotesModal = ({ visible, setVisible, handleViewSearch }) => {
 
   const handleAddNote = () => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("TicketID", visible?.showData?.TicketID);
-    form.append("NoteText", formData?.TicketNote);
-    axios
-      .post(apiUrls?.InsertNoteLog, form, {
-        headers,
-      })
+    axiosInstances
+      .post(apiUrls.InsertNoteLog, {
+  "TicketID": visible?.showData?.TicketID,
+  "NoteText": formData?.TicketNote
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("TicketID", visible?.showData?.TicketID);
+    // form.append("NoteText", formData?.TicketNote);
+    // axios
+    //   .post(apiUrls?.InsertNoteLog, form, {
+    //     headers,
+    //   })
       .then((res) => {
         if (res?.data?.status === true) {
           toast.success(res?.data?.message);
