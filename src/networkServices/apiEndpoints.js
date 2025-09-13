@@ -104,9 +104,9 @@ export const apiUrls = {
 
   //Amount Submission Page Api's
   AmountSubmission_ByAccounts:
-    "/CRMCOREAPI/API/Accounts/AmountSubmission_ByAccounts",
+    "/CRMCOREAPI/API/Accounts/AmountSubmissionByAccounts",
   AmountSubmission_ByAccounts_Search:
-    "/CRMCOREAPI/API/Accounts/AmountSubmission_ByAccounts_Search",
+    "/CRMCOREAPI/API/Accounts/AmountSubmissionByAccountsSearch",
   AmountSubmission_ByAccounts_IsCancel:
     "/CRMCOREAPI/API/Accounts/AmountSubmission_ByAccounts_IsCancel",
 
@@ -118,13 +118,13 @@ export const apiUrls = {
   Result_Update: "/CRMCOREAPI/API/QueryVsResult/Result_Update",
 
   //Connector Request Api's
-  Connector_Search: "/CRMCOREAPI/API/AccountsConnector/Connector_Search",
+  Connector_Search: "/CRMCOREAPI/API/AccountsConnector/ConnectorSearch",
   Connector_Settlement_Insert:
     "/CRMCOREAPI/API/AccountsConnector/Connector_Settlement_Insert",
   Connector_Discount_Insert:
     "/CRMCOREAPI/API/AccountsConnector/Connector_Discount_Insert",
-  Connector_Select: "/CRMCOREAPI/API/AccountsConnector/Connector_Select",
-  Connector_Insert: "/CRMCOREAPI/API/AccountsConnector/Connector_Insert",
+  Connector_Select: "/CRMCOREAPI/API/AccountsConnector/ConnectorSelect",
+  Connector_Insert: "/CRMCOREAPI/API/AccountsConnector/ConnectorInsert",
   Connector_Status_Update:
     "/CRMCOREAPI/API/AccountsConnector/Connector_Status_Update",
   Connector_Update: "/CRMCOREAPI/API/AccountsConnector/Connector_Update",
@@ -157,15 +157,15 @@ export const apiUrls = {
   UploadAttendanceExcel: "/CRMCOREAPI/API/CRMAttendence/UploadAttendanceExcel",
 
   ////Advance Request /////
-  AdvanceAmount_Requset: "/CRMCOREAPI/API/AdvanceAmount/AdvanceAmount_Requset",
-  AdvanceRequest_Search: "/CRMCOREAPI/API/AdvanceAmount/AdvanceRequest_Search",
+  AdvanceAmount_Requset: "/CRMCOREAPI/API/AdvanceAmount/AdvanceAmountRequest",
+  AdvanceRequest_Search: "/CRMCOREAPI/API/AdvanceAmount/AdvanceRequestSearch",
   AdvaceAmount_Select: "/CRMCOREAPI/API/AdvanceAmount/AdvaceAmount_Select",
   AdvanceAmount_Status_Update:
     "/CRMCOREAPI/API/AdvanceAmount/AdvanceAmount_Status_Update",
   AdvanceAmount_Paid: "/CRMCOREAPI/API/AdvanceAmount/AdvanceAmount_Paid",
-  ManageExpense_Insert: "/CRMCOREAPI/API/ManageExpense/ManageExpense_Insert",
+  ManageExpense_Insert: "/CRMCOREAPI/API/ManageExpense/ManageExpenseInsert",
   IsExpenseExists: "/CRMCOREAPI/API/ManageExpense/IsExpenseExists",
-  GetReportingTo_Employee: "/CRMCOREAPI/API/ManageExpense/GetReportingTo_Employee",
+  GetReportingTo_Employee: "/CRMCOREAPI/API/ManageExpense/GetReportingToEmployee",
   ViewExpenseList: "/CRMCOREAPI/API/ManageExpense/ViewExpenseList",
   PaidAmount: "/CRMCOREAPI/API/ManageExpense/PaidAmount",
   ViewExpenseList_Accounts:
@@ -200,7 +200,7 @@ export const apiUrls = {
   UpdateFlag: "/CRMCOREAPI/API/EmployeeMaster/UpdateFlag",
   GetFlag: "/CRMCOREAPI/API/EmployeeMaster/GetFlag",
   AmountSubmission_ByAccounts_Update:
-    "/CRMCOREAPI/API/Accounts/AmountSubmission_ByAccounts_Update",
+    "/CRMCOREAPI/API/Accounts/AmountSubmissionUpdate",
   Payement_Installment_Select:
     "/CRMCOREAPI/API/AccountsPaymentInstallment/Payement_Installment_Select",
   Payment_Installment_Insert:
@@ -219,7 +219,7 @@ export const apiUrls = {
   // ForgetPassword_ChangePassword:'/CRMCOREAPI/API/EmployeeMaster/ForgetPassword_ChangePassword',
   ForgetPassword_ChangePassword:
     "/CRMCOREAPI/API/LoginAPIDynamic/ForgetPassword_ChangePassword",
-  LedgerStatus: "/CRMCOREAPI/API/Accounts/LedgerStatus",
+  LedgerStatus: "/CRMCOREAPI/API/Accounts/LedgerStatusFromForm",
   LedgerStatus_LockUnLock: "/CRMCOREAPI/API/Accounts/LedgerStatus_LockUnLock",
   LedgerStatus_LockUnLock_Log:
     "/CRMCOREAPI/API/Accounts/LedgerStatus_LockUnLock_Log",
@@ -237,7 +237,7 @@ export const apiUrls = {
   AmountSub_CancelReason_Select:
     "/CRMCOREAPI/API/MasterBind/AmountSub_CancelReason_Select",
   AmountSubmission_ByAccounts_Search_ProjectID:
-    "/CRMCOREAPI/API/Accounts/AmountSubmission_ByAccounts_Search_ProjectID",
+    "/CRMCOREAPI/API/Accounts/AmountSubmissionByAccountsSearch",
   SalesBooking_CancelReason_Select:
     "/CRMCOREAPI/API/MasterBind/SalesBooking_CancelReason_Select",
   SalesBooking_IsCancel:
@@ -251,7 +251,7 @@ export const apiUrls = {
   Quotation_Select: "/CRMCOREAPI/API/AccountsQuotation/Quotation_Select",
   Quotation_Insert: "/CRMCOREAPI/API/AccountsQuotation/Quotation_Insert",
   Quotation_IsCancel: "/CRMCOREAPI/API/AccountsQuotation/Quotation_IsCancel",
-  Quotation_Approved: "/CRMCOREAPI/API/AccountsQuotation/Quotation_Approved",
+  Quotation_Approved: "/CRMCOREAPI/API/AccountsQuotation/QuotationApproved",
   Quotation_Load_QuotationID:
     "/CRMCOREAPI/API/AccountsQuotation/Quotation_Load_QuotationID",
   Quotation_SalesConvert:
@@ -262,7 +262,7 @@ export const apiUrls = {
   Payment_Installment_Update:
     "/CRMCOREAPI/API/AccountsPaymentInstallment/Payment_Installment_Update",
   Sales_MIS_Type: "/CRMCOREAPI/API/MasterBind/Sales_MIS_Type",
-  BillingCompany_Select: "/CRMCOREAPI/API/ProjectMaster/BillingCompany_Select",
+  BillingCompany_Select: "/CRMCOREAPI/API/ProjectMaster/BillingCompanySelect",
   SaveFilterData: "/CRMCOREAPI/API/ViewIssue/SaveFilterData",
   SearchFilterData: "/CRMCOREAPI/API/ViewIssue/SearchFilterData",
   MantisSummary_Search: "/CRMCOREAPI/API/MantisSummary/MantisSummarySearch",
@@ -299,7 +299,7 @@ export const apiUrls = {
   Quotation_Email: "/CRMCOREAPI/API/AccountsQuotation/Quotation_Email",
   SalesBooking_GenerateTax:
     "/CRMCOREAPI/API/AccountsPaymentInstallment/SalesBooking_GenerateTax",
-  TaxInvoice_Search: "/CRMCOREAPI/API/AccountsTaxInvoice/TaxInvoice_Search",
+  TaxInvoice_Search: "/CRMCOREAPI/API/AccountsTaxInvoice/TaxInvoiceSearch",
   TaxInvoice_Upload: "/CRMCOREAPI/API/AccountsTaxInvoice/TaxInvoice_Upload",
   DevDashboard_Welcome_PriorityID:
     "/CRMCOREAPI/API/MantisSummary/DevDashboardWelcomePriority",
@@ -348,7 +348,7 @@ export const apiUrls = {
   GetEmployeeModule: "/CRMCOREAPI/API/EmployeeMaster/GetEmployeeModule",
   DeleteEmployeeModule: "/CRMCOREAPI/API/EmployeeMaster/DeleteEmployeeModule",
   UpdateStatusCopy: "/CRMCOREAPI/API/ManageExpense/UpdateStatusCopy",
-  ExpenceDetails: "/CRMCOREAPI/API/ManageExpense/ExpenceDetails",
+  ExpenceDetails: "/CRMCOREAPI/API/ManageExpense/ExpenseDetails",
   AMC_Payment_Installment_Insert:
     "/CRMCOREAPI/API/AccountsPaymentInstallment/AMC_Payment_Installment_Insert",
   CoorDashboard_Paid_Request_Status:
@@ -428,16 +428,16 @@ export const apiUrls = {
   EmployeeFeedbackAvg: "/CRMCOREAPI/API/EmployeeFeedback/EmployeeFeedbackAvg",
   GetWorkingHours: "/CRMCOREAPI/API/CRMAttendance/GetWorkingHours",
   GetEmployeeTransactions: "/CRMCOREAPI/API/Attendence/GetEmployeeTransactions",
-  EmployeeBind: "/CRMCOREAPI/API/Attendence/EmployeeBind",
+  EmployeeBind: "/CRMCOREAPI/API/CRMAttendance/EmployeeBind",
   WeaklyMonthlyBreakCount: "/CRMCOREAPI/API/Attendence/WeaklyMonthlyBreakCount",
   WeaklyMonthlyBreakHours: "/CRMCOREAPI/API/Attendence/WeaklyMonthlyBreakHours",
   EmployeeFeedbackDashboard: "/CRMCOREAPI/API/Attendence/EmployeeFeedbackDashboard",
   ClientFeedbackDashboard: "/CRMCOREAPI/API/Attendence/ClientFeedbackDashboard",
-  EmailerSearch: "/CRMCOREAPI/API/Emailer/EmailerSearch",
-  RepushMail: "/CRMCOREAPI/API/Emailer/RepushMail",
+  EmailerSearch: "/CRMCOREAPI/API/Email/EmailerSearch",
+  RepushMail: "/CRMCOREAPI/API/Email/RepushMail",
   GetFlagProject: "/CRMCOREAPI/API/ProjectMasterUpdate/GetFlagProject",
   UpdateFlagProject: "/CRMCOREAPI/API/ProjectMasterUpdate/UpdateFlagProject",
-  EmployeeEmail: "/CRMCOREAPI/API/Emailer/EmployeeEmail",
+  EmployeeEmail: "/CRMCOREAPI/API/Email/EmployeeEmail",
   SendTaxInvoiceMailFinal:
     "/CRMCOREAPI/API/AccountsPaymentInstallment/SendTaxInvoiceMailFinal",
   TaxInvoiceLog: "/CRMCOREAPI/API/AccountsTaxInvoice/TaxInvoiceLog",
