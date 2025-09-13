@@ -103,8 +103,8 @@ const SearchProjectMaster = () => {
     });
   };
 
-
-  console.log("tableData",tableData)
+  console.log("category", category);
+  console.log("tableData", tableData);
   const SaveFilter = () => {
     // let form = new FormData();
 
@@ -261,10 +261,12 @@ const SearchProjectMaster = () => {
     axiosInstances
       .post(apiUrls?.GetFilterTableReprintData, {
         PageName: String("SearchProjectMaster"),
-        CrmEmpID:String(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID"))
+        CrmEmpID: String(
+          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+        ),
       })
       .then((res) => {
-        console.log("SearchProjectMaster",res)
+        console.log("SearchProjectMaster", res);
         const data = res.data.data;
         if (res?.data.success === true) {
           setDynamicFilter(data);
@@ -293,7 +295,9 @@ const SearchProjectMaster = () => {
     axiosInstances
       .post(apiUrls?.GetFilterTableReprintData, {
         PageName: String("SearchProjectMasterTable"),
-        CrmEmpID:String(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID"))
+        CrmEmpID: String(
+          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+        ),
       })
       .then((res) => {
         const data = res.data.data;
@@ -793,7 +797,6 @@ const SearchProjectMaster = () => {
         if (res?.data?.success === true) {
           const data = res?.data?.data;
 
-          
           // console.log("centre check",res?.data?.ClientCentreList)
           const updatedData = data?.map((ele, index) => {
             return {
@@ -850,7 +853,7 @@ const SearchProjectMaster = () => {
               EditValue: "",
             };
           });
-  
+   
           setTableData(updatedData);
           setFilteredData(updatedData);
           setLoading(false);
@@ -1278,10 +1281,13 @@ const SearchProjectMaster = () => {
     //   axios
     //     .post(apiUrls?.Category_Select, form, { headers })
     axiosInstances
-      .post(apiUrls?.Category_Select, {})
+      .post(apiUrls?.Category_Select, {
+        RoleID: 0,
+        ProjectID: 0,
+      })
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
-          return { name: item?.NAME, code: item?.NAME };
+          return { name: item?.NAME, code: item?.ID };
         });
         setCategory(poc3s);
       })
@@ -1435,6 +1441,8 @@ const SearchProjectMaster = () => {
     },
   ];
 
+
+  console.log("currentData",currentData)
   return (
     <>
       <Modal
