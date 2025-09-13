@@ -372,7 +372,8 @@ export const apiUrls = {
     "/CRMCOREAPI/API/ManagerDashboard/ManagerDashboard_New_Quarter_Sales",
   ManagerDashboard_Paid_Request_Status:
     "/CRMCOREAPI/API/ManagerDashboard/ManagerDashboard_Paid_Request_Status",
-  TSAAggrementSearch: "/CRMCOREAPI/API/TSAAgreement/TSAAggrementSearch",
+  // TSAAggrementSearch: "/CRMCOREAPI/API/TSAAgreement/TSAAggrementSearch",
+  TSAAggrementSearch: "/CRMCOREAPI/API/TSAAgreement/TSAAgreementSearch",
   TSACancel: "/CRMCOREAPI/API/TSAAgreement/TSACancel",
   ConfirmTSA: "/CRMCOREAPI/API/TSAAgreement/ConfirmTSA",
   TSAHold: "/CRMCOREAPI/API/TSAAgreement/TSAHold",
@@ -408,7 +409,8 @@ export const apiUrls = {
   EditSalesLead: "/CRMCOREAPI/API/SalesLead/EditSalesLead",
   UpdateSalesLead: "/CRMCOREAPI/API/SalesLead/UpdateSalesLead",
   Lead_Email_Log: "/CRMCOREAPI/API/SalesLead/Lead_Email_Log",
-  Tsa_Agreement_Format: "/CRMCOREAPI/API/TSAAgreement/Tsa_Agreement_Format",
+  // Tsa_Agreement_Format: "/CRMCOREAPI/API/TSAAgreement/Tsa_Agreement_Format",
+  Tsa_Agreement_Format: "/CRMCOREAPI/API/TSAAgreement/GetTsaAgreementFormat",
   Change_Tsa_Agreement_Format:
     "/CRMCOREAPI/API/TSAAgreement/Change_Tsa_Agreement_Format",
   CreateFeedback: "/CRMCOREAPI/API/Feedback/CreateFeedback",
