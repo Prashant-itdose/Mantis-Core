@@ -57,7 +57,7 @@ const UploadDocumentProject = ({ data }) => {
         });
   };
 
-  const handleUploadDocument = () => {
+  const handleUploadDocument = async () => {
     setLoading(true);
 
     // Convert base64 to Blob
@@ -86,6 +86,7 @@ const UploadDocumentProject = ({ data }) => {
     };
     reader.onerror = (error) => reject(error);
   });
+
     // console.log("pdfFile", pdfFile);
     // let form = new FormData();
     // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
@@ -105,7 +106,7 @@ const UploadDocumentProject = ({ data }) => {
     // form.append("FileExtension", formData?.FileExtension),
     // axios
     //   .post(apiUrls?.UploadDocument, form, { headers })
-   const base64File = pdfFile ? toBase64(pdfFile) : "";
+   const base64File = pdfFile ? await toBase64(pdfFile) : "";
     const payload = {
       ProjectID: Number(data?.ProjectID || data?.Id),
       DocumentTypeID: Number(formData?.DocumentType),
