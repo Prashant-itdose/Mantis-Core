@@ -20,6 +20,7 @@ import { Link, useLocation } from "react-router-dom";
 import moment from "moment";
 import BrowseInput from "../../components/formComponent/BrowseInput";
 import { useCryptoLocalStorage } from "../../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../../networkServices/axiosInstance";
 const ExpenseSubmission = () => {
   const location = useLocation();
   const { state } = location;
@@ -120,10 +121,14 @@ const ExpenseSubmission = () => {
   };
 
   const getState = (value) => {
-    let form = new FormData();
-    form.append("CountryID", "14"),
-      axios
-        .post(apiUrls?.GetState, form, { headers })
+    axiosInstances
+      .post(apiUrls.GetState, {
+  "CountryID": "14"
+})
+    // let form = new FormData();
+    // form.append("CountryID", "14"),
+    //   axios
+    //     .post(apiUrls?.GetState, form, { headers })
         .then((res) => {
           const states = res?.data.data.map((item) => {
             return { label: item?.StateName, value: item?.StateID };
@@ -361,24 +366,62 @@ const ExpenseSubmission = () => {
       });
     });
     setLoading(true);
-    let form = new FormData();
-    form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-    form.append(
-      "EmpID",
-      useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-    );
-    form.append(
-      "LoginName",
-      useCryptoLocalStorage("user_Data", "get", "realname")
-    );
-    form.append("GeneralDetails", GeneralDetailsJson);
-    form.append("LocalTravelExp", JSON.stringify(LocalTravelpayload));
-    form.append("InterCityTravelExp", JSON.stringify(InterCityTravelpayload));
-    form.append("ActionType", "Insert");
-    form.append("Document_Base64", formData?.Document_Base64);
-    form.append("Document_FormatType", formData?.FileExtension);
-    axios
-      .post(apiUrls?.ManageExpense_Insert, form, { headers })
+
+    const payload = {
+  "EmpID": 0,
+  "GeneralDetails": [
+      {
+        Date: moment(formData?.FromDate).format("YYYY-MM-DD"),
+        TripName: formData?.TripName,
+        // State: getlabel(formData?.State, states),
+        stateID: formData?.State,
+        City: formData?.City,
+        Locality: formData?.Locality,
+        ClientName: formData?.ClientName,
+        other_employees: formData?.OtherTeammate,
+        ExpenseType: formData?.ExpenseType,
+        HotelAmount: formData?.HotelAmount || "0",
+        HotelName: formData?.HotelName,
+        HotelDesc: formData?.HotelDescription,
+        BreakfastAmount: formData?.BreakfastAmount || "0",
+        LunchAmount: formData?.LunchAmount || "0",
+        DinnerAmount: formData?.DinnerAmount || "0",
+        mealsDesc: formData?.MealDescription,
+        PhoneAmount: formData?.PhoneAmount || "0",
+        phoneDesc: formData?.PhoneDescription,
+        Client_Enterment_Amount: formData?.EntertainmentAmount || "0",
+        Client_Enterment_Desc: formData?.EntertainmentDescription,
+        amount: formData?.OtherAmount || "0",
+        Other_Desc: formData?.OtherDescription,
+      },
+    ],
+  "Document_Base64": String(formData?.Document_Base64),
+  "Document_FormatType": String(formData?.FileExtension),
+  "ActionType": "Insert",
+  "ExpenseTransID": 0,
+  "LocalTravelExp": LocalTravelpayload,
+  "InterCityTravelExp": InterCityTravelpayload
+}
+    axiosInstances
+      .post(apiUrls.ManageExpense_Insert,payload)
+    // let form = new FormData();
+    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
+    // form.append(
+    //   "EmpID",
+    //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+    // );
+    // form.append(
+    //   "LoginName",
+    //   useCryptoLocalStorage("user_Data", "get", "realname")
+    // );
+    // form.append("GeneralDetails", GeneralDetailsJson);
+    // form.append("LocalTravelExp", JSON.stringify(LocalTravelpayload));
+    // form.append("InterCityTravelExp", JSON.stringify(InterCityTravelpayload));
+    // form.append("ActionType", "Insert");
+    // form.append("Document_Base64", formData?.Document_Base64);
+    // form.append("Document_FormatType", formData?.FileExtension);
+    // axios
+    //   .post(apiUrls?.ManageExpense_Insert, form, { headers })
       .then((res) => {
         if (res?.data?.status === true) {
           toast.success(res?.data?.message);
@@ -566,28 +609,65 @@ const ExpenseSubmission = () => {
       });
     });
     setLoading(true);
-    let form = new FormData();
-    form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-    form.append(
-      "EmpID",
-      useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-    );
-    form.append(
-      "LoginName",
-      useCryptoLocalStorage("user_Data", "get", "realname")
-    );
-    form.append("GeneralDetails", GeneralDetailsJson);
-    form.append("LocalTravelExp", JSON.stringify(LocalTravelpayload));
-    form.append("InterCityTravelExp", JSON.stringify(InterCityTravelpayload));
-    form.append("ActionType", "Update");
-    form.append(
-      "ExpenseTransID",
-      state?.givenData?.expense_report_ID || reportidd
-    );
-    form.append("Document_Base64", formData?.Document_Base64);
-    form.append("Document_FormatType", formData?.FileExtension);
-    axios
-      .post(apiUrls?.ManageExpense_Insert, form, { headers })
+    const payload = {
+  "EmpID": Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),
+  "GeneralDetails": [
+      {
+        Date: moment(formData?.FromDate).format("YYYY-MM-DD"),
+        TripName: formData?.TripName,
+        // State: getlabel(formData?.State, states),
+        stateID: formData?.State,
+        City: formData?.City,
+        Locality: formData?.Locality,
+        ClientName: formData?.ClientName,
+        other_employees: formData?.OtherTeammate,
+        ExpenseType: formData?.ExpenseType,
+        HotelAmount: formData?.HotelAmount || "0",
+        HotelName: formData?.HotelName,
+        HotelDesc: formData?.HotelDescription,
+        BreakfastAmount: formData?.BreakfastAmount || "0",
+        LunchAmount: formData?.LunchAmount || "0",
+        DinnerAmount: formData?.DinnerAmount || "0",
+        mealsDesc: formData?.MealDescription,
+        PhoneAmount: formData?.PhoneAmount || "0",
+        phoneDesc: formData?.PhoneDescription,
+        Client_Enterment_Amount: formData?.EntertainmentAmount || "0",
+        Client_Enterment_Desc: formData?.EntertainmentDescription,
+        amount: formData?.OtherAmount || "0",
+        Other_Desc: formData?.OtherDescription,
+      },
+    ],
+  "Document_Base64": String(formData?.Document_Base64),
+  "Document_FormatType": String(formData?.FileExtension),
+  "ActionType": "Update",
+  "ExpenseTransID": Number(state?.givenData?.expense_report_ID) || Number(reportidd),
+  "LocalTravelExp": LocalTravelpayload,
+  "InterCityTravelExp": InterCityTravelpayload
+}
+    axiosInstances
+      .post(apiUrls.ManageExpense_Insert,payload)
+    // let form = new FormData();
+    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
+    // form.append(
+    //   "EmpID",
+    //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+    // );
+    // form.append(
+    //   "LoginName",
+    //   useCryptoLocalStorage("user_Data", "get", "realname")
+    // );
+    // form.append("GeneralDetails", GeneralDetailsJson);
+    // form.append("LocalTravelExp", JSON.stringify(LocalTravelpayload));
+    // form.append("InterCityTravelExp", JSON.stringify(InterCityTravelpayload));
+    // form.append("ActionType", "Update");
+    // form.append(
+    //   "ExpenseTransID",
+    //   state?.givenData?.expense_report_ID || reportidd
+    // );
+    // form.append("Document_Base64", formData?.Document_Base64);
+    // form.append("Document_FormatType", formData?.FileExtension);
+    // axios
+    //   .post(apiUrls?.ManageExpense_Insert, form, { headers })
       .then((res) => {
         if (res?.data?.status === true) {
           toast.success(res?.data?.message);
@@ -730,21 +810,29 @@ const ExpenseSubmission = () => {
       const day = String(d.getDate()).padStart(2, "0");
       return `${year}-${month}-${day}`;
     };
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    form.append(
-      "LoginName",
-      useCryptoLocalStorage("user_Data", "get", "realname")
-    );
-    form.append(
-      "ExpenseEmployeeID",
-      state?.length > 0
-        ? state.givenData?.EmpID
-        : useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-    );
-    form.append("ExpenseDate", formatDateToLocal(check));
-    axios
-      .post(apiUrls?.IsExpenseExists, form, { headers })
+
+    axiosInstances
+      .post(apiUrls.IsExpenseExists, {
+  "ExpenseEmployeeID": state?.length > 0
+        ? Number(state.givenData?.EmpID)
+        : Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),
+  "ExpenseDate": String(formatDateToLocal(check))
+})
+    // // let form = new FormData();
+    // // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
+    // // form.append(
+    // //   "LoginName",
+    // //   useCryptoLocalStorage("user_Data", "get", "realname")
+    // // );
+    // // form.append(
+    // //   "ExpenseEmployeeID",
+    // //   state?.length > 0
+    // //     ? state.givenData?.EmpID
+    // //     : useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+    // // );
+    // // form.append("ExpenseDate", formatDateToLocal(check));
+    // axios
+    //   .post(apiUrls?.IsExpenseExists, form, { headers })
       .then((res) => {
         const response = res?.data?.data?.data?.dt[0];
         const datecheck = response?.Date;

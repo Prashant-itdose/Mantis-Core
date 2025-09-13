@@ -11,11 +11,16 @@ const LocalDetailModal = ({ visible, setVisible }) => {
 
   const [tableData, setTableData] = useState([]);
   const handleSearch = () => {
-    let form = new FormData();
-    form.append("ExpenseReportID", visible?.showData?.expense_report_ID),
-      form.append("ActionType", "Local"),
-      axios
-        .post(apiUrls?.ExpenceDetails, form, { headers })
+    axiosInstances
+      .post(apiUrls.ExpenceDetails,{
+  "ExpenseReportID": Number(visible?.showData?.expense_report_ID),
+  "ActionType": "Local"
+})
+    // let form = new FormData();
+    // form.append("ExpenseReportID", visible?.showData?.expense_report_ID),
+    //   form.append("ActionType", "Local"),
+    //   axios
+    //     .post(apiUrls?.ExpenceDetails, form, { headers })
         .then((res) => {
           // setTableData(res?.data?.dtDetailLocal);
           const data = res?.data?.dtDetailLocal;

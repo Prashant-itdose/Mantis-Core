@@ -7,6 +7,7 @@ import { headers } from "../utils/apitools";
 import { toast } from "react-toastify";
 import { set } from "lodash";
 import Loading from "../components/loader/Loading";
+import { axiosInstances } from "../networkServices/axiosInstance";
 const FeedbackModal = (showData) => {
   //   console.log("showData", showData);
   const [loading, setLoading] = useState(false);
@@ -20,14 +21,22 @@ const FeedbackModal = (showData) => {
     "IsReportingManager"
   );
   const getProject = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      axios
-        .post(apiUrls?.ProjectSelect, form, { headers })
+    axiosInstances
+      .post(apiUrls.ProjectSelect, {
+  "ProjectID": 0,
+  "IsMaster": "0",
+  "VerticalID": 0,
+  "TeamID": 0,
+  "WingID": 0
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   axios
+    //     .post(apiUrls?.ProjectSelect, form, { headers })
         .then((res) => {
           const poc3s = res?.data.data.map((item) => {
             return { label: item?.Project, value: item?.ProjectId };
@@ -44,17 +53,21 @@ const FeedbackModal = (showData) => {
       return;
     }
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("ProjectID", formData.ProjectID);
-    axios
-      .post(apiUrls?.CreateFeedback, form, { headers })
+    axiosInstances
+      .post(apiUrls.CreateFeedback, {
+  "ProjectID": Number(formData.ProjectID)
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("ProjectID", formData.ProjectID);
+    // axios
+    //   .post(apiUrls?.CreateFeedback, form, { headers })
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           setFormData({
             ProjectID: [],

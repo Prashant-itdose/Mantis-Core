@@ -27,6 +27,7 @@ import {
   FaStar,
   FaRegStar
 } from "react-icons/fa";
+import { axiosInstances } from "../networkServices/axiosInstance";
 const EmployeeFeedback = ({ data }) => {
   const ReportingManager = useCryptoLocalStorage(
     "user_Data",
@@ -60,18 +61,23 @@ const EmployeeFeedback = ({ data }) => {
   };
 
   const getAssignTo = () => {
-    let form = new FormData();
-    form.append(
-      "CrmEmployeeID",
-      useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-    ),
-      form.append(
-        "RoleID",
-        useCryptoLocalStorage("user_Data", "get", "RoleID")
-      ),
-      axios
-        // .post(apiUrls?.AssignTo_Select, form, { headers })
-        .post(apiUrls?.EmployeeFeebackBind, form, { headers })
+    axiosInstances
+      .post(apiUrls.EmployeeFeebackBind, {
+  "CrmEmployeeID": Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),
+  "RoleID":Number(useCryptoLocalStorage("user_Data", "get", "RoleID"))
+})
+    // let form = new FormData();
+    // form.append(
+    //   "CrmEmployeeID",
+    //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+    // ),
+    //   form.append(
+    //     "RoleID",
+    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+    //   ),
+    //   axios
+    //     // .post(apiUrls?.AssignTo_Select, form, { headers })
+    //     .post(apiUrls?.EmployeeFeebackBind, form, { headers })
         .then((res) => {
           const assigntos = res?.data.data.map((item) => {
             return { label: item?.EmployeeName, value: item?.Employee_ID };
@@ -85,24 +91,31 @@ const EmployeeFeedback = ({ data }) => {
 
   const handleSearchList = (code) => {
     setLoading(true);
-    const form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID")),
-      form.append(
-        "CrmEmployeeID",
-        useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      ),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append(
-        "EmployeeID",
-        formData?.AssignedTo ? formData.AssignedTo : "0"
-      );
-    form.append("RowColor", code ? code : "0"),
-      axios
-        .post(apiUrls?.EmployeeFeedbackSearch, form, { headers })
+    axiosInstances
+      .post(apiUrls.EmployeeFeedbackSearch,{
+  "CrmEmployeeID": Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),
+  "EmployeeID": formData?.AssignedTo ? Number(formData.AssignedTo) : 0,
+  "RoleID": Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
+  "RowColor": code ? Number(code) :0
+})
+    // const form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID")),
+    //   form.append(
+    //     "CrmEmployeeID",
+    //     useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+    //   ),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append(
+    //     "EmployeeID",
+    //     formData?.AssignedTo ? formData.AssignedTo : "0"
+    //   );
+    // form.append("RowColor", code ? code : "0"),
+      // axios
+      //   .post(apiUrls?.EmployeeFeedbackSearch, form, { headers })
         .then((res) => {
           if (res?.data?.status === true) {
             setTableData(res?.data?.data);
@@ -120,6 +133,13 @@ const EmployeeFeedback = ({ data }) => {
   };
   const handleSearchEmployee = (code) => {
     setLoading(true);
+    axiosInstances
+      .post(apiUrls.EmployeeFeedbackSearch,{
+  "CrmEmployeeID": Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),
+  "EmployeeID": Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),
+  "RoleID": Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
+  "RowColor": code ? Number(code) :0
+})
     const form = new FormData();
     form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
       form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID")),
