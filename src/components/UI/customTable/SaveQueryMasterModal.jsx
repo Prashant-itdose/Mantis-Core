@@ -9,6 +9,7 @@ import { headers } from "../../../utils/apitools";
 import { toast } from "react-toastify";
 import BrowseButton from "../../formComponent/BrowseButton";
 import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../../../networkServices/axiosInstance";
 
 const SaveQueryMasterModal = () => {
   const [editMode, setEditMode] = useState(false);
@@ -57,18 +58,29 @@ const SaveQueryMasterModal = () => {
     return ele.length > 0 ? ele[0].label : "";
   }
   const handleSave = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-      form.append("Query", formData?.QueryName),
-      form.append("ProductID", formData?.Product),
-      form.append("ProductName", getlabel(formData?.Product, product)),
-      form.append("ModuleID", formData?.Module),
-      form.append("ModuleName", getlabel(formData?.Module, modules)),
-      form.append("Document_Base64", formData?.Document_Base64),
-      form.append("Document_FormatType", formData?.FileExtension),
-      axios
-        .post(apiUrls?.Query_Insert, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
+    //   form.append("Query", formData?.QueryName),
+    //   form.append("ProductID", formData?.Product),
+    //   form.append("ProductName", getlabel(formData?.Product, product)),
+    //   form.append("ModuleID", formData?.Module),
+    //   form.append("ModuleName", getlabel(formData?.Module, modules)),
+    //   form.append("Document_Base64", formData?.Document_Base64),
+    //   form.append("Document_FormatType", formData?.FileExtension),
+    //   axios
+    //     .post(apiUrls?.Query_Insert, form, { headers })
+      const payload = {
+    Query: formData?.QueryName || "",
+    ProductID: Number(formData?.Product) || 0,
+    ProductName: getlabel(formData?.Product, product) || "",
+    ModuleID: Number(formData?.Module) || 0,
+    ModuleName: getlabel(formData?.Module, modules) || "",
+    Document_Base64: formData?.Document_Base64 || "",
+    Document_FormatType: formData?.FileExtension || "",
+  };
+    axiosInstances
+      .post(apiUrls.Query_Insert, payload)
         .then((res) => {
           toast.success(res?.data?.message);
           setFormData({
