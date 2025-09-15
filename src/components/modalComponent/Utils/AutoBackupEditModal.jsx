@@ -11,9 +11,9 @@ import { apiUrls } from "../../../networkServices/apiEndpoints";
 import Loading from "../../loader/Loading";
 import { inputBoxValidation } from "../../../utils/utils";
 import { MOBILE_NUMBER_VALIDATION_REGX } from "../../../utils/constant";
+import { axiosInstances } from "../../../networkServices/axiosInstance";
 
 const AutoBackupEditModal = ({ visible, setVisible }) => {
-
   const [loading, setLoading] = useState(false);
   const [t] = useTranslation();
   const [formData, setFormData] = useState({
@@ -49,10 +49,25 @@ const AutoBackupEditModal = ({ visible, setVisible }) => {
     form.append("ItPersonMobile", formData?.ItPersonMobile);
     form.append("ItPersonEmail", formData?.ItPersonEmail);
 
-    axios
-      .post(apiUrls?.SPOC_Update, form, { headers })
+    // axios
+    //   .post(apiUrls?.SPOC_Update, form, { headers })
+    const payload = {
+      ProjectID: Number(visible?.showData?.id || 0),
+      Owner_Name: String(formData?.OwnerName || ""),
+      Owner_Mobile: String(formData?.OwnerMobile || ""),
+      Owner_Email: String(formData?.OwnerEmail || ""),
+      SPOC_Name: String(formData?.SPOCName || ""),
+      SPOC_Mobile: String(formData?.SPOCMobile || ""),
+      SPOC_EmailID: String(formData?.SPOCEmail || ""),
+      ItPersonName: String(formData?.ItPersonName || ""),
+      ItPersonMobile: String(formData?.ItPersonMobile || ""),
+      ItPersonEmail: String(formData?.ItPersonEmail || ""),
+    };
+
+    axiosInstances
+      .post(apiUrls?.SPOC_Update, payload)
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           setVisible(false);
           setLoading(false);

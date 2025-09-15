@@ -39,7 +39,7 @@ export const apiUrls = {
 
   //AutoBackupStatusSheet  Page Api's   & MisReport Table Page
   AutobackupSearch: "/CRMCOREAPI/API/Autobackup/AutobackupSearch",
-  SPOC_Update: "/CRMCOREAPI/API/Autobackup/SPOC_Update",
+  SPOC_Update: "/CRMCOREAPI/API/Autobackup/SPOCUpdate",
   AutobackupLog: "/CRMCOREAPI/API/Autobackup/AutobackupLog",
 
   //Employee Master Page Api's   && SearchEmployeeMaster
