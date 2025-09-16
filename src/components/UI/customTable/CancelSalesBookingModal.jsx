@@ -49,11 +49,43 @@ const CancelSalesBookingModal = ({ visible, setVisible, handleSearch }) => {
       //       headers,
       //     })
       axiosInstances
+<<<<<<< HEAD
         .post(apiUrls.SalesBooking_IsCancel, {
           SalesID: String(visible?.showData?.EncryptID),
           CancelReasonID: Number(formData?.CancelReason),
           CancelReason: String(getlabel(formData?.CancelReason, reason)),
           OtherCancelReason: String(formData?.OtherReason),
+=======
+      .post(apiUrls.SalesBooking_IsCancel, {
+        ID: useCryptoLocalStorage("user_Data", "get", "ID"),
+        LoginName: useCryptoLocalStorage("user_Data", "get", "realname"),
+        SalesID: visible?.showData?.EncryptID,  
+        CancelReason: getlabel(formData?.CancelReason, reason),
+        CancelReasonID: formData?.CancelReason,
+        OtherCancelReason: formData?.OtherReason,
+      })
+          .then((res) => {
+            if (res?.data?.status === true) {
+              toast.success(res?.data?.message);
+              setVisible(false);
+              handleSearch()
+            } else {
+              toast.error(res?.data?.message);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+    }
+  };
+
+  const handleSearchReason = () => {
+    let form = new FormData();
+    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      axios
+        .post(apiUrls?.SalesBooking_CancelReason_Select, form, {
+          headers,
+>>>>>>> 3ce94f50682ceded8bb63ba0562a15585339a8c3
         })
         .then((res) => {
           if (res?.data?.success === true) {

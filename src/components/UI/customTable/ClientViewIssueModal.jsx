@@ -20,6 +20,8 @@ import Loading from "../../loader/Loading";
 import { useSelector } from "react-redux";
 import Tooltip from "../../../pages/Tooltip";
 import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../../../networkServices/axiosInstance";
+import { loginByAuth } from "../../../services/auth";
 
 const ClientViewIssueModal = ({ visible, tableData, setVisible ,handleViewSearch }) => {
   // console.log("visible", handleViewSearch);
@@ -127,17 +129,27 @@ const ClientViewIssueModal = ({ visible, tableData, setVisible ,handleViewSearch
 
   const RoleID = useCryptoLocalStorage("user_Data", "get", "RoleID");
   const getModule = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "RoleID",
-        useCryptoLocalStorage("user_Data", "get", "RoleID")
-      ),
-      form.append("ProjectID", visible?.showData?.ProjectID),
-      form.append("IsActive", "1"),
-      form.append("IsMaster", "0"),
-      axios
-        .post(apiUrls?.Module_Select, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "RoleID",
+    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+    //   ),
+    //   form.append("ProjectID", visible?.showData?.ProjectID),
+    //   form.append("IsActive", "1"),
+    //   form.append("IsMaster", "0"),
+    //   axios
+    //     .post(apiUrls?.Module_Select, form, { headers })
+      axiosInstances
+      .post(apiUrls.Module_Select, {
+        ID: useCryptoLocalStorage("user_Data", "get", "ID"),  
+        RoleID: RoleID,
+        ProjectID: visible?.showData?.ProjectID,
+        IsActive: "1",
+        IsMaster: "0",
+
+          
+      })
         .then((res) => {
           const poc3s = res?.data.data.map((item) => {
             return { label: item?.ModuleName, value: item?.ModuleID };
@@ -150,17 +162,26 @@ const ClientViewIssueModal = ({ visible, tableData, setVisible ,handleViewSearch
   };
 
   const getPage = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "RoleID",
-        useCryptoLocalStorage("user_Data", "get", "RoleID")
-      ),
-      form.append("ProjectID", visible?.showData?.ProjectID),
-      form.append("IsActive", "1"),
-      form.append("IsMaster", "0"),
-      axios
-        .post(apiUrls?.Pages_Select, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "RoleID",
+    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+    //   ),
+    //   form.append("ProjectID", visible?.showData?.ProjectID),
+    //   form.append("IsActive", "1"),
+    //   form.append("IsMaster", "0"),
+    //   axios
+    //     .post(apiUrls?.Pages_Select, form, { headers })
+      axiosInstances
+      .post(apiUrls.Pages_Select, {
+        ID: useCryptoLocalStorage("user_Data", "get", "ID"),  
+        RoleID: RoleID,
+        ProjectID: visible?.showData?.ProjectID,
+        IsActive: "1",
+        IsMaster: "0",
+          
+      })
         .then((res) => {
           const poc3s = res?.data.data.map((item) => {
             return { label: item?.PagesName, value: item?.ID };
@@ -208,12 +229,19 @@ const ClientViewIssueModal = ({ visible, tableData, setVisible ,handleViewSearch
 
   const handleSearchNote = () => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("TicketID", visible?.showData?.TicketID);
-    axios
-      .post(apiUrls?.ViewNote, form, {
-        headers,
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("TicketID", visible?.showData?.TicketID);
+    // axios
+    //   .post(apiUrls?.ViewNote, form, {
+    //     headers,
+    //   })
+      axiosInstances
+      .post(apiUrls.ViewNote, {
+        ID: useCryptoLocalStorage("user_Data", "get", "ID"),  
+        TicketID: visible?.showData?.TicketID,
+
+          
       })
       .then((res) => {
         const data = res?.data?.data;
@@ -238,12 +266,18 @@ const ClientViewIssueModal = ({ visible, tableData, setVisible ,handleViewSearch
 
   const handleSearchHistory = () => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("TicketID", visible?.showData?.TicketID);
-    axios
-      .post(apiUrls?.ViewHistory, form, {
-        headers,
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("TicketID", visible?.showData?.TicketID);
+    // axios
+    //   .post(apiUrls?.ViewHistory, form, {
+    //     headers,
+    //   })
+      axiosInstances
+      .post(apiUrls.ViewHistory, {
+        ID: useCryptoLocalStorage("user_Data", "get", "ID"),  
+        TicketID: visible?.showData?.TicketID,
+          
       })
       .then((res) => {
         setTableData1(res?.data?.data);
@@ -261,13 +295,19 @@ const ClientViewIssueModal = ({ visible, tableData, setVisible ,handleViewSearch
 
   const handleIssueSearch = (ticket) => {
     // console.log("ticket",ticket)
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    form.append("TicketID", ticket || visible.showData.TicketID);
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
+    // form.append("TicketID", ticket || visible.showData.TicketID);
 
-    axios
-      .post(apiUrls?.ViewTicket, form, {
-        headers,
+    // axios
+    //   .post(apiUrls?.ViewTicket, form, {
+    //     headers,
+    //   })
+      axiosInstances
+      .post(apiUrls.ViewTicket, {
+        ID: useCryptoLocalStorage("user_Data", "get", "ID"),  
+        TicketID: ticket || visible.showData.TicketID,
+          
       })
       .then((res) => {
         // console.log(" lotus", res);
@@ -363,72 +403,101 @@ const ClientViewIssueModal = ({ visible, tableData, setVisible ,handleViewSearch
   const handleEdit = () => {
     if (edit) {
       setLoading(true);
-      let form = new FormData();
-      form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        form.append(
-          "RoleID",
-          useCryptoLocalStorage("user_Data", "get", "RoleID")
-        ),
-        form.append(
-          "LoginName",
-          useCryptoLocalStorage("user_Data", "get", "realname")
-        );
-      form.append("TicketID", formDataUpdate?.TicketID);
-      form.append("CategoryID", formDataUpdate?.Category);
-      form.append("AssignToID", formDataUpdate?.AssignedTo);
-      form.append("PriorityID", formDataUpdate?.Priority);
-      form.append("ProjectID", formDataUpdate?.Project);
-      form.append("Status", formDataUpdate?.Status);
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append(
+      //     "RoleID",
+      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+      //   ),
+      //   form.append(
+      //     "LoginName",
+      //     useCryptoLocalStorage("user_Data", "get", "realname")
+      //   );
+      // form.append("TicketID", formDataUpdate?.TicketID);
+      // form.append("CategoryID", formDataUpdate?.Category);
+      // form.append("AssignToID", formDataUpdate?.AssignedTo);
+      // form.append("PriorityID", formDataUpdate?.Priority);
+      // form.append("ProjectID", formDataUpdate?.Project);
+      // form.append("Status", formDataUpdate?.Status);
+      // // form.append(
+      // //   "DeliveryDate",
+      // //   formDataUpdate?.DeliveryDate != ""
+      // //     ? new Date(formDataUpdate?.DeliveryDate)?.toISOString()?.split("T")[0]
+      // //     : ""
+      // // );
       // form.append(
       //   "DeliveryDate",
-      //   formDataUpdate?.DeliveryDate != ""
-      //     ? new Date(formDataUpdate?.DeliveryDate)?.toISOString()?.split("T")[0]
+      //   formatDate(formDataUpdate?.DeliveryDate)
+      //     ? formatDate(formDataUpdate?.DeliveryDate)
       //     : ""
       // );
-      form.append(
-        "DeliveryDate",
-        formatDate(formDataUpdate?.DeliveryDate)
-          ? formatDate(formDataUpdate?.DeliveryDate)
-          : ""
-      );
-      form.append("Manhour", formDataUpdate?.ManHour || "0");
-      form.append("ManhoursClient", formDataUpdate?.ClientManHour || "0");
-      form.append(
-        "DeliveryDateClient",
-        formDataUpdate?.ClientDeliveryDate || ""
-      );
-      form.append("Summary", formDataUpdate?.Summary || "");
-      form.append("Note", formDataUpdate?.Note ? formDataUpdate?.Note : "");
-      form.append("Description", formDataUpdate?.Description || "");
+      // form.append("Manhour", formDataUpdate?.ManHour || "0");
+      // form.append("ManhoursClient", formDataUpdate?.ClientManHour || "0");
       // form.append(
-      //   "Description",
-      //   removeHtmlTags(formDataUpdate?.Description) || ""
+      //   "DeliveryDateClient",
+      //   formDataUpdate?.ClientDeliveryDate || ""
       // );
-      form.append("ReportedByName", formDataUpdate?.ReportedByName || "");
-      form.append("ReportedByMobileNo", formDataUpdate?.ReportedByMobile || "");
-      form.append("ReferenceCode", formDataUpdate?.ReferenceCode);
-      form.append("HoldReason", formDataUpdate?.HoldReason);
-      form.append("OtherReferenceNo", formDataUpdate.OtherReferenceNo);
-      form.append(
-        "ModuleName",
-        getlabel(formDataUpdate?.ModuleName, moduleName) || ""
-      );
-      form.append("ModuleID", formDataUpdate.ModuleName || "0");
-      form.append(
-        "PagesName",
-        getlabel(formDataUpdate?.PageName, pageName) || ""
-      );
-      form.append("PagesID", formDataUpdate.PageName || "0");
-      form.append("IsReOpen", "1");
-      form.append(
-        "ReOpenReason",
-        getlabel(formDataUpdate?.ReOpen, reopen) || ""
-      );
-      form.append("ReOpenID", formDataUpdate?.ReOpen || "0");
-      axios
-        .post(apiUrls?.UpdateTicket, form, {
-          headers,
-        })
+      // form.append("Summary", formDataUpdate?.Summary || "");
+      // form.append("Note", formDataUpdate?.Note ? formDataUpdate?.Note : "");
+      // form.append("Description", formDataUpdate?.Description || "");
+      // // form.append(
+      // //   "Description",
+      // //   removeHtmlTags(formDataUpdate?.Description) || ""
+      // // );
+      // form.append("ReportedByName", formDataUpdate?.ReportedByName || "");
+      // form.append("ReportedByMobileNo", formDataUpdate?.ReportedByMobile || "");
+      // form.append("ReferenceCode", formDataUpdate?.ReferenceCode);
+      // form.append("HoldReason", formDataUpdate?.HoldReason);
+      // form.append("OtherReferenceNo", formDataUpdate.OtherReferenceNo);
+      // form.append(
+      //   "ModuleName",
+      //   getlabel(formDataUpdate?.ModuleName, moduleName) || ""
+      // );
+      // form.append("ModuleID", formDataUpdate.ModuleName || "0");
+      // form.append(
+      //   "PagesName",
+      //   getlabel(formDataUpdate?.PageName, pageName) || ""
+      // );
+      // form.append("PagesID", formDataUpdate.PageName || "0");
+      // form.append("IsReOpen", "1");
+      // form.append(
+      //   "ReOpenReason",
+      //   getlabel(formDataUpdate?.ReOpen, reopen) || ""
+      // );
+      // form.append("ReOpenID", formDataUpdate?.ReOpen || "0");
+      // axios
+      //   .post(apiUrls?.UpdateTicket, form, {
+      //     headers,
+      //   })
+        axiosInstances
+      .post(apiUrls.UpdateTicket, {
+        TicketID: formDataUpdate?.TicketID || 0,
+      User_id: useCryptoLocalStorage("user_Data", "get", "ID") || 0,  
+      CategoryID: formDataUpdate?.Category || 0,
+      AssignToID: formDataUpdate?.AssignedTo || 0,
+      PriorityID: formDataUpdate?.Priority || 0,
+      DeliveryDate: formatDate(formDataUpdate?.DeliveryDate) || "",
+      DeliveryDateClient: formDataUpdate?.ClientDeliveryDate || "",
+      Summary: formDataUpdate?.Summary || "",
+      Description: formDataUpdate?.Description || "",
+      Note: formDataUpdate?.Note || "",
+      ReferenceCode: formDataUpdate?.ReferenceCode || "",
+      ManHour: formDataUpdate?.ManHour || "0",
+      ManHoursClient: formDataUpdate?.ClientManHour || "0",
+      ReportedByName: formDataUpdate?.ReportedByName || "",
+      ReportedByMobileNo: formDataUpdate?.ReportedByMobile || "",
+      HoldReason: formDataUpdate?.HoldReason || "",
+      Status: formDataUpdate?.Status || "",
+      ModuleID: formDataUpdate?.ModuleName || 0,
+      ModuleName: getlabel(formDataUpdate?.ModuleName, moduleName) || "",
+      PagesID: formDataUpdate?.PageName || 0,
+      PagesName: getlabel(formDataUpdate?.PageName, pageName) || "",
+      IsReOpen: 1,  // since you’re reopening
+      ReOpenReasonID: formDataUpdate?.ReOpen || 0,
+      ReOpenReason: getlabel(formDataUpdate?.ReOpen, reopen) || ""
+    
+          
+      })
         .then((res) => {
           if (res?.data?.status === true) {
             toast.success(res?.data?.message);
@@ -459,18 +528,24 @@ const ClientViewIssueModal = ({ visible, tableData, setVisible ,handleViewSearch
   };
   const handleDeleteNote = (id) => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    form.append(
-      "LoginName",
-      useCryptoLocalStorage("user_Data", "get", "realname")
-    );
-    form.append("TicketID", formDataUpdate?.TicketID);
-    form.append("NoteID", id); // Assuming NoteID is part of the note object
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
+    // form.append(
+    //   "LoginName",
+    //   useCryptoLocalStorage("user_Data", "get", "realname")
+    // );
+    // form.append("TicketID", formDataUpdate?.TicketID);
+    // form.append("NoteID", id); // Assuming NoteID is part of the note object
 
-    axios
-      .post(apiUrls?.DeleteNote, form, {
-        headers,
+    // axios
+    //   .post(apiUrls?.DeleteNote, form, {
+    //     headers,
+    //   })
+    axiosInstances
+      .post(apiUrls.DeleteNote, {
+        NoteID: id || 0,  // pass the note id
+    TicketID: formDataUpdate?.TicketID || 0
+        
       })
       .then((res) => {
         if (res?.data?.status === true) {
@@ -499,18 +574,26 @@ const ClientViewIssueModal = ({ visible, tableData, setVisible ,handleViewSearch
     //   setTableData2(data);
     // } else {
     console.log(ele,"element")
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("TicketID", formDataUpdate?.TicketID);
-    form.append("NoteID", ele?.NoteId);
-    form.append("NoteText", ele?.note);
-    axios
-      .post(apiUrls?.UpdateNote, form, {
-        headers,
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("TicketID", formDataUpdate?.TicketID);
+    // form.append("NoteID", ele?.NoteId);
+    // form.append("NoteText", ele?.note);
+    // axios
+    //   .post(apiUrls?.UpdateNote, form, {
+    //     headers,
+    //   })
+    axiosInstances
+      .post(apiUrls.UpdateNote, {
+    NoteID: noteId || 0,
+    TicketID: formDataUpdate?.TicketID || 0,  
+    NoteText: updatedText || ""
+
+      
       })
       .then((res) => {
         if (res?.data?.status === true) {
@@ -542,10 +625,12 @@ const ClientViewIssueModal = ({ visible, tableData, setVisible ,handleViewSearch
   const [priority, setPriority] = useState([]);
   const [status, setStatus] = useState([]);
   const getStatus = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Status_Select, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Status_Select, form, { headers })
+            axiosInstances
+      .post(apiUrls.Status_Select)
         .then((res) => {
           const poc3s = res?.data.data.map((item) => {
             return { label: item?.STATUS, value: item?.id };
@@ -557,15 +642,23 @@ const ClientViewIssueModal = ({ visible, tableData, setVisible ,handleViewSearch
         });
   };
   const getProject = () => {
-    let form = new FormData();
+    // let form = new FormData();
 
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      axios
-        .post(apiUrls?.ProjectSelect, form, { headers })
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   axios
+    //     .post(apiUrls?.ProjectSelect, form, { headers })
+            axiosInstances
+      .post(apiUrls.ProjectSelect,{
+    ProjectID: formDataUpdate?.ProjectID || 0,
+    IsMaster: formDataUpdate?.IsMaster || "",
+    VerticalID: formDataUpdate?.VerticalID || 0,
+    TeamID: formDataUpdate?.TeamID || 0,
+    WingID: formDataUpdate?.WingID || 0,
+  })
         .then((res) => {
           const poc3s = res?.data.data.map((item) => {
             return { label: item?.Project, value: item?.ProjectId };
@@ -578,10 +671,12 @@ const ClientViewIssueModal = ({ visible, tableData, setVisible ,handleViewSearch
         });
   };
   const getPriority = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Priority_Select, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Priority_Select, form, { headers })
+            axiosInstances
+      .post(apiUrls.Priority_Select)
         .then((res) => {
           const assigntos = res?.data.data.map((item) => {
             return { label: item?.NAME, value: item?.ID };
@@ -593,11 +688,13 @@ const ClientViewIssueModal = ({ visible, tableData, setVisible ,handleViewSearch
         });
   };
   const getCategory = (proj) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("ProjectID", proj),
-      axios
-        .post(apiUrls?.Category_Select, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("ProjectID", proj),
+    //   axios
+    //     .post(apiUrls?.Category_Select, form, { headers })
+            axiosInstances
+      .post(apiUrls.Category_Select)
         .then((res) => {
           const poc3s = res?.data.data.map((item) => {
             return { label: item?.NAME, value: item?.ID };
@@ -609,10 +706,12 @@ const ClientViewIssueModal = ({ visible, tableData, setVisible ,handleViewSearch
         });
   };
   const getAssignTo = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.AssignTo_Select, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.AssignTo_Select, form, { headers })
+            axiosInstances
+      .post(apiUrls.AssignTo_Select)
         .then((res) => {
           const assigntos = res?.data.data.map((item) => {
             return { label: item?.NAME, value: item?.ID };
@@ -642,12 +741,18 @@ const ClientViewIssueModal = ({ visible, tableData, setVisible ,handleViewSearch
   }, []);
 
   const getReopen = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("Title", "ReOpenReason"),
-      // form.append("DeveloperID", memberID || 0),
-      axios
-        .post(apiUrls?.Reason_Select, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("Title", "ReOpenReason"),
+    //   // form.append("DeveloperID", memberID || 0),
+    //   axios
+    //     .post(apiUrls?.Reason_Select, form, { headers })
+        axiosInstances
+      .post(apiUrls.Reason_Select, {
+    Title: updatedTitle || ""
+
+
+      })
         .then((res) => {
           const poc3s = res?.data.data.map((item) => {
             return { label: item?.NAME, value: item?.ID };
