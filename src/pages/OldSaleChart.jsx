@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import {
@@ -39,7 +38,7 @@ const OldSaleChart = () => {
     // form.append("SearchType", searchType == "" ? "0" : searchType);
     // axios
     //   .post(apiUrls?.CoorDashboard_Open_Dead_Sales, form, { headers })
-     axiosInstances
+    axiosInstances
       .post(apiUrls.CoorDashboard_Open_Dead_Sales, {
         CoordinatorID: Number(useCryptoLocalStorage("user_Data", "get", "ID")),
         DeveloperID: Number(developerId),
@@ -54,9 +53,8 @@ const OldSaleChart = () => {
   };
 
   useEffect(() => {
-  fetchSalesData(memberID, developerSearchType);
+    fetchSalesData(memberID, developerSearchType);
   }, [memberID, developerSearchType]);
-
 
   const transformData = (data) => {
     const labels = data.map((item) => item.MonthYear);
@@ -113,7 +111,7 @@ const OldSaleChart = () => {
   };
 
   return (
-    <div style={{ width: "100%", height: "126px",marginLeft:"10px" }}>
+    <div style={{ width: "100%", height: "126px", marginLeft: "10px" }}>
       <Bar
         data={chartData}
         options={options}

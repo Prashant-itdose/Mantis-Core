@@ -38,7 +38,6 @@ export const apiUrls = {
   NewTicket: "/CRMCOREAPI/API/BugReport/NewTicket",
 
   //AutoBackupStatusSheet  Page Api's   & MisReport Table Page
-  AutobackupSearch: "/CRMCOREAPI/API/Autobackup/AutobackupSearch",
   SPOC_Update: "/CRMCOREAPI/API/Autobackup/SPOCUpdate",
   AutobackupLog: "/CRMCOREAPI/API/Autobackup/AutobackupLog",
 
@@ -169,7 +168,8 @@ export const apiUrls = {
   AdvanceAmount_Paid: "/CRMCOREAPI/API/AdvanceAmount/AdvanceAmount_Paid",
   ManageExpense_Insert: "/CRMCOREAPI/API/ManageExpense/ManageExpenseInsert",
   IsExpenseExists: "/CRMCOREAPI/API/ManageExpense/IsExpenseExists",
-  GetReportingTo_Employee: "/CRMCOREAPI/API/ManageExpense/GetReportingToEmployee",
+  GetReportingTo_Employee:
+    "/CRMCOREAPI/API/ManageExpense/GetReportingToEmployee",
   ViewExpenseList: "/CRMCOREAPI/API/ManageExpense/ViewExpenseList",
   PaidAmount: "/CRMCOREAPI/API/ManageExpense/PaidAmount",
   ViewExpenseList_Accounts:
@@ -361,13 +361,13 @@ export const apiUrls = {
   CoorDashboard_Paid_Request_Status:
     "/CRMCOREAPI/API/CoordinatorDashboard/CoorDashboardPaidRequestStatus",
   CoorDashboard_Developer_Availability:
-    "/CRMCOREAPI/API/CoordinatorDashboard/CoorDashboard_Developer_Availability",
+    "/CRMCOREAPI/API/CoordinatorDashboard/CoorDashboardDeveloperAvailability",
   CoorDashboard_Ticket_Close_Assign:
-    "/CRMCOREAPI/API/CoordinatorDashboard/CoorDashboard_Ticket_Close_Assign",
+    "/CRMCOREAPI/API/CoordinatorDashboard/CoorDashboardTicketCloseAssign",
   CoorDashboard_Financial_Recovery_Quotation:
-    "/CRMCOREAPI/API/CoordinatorDashboard/CoorDashboard_Financial_Recovery_Quotation",
+    "/CRMCOREAPI/API/CoordinatorDashboard/CoorDashboardFinancialRecoveryQuotation",
   CoorDashboard_Top_Client_Amount:
-    "/CRMCOREAPI/API/CoordinatorDashboard/CoorDashboard_Top_Client_Amount",
+    "/CRMCOREAPI/API/CoordinatorDashboard/CoorDashboardTopClientAmount",
   CoorDashboard_Current_Month_Bifurcation:
     "/CRMCOREAPI/API/CoordinatorDashboard/CoorDashboard_Current_Month_Bifurcation",
   CoorDashboard_Quotation_Month:
@@ -399,7 +399,7 @@ export const apiUrls = {
   ClientFeedbackSearch: "/CRMCOREAPI/API/Feedback/ClientFeedbackSearch",
   ClientFeedbackTransaction:
     "/CRMCOREAPI/API/Feedback/ClientFeedbackTransaction",
-  ProjectVsAMCMapping: 
+  ProjectVsAMCMapping:
     "/CRMCOREAPI/API/ProjectMasterUpdate/ProjectVsAMCMapping",
   ManagerDashboard_Recovery_Quarter:
     "/CRMCOREAPI/API/ManagerDashboard/ManagerDashboard_Recovery_Quarter",
@@ -442,7 +442,8 @@ export const apiUrls = {
     "CRMAPI/API/EmployeeFeedback/ResendEmployeeFeedbackMail",
   EmployeeFeedbackAvg: "/CRMCOREAPI/api/EmployeeFeedback/EmployeeFeedbackAvg",
   GetWorkingHours: "/CRMCOREAPI/api/CRMAttendance/GetWorkingHours",
-  GetEmployeeTransactions: "/CRMCOREAPI/API/Attendence/GetEmployeeTransactions",
+  GetEmployeeTransactions:
+    "/CRMCOREAPI/API/CRMAttendance/GetEmployeeTransactions",
   EmployeeBind: "/CRMCOREAPI/API/CRMAttendance/EmployeeBind",
   WeaklyMonthlyBreakCount: "/CRMCOREAPI/API/Attendence/WeaklyMonthlyBreakCount",
   WeaklyMonthlyBreakHours: "/CRMCOREAPI/API/Attendence/WeaklyMonthlyBreakHours",

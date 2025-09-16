@@ -201,7 +201,7 @@ const CoordinatorDashboard = () => {
       });
   };
 
-   const handleFirstDashboardCount = () => {
+  const handleFirstDashboardCount = () => {
     axiosInstances
       .post(apiUrls.DevDashboard_Summary, {
         Title: String("Heads"),
@@ -258,13 +258,17 @@ const CoordinatorDashboard = () => {
   const handleMultiChart = (value, developerId, searchType) => {
     const lotus = moment(value).format("YYYY-MM-DD");
     // console.log("check lotus", lotus);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("dtFrom", lotus),
-      form.append("DeveloperID", developerId);
-    form.append("SearchType", searchType === "" ? "0" : searchType);
-    axios
-      .post(apiUrls?.CoorDashboard_Quotation_Month, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("dtFrom", lotus),
+    //   form.append("DeveloperID", developerId);
+    // form.append("SearchType", searchType === "" ? "0" : searchType);
+    axiosInstances
+      .post(apiUrls.CoorDashboard_Quotation_Month, {
+        DeveloperID: Number(developerId),
+        SearchType: Number(searchType === "" ? "0" : searchType),
+        dtFrom: String(lotus),
+      })
       .then((res) => {
         setFilterData(res?.data?.data);
       })

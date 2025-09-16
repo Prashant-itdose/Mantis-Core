@@ -173,14 +173,14 @@ const MyView = () => {
     // setLoading(true);
     axiosInstances
       .post(apiUrls.AutobackupSearch, {
-        StatusCode: code ? String(code) : "",
-        ProjectID: String(value) ?? "",
-        VerticalID: "",
-        TeamID: "",
-        WingID: "",
-        POC1: "",
-        POC2: "",
-        POC3: "",
+        StatusCode: String(code ? code : ""),
+        ProjectID: String(value ?? ""),
+        VerticalID: String(""),
+        TeamID: String(""),
+        WingID: String(""),
+        POC1: String(""),
+        POC2: String(""),
+        POC3: String(""),
       })
       // let form = new FormData();
       // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
@@ -230,12 +230,12 @@ const MyView = () => {
 
   const getAssignewdToMe = (url, type, ProjectID) => {
     axiosInstances
-      .post(apiUrls.url, {
+      .post(url, {
         // EmployeeID: Number(formData?.AssignedTo),
         // SearchType: String(code ? code : "0"),
         // Date: String(formatDate(formData?.FromDate)),
         // ManagerID: Number(formData?.ReportingTo),
-        ProjectID: Number(0),
+        ProjectID: Number(ProjectID ? ProjectID : "0"),
         // StatusCode: String(code ? code : "0"),
       })
       .then((res) => {

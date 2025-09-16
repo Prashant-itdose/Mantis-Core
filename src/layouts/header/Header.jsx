@@ -16,7 +16,6 @@ import {
   ProjectList,
 } from "../../store/reducers/common/CommonExportFunction";
 import logoitdose from "../../assets/image/logoitdose.png";
-import { headers } from "../../utils/apitools";
 import axios from "axios";
 import Input from "../../components/formComponent/Input";
 import Modal from "../../components/modalComponent/Modal";
@@ -167,12 +166,16 @@ const Header = React.memo(() => {
   };
 
   const handleIssueSearch = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    form.append("TicketID", formData?.issuesearch);
-    axios
-      .post(apiUrls?.ViewTicket, form, {
-        headers,
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
+    // form.append("TicketID", formData?.issuesearch);
+    // axios
+    //   .post(apiUrls?.ViewTicket, form, {
+    //     headers,
+    //   })
+    axiosInstances
+      .post(apiUrls.ViewTicket, {
+        TicketID: Number(formData?.issuesearch),
       })
       .then((res) => {
         if (res?.data?.status === true) {
@@ -319,7 +322,7 @@ const Header = React.memo(() => {
   };
 
   useEffect(() => {
-    // getProject();
+    getProject();
   }, []);
 
   const [modalHandlerState, setModalHandlerState] = useState({
@@ -360,10 +363,10 @@ const Header = React.memo(() => {
   const handleTableSearch = () => {
     axiosInstances
       .post(apiUrls.Attendence_Search, {
-        searchType: String("0"),
-        managerID: Number("0"),
-        employeeID: Number("0"),
-        date: String(new Date().toISOString().split("T")[0]),
+        SearchType: String("0"),
+        ManagerID: Number("0"),
+        EmployeeID: Number("0"),
+        Date: String(new Date().toISOString().split("T")[0]),
       })
       .then((res) => {
         setTableData(res?.data?.data);

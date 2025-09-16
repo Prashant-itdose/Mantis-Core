@@ -41,9 +41,9 @@ const TicketsToWorkChart = () => {
     //   .post(apiUrls?.CoorDashboard_Ticket_Close_Assign, form, {
     //     headers,
     //   })
-       axiosInstances
+    axiosInstances
       .post(apiUrls.CoorDashboard_Ticket_Close_Assign, {
-        CoordinatorID: Number(useCryptoLocalStorage("user_Data", "get", "ID")),
+        // CoordinatorID: Number(useCryptoLocalStorage("user_Data", "get", "ID")),
         DeveloperID: Number(developerId),
         SearchType: Number(searchType == "" ? "0" : searchType),
       })
