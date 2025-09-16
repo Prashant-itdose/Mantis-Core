@@ -16,42 +16,16 @@ const AmountPIModal = (visible) => {
     FileExtension: "",
   });
   const handleUploadDocs = () => {
-<<<<<<< HEAD
     if(formData?.TaxInvoiceNo ==""){
       toast.error("Please Enter Tax Invoice No.")
     }else{
       // let form = new FormData();
-=======
-    if (formData?.TaxInvoiceNo == "") {
-      toast.error("Please Enter Tax Invoice No.");
-    } else {
-      let form = new FormData();
->>>>>>> c05b48fc3088d2485972b30a11b79332c5e8c1f9
       // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
       //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
       //   form.append("TaxInvoiceID", visible ?.visible?.showData?.EncryptID),
       //   form.append("TaxInvoiceNo", visible ?.visible?.showData?.TaxInvoiceNo),
       //   form.append("Document_Base64", formData?.Document_Base64),
       //   form.append("Document_FormatType", formData?.FileExtension),
-<<<<<<< HEAD
-      //   axios
-      //     .post(apiUrls?.TaxInvoice_Upload, form, { headers })
-      axiosInstances
-      .post(apiUrls.TaxInvoice_Upload, {
-        ID: useCryptoLocalStorage("user_Data", "get", "ID"),
-        LoginName: useCryptoLocalStorage("user_Data", "get", "realname"),
-        TaxInvoiceID: visible ?.visible?.showData?.EncryptID,
-        TaxInvoiceNo: formData?.TaxInvoiceNo,
-        Document_Base64: formData?.Document_Base64,
-        Document_FormatType: formData?.FileExtension,
-      })
-          .then((res) => {
-           toast.success(res?.data?.message)
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-=======
       // axios
       //   .post(apiUrls?.TaxInvoice_Upload, form, { headers })
 
@@ -70,7 +44,6 @@ const AmountPIModal = (visible) => {
         .catch((err) => {
           console.log(err);
         });
->>>>>>> c05b48fc3088d2485972b30a11b79332c5e8c1f9
     }
   };
   const searchHandleChange = (e, index) => {

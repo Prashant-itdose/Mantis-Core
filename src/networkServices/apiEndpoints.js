@@ -228,7 +228,7 @@ export const apiUrls = {
   LedgerStatus_LockUnLock: "/CRMCOREAPI/API/Accounts/LedgerStatus_LockUnLock",
   LedgerStatus_LockUnLock_Log:
     "/CRMCOREAPI/API/Accounts/LedgerStatus_LockUnLock_Log",
-  Settlement: "/CRMCOREAPI/API/Accounts/Settlement",
+  Settlement: "/CRMCOREAPI/API/Accounts/SaveSettlement",
   Settlement_IsCancel: "/CRMCOREAPI/API/Accounts/Settlement_IsCancel",
   CreateEmployee_Short: "/CRMCOREAPI/api/EmployeeMaster/CreateEmployee_Short",
   UserVsVertical_Select: "/CRMCOREAPI/API/EmployeeMaster/UserVsVerticalSelect",
