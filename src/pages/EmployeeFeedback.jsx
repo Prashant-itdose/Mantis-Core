@@ -117,7 +117,7 @@ const EmployeeFeedback = ({ data }) => {
       // axios
       //   .post(apiUrls?.EmployeeFeedbackSearch, form, { headers })
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             setTableData(res?.data?.data);
             setLoading(false);
           } else {

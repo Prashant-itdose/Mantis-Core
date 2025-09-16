@@ -119,7 +119,8 @@ const AmountSubmission = ({ data }) => {
   "WingID": "",
   "POC1": "",
   "POC2": "",
-  "POC3": ""
+  "POC3": "",
+  "RecoveryTeam": ""
 })
     // let form = new FormData();
     // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
@@ -147,7 +148,7 @@ const AmountSubmission = ({ data }) => {
     setLoading(true);
     axiosInstances
       .post(apiUrls.AmountSubmission_ByAccounts_Search_ProjectID, {
-  "DateType": "",
+  "DateType": "EntryDate",
   "FromDate": "",
   "ToDate": "",
   "Status": "",

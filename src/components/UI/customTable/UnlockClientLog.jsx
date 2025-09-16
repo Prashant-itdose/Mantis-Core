@@ -7,16 +7,21 @@ import Heading from "../Heading";
 import Tables from ".";
 import { useTranslation } from "react-i18next";
 import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../../../networkServices/axiosInstance";
 const UnlockClientLog = ({ visible }) => {
   const [tableData, setTableData] = useState([]);
 const [t]=useTranslation()
   const handleget = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-      form.append("ProjectID", visible?.showData?.ProjectID),
-      axios
-        .post(apiUrls?.LedgerStatus_LockUnLock_Log, form, { headers })
+    axiosInstances
+          .post(apiUrls.LedgerStatus_LockUnLock_Log,{
+  "ProjectID": Number(visible?.showData?.ProjectID)
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
+    //   form.append("ProjectID", visible?.showData?.ProjectID),
+    //   axios
+    //     .post(apiUrls?.LedgerStatus_LockUnLock_Log, form, { headers })
         .then((res) => {
           setTableData(res?.data?.Data);
           // setVisible((val) => ({ ...val, showLog: false }));

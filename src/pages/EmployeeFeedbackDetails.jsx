@@ -5,19 +5,24 @@ import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import axios from "axios";
 import Tables from "../components/UI/customTable";
 import NoRecordFound from "../components/formComponent/NoRecordFound";
+import { axiosInstances } from "../networkServices/axiosInstance";
 const EmployeeFeedbackDetails = (showData) => {
   console.log("data", showData);
   const [tableData, setTableData] = useState([]);
   const handleApprove = () => {
-    let form = new FormData();
-    form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      );
-    form.append("FeedbackID", showData?.visible?.showData?.FeedbackID);
-    axios
-      .post(apiUrls?.EmployeeFeedbackTransaction, form, { headers })
+    axiosInstances
+      .post(apiUrls.EmployeeFeedbackTransaction, {
+  "FeedbackID": Number(showData?.visible?.showData?.FeedbackID)
+})
+    // let form = new FormData();
+    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   );
+    // form.append("FeedbackID", showData?.visible?.showData?.FeedbackID);
+    // axios
+    //   .post(apiUrls?.EmployeeFeedbackTransaction, form, { headers })
       .then((res) => {
         setTableData(res?.data?.data);
       })

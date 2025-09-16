@@ -1041,7 +1041,7 @@ const ViewIssues = ({ data }) => {
       .post(apiUrls.ApplyAction, {
   "TicketIDs": String(ticketIDs),
   "ActionText": "DeliveryDate",
-  "ActionId": "",
+  "ActionId": "0",
   "RCA": "",
   "ReferenceCode": "",
   "ManHour": "",
@@ -1199,6 +1199,7 @@ const ViewIssues = ({ data }) => {
     }
   };
   const handleAgainChange = (name, value, index, ele) => {
+    debugger
     // console.log("ttttttttttttt",name, value, index);
 
     let updatedData = [...tableData];
@@ -1881,6 +1882,7 @@ const ViewIssues = ({ data }) => {
       .post(apiUrls.Status_Select, {
       })
         .then((res) => {
+          console.log("check", res.data.data);
           const poc3s = res?.data?.data?.map((item) => {
             return {
               name: item?.STATUS,
@@ -2079,7 +2081,7 @@ const ViewIssues = ({ data }) => {
     //   axios
     //     .post(apiUrls?.ApplyAction, form, { headers })
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.message);
             handleViewSearch();
           } else {
@@ -2122,7 +2124,7 @@ const ViewIssues = ({ data }) => {
 
   useEffect(() => {
     fetchAllData();
-    handleGetFilter();
+    // handleGetFilter();
   }, []);
 
   const [loading, setLoading] = useState(false);
@@ -2148,7 +2150,7 @@ const ViewIssues = ({ data }) => {
     HideStatusId = formData?.HideStatus,
     deliveryDate = ""
   ) => {
-    
+    // debugger
     const paylaod = {
       RoleID: String(useCryptoLocalStorage("user_Data", "get", "RoleID") || ""),
       ProjectID: String(ProjectID || ""),
@@ -2189,10 +2191,15 @@ const ViewIssues = ({ data }) => {
       Resolvetodate: String(formatDate(formData?.ResolveDateAfter) || ""),
 
       AssignedDateStatus: String(formData?.AssignedDate || ""),
-      AssignedFromDate:deliveryDate || String(
-       formatDate(formData?.AssignedDateBefore) || ""
-      ),
-      Assignedtodate: String(formatDate(formData?.AssignedDateAfter) || ""),
+      AssignedFromDate:String(formatDate(deliveryDate || (formData?.AssignedDateBefore ?? new Date()))),
+      // Assignedtodate: formatDate(formData?.AssignedDateAfter) ? String(formatDate(formData?.AssignedDateAfter)) : new Date(),
+      Assignedtodate: String(
+  formData?.AssignedDateAfter
+    ? new Date(formData?.AssignedDateAfter).toISOString().split("T")[0]
+    : new Date().toISOString().split("T")[0]
+),
+  // Assignedtodate: "2025-09-16",
+
 
       ClosedDateStatus: String(formData?.CloseDate || ""),
       ClosedFromDate: String(formatDate(formData?.CloseDateBefore) || ""),
@@ -2202,7 +2209,7 @@ const ViewIssues = ({ data }) => {
       LastUpdatedFromDate: String(formatDate(formData?.UpadteDateBefore) || ""),
       LastUpdatedToDate: String(formatDate(formData?.UpadteDateAfter) || ""),
 
-      PageNo: String(page ? page : currentPage - 1 || ""),
+      PageNo: String(page ? page : currentPage - 1 || "0"),
       IsExcel: String(formData?.SearhType || ""),
       OnlyReOpen: String(formData?.OnlyReOpen || ""),
       OnlyDeliveryDateChange: String(formData?.OnlyDeliveryDateChange || ""),
@@ -2223,6 +2230,7 @@ const ViewIssues = ({ data }) => {
     if (formData?.HideStatus == "") {
       toast.error("Please Select HideStatus.");
     } else {
+      // setLoading(true)
       axiosInstances
         .post(apiUrls.ViewIssueSearch, paylaod)
         // let form = new FormData();
@@ -2352,6 +2360,7 @@ const ViewIssues = ({ data }) => {
         // await axios
         //   .post(apiUrls?.ViewIssueSearch, form, { headers })
         .then((res) => {
+          setLoading(false);
           const data = res?.data?.data;
 
           if (formData?.SearhType == 0) {
@@ -2687,7 +2696,7 @@ const ViewIssues = ({ data }) => {
 //       axios
 //         .post(apiUrls?.ApplyAction, form, { headers })
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.message);
             handleViewSearch();
           } else {
@@ -2731,7 +2740,7 @@ const ViewIssues = ({ data }) => {
 //       axios
 //         .post(apiUrls?.ApplyAction, form, { headers })
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.message);
             handleViewSearch();
           } else {
@@ -3661,7 +3670,7 @@ const ViewIssues = ({ data }) => {
               <ReactSelect
                 respclass="col-xl-2 col-md-4 col-sm-6 col-12"
                 name="HideStatus"
-                placeholderName={t("HideStatus")}
+                placeholderName="HideStatus"
                 dynamicOptions={hidestatus}
                 value={formData?.HideStatus}
                 // defaultValue={status.find((option) => option.value === "resolved")}

@@ -12,6 +12,7 @@ import BrowseButton from "../components/formComponent/BrowseButton";
 import { useTranslation } from "react-i18next";
 import Tables from "../components/UI/customTable";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../networkServices/axiosInstance";
 const BulkNewTicketNotes = () => {
   const [loading, setLoading] = useState(false);
   const [tableData, setTableData] = useState([]);
@@ -155,8 +156,8 @@ const BulkNewTicketNotes = () => {
     tableData.map((item, index) => {
       transformPayload.push({
         // Index: index + 1,
-        _Bug_ID: item?.TicketNo,
-        _notes: item?.Notes,
+        BugId: Number(item?.TicketNo),
+        NoteText: String(item?.Notes),
       });
     });
     setIsSubmitting(true);
@@ -171,7 +172,7 @@ const BulkNewTicketNotes = () => {
     // axios
     //   .post(apiUrls?.BulkNoteInsert, form, { headers })
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           toast.success(res?.data?.message);
         } else {
           toast.error(res?.data?.message);

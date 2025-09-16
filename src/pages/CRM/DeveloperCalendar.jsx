@@ -489,7 +489,7 @@ const DeveloperCalendar = () => {
           >
             <FaClock /> : {manHours}
           </div>
-          {totalTickets > 0 && (
+          {/* {totalTickets > 0 && (
             <div className="dateBadge">
               <span className="">
                 <AmountSubmissionSeeMoreList
@@ -521,7 +521,7 @@ const DeveloperCalendar = () => {
                 />
               </span>
             </div>
-          )}
+          )} */}
         </div>
         <SlideScreen
           visible={listVisible}

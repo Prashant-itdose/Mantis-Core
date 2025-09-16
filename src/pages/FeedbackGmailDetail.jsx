@@ -5,6 +5,7 @@ import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import axios from "axios";
 import Tables from "../components/UI/customTable";
 import NoRecordFound from "../components/formComponent/NoRecordFound";
+import { axiosInstances } from "../networkServices/axiosInstance";
 const FeedbackGmailDetail = (showData) => {
   //   console.log("data", showData);
   const [tableData, setTableData] = useState([]);
