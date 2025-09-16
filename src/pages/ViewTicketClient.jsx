@@ -25,6 +25,7 @@ import { Link, useLocation } from "react-router-dom";
 import Tooltip from "./Tooltip";
 import CustomPagination from "../utils/CustomPagination";
 import Modal from "../components/modalComponent/Modal";
+import { axiosInstances } from "../networkServices/axiosInstance";
 const ViewTicketClient = () => {
   const { VITE_DATE_FORMAT } = import.meta.env;
   const [t] = useTranslation();
@@ -156,11 +157,15 @@ const ViewTicketClient = () => {
     if (savedData) {
       setFormData(JSON.parse(savedData));
     }
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("_FiterData", savedData),
-      axios
-        .post(apiUrls?.SaveFilterData, form, { headers })
+    axiosInstances
+      .post(apiUrls.SaveFilterData, {
+  "FiterData": String(savedData)
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("_FiterData", savedData),
+    //   axios
+    //     .post(apiUrls?.SaveFilterData, form, { headers })
         .then((res) => {
           toast.success(res?.data?.message);
           handleGetFilter();
@@ -171,10 +176,12 @@ const ViewTicketClient = () => {
   };
 
   const handleGetFilter = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    axios
-      .post(apiUrls?.SearchFilterData, form, { headers })
+    axiosInstances
+      .post(apiUrls.SearchFilterData, {})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
+    // axios
+    //   .post(apiUrls?.SearchFilterData, form, { headers })
       .then((res) => {
         if (res?.data) {
           let data = res?.data;
@@ -331,10 +338,12 @@ const ViewTicketClient = () => {
   }
 
   const getPriority = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Priority_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.Priority_Select, {})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Priority_Select, form, { headers })
         .then((res) => {
           const assigntos = res?.data.data.map((item) => {
             return { label: item?.NAME, value: item?.ID };
@@ -346,10 +355,14 @@ const ViewTicketClient = () => {
         });
   };
   const getAssignTo = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.AssignTo_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.AssignTo_Select, {
+  "ProjectID": 0
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.AssignTo_Select, form, { headers })
         .then((res) => {
           const assigntos = res?.data.data.map((item) => {
             return { name: item?.NAME, code: item?.ID };
@@ -361,15 +374,23 @@ const ViewTicketClient = () => {
         });
   };
   const getProject = () => {
-    const form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    form.append(
-      "LoginName",
-      useCryptoLocalStorage("user_Data", "get", "realname")
-    );
+    axiosInstances
+      .post(apiUrls.ProjectSelect, {
+  "ProjectID": 0,
+  "IsMaster": "0",
+  "VerticalID": 0,
+  "TeamID": 0,
+  "WingID": 0
+})
+    // const form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
+    // form.append(
+    //   "LoginName",
+    //   useCryptoLocalStorage("user_Data", "get", "realname")
+    // );
 
-    axios
-      .post(apiUrls?.ProjectSelect, form, { headers })
+    // axios
+    //   .post(apiUrls?.ProjectSelect, form, { headers })
       .then((res) => {
         const datas = res?.data?.data || [];
         const poc3s = datas.map((item) => ({
@@ -393,81 +414,109 @@ const ViewTicketClient = () => {
   };
 
   const handleViewSearch = (code, page) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "RoleID",
-        useCryptoLocalStorage("user_Data", "get", "RoleID")
-      ),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("PageSize", formData?.PageSize),
-      form.append("Ticket", formData?.Ticket ?? ""),
-      form.append("IsExcel", formData?.SearhType),
-      form.append("PriorityId", formData?.Priority),
-      form.append("ProjectID", formData?.ProjectID),
-      form.append("AssignToID", formData?.AssignedTo),
-      form.append("CategoryID", formData?.Category),
-      form.append("HideStatusId", formData?.HideStatus),
-      form.append("StatusId", formData?.Status),
-      form.append("SubmittedDateStatus", formData?.SubmitDate),
-      form.append(
-        "DateFromSubmitted",
-        formatDate(formData?.SubmitDateBefore)
-          ? formatDate(formData?.SubmitDateBefore)
-          : ""
-      );
-    form.append(
-      "DateToSubmitted",
-      formatDate(formData?.SubmitDateAfter)
-        ? formatDate(formData?.SubmitDateAfter)
-        : ""
-    ),
-      form.append("ClientDeliveryDateStatus", formData?.ClientDeliveryDate),
-      form.append(
-        "ClientDeliveryFromDate",
-        formatDate(formData?.ClientDeliveryDateBefore)
-      ),
-      form.append(
-        "ClientDeliverytodate",
-        formatDate(formData?.ClientDeliveryDateAfter)
-          ? formatDate(formData?.ClientDeliveryDateAfter)
-          : ""
-      ),
-      form.append("LastUpdateDateStatus", formData?.UpadteDate),
-      form.append(
-        "LastUpdatedFromDate",
-        formatDate(formData?.UpadteDateBefore)
-          ? formatDate(formData?.UpadteDateBefore)
-          : ""
-      ),
-      form.append("ClosedDateStatus", formData?.CloseDate),
-      form.append(
-        "ClosedFromDate",
-        formatDate(formData?.CloseDateBefore)
-          ? formatDate(formData?.CloseDateBefore)
-          : ""
-      ),
-      form.append(
-        "Closedtodate",
-        formatDate(formData?.CloseDateAfter)
-          ? formatDate(formData?.CloseDateAfter)
-          : ""
-      ),
-      form.append(
-        "LastUpdatedToDate",
-        formatDate(formData?.UpadteDateAfter)
-          ? formatDate(formData?.UpadteDateAfter)
-          : ""
-      ),
-      form.append("rowColor", code ? code : ""),
-      form.append("OnlyReOpen", formData?.OnlyReOpen),
-      form.append("PageNo", page ?? currentPage - 1);
-    setLoading(true);
-    axios
-      .post(apiUrls?.ViewIssueSearchClient, form, { headers })
+    axiosInstances
+      .post(apiUrls.ViewIssueSearchClient, {
+  RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")) || 0,
+  ProjectID: formData?.ProjectID ? String(formData?.ProjectID) : "",
+  AssignToID: formData?.AssignedTo ? String(formData?.AssignedTo) : "",
+  PriorityId: formData?.Priority ? String(formData?.Priority) : "",
+  CategoryID: formData?.Category ? String(formData?.Category) : "",
+  HideStatusId: formData?.HideStatus ? String(formData?.HideStatus) : "",
+  StatusId: formData?.Status ? String(formData?.Status) : "",
+  rowColor: code ? String(code) : "",
+  SubmittedDateStatus: formData?.SubmitDate ? String(formData?.SubmitDate) : "",
+  DateFromSubmitted: formatDate(formData?.SubmitDateBefore) || "",
+  DateToSubmitted: formatDate(formData?.SubmitDateAfter) || "",
+  DeliveryDateStatus: formData?.ClientDeliveryDate ? String(formData?.ClientDeliveryDate) : "",
+  DeliveryFromDate: formatDate(formData?.ClientDeliveryDateBefore) || "",
+  Deliverytodate: formatDate(formData?.ClientDeliveryDateAfter) || "",
+  LastUpdateDateStatus: formData?.UpadteDate ? String(formData?.UpadteDate) : "",
+  LastUpdatedFromDate: formatDate(formData?.UpadteDateBefore) || "",
+  LastUpdatedToDate: formatDate(formData?.UpadteDateAfter) || "",
+  ClosedDateStatus: formData?.CloseDate ? String(formData?.CloseDate) : "",
+  ClosedFromDate: formatDate(formData?.CloseDateBefore) || "",
+  Closedtodate: formatDate(formData?.CloseDateAfter) || "",
+  PageNo: Number(page ?? currentPage - 1) || 0,
+  PageSize: Number(formData?.PageSize) || 0,
+  IsExcel: Number(formData?.SearhType) || 0,
+  OnlyReOpen: Number(formData?.OnlyReOpen) || 0,
+  Ticket: formData?.Ticket ? String(formData?.Ticket) : "",
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "RoleID",
+    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+    //   ),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("PageSize", formData?.PageSize),
+    //   form.append("Ticket", formData?.Ticket ?? ""),
+    //   form.append("IsExcel", formData?.SearhType),
+    //   form.append("PriorityId", formData?.Priority),
+    //   form.append("ProjectID", formData?.ProjectID),
+    //   form.append("AssignToID", formData?.AssignedTo),
+    //   form.append("CategoryID", formData?.Category),
+    //   form.append("HideStatusId", formData?.HideStatus),
+    //   form.append("StatusId", formData?.Status),
+    //   form.append("SubmittedDateStatus", formData?.SubmitDate),
+    //   form.append(
+    //     "DateFromSubmitted",
+    //     formatDate(formData?.SubmitDateBefore)
+    //       ? formatDate(formData?.SubmitDateBefore)
+    //       : ""
+    //   );
+    // form.append(
+    //   "DateToSubmitted",
+    //   formatDate(formData?.SubmitDateAfter)
+    //     ? formatDate(formData?.SubmitDateAfter)
+    //     : ""
+    // ),
+    //   form.append("ClientDeliveryDateStatus", formData?.ClientDeliveryDate),
+    //   form.append(
+    //     "ClientDeliveryFromDate",
+    //     formatDate(formData?.ClientDeliveryDateBefore)
+    //   ),
+    //   form.append(
+    //     "ClientDeliverytodate",
+    //     formatDate(formData?.ClientDeliveryDateAfter)
+    //       ? formatDate(formData?.ClientDeliveryDateAfter)
+    //       : ""
+    //   ),
+    //   form.append("LastUpdateDateStatus", formData?.UpadteDate),
+    //   form.append(
+    //     "LastUpdatedFromDate",
+    //     formatDate(formData?.UpadteDateBefore)
+    //       ? formatDate(formData?.UpadteDateBefore)
+    //       : ""
+    //   ),
+    //   form.append("ClosedDateStatus", formData?.CloseDate),
+    //   form.append(
+    //     "ClosedFromDate",
+    //     formatDate(formData?.CloseDateBefore)
+    //       ? formatDate(formData?.CloseDateBefore)
+    //       : ""
+    //   ),
+    //   form.append(
+    //     "Closedtodate",
+    //     formatDate(formData?.CloseDateAfter)
+    //       ? formatDate(formData?.CloseDateAfter)
+    //       : ""
+    //   ),
+    //   form.append(
+    //     "LastUpdatedToDate",
+    //     formatDate(formData?.UpadteDateAfter)
+    //       ? formatDate(formData?.UpadteDateAfter)
+    //       : ""
+    //   ),
+    //   form.append("rowColor", code ? code : ""),
+    //   form.append("OnlyReOpen", formData?.OnlyReOpen),
+    //   form.append("PageNo", page ?? currentPage - 1);
+    // setLoading(true);
+    // axios
+    //   .post(apiUrls?.ViewIssueSearchClient, form, { headers })
       .then((res) => {
         const data = res?.data?.data;
 
@@ -671,14 +720,19 @@ const ViewTicketClient = () => {
   };
 
   const getCategory = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "RoleID",
-        useCryptoLocalStorage("user_Data", "get", "RoleID")
-      ),
-      axios
-        .post(apiUrls?.Category_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.Category_Select, {
+  "RoleID":  Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
+  "ProjectID": 0
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "RoleID",
+    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+    //   ),
+    //   axios
+    //     .post(apiUrls?.Category_Select, form, { headers })
         .then((res) => {
           const poc3s = res?.data.data.map((item) => {
             return { name: item?.NAME, code: item?.NAME };
@@ -690,10 +744,12 @@ const ViewTicketClient = () => {
         });
   };
   const getStatus = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Status_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.Status_Select, {})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Status_Select, form, { headers })
         .then((res) => {
           const poc3s = res?.data.data.map((item) => {
             return {
@@ -733,11 +789,15 @@ const ViewTicketClient = () => {
   };
 
   const getReopen = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("Title", "ReOpenReason"),
-      axios
-        .post(apiUrls?.Reason_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.Reason_Select, {
+  "Title": "ReOpenReason"
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("Title", "ReOpenReason"),
+    //   axios
+    //     .post(apiUrls?.Reason_Select, form, { headers })
         .then((res) => {
           const poc3s = res?.data.data.map((item) => {
             return { label: item?.NAME, value: item?.ID };
@@ -770,16 +830,21 @@ const ViewTicketClient = () => {
   }, [location.state?.data]);
 
   const handleResolveElementClose = (item) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("TicketIDs", item?.TicketID),
-      form.append("ActionText", "Close");
-    axios
-      .post(apiUrls?.ApplyActionClient, form, { headers })
+    axiosInstances
+      .post(apiUrls.ApplyActionClient, {
+  "TicketIDs": String(item?.TicketID),
+  "ActionText": "Close"
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("TicketIDs", item?.TicketID),
+    //   form.append("ActionText", "Close");
+    // axios
+    //   .post(apiUrls?.ApplyActionClient, form, { headers })
       .then((res) => {
         if (res?.data?.status === true) {
           toast.success(res?.data?.message);
@@ -876,6 +941,10 @@ const ViewTicketClient = () => {
   const handleDelete = () => {
     const filterdata = tableData?.filter((item) => item?.IsActive == true);
     const ticketIDs = filterdata?.map((item) => item?.TicketID).join(",");
+    axiosInstances
+      .post(apiUrls.DeleteTicket, {
+  "TicketIDs": Number(ticketIDs)
+})
     let form = new FormData();
     form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
       form.append(

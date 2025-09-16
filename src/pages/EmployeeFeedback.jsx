@@ -140,24 +140,24 @@ const EmployeeFeedback = ({ data }) => {
   "RoleID": Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
   "RowColor": code ? Number(code) :0
 })
-    const form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID")),
-      form.append(
-        "CrmEmployeeID",
-        useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      ),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append(
-        "EmployeeID",
-        useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      );
-    form.append("RowColor", code ? code : "0"),
-      axios
-        .post(apiUrls?.EmployeeFeedbackSearch, form, { headers })
+    // const form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID")),
+    //   form.append(
+    //     "CrmEmployeeID",
+    //     useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+    //   ),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append(
+    //     "EmployeeID",
+    //     useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+    //   );
+    // form.append("RowColor", code ? code : "0"),
+    //   axios
+    //     .post(apiUrls?.EmployeeFeedbackSearch, form, { headers })
         .then((res) => {
           if (res?.data?.status === true) {
             setTableData(res?.data?.data);
