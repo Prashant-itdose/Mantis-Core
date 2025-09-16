@@ -45,15 +45,22 @@ const ConnectorSettlementModal = (visible) => {
 
   const handleSave = () => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-      form.append("IssueNo", visible?.visible?.connectdata?.IssueNo),
-      form.append("ReceivedDate", formatDate(formData?.ReceivedDate)),
-      form.append("Amount", formData?.Amount),
-      form.append("PaymentMode", formData?.PaymentMode),
-      axios
-        .post(apiUrls?.Connector_Settlement_Insert, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
+    //   form.append("IssueNo", visible?.visible?.connectdata?.IssueNo),
+    //   form.append("ReceivedDate", formatDate(formData?.ReceivedDate)),
+    //   form.append("Amount", formData?.Amount),
+    //   form.append("PaymentMode", formData?.PaymentMode),
+    //   axios
+    //     .post(apiUrls?.Connector_Settlement_Insert, form, { headers })
+                   axiosInstances
+      .post(apiUrls.Connector_Settlement_Insert,{
+           IssueNo: String(visible?.visible?.connectdata?.IssueNo || ""),
+      ReceivedDate: String(formData?.ReceivedDate ? formatDate(formData?.ReceivedDate) : ""),
+      Amount: Number(formData?.Amount) || 0,  // keep number
+      PaymentMode: String(formData?.PaymentMode || "")
+      })
         .then((res) => {
           toast.success(res?.data?.message);
           // setTableData([...tableData, formData]);
@@ -65,14 +72,21 @@ const ConnectorSettlementModal = (visible) => {
         });
   };
   const getSettlementDetails = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-      form.append("SearchType", "SettlementDetail"),
-      form.append("ProjectID", visible?.visible?.connectdata?.ProjectID),
-      form.append("IssueNo", visible?.data?.IssueNo),
-      axios
-        .post(apiUrls?.Connector_Select, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
+    //   form.append("SearchType", "SettlementDetail"),
+    //   form.append("ProjectID", visible?.visible?.connectdata?.ProjectID),
+    //   form.append("IssueNo", visible?.data?.IssueNo),
+    //   axios
+    //     .post(apiUrls?.Connector_Select, form, { headers })
+                   axiosInstances
+      .post(apiUrls.Connector_Select,{
+           ProjectID: Number(visible?.visible?.connectdata?.ProjectID) || 0,
+      SearchType: String("SettlementDetail"), 
+      IssueNo: String(visible?.data?.IssueNo || "")
+       
+     })
         .then((res) => {
           setTableData(res?.data?.data);
         })
