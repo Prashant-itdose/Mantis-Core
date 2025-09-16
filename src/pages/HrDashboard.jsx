@@ -120,30 +120,6 @@ const HrDashboard = () => {
       .catch(console.error);
   };
 
-  //   const handleBreakDetail = (details) => {
-  //     let form = new FormData();
-  //     form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-  //       form.append(
-  //         "LoginName",
-  //         useCryptoLocalStorage("user_Data", "get", "realname")
-  //       ),
-  //       form.append(
-  //         "CrmEmpID",
-  //         useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-  //       ),
-  //       form.append("Type", "1"),
-  //       form.append("Month", details ? details?.month : currentMonth),
-  //       form.append("Year", details ? details?.year : currentYear),
-  //       form.append("Week", formData?.WeekDays),
-  //       axios
-  //         .post(apiUrls?.WeaklyMonthlyBreakCount, form, { headers })
-  //         .then((res) => {
-  //           setTableData(res?.data?.data);
-  //         })
-  //         .catch((err) => {
-  //           console.log(err);
-  //         });
-  //   };
 
   const handleHourDetail = ({ month, year, week }) => {
     const form = new FormData();

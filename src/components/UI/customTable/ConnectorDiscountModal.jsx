@@ -40,16 +40,24 @@ const ConnectorDiscountModal = (visible) => {
 
   const handleSave = () => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-      form.append("IssueNo", visible?.visible?.connectdata?.IssueNo),
-      form.append("ReceivedDate", formData?.ReceivedDate.toLocaleDateString()),
-      form.append("DiscountAmount", formData?.DiscountAmount),
-      form.append("DiscountReason", formData?.DiscountReason),
-      form.append("PaymentMode", formData?.PaymentMode),
-      axios
-        .post(apiUrls?.Connector_Discount_Insert, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
+    //   form.append("IssueNo", visible?.visible?.connectdata?.IssueNo),
+    //   form.append("ReceivedDate", formData?.ReceivedDate.toLocaleDateString()),
+    //   form.append("DiscountAmount", formData?.DiscountAmount),
+    //   form.append("DiscountReason", formData?.DiscountReason),
+    //   form.append("PaymentMode", formData?.PaymentMode),
+    //   axios
+    //     .post(apiUrls?.Connector_Discount_Insert, form, { headers })
+                 axiosInstances
+      .post(apiUrls.Connector_Discount_Insert,{
+          IssueNo: formData?.IssueNo || "",
+    DiscountAmount: formData?.DiscountAmount || 0,
+    DiscountReason: formData?.DiscountReason || ""
+
+
+       })
         .then((res) => {
           toast.success(res?.data?.message);
           setTableData([...tableData, formData]);

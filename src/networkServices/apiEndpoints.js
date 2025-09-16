@@ -121,13 +121,13 @@ export const apiUrls = {
   //Connector Request Api's
   Connector_Search: "/CRMCOREAPI/API/AccountsConnector/ConnectorSearch",
   Connector_Settlement_Insert:
-    "/CRMCOREAPI/API/AccountsConnector/Connector_Settlement_Insert",
+    "/CRMCOREAPI/api/AccountsConnector/ConnectorSettlementInsert",
   Connector_Discount_Insert:
-    "/CRMCOREAPI/API/AccountsConnector/Connector_Discount_Insert",
-  Connector_Select: "/CRMCOREAPI/API/AccountsConnector/ConnectorSelect",
+    "/CRMCOREAPI/api/AccountsConnector/ConnectorDiscountInsert",
+  Connector_Select: "/CRMCOREAPI/api/AccountsConnector/ConnectorSelect",
   Connector_Insert: "/CRMCOREAPI/API/AccountsConnector/ConnectorInsert",
   Connector_Status_Update:
-    "/CRMCOREAPI/API/AccountsConnector/Connector_Status_Update",
+    "/CRMCOREAPI/api/AccountsConnector/ConnectorStatusUpdate",
   Connector_Update: "/CRMCOREAPI/API/AccountsConnector/Connector_Update",
 
   GetImplementaiondropdown:

@@ -769,29 +769,30 @@ const SearchProjectMaster = () => {
     // );
     // axios
     //   .post(apiUrls?.ViewProject, form, { headers })
+    const payload = {
+      RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")) || 0,
+      ProjectID: Number(formData?.ProjectID) || 0,
+      ProjectName: String(formData?.ProjectName || ""),
+      VerticalID: Number(formData?.VerticalID) || 0,
+      TeamID: Number(formData?.TeamID) || 0,
+      WingID: Number(formData?.WingID) || 0,
+      POC1: Number(formData?.POC1) || 0,
+      POC2: Number(formData?.POC2) || 0,
+      POC3: Number(formData?.POC3) || 0,
+      CategoryID: String(formData?.CategoryID || ""),
+      DateType: String(formData?.DateType || ""),
+      FromDate: moment(formData?.FromDate).isValid()
+        ? moment(formData?.FromDate).format("YYYY-MM-DD")
+        : "",
+      ToDate: moment(formData?.ToDate).isValid()
+        ? moment(formData?.ToDate).format("YYYY-MM-DD")
+        : "",
+      Status: String(getlabel(formData?.ProjectStatus, projectStatus) || ""),
+      IsExcel: Number(formData?.IsExcel) || 0,
+    };
+
     axiosInstances
-      .post(apiUrls?.ViewProject, {
-        RoleID:
-          String(useCryptoLocalStorage("user_Data", "get", "RoleID")) || "0",
-        ProjectID: String(formData?.ProjectID) || "0",
-        ProjectName: formData?.ProjectName || "",
-        VerticalID: String(formData?.VerticalID) || "0",
-        TeamID: String(formData?.TeamID) || "0",
-        WingID: String(formData?.WingID) || "0",
-        POC1: String(formData?.POC1) || "0",
-        POC2: String(formData?.POC2) || "0",
-        POC3: String(formData?.POC3) || "0",
-        CategoryID: formData?.CategoryID || "",
-        DateType: formData?.DateType || "",
-        FromDate: moment(formData?.FromDate).isValid()
-          ? moment(formData?.FromDate).format("YYYY-MM-DD")
-          : "",
-        ToDate: moment(formData?.ToDate).isValid()
-          ? moment(formData?.ToDate).format("YYYY-MM-DD")
-          : "",
-        Status: getlabel(formData?.ProjectStatus, projectStatus) || "",
-        IsExcel: Number(formData?.IsExcel) || "0",
-      })
+      .post(apiUrls?.ViewProject, payload)
       .then((res) => {
         setCentretabledata(res?.data?.data);
         if (res?.data?.success === true) {
@@ -853,7 +854,7 @@ const SearchProjectMaster = () => {
               EditValue: "",
             };
           });
-   
+
           setTableData(updatedData);
           setFilteredData(updatedData);
           setLoading(false);
@@ -1441,8 +1442,7 @@ const SearchProjectMaster = () => {
     },
   ];
 
-
-  console.log("currentData",currentData)
+  console.log("currentData", currentData);
   return (
     <>
       <Modal

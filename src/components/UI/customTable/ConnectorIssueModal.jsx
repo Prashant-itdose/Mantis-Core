@@ -13,13 +13,21 @@ const ConnectorIssueModal = (visible) => {
     IssueReason: "",
   });
   const handleSave = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-      form.append("ConnectorID", visible?.visible?.connectdata?.ID),
-      form.append("Status", "Issue"),
-      axios
-        .post(apiUrls?.Connector_Status_Update, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
+    //   form.append("ConnectorID", visible?.visible?.connectdata?.ID),
+    //   form.append("Status", "Issue"),
+    //   axios
+    //     .post(apiUrls?.Connector_Status_Update, form, { headers })
+                axiosInstances
+      .post(apiUrls.Connector_Status_Update,{
+        ConnectorID: visible?.visible?.connectdata?.ID || 0,
+      Status: "Approve" 
+
+      
+
+       })
         .then((res) => {
           toast.success(res?.data?.message);
         })
