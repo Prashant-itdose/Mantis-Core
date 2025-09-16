@@ -49,7 +49,7 @@ export const apiUrls = {
   ViewDesignation: "/CRMCOREAPI/api/Designation/ViewDesignation",
   Accesslevel: "/CRMCOREAPI/API/EmployeeMaster/Accesslevel",
   SearchEmployee_Name: "/CRMCOREAPI/api/EmployeeMaster/SearchEmployee_Name",
-  CreateDesignation: "/CRMCOREAPI/API/DesignationMaster/CreateDesignation",
+  CreateDesignation: "/CRMCOREAPI/API/Designation/CreateDesignation",
   UpdateDesignation: "/CRMCOREAPI/api/Designation/UpdateDesignation",
 
   //EmployeeChangePassword Page Api's
@@ -451,7 +451,7 @@ export const apiUrls = {
     "/CRMCOREAPI/API/CRMAttendance/WeaklyMonthlyBreakHours",
   EmployeeFeedbackDashboard:
     "/CRMCOREAPI/API/Attendence/EmployeeFeedbackDashboard",
-  ClientFeedbackDashboard: "/CRMCOREAPI/API/Attendence/ClientFeedbackDashboard",
+  ClientFeedbackDashboard: "/CRMCOREAPI/API/CRMAttendance/ClientFeedbackDashboard",
   EmailerSearch: "/CRMCOREAPI/API/Email/EmailerSearch",
   RepushMail: "/CRMCOREAPI/API/Email/RepushMail",
   GetFlagProject: "/CRMCOREAPI/API/ProjectMasterUpdate/GetFlagProject",
