@@ -213,7 +213,7 @@ export const apiUrls = {
   Payment_Installment_Search:
     "/CRMCOREAPI/API/AccountsPaymentInstallment/Payment_Installment_Search",
   BulkNewTicket: "/CRMCOREAPI/API/BugReport/BulkNewTicket",
-  Settlement_Select: "/CRMCOREAPI/API/Accounts/Settlement_Select",
+  Settlement_Select: "/CRMCOREAPI/API/Accounts/SettlementSelect",
   UpdateProfile: "/CRMCOREAPI/API/EmployeeMaster/UpdateProfile",
   // ForgetPassword_ValdiateEmailMobile:'/CRMCOREAPI/API/EmployeeMaster/ForgetPassword_ValdiateEmailMobile',
   ForgetPassword_ValdiateEmailMobile:
@@ -305,7 +305,7 @@ export const apiUrls = {
   SalesBooking_GenerateTax:
     "/CRMCOREAPI/API/AccountsPaymentInstallment/SalesBooking_GenerateTax",
   TaxInvoice_Search: "/CRMCOREAPI/API/AccountsTaxInvoice/TaxInvoiceSearch",
-  TaxInvoice_Upload: "/CRMCOREAPI/API/AccountsTaxInvoice/TaxInvoice_Upload",
+  TaxInvoice_Upload: "/CRMCOREAPI/API/AccountsTaxInvoice/TaxInvoiceUpload",
   DevDashboard_Welcome_PriorityID:
     "/CRMCOREAPI/API/MantisSummary/DevDashboardWelcomePriority",
   DevDashboard_Welcome_Category:

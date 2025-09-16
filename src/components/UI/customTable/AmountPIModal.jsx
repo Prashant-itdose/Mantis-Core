@@ -5,6 +5,7 @@ import axios from "axios";
 import { apiUrls } from "../../../networkServices/apiEndpoints";
 import { headers } from "../../../utils/apitools";
 import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../../../networkServices/axiosInstance";
 
 const AmountPIModal = (visible) => {
   const [formData, setFormData] = useState({
@@ -15,26 +16,35 @@ const AmountPIModal = (visible) => {
     FileExtension: "",
   });
   const handleUploadDocs = () => {
-    if(formData?.TaxInvoiceNo ==""){
-      toast.error("Please Enter Tax Invoice No.")
-    }else{
+    if (formData?.TaxInvoiceNo == "") {
+      toast.error("Please Enter Tax Invoice No.");
+    } else {
       let form = new FormData();
-      form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-        form.append("TaxInvoiceID", visible ?.visible?.showData?.EncryptID),
-        form.append("TaxInvoiceNo", visible ?.visible?.showData?.TaxInvoiceNo),
-        form.append("Document_Base64", formData?.Document_Base64),
-        form.append("Document_FormatType", formData?.FileExtension),
-        axios
-          .post(apiUrls?.TaxInvoice_Upload, form, { headers })
-          .then((res) => {
-           toast.success(res?.data?.message)
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
+      //   form.append("TaxInvoiceID", visible ?.visible?.showData?.EncryptID),
+      //   form.append("TaxInvoiceNo", visible ?.visible?.showData?.TaxInvoiceNo),
+      //   form.append("Document_Base64", formData?.Document_Base64),
+      //   form.append("Document_FormatType", formData?.FileExtension),
+      // axios
+      //   .post(apiUrls?.TaxInvoice_Upload, form, { headers })
+
+      const payload = {
+        TaxInvoiceID: String(visible?.visible?.showData?.EncryptID || ""),
+        TaxInvoiceNo: String(visible?.visible?.showData?.TaxInvoiceNo || ""),
+        Document_Base64: String(formData?.Document_Base64 || ""),
+        Document_FormatType: String(formData?.FileExtension || ""),
+      };
+
+      axiosInstances
+        .post(apiUrls?.TaxInvoice_Upload, payload)
+        .then((res) => {
+          toast.success(res?.data?.message);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-   
   };
   const searchHandleChange = (e, index) => {
     const { name, value } = e.target;
@@ -62,7 +72,9 @@ const AmountPIModal = (visible) => {
   return (
     <>
       <div className="card p-2">
-        <span style={{ fontWeight: "bold" }}>Project Name:- {visible ?.visible?.showData?.ProjectName}</span>
+        <span style={{ fontWeight: "bold" }}>
+          Project Name:- {visible?.visible?.showData?.ProjectName}
+        </span>
       </div>
       <div className="card">
         <div className="row m-2">
@@ -86,7 +98,12 @@ const AmountPIModal = (visible) => {
             onChange={handleFileChange}
           />
 
-          <button className="btn btn-sm btn-primary ml-5" onClick={handleUploadDocs}>Save</button>
+          <button
+            className="btn btn-sm btn-primary ml-5"
+            onClick={handleUploadDocs}
+          >
+            Save
+          </button>
         </div>
       </div>
     </>
