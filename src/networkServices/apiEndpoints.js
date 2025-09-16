@@ -9,7 +9,7 @@ export const apiUrls = {
 
   //MyView Page Api's
   AutobackupSearch: "/CRMCOREAPI/API/Autobackup/AutobackupSearch",
-  AssingedToMe: "/CRMCOREAPI/API/MyView/AssingedToMe",
+  AssingedToMe: "/CRMCOREAPI/API/MyView/AssignedToMe",
   UnAssigned: "/CRMCOREAPI/API/MyView/UnAssigned",
   ReportedbyMe: "/CRMCOREAPI/API/MyView/ReportedbyMe",
 
@@ -43,12 +43,13 @@ export const apiUrls = {
   AutobackupLog: "/CRMCOREAPI/API/Autobackup/AutobackupLog",
 
   //Employee Master Page Api's   && SearchEmployeeMaster
-  SearchEmployee_EmployeeID: "/CRMCOREAPI/API/EmployeeMaster/SearchEmployee_EmployeeID",
+  SearchEmployee_EmployeeID:
+    "/CRMCOREAPI/API/EmployeeMaster/SearchEmployee_EmployeeID",
   CreateEmployee: "/CRMCOREAPI/API/EmployeeMaster/CreateEmployee",
   UpdateEmployee: "/CRMCOREAPI/API/EmployeeMaster/UpdateEmployee",
-  ViewDesignation: "/CRMCOREAPI/API/DesignationMaster/ViewDesignation",
+  ViewDesignation: "/CRMCOREAPI/api/Designation/ViewDesignation",
   Accesslevel: "/CRMCOREAPI/API/EmployeeMaster/Accesslevel",
-  SearchEmployee_Name: "/CRMCOREAPI/API/EmployeeMaster/SearchEmployee_Name",
+  SearchEmployee_Name: "/CRMCOREAPI/api/EmployeeMaster/SearchEmployee_Name",
   CreateDesignation: "/CRMCOREAPI/API/DesignationMaster/CreateDesignation",
   UpdateDesignation: "/CRMCOREAPI/API/DesignationMaster/UpdateDesignation",
 
@@ -91,7 +92,7 @@ export const apiUrls = {
   UserVsProject_Select: "/CRMCOREAPI/API/EmployeeMaster/UserVsProject_Select",
   UserVsProjectMapping: "/CRMCOREAPI/API/EmployeeMaster/UserVsProjectMapping",
   Remove_UserVsProjectMapping:
-    "/CRMCOREAPI/API/EmployeeMaster/Remove_UserVsProjectMapping",
+    "/CRMCOREAPI/API/EmployeeMaster/UserVsProjectRemove",
   SelectProjectOrdering: "/CRMCOREAPI/API/ProjectMaster/SelectProjectOrdering",
   UpdateProjectOrdering: "/CRMCOREAPI/API/ProjectMaster/UpdateProjectOrdering",
 
@@ -230,12 +231,12 @@ export const apiUrls = {
     "/CRMCOREAPI/API/Accounts/LedgerStatus_LockUnLock_Log",
   Settlement: "/CRMCOREAPI/API/Accounts/Settlement",
   Settlement_IsCancel: "/CRMCOREAPI/API/Accounts/Settlement_IsCancel",
-  CreateEmployee_Short: "/CRMCOREAPI/API/EmployeeMaster/CreateEmployee_Short",
-  UserVsVertical_Select: "/CRMCOREAPI/API/EmployeeMaster/UserVsVertical_Select",
+  CreateEmployee_Short: "/CRMCOREAPI/api/EmployeeMaster/CreateEmployee_Short",
+  UserVsVertical_Select: "/CRMCOREAPI/API/EmployeeMaster/UserVsVerticalSelect",
   UserVsVerticalMapping: "/CRMCOREAPI/API/EmployeeMaster/UserVsVerticalMapping",
-  UserVsTeam_Select: "/CRMCOREAPI/API/EmployeeMaster/UserVsTeam_Select",
+  UserVsTeam_Select: "/CRMCOREAPI/API/EmployeeMaster/UserVsTeamSelect",
   UserVsTeamMapping: "/CRMCOREAPI/API/EmployeeMaster/UserVsTeamMapping",
-  UserVsWing_Select: "/CRMCOREAPI/API/EmployeeMaster/UserVsWing_Select",
+  UserVsWing_Select: "/CRMCOREAPI/API/EmployeeMaster/UserVsWingSelect",
   UserVsWingMapping: "/CRMCOREAPI/API/EmployeeMaster/UserVsWingMapping",
   UpdateThemeColor: "/CRMCOREAPI/API/EmployeeMaster/UpdateThemeColor",
   GetUserName: "/CRMCOREAPI/API/ProjectMaster/GetUserName",
@@ -283,7 +284,7 @@ export const apiUrls = {
   Circular_UserList: "/CRMCOREAPI/API/Circular/Circular_UserList",
   Circular_Search: "/CRMCOREAPI/API/Circular/Circular_Search",
   SaveCircular: "/CRMCOREAPI/API/Circular/SaveCircular",
-  Circular_Read: "/CRMCOREAPI/API/Circular/Circular_Read",
+  Circular_Read: "/CRMCOREAPI/API/Circular/CircularRead",
   PaymentTerms_Select: "/CRMCOREAPI/API/MasterBind/PaymentTerms_Select",
   SalesBooking_Load_SalesID:
     "/CRMCOREAPI/API/AccountsPaymentInstallment/SalesBooking_Load_SalesID",
@@ -331,7 +332,7 @@ export const apiUrls = {
   Step_Remark_Select: "/CRMCOREAPI/API/ImplementationSteps/Step_Remark_Select",
   ApproveClick: "/CRMCOREAPI/API/ImplementationSteps/ApproveClick",
   Birthday_Anniversary_Interface_Search:
-    "/api/CRMAttendance/BirthdayAnniversarySearch",
+    "/CRMCOREAPI/API/CRMAttendance/BirthdayAnniversarySearch",
   ViewDocument: "/CRMCOREAPI/API/ManageDocument/UploadDocument",
   ViewAttachment: "/CRMCOREAPI/API/ViewIssue/ViewAttachment",
   InsertAttachment: "/CRMCOREAPI/API/BugReport/InsertAttachment",
@@ -339,15 +340,15 @@ export const apiUrls = {
   ViewIssueSearchClient: "/CRMCOREAPI/API/ViewIssue/ViewIssueSearchClient",
   ApplyActionClient: "/CRMCOREAPI/API/ViewIssue/ApplyActionClient",
   InsertNoteLog: "/CRMCOREAPI/API/BugReport/InsertNoteLog",
-  UpdateEmployee_Short: "/CRMCOREAPI/API/EmployeeMaster/UpdateEmployee_Short",
+  UpdateEmployee_Short: "/CRMCOREAPI/api/EmployeeMaster/UpdateEmployee_Short",
   CoorDashboard_Received_Recovery:
-    "/CRMCOREAPI/API/CoordinatorDashboard/CoorDashboard_Received_Recovery",
+    "/CRMCOREAPI/API/CoordinatorDashboard/CoorDashboardReceivedRecovery",
   CoorDashboard_NewSales:
-    "/CRMCOREAPI/API/CoordinatorDashboard/CoorDashboard_NewSales",
+    "/CRMCOREAPI/API/CoordinatorDashboard/CoorDashboardNewSales",
   CoorDashboard_Open_Dead_Sales:
-    "/CRMCOREAPI/API/CoordinatorDashboard/CoorDashboard_Open_Dead_Sales",
+    "/CRMCOREAPI/API/CoordinatorDashboard/CoorDashboardOpenDeadSales",
   CoorDashboard_Ageing_Sheet_Pending_Recovery:
-    "/CRMCOREAPI/API/CoordinatorDashboard/CoorDashboard_Ageing_Sheet_Pending_Recovery",
+    "/CRMCOREAPI/API/CoordinatorDashboard/CoorDashboardAgeingSheetPendingRecovery",
   CentreRemoveProject:
     "/CRMCOREAPI/API/ProjectMasterUpdate/CentreRemoveProject",
   BulkNoteInsert: "/CRMCOREAPI/API/BugReport/BulkNoteInsert",
@@ -359,7 +360,7 @@ export const apiUrls = {
   AMC_Payment_Installment_Insert:
     "/CRMCOREAPI/API/AccountsPaymentInstallment/AMC_Payment_Installment_Insert",
   CoorDashboard_Paid_Request_Status:
-    "/CRMCOREAPI/API/CoordinatorDashboard/CoorDashboard_Paid_Request_Status",
+    "/CRMCOREAPI/API/CoordinatorDashboard/CoorDashboardPaidRequestStatus",
   CoorDashboard_Developer_Availability:
     "/CRMCOREAPI/API/CoordinatorDashboard/CoorDashboard_Developer_Availability",
   CoorDashboard_Ticket_Close_Assign:
@@ -398,7 +399,7 @@ export const apiUrls = {
   ClientFeedbackSearch: "/CRMCOREAPI/API/Feedback/ClientFeedbackSearch",
   ClientFeedbackTransaction:
     "/CRMCOREAPI/API/Feedback/ClientFeedbackTransaction",
-  ProjectVsAMCMapping:
+  ProjectVsAMCMapping: 
     "/CRMCOREAPI/API/ProjectMasterUpdate/ProjectVsAMCMapping",
   ManagerDashboard_Recovery_Quarter:
     "/CRMCOREAPI/API/ManagerDashboard/ManagerDashboard_Recovery_Quarter",
@@ -407,7 +408,7 @@ export const apiUrls = {
   ManagerDashboard_Total_Pending:
     "/CRMCOREAPI/API/ManagerDashboard/ManagerDashboard_Total_Pending",
   CoorDashboard_Total_Pending:
-    "/CRMCOREAPI/API/CoordinatorDashboard/CoorDashboard_Total_Pending",
+    "/CRMCOREAPI/API/CoordinatorDashboard/CoorDashboardTotalDonePending",
   CreateSalesLead: "/CRMCOREAPI/API/SalesLead/CreateSalesLead",
   DeadSalesLead: "/CRMCOREAPI/API/SalesLead/DeadSalesLead",
   ConvertedSalesLead: "/CRMCOREAPI/API/SalesLead/ConvertedSalesLead",
@@ -464,11 +465,11 @@ export const apiUrls = {
   RemoveEmployeeImages: "/CRMCOREAPI/API/EmployeeMaster/RemoveEmployeeImages",
   SearchEmployeeImages: "/CRMCOREAPI/API/EmployeeMaster/SearchEmployeeImages",
   ForceFullyShortBreakAttendanceSave:
-    "/CRMCOREAPI/api/CRMAttendance/ForceFullyShortBreakAttendanceSave",
+    "/CRMCOREAPI/API/CRMAttendance/ForceFullyShortBreakAttendanceSave",
   ForceFullyShortBreakAttendanceSearch:
-    "/CRMCOREAPI/api/CRMAttendance/ForceFullyShortBreakAttendanceSearch",
+    "/CRMCOREAPI/API/CRMAttendance/ForceFullyShortBreakAttendanceSearch",
   Old_Mantis_Sub_Team_Select:
-    "/CRMCOREAPI/api/MasterBind/Old_Mantis_Sub_Team_Select",
+    "/CRMCOREAPI/API/MasterBind/Old_Mantis_Sub_Team_Select",
   Old_Mantis_Team_Select: "/CRMCOREAPI/API/MasterBind/Old_Mantis_Team_Select",
   Attendence_Report: "/CRMCOREAPI/API/CRMAttendence/Attendence_Report",
   MonthWiseAttendanceReoprt:

@@ -110,16 +110,17 @@ const ManagerDashboard = () => {
   // console.log("birtdatyfadaadaddaad", birthDayData);
   const handleHeightOfBirthDaycardApi = () => {
     axiosInstances
-         .post(apiUrls.Birthday_Anniversary_Interface_Search, {
-           searchType: String("Search"),
-         })
-        .then((res) => {
-          setBirthDayData(res?.data?.dt);
-          setAnniverssary(res?.data?.dtAnniversary);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      .post(apiUrls.Birthday_Anniversary_Interface_Search, {
+        searchType: String("Search"),
+      })
+      .then((res) => {
+        setBirthDayData(res?.data?.data);
+        // setBirthDayData(res?.data?.dt);
+        setAnniverssary(res?.data?.dtAnniversary);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleFirstDashboardCount = () => {
@@ -176,18 +177,24 @@ const ManagerDashboard = () => {
       });
   };
 
-  const handleNews = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("IsFlash", "0"),
-      axios
-        .post(apiUrls?.Circular_News, form, { headers })
-        .then((res) => {
-          setNewsList(res?.data?.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+ const handleNews = () => {
+    axiosInstances
+      .post(apiUrls.Circular_News, {
+        // IsFlash: String("0"),
+        RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
+      })
+      .then((res) => {
+        const data = res?.data?.data;
+        setNewsList(res?.data?.data);
+        if (data.some((item) => item.IsView === 0)) {
+          setVisible(true); // Modal khol do
+        } else {
+          setVisible(false); // Modal band rakho
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleNewsModal = (item) => {

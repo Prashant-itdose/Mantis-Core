@@ -43,8 +43,8 @@ const PerformanceChart = () => {
       //   headers,
       // });
       const response = await axiosInstances.post(apiUrls.DevDashboard_Summary, {
-        title: String("MonthlyDeveloperPerformance"),
-        developerID: String(memberID || "0"),
+        Title: String("MonthlyDeveloperPerformance"),
+        DeveloperID: String(memberID || "0"),
       });
       const rawData = response?.data?.dtOverAllMonthlyPerformance || [];
       // Filter out null values and sort months correctly

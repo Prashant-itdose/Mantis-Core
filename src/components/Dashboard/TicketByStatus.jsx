@@ -38,7 +38,7 @@ const TicketByStatus = () => {
     //     .post(apiUrls?.DevDashboard_Welcome_PriorityID, form, { headers })
     axiosInstances
       .post(apiUrls.DevDashboard_Welcome_PriorityID, {
-        developerID: String(memberID || "0"),
+        DeveloperID: String(memberID || "0"),
       })
       .then((res) => {
         setCountData(res?.data?.dtPriority);
