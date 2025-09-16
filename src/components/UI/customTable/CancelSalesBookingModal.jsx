@@ -37,17 +37,26 @@ const CancelSalesBookingModal = ({ visible, setVisible, handleSearch }) => {
     if (formData?.CancelReason == "") {
       toast.error("Please Select CancelReason.");
     } else {
-      let form = new FormData();
-      form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-        form.append("SalesID", visible?.showData?.EncryptID),
-        form.append("CancelReason", getlabel(formData?.CancelReason, reason)),
-        form.append("CancelReasonID", formData?.CancelReason),
-        form.append("OtherCancelReason", formData?.OtherReason),
-        axios
-          .post(apiUrls?.SalesBooking_IsCancel, form, {
-            headers,
-          })
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
+      //   form.append("SalesID", visible?.showData?.EncryptID),
+      //   form.append("CancelReason", getlabel(formData?.CancelReason, reason)),
+      //   form.append("CancelReasonID", formData?.CancelReason),
+      //   form.append("OtherCancelReason", formData?.OtherReason),
+      //   axios
+      //     .post(apiUrls?.SalesBooking_IsCancel, form, {
+      //       headers,
+      //     })
+      axiosInstances
+      .post(apiUrls.SalesBooking_IsCancel, {
+        ID: useCryptoLocalStorage("user_Data", "get", "ID"),
+        LoginName: useCryptoLocalStorage("user_Data", "get", "realname"),
+        SalesID: visible?.showData?.EncryptID,  
+        CancelReason: getlabel(formData?.CancelReason, reason),
+        CancelReasonID: formData?.CancelReason,
+        OtherCancelReason: formData?.OtherReason,
+      })
           .then((res) => {
             if (res?.data?.status === true) {
               toast.success(res?.data?.message);

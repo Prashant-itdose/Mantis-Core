@@ -21,18 +21,18 @@ export const apiUrls = {
   POC_1_Select: "/CRMCOREAPI/API/MasterBind/POC_1_Select",
   POC_2_Select: "/CRMCOREAPI/API/MasterBind/POC_2_Select",
   POC_3_Select: "/CRMCOREAPI/API/MasterBind/POC_3_Select",
-  Category_Select: "/CRMCOREAPI/API/MasterBind/Category_Select",
-  Status_Select: "/CRMCOREAPI/API/MasterBind/StatusSelect",
+  Category_Select: "/CRMCOREAPI/api/MasterBind/Category_Select",
+  Status_Select: "/CRMCOREAPI/api/MasterBind/StatusSelect",
   Reporter_Select: "/CRMCOREAPI/API/MasterBind/Reporter_Select",
-  AssignTo_Select: "/CRMCOREAPI/API/MasterBind/AssignToSelect",
-  Priority_Select: "/CRMCOREAPI/API/MasterBind/Priority_Select",
+  AssignTo_Select: "/CRMCOREAPI/api/MasterBind/AssignToSelect",
+  Priority_Select: "/CRMCOREAPI/api/MasterBind/Priority_Select",
   DeleteTicket: "/CRMCOREAPI/API/ViewIssue/DeleteTicket",
-  ViewTicket: "/CRMCOREAPI/API/ViewIssue/ViewTicket",
-  UpdateTicket: "/CRMCOREAPI/API/BugReport/UpdateTicket",
-  DeleteNote: "/CRMCOREAPI/API/BugReport/DeleteNote",
-  UpdateNote: "/CRMCOREAPI/API/BugReport/UpdateNote",
-  ViewNote: "/CRMCOREAPI/API/ViewIssue/ViewNote",
-  ViewHistory: "/CRMCOREAPI/API/ViewIssue/ViewHistory",
+  ViewTicket: "/CRMCOREAPI/api/ViewIssue/ViewTicket",
+  UpdateTicket: "/CRMCOREAPI/api/BugReport/UpdateTicket",
+  DeleteNote: "/CRMCOREAPI/api/BugReport/DeleteNote",
+  UpdateNote: "/CRMCOREAPI/api/BugReport/UpdateNote",
+  ViewNote: "/CRMCOREAPI/api/ViewIssue/ViewNote",
+  ViewHistory: "/CRMCOREAPI/api/ViewIssue/ViewHistory",
   UpdateTickets: "/CRMCOREAPI/API/ViewIssue/UpdateTicket",
   //NewTicket(ReportIssue) Page Api's
   NewTicket: "/CRMCOREAPI/API/BugReport/NewTicket",
@@ -50,7 +50,7 @@ export const apiUrls = {
   Accesslevel: "/CRMCOREAPI/API/EmployeeMaster/Accesslevel",
   SearchEmployee_Name: "/CRMCOREAPI/api/EmployeeMaster/SearchEmployee_Name",
   CreateDesignation: "/CRMCOREAPI/API/DesignationMaster/CreateDesignation",
-  UpdateDesignation: "/CRMCOREAPI/API/DesignationMaster/UpdateDesignation",
+  UpdateDesignation: "/CRMCOREAPI/api/Designation/UpdateDesignation",
 
   //EmployeeChangePassword Page Api's
   ChangePassword: "/CRMCOREAPI/api/BugReport/ChangePassword",
@@ -115,8 +115,8 @@ export const apiUrls = {
   Query_Insert: "/CRMCOREAPI/api/QueryVsResult/Query_Insert",
   Query_Update: "/CRMCOREAPI/API/QueryVsResult/Query_Update",
   QueryVsResult_Select: "/CRMCOREAPI/api/QueryVsResult/QueryVsResultSelect",
-  Result_Insert: "/CRMCOREAPI/API/QueryVsResult/Result_Insert",
-  Result_Update: "/CRMCOREAPI/API/QueryVsResult/Result_Update",
+  Result_Insert: "/CRMCOREAPI/api/QueryVsResult/Result_Insert",
+  Result_Update: "/CRMCOREAPI/api/QueryVsResult/Result_Update",
 
   //Connector Request Api's
   Connector_Search: "/CRMCOREAPI/API/AccountsConnector/ConnectorSearch",
@@ -246,7 +246,7 @@ export const apiUrls = {
   SalesBooking_CancelReason_Select:
     "/CRMCOREAPI/API/MasterBind/SalesBooking_CancelReason_Select",
   SalesBooking_IsCancel:
-    "/CRMCOREAPI/API/AccountsPaymentInstallment/SalesBooking_IsCancel",
+    "/CRMCOREAPI/api/AccountsPaymentInstallment/SalesBooking_IsCancel",
   SalesBooking_GeneratePI:
     "/CRMCOREAPI/API/AccountsPaymentInstallment/SalesBooking_GeneratePI",
   SalesBooking_Load_SalesID:
@@ -255,7 +255,7 @@ export const apiUrls = {
   Quotation_Search: "/CRMCOREAPI/API/AccountsQuotation/Quotation_Search",
   Quotation_Select: "/CRMCOREAPI/API/AccountsQuotation/Quotation_Select",
   Quotation_Insert: "/CRMCOREAPI/API/AccountsQuotation/Quotation_Insert",
-  Quotation_IsCancel: "/CRMCOREAPI/API/AccountsQuotation/Quotation_IsCancel",
+  Quotation_IsCancel: "/CRMCOREAPI/api/AccountsQuotation/Quotation_IsCancel",
   Quotation_Approved: "/CRMCOREAPI/API/AccountsQuotation/QuotationApproved",
   Quotation_Load_QuotationID:
     "/CRMCOREAPI/API/AccountsQuotation/Quotation_Load_QuotationID",
@@ -290,8 +290,8 @@ export const apiUrls = {
   BillingCompanyDetail_Select_ID:
     "/CRMCOREAPI/API/MasterBind/BillingCompanyDetail_Select_ID",
   Dev_Caledar: "/CRMCOREAPI/API/MantisSummary/GetCalendar",
-  Module_Select: "/CRMCOREAPI/API/MasterBind/Module_Select",
-  Pages_Select: "/CRMCOREAPI/API/MasterBind/Pages_Select",
+  Module_Select: "/CRMCOREAPI/api/MasterBind/Module_Select",
+  Pages_Select: "/CRMCOREAPI/api/MasterBind/Pages_Select",
   CreateModule: "/CRMCOREAPI/API/MasterBind/CreateModule",
   CreatePages: "/CRMCOREAPI/API/MasterBind/CreatePages",
   UpdatePages: "/CRMCOREAPI/API/MasterBind/UpdatePages",
@@ -305,7 +305,7 @@ export const apiUrls = {
   SalesBooking_GenerateTax:
     "/CRMCOREAPI/API/AccountsPaymentInstallment/SalesBooking_GenerateTax",
   TaxInvoice_Search: "/CRMCOREAPI/API/AccountsTaxInvoice/TaxInvoiceSearch",
-  TaxInvoice_Upload: "/CRMCOREAPI/API/AccountsTaxInvoice/TaxInvoice_Upload",
+  TaxInvoice_Upload: "/CRMCOREAPI/api/AccountsTaxInvoice/TaxInvoiceUpload",
   DevDashboard_Welcome_PriorityID:
     "/CRMCOREAPI/API/MantisSummary/DevDashboardWelcomePriority",
   DevDashboard_Welcome_Category:
@@ -318,7 +318,7 @@ export const apiUrls = {
   PaymentFollowup: "/CRMCOREAPI/API/Accounts/PaymentFollowup",
   ManageGlobalMaster: "/CRMCOREAPI/API/MasterBind/ManageGlobalMaster",
   GetTeamMember: "/CRMCOREAPI/api/MasterBind/GetTeamMember",
-  Reason_Select: "/CRMCOREAPI/API/MasterBind/Reason_Select",
+  Reason_Select: "/CRMCOREAPI/api/MasterBind/Reason_Select",
   GetProjectInfo: "/CRMCOREAPI/API/ProjectMaster/GetProjectInfo",
   ProjectMasterUpdate: "/CRMCOREAPI/api/ProjectMasterUpdate/SaveProject",
   getViewProject: "/CRMCOREAPI/API/ProjectMasterUpdate/ViewProject",

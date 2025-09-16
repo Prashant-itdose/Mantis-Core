@@ -5,6 +5,7 @@ import axios from "axios";
 import { apiUrls } from "../../../networkServices/apiEndpoints";
 import { headers } from "../../../utils/apitools";
 import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../../../networkServices/axiosInstance";
 
 const AmountPIModal = (visible) => {
   const [formData, setFormData] = useState({
@@ -18,15 +19,24 @@ const AmountPIModal = (visible) => {
     if(formData?.TaxInvoiceNo ==""){
       toast.error("Please Enter Tax Invoice No.")
     }else{
-      let form = new FormData();
-      form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-        form.append("TaxInvoiceID", visible ?.visible?.showData?.EncryptID),
-        form.append("TaxInvoiceNo", visible ?.visible?.showData?.TaxInvoiceNo),
-        form.append("Document_Base64", formData?.Document_Base64),
-        form.append("Document_FormatType", formData?.FileExtension),
-        axios
-          .post(apiUrls?.TaxInvoice_Upload, form, { headers })
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
+      //   form.append("TaxInvoiceID", visible ?.visible?.showData?.EncryptID),
+      //   form.append("TaxInvoiceNo", visible ?.visible?.showData?.TaxInvoiceNo),
+      //   form.append("Document_Base64", formData?.Document_Base64),
+      //   form.append("Document_FormatType", formData?.FileExtension),
+      //   axios
+      //     .post(apiUrls?.TaxInvoice_Upload, form, { headers })
+      axiosInstances
+      .post(apiUrls.TaxInvoice_Upload, {
+        ID: useCryptoLocalStorage("user_Data", "get", "ID"),
+        LoginName: useCryptoLocalStorage("user_Data", "get", "realname"),
+        TaxInvoiceID: visible ?.visible?.showData?.EncryptID,
+        TaxInvoiceNo: formData?.TaxInvoiceNo,
+        Document_Base64: formData?.Document_Base64,
+        Document_FormatType: formData?.FileExtension,
+      })
           .then((res) => {
            toast.success(res?.data?.message)
           })

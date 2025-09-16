@@ -71,17 +71,25 @@ const AddDesignationModal = () => {
   };
 
   const handleUpdateDesignation = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("DesignationName", formData?.Designation),
-      form.append("DesignationID", formData?.ID),
-      form.append("IsActive", formData?.IsActive ? formData?.IsActive : "0"),
-      axios
-        .post(apiUrls?.UpdateDesignation, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("DesignationName", formData?.Designation),
+    //   form.append("DesignationID", formData?.ID),
+    //   form.append("IsActive", formData?.IsActive ? formData?.IsActive : "0"),
+    //   axios
+    //     .post(apiUrls?.UpdateDesignation, form, { headers })
+    axiosInstances
+      .post(apiUrls.UpdateDesignation, {
+        ID: useCryptoLocalStorage("user_Data", "get", "ID"),
+        LoginName: useCryptoLocalStorage("user_Data", "get", "realname"),
+        DesignationName: formData?.Designation,
+        DesignationID: formData?.ID,
+        IsActive: formData?.IsActive ? formData?.IsActive : "0",
+      })
         .then((res) => {
           toast.success(res?.data?.message);
           getViewDesignation();

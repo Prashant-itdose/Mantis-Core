@@ -7,6 +7,7 @@ import { apiUrls } from "../../../networkServices/apiEndpoints";
 import ReactSelect from "../../formComponent/ReactSelect";
 import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorage";
 import Loading from "../../loader/Loading";
+import { axiosInstances } from "../../../networkServices/axiosInstance";
 const CancelQuotationBookingModal = ({ visible, setVisible, handleSearch }) => {
   console.log(visible);
   const [loading, setLoading] = useState(false);
@@ -40,20 +41,29 @@ const CancelQuotationBookingModal = ({ visible, setVisible, handleSearch }) => {
       toast.error("Please Select CancelReason.");
     } else {
       setLoading(true);
-      let form = new FormData();
-      form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        form.append(
-          "LoginName",
-          useCryptoLocalStorage("user_Data", "get", "realname")
-        ),
-        form.append("QuotationID", visible?.showData?.EncryptID),
-        form.append("CancelReason", getlabel(formData?.CancelReason, reason)),
-        form.append("CancelReasonID", formData?.CancelReason),
-        form.append("OtherCancelReason", formData?.OtherReason),
-        axios
-          .post(apiUrls?.Quotation_IsCancel, form, {
-            headers,
-          })
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append(
+      //     "LoginName",
+      //     useCryptoLocalStorage("user_Data", "get", "realname")
+      //   ),
+      //   form.append("QuotationID", visible?.showData?.EncryptID),
+      //   form.append("CancelReason", getlabel(formData?.CancelReason, reason)),
+      //   form.append("CancelReasonID", formData?.CancelReason),
+      //   form.append("OtherCancelReason", formData?.OtherReason),
+      //   axios
+      //     .post(apiUrls?.Quotation_IsCancel, form, {
+      //       headers,
+      //     })
+      axiosInstances
+      .post(apiUrls.Quotation_IsCancel, {
+        ID: useCryptoLocalStorage("user_Data", "get", "ID"),
+        LoginName: useCryptoLocalStorage("user_Data", "get", "realname"),
+        QuotationID: visible?.showData?.EncryptID,  
+        CancelReason: getlabel(formData?.CancelReason, reason),
+        CancelReasonID: formData?.CancelReason,
+        OtherCancelReason: formData?.OtherReason,
+      })
           .then((res) => {
             if (res?.data?.status === true) {
               toast.success(res?.data?.message);
