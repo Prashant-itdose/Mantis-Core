@@ -97,17 +97,17 @@ const SalesLead = () => {
     //     .post(apiUrls?.GetProductVersion, form, {
     //       headers,
     //     })
-     axiosInstances
-        .post(apiUrls?.GetProductVersion, {})
-        .then((res) => {
-          const states = res?.data.data.map((item) => {
-            return { label: item?.NAME, value: item?.id };
-          });
-          setProductVersion(states);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls?.GetProductVersion, {})
+      .then((res) => {
+        const states = res?.data.data.map((item) => {
+          return { label: item?.NAME, value: item?.id };
         });
+        setProductVersion(states);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getAssignTo = () => {
     // let form = new FormData();
@@ -204,31 +204,31 @@ const SalesLead = () => {
     // form.append("RowColor", code ? code : ""),
     // axios
     //   .post(apiUrls?.SalesLeadSearch, form, { headers })
+
+    const payload = {
+      Country: String(formData?.Country),
+      City: String(formData?.City),
+      OrganizationName: String(formData?.OrganizationName),
+      State: String(formData?.State),
+      IsUpcomingCentre: Number(formData?.Centre),
+      SoftwareVertical: String(formData?.SoftwareVertical),
+      SPOC: String(formData?.ContactPersonName),
+      SPOC_Mobile: String(formData?.ContactPersonMobile),
+      Website: String(formData?.Website),
+      ReferralSource: String(formData?.ReferralSource),
+      ReferProjectID: String(formData?.ProjectID),
+      ReferEmployeeID: String(formData?.AssignedTo),
+      FromDate: moment(formData?.FromDate).format("YYYY-MM-DD"),
+      ToDate: moment(formData?.ToDate).format("YYYY-MM-DD"),
+      DateType: String(formData?.DateType),
+      SoftwareVersionID: Number(formData?.ProductVersion),
+      RowColor: Number(code ? code : ""),
+    };
     axiosInstances
-      .post(apiUrls?.SearchSalesLeads, {
-        Country: String(formData?.Country),
-        City: String(formData?.City),
-        OrganizationName: String(formData?.OrganizationName),
-        State: String(formData?.State),
-        IsUpcomingCentre:Number(formData?.Centre),
-        SoftwareVertical: String(formData?.SoftwareVertical),
-        SPOC: String(formData?.ContactPersonName),
-        SPOC_Mobile: String(formData?.ContactPersonMobile),
-        Website: String(formData?.Website),
-        ReferralSource: String(formData?.ReferralSource),
-        ReferProjectID: String(formData?.ProjectID),
-        ReferEmployeeID: String(formData?.AssignedTo),
-        FromDate: moment(formData?.FromDate).format("YYYY-MM-DD"),
-        ToDate: moment(formData?.ToDate).format("YYYY-MM-DD"),
-        DateType: String(formData?.DateType),
-        SoftwareVersionID: Number(formData?.ProductVersion),
-        RowColor: Number(code ? code : ""),
-      })
+      .post(apiUrls?.SearchSalesLeads, payload)
       .then((res) => {
-        
-        const data = res?.data?.message;
-        console.log("data2222",data)
-        if (true === true) {
+        const {data,status} = res?.data
+        if (status) {
           const updatedData = data?.map((ele, index) => {
             return {
               ...ele,

@@ -39,7 +39,7 @@ export const apiUrls = {
 
   //AutoBackupStatusSheet  Page Api's   & MisReport Table Page
   AutobackupSearch: "/CRMCOREAPI/API/Autobackup/AutobackupSearch",
-  SPOC_Update: "/CRMCOREAPI/API/Autobackup/SPOC_Update",
+  SPOC_Update: "/CRMCOREAPI/API/Autobackup/SPOCUpdate",
   AutobackupLog: "/CRMCOREAPI/API/Autobackup/AutobackupLog",
 
   //Employee Master Page Api's   && SearchEmployeeMaster
@@ -267,7 +267,12 @@ export const apiUrls = {
   Payment_Installment_Update:
     "/CRMCOREAPI/API/AccountsPaymentInstallment/Payment_Installment_Update",
   Sales_MIS_Type: "/CRMCOREAPI/API/MasterBind/Sales_MIS_Type",
+<<<<<<< HEAD
   BillingCompany_Select: "/CRMCOREAPI/API/ProjectMaster/BillingCompanySelect",
+=======
+  // BillingCompany_Select: "/CRMCOREAPI/API/ProjectMaster/BillingCompany_Select",
+   BillingCompany_Select: "/CRMCOREAPI/API/ProjectMaster/BillingCompanySelect",
+>>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
   SaveFilterData: "/CRMCOREAPI/API/ViewIssue/SaveFilterData",
   SearchFilterData: "/CRMCOREAPI/API/ViewIssue/SearchFilterData",
   MantisSummary_Search: "/CRMCOREAPI/API/MantisSummary/MantisSummarySearch",
@@ -378,7 +383,8 @@ export const apiUrls = {
     "/CRMCOREAPI/API/ManagerDashboard/ManagerDashboard_New_Quarter_Sales",
   ManagerDashboard_Paid_Request_Status:
     "/CRMCOREAPI/API/ManagerDashboard/ManagerDashboard_Paid_Request_Status",
-  TSAAggrementSearch: "/CRMCOREAPI/API/TSAAgreement/TSAAggrementSearch",
+  // TSAAggrementSearch: "/CRMCOREAPI/API/TSAAgreement/TSAAggrementSearch",
+  TSAAggrementSearch: "/CRMCOREAPI/API/TSAAgreement/TSAAgreementSearch",
   TSACancel: "/CRMCOREAPI/API/TSAAgreement/TSACancel",
   ConfirmTSA: "/CRMCOREAPI/API/TSAAgreement/ConfirmTSA",
   TSAHold: "/CRMCOREAPI/API/TSAAgreement/TSAHold",
@@ -418,7 +424,8 @@ export const apiUrls = {
   EditSalesLead: "/CRMCOREAPI/API/SalesLead/EditSalesLead",
   UpdateSalesLead: "/CRMCOREAPI/API/SalesLead/UpdateSalesLead",
   Lead_Email_Log: "/CRMCOREAPI/API/SalesLead/Lead_Email_Log",
-  Tsa_Agreement_Format: "/CRMCOREAPI/API/TSAAgreement/Tsa_Agreement_Format",
+  // Tsa_Agreement_Format: "/CRMCOREAPI/API/TSAAgreement/Tsa_Agreement_Format",
+  Tsa_Agreement_Format: "/CRMCOREAPI/API/TSAAgreement/GetTsaAgreementFormat",
   Change_Tsa_Agreement_Format:
     "/CRMCOREAPI/API/TSAAgreement/Change_Tsa_Agreement_Format",
   CreateFeedback: "/CRMCOREAPI/API/Feedback/CreateFeedback",

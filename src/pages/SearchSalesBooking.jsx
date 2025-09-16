@@ -77,6 +77,24 @@ const SearchSalesBooking = ({ data }) => {
   /////////////////////////////////
 
   const SaveFilter = () => {
+<<<<<<< HEAD
+=======
+    // let form = new FormData();
+
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
+    // form.append(
+    //   "CrmEmpID",
+    //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+    // );
+    // form.append(
+    //   "LoginName",
+    //   useCryptoLocalStorage("user_Data", "get", "realname")
+    // );
+    // form.append("PageName", "SearchSalesBooking");
+
+    // Example FilterData array
+
+>>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
     const filterData = [
       { header: "S.No", visible: true },
       { header: "ProjectID", visible: true },
@@ -92,6 +110,7 @@ const SearchSalesBooking = ({ data }) => {
       { header: "Status", visible: true },
       { header: "PageSize", visible: true },
     ];
+<<<<<<< HEAD
     axiosInstances
       .post(apiUrls.SaveFilterTableReprintData, {
         CrmEmpID: String(
@@ -135,6 +154,20 @@ const SearchSalesBooking = ({ data }) => {
 
       // axios
       //   .post(apiUrls?.SaveFilterTableReprintData, form, { headers })
+=======
+    // Append stringified FilterData
+    // form.append("FilterData", JSON.stringify(filterData));
+
+    // axios
+    //   .post(apiUrls?.SaveFilterTableReprintData, form, { headers })
+
+    const payload = {
+      PageName: "SearchSalesBooking",
+      FilterData: String(filterData),
+    };
+    axiosInstances
+      .post(apiUrls?.SaveFilterTableReprintData, payload)
+>>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
       .then((res) => {
         console.log(res.data.message);
       })
@@ -166,6 +199,7 @@ const SearchSalesBooking = ({ data }) => {
       { header: "Cancel", visible: true },
     ];
 
+<<<<<<< HEAD
     axiosInstances
       .post(apiUrls.SaveFilterTableReprintData, {
         CrmEmpID: String(
@@ -214,6 +248,23 @@ const SearchSalesBooking = ({ data }) => {
 
       // axios
       //   .post(apiUrls?.SaveFilterTableReprintData, form, { headers })
+=======
+    // Append stringified FilterData
+    // form.append("FilterData", JSON.stringify(filterData));
+
+    // axios
+    //   .post(apiUrls?.SaveFilterTableReprintData, form, { headers })
+
+    const payload = {
+      CrmEmpID: String(
+        useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+      ),
+      PageName: "SearchSalesBookingTable",
+      FilterData: JSON.stringify(filterData),
+    };
+    axiosInstances
+      .post(apiUrls?.SaveFilterTableReprintData, payload)
+>>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
       .then((res) => {
         console.log(res.data.message);
       })
@@ -224,6 +275,7 @@ const SearchSalesBooking = ({ data }) => {
   };
 
   const SearchAmountSubmissionFilter = () => {
+<<<<<<< HEAD
     axiosInstances
       .post(apiUrls.GetFilterTableReprintData, {
         PageName: "SearchSalesBooking",
@@ -247,6 +299,32 @@ const SearchSalesBooking = ({ data }) => {
       .then((res) => {
         const data = res.data.data;
         if (res?.data.status === true) {
+=======
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "CrmEmpID",
+    //     useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+    //   ),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("PageName", "SearchSalesBooking"),
+    //   axios
+    //     .post(apiUrls?.GetFilterTableReprintData, form, { headers })
+    axiosInstances
+      .post(apiUrls?.GetFilterTableReprintData, {
+        CrmEmpID: String(
+          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+        ),
+        PageName: "SearchSalesBooking",
+      })
+      .then((res) => {
+        const data = res.data.data;
+        console.log("SearchSalesBooking", data);
+        if (res?.data.success === true) {
+>>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
           setDynamicFilter(data);
         } else {
           SaveFilter();
@@ -257,13 +335,32 @@ const SearchSalesBooking = ({ data }) => {
       });
   };
   const SearchAmountSubmissionTableFilter = () => {
+<<<<<<< HEAD
     axiosInstances
       .post(apiUrls.GetFilterTableReprintData, {
+=======
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "CrmEmpID",
+    //     useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+    //   ),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("PageName", "SearchSalesBookingTable"),
+    //   axios
+    //     .post(apiUrls?.GetFilterTableReprintData, form, { headers })
+    axiosInstances
+      .post(apiUrls?.GetFilterTableReprintData, {
+>>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
         CrmEmpID: String(
           useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
         PageName: "SearchSalesBookingTable",
       })
+<<<<<<< HEAD
       // let form = new FormData();
       // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
       //   form.append(
@@ -277,6 +374,8 @@ const SearchSalesBooking = ({ data }) => {
       //   form.append("PageName", "SearchSalesBookingTable"),
       //   axios
       //     .post(apiUrls?.GetFilterTableReprintData, form, { headers })
+=======
+>>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
       .then((res) => {
         const data = res.data.data;
         if (res?.data.status === true) {
@@ -352,12 +451,21 @@ const SearchSalesBooking = ({ data }) => {
     setFormData({ ...formData, [name]: value });
   };
   const getVertical = () => {
+<<<<<<< HEAD
     axiosInstances
       .post(apiUrls.Vertical_Select, {})
       // let form = new FormData();
       // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
       //   axios
       //     .post(apiUrls?.Vertical_Select, form, { headers })
+=======
+    // let form = new FormData();
+    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Vertical_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls?.Vertical_Select, {})
+>>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
       .then((res) => {
         const verticals = res?.data.data.map((item) => {
           return { name: item?.Vertical, code: item?.VerticalID };
@@ -369,12 +477,21 @@ const SearchSalesBooking = ({ data }) => {
       });
   };
   const getTeam = () => {
+<<<<<<< HEAD
     axiosInstances
       .post(apiUrls.Team_Select, {})
       // let form = new FormData();
       // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
       //   axios
       //     .post(apiUrls?.Team_Select, form, { headers })
+=======
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Team_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls?.Team_Select, {})
+>>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
       .then((res) => {
         const teams = res?.data.data.map((item) => {
           return { name: item?.Team, code: item?.TeamID };
@@ -386,12 +503,21 @@ const SearchSalesBooking = ({ data }) => {
       });
   };
   const getWing = () => {
+<<<<<<< HEAD
     axiosInstances
       .post(apiUrls.Wing_Select, {})
       // let form = new FormData();
       // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
       //   axios
       //     .post(apiUrls?.Wing_Select, form, { headers })
+=======
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Wing_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls?.Wing_Select, {})
+>>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
       .then((res) => {
         const wings = res?.data.data.map((item) => {
           return { name: item?.Wing, code: item?.WingID };
@@ -403,12 +529,21 @@ const SearchSalesBooking = ({ data }) => {
       });
   };
   const getPOC1 = () => {
+<<<<<<< HEAD
     axiosInstances
       .post(apiUrls.POC_1_Select, {})
       // let form = new FormData();
       // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
       //   axios
       //     .post(apiUrls?.POC_1_Select, form, { headers })
+=======
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.POC_1_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls?.POC_1_Select, {})
+>>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
       .then((res) => {
         const poc1s = res?.data.data.map((item) => {
           return { name: item?.POC_1_Name, code: item?.POC_1_ID };
@@ -420,12 +555,21 @@ const SearchSalesBooking = ({ data }) => {
       });
   };
   const getPOC2 = () => {
+<<<<<<< HEAD
     axiosInstances
       .post(apiUrls.POC_2_Select, {})
       // let form = new FormData();
       // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
       //   axios
       //     .post(apiUrls?.POC_2_Select, form, { headers })
+=======
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.POC_2_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls?.POC_2_Select, {})
+>>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
       .then((res) => {
         const poc2s = res?.data.data.map((item) => {
           return { name: item?.POC_2_Name, code: item?.POC_2_ID };
@@ -437,12 +581,21 @@ const SearchSalesBooking = ({ data }) => {
       });
   };
   const getPOC3 = () => {
+<<<<<<< HEAD
     axiosInstances
       .post(apiUrls.POC_3_Select, {})
       // let form = new FormData();
       // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
       //   axios
       //     .post(apiUrls?.POC_3_Select, form, { headers })
+=======
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.POC_3_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls?.POC_3_Select, {})
+>>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return { name: item?.POC_3_Name, code: item?.POC_3_ID };
@@ -454,14 +607,30 @@ const SearchSalesBooking = ({ data }) => {
       });
   };
   const getProject = () => {
+<<<<<<< HEAD
     axiosInstances
       .post(apiUrls.ProjectSelect, {
         ProjectID: 0,
         IsMaster: "0",
+=======
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   axios
+    //     .post(apiUrls?.ProjectSelect, form, { headers })
+    axiosInstances
+      .post(apiUrls?.ProjectSelect, {
+        ProjectID: 0,
+        IsMaster: "",
+>>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
         VerticalID: 0,
         TeamID: 0,
         WingID: 0,
       })
+<<<<<<< HEAD
       // let form = new FormData();
       // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
       //   form.append(
@@ -470,6 +639,8 @@ const SearchSalesBooking = ({ data }) => {
       //   ),
       //   axios
       //     .post(apiUrls?.ProjectSelect, form, { headers })
+=======
+>>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return { name: item?.Project, code: item?.ProjectId };
@@ -489,6 +660,7 @@ const SearchSalesBooking = ({ data }) => {
   }
   const handleSearch = (page, project, DateType = formData?.DateType) => {
     setLoading(true);
+<<<<<<< HEAD
     axiosInstances
       .post(apiUrls.Payment_Installment_Search, {
   "DateType": String(DateType),
@@ -507,6 +679,8 @@ const SearchSalesBooking = ({ data }) => {
   "PageNo": Number(page ?? currentPage - 1),
   "IsExcel": false
 })
+=======
+>>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
     // let form = new FormData();
     // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
     //   form.append(
@@ -532,6 +706,7 @@ const SearchSalesBooking = ({ data }) => {
     //   form.append("PageSize", formData?.PageSize),
     //   form.append("PageNo", page ?? currentPage - 1),
     //   // form.append("colorcode", code ? String(code) : ""),
+<<<<<<< HEAD
     //   axios
     //     .post(apiUrls?.Payment_Installment_Search, form, { headers })
         .then((res) => {
@@ -552,86 +727,164 @@ const SearchSalesBooking = ({ data }) => {
         })
         .catch((err) => {
           console.log(err);
+=======
+    // axios
+    //   .post(apiUrls?.Payment_Installment_Search, form, { headers })
+    const payload = {
+      ProjectID:
+        project?.length > 0 && project !== "0"
+          ? String(project) // ✅ ensure number
+          : String(formData?.ProjectID),
+
+      VerticalID: String(formData?.VerticalID),
+      TeamID: String(formData?.TeamID),
+      WingID: String(formData?.WingID),
+
+      POC1: formData?.POC1 ? String(formData?.POC1) : "",
+      POC2: formData?.POC2 ? String(formData?.POC2) : "",
+      POC3: formData?.POC3 ? String(formData?.POC3) : "",
+
+      Status: formData?.Status ? String(formData?.Status) : "",
+
+      DateType: String(DateType),
+      FromDate: formatDate(formData?.FromDate), // usually string (yyyy-MM-dd)
+      ToDate: formatDate(formData?.ToDate),
+
+      SearchType: "OnScreen", // always string
+      PageSize: Number(formData?.PageSize),
+      PageNo: page != null ? Number(page) : Number(currentPage - 1),
+
+      // extra fields
+      Centre: "testing22", // ✅ string
+      ActionType: "InsertCentre", // ✅ string
+      IsExcel:0
+    };
+
+    axiosInstances
+      .post(apiUrls?.Payment_Installment_Search, payload)
+      .then((res) => {
+        if (res?.data?.status === true) {
+          setTableData(res?.data?.data);
+          // const datas = res?.data?.data?.map((val) => {
+          //   val.QuotationApproved = false;
+          //   val.QuotationUpdate = false;
+          //   val.QuotationReject = false;
+          //   return val;
+          // });
+          // setTableData(datas);
+>>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
           setLoading(false);
-        });
+        } else {
+          toast.error(res?.data?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
   const shortenName = (name) => {
     return name.length > 15 ? name.substring(0, 25) + "..." : name;
   };
   const handleExcel = (page) => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("ProjectID", formData?.ProjectID),
-      form.append("VerticalID", formData?.VerticalID),
-      form.append("TeamID", formData?.TeamID),
-      form.append("WingID", formData?.WingID),
-      form.append("POC1", formData?.POC1),
-      form.append("POC2", formData?.POC2),
-      form.append("POC3", formData?.POC3),
-      form.append("Status", formData?.Status),
-      form.append("DateType", formData?.DateType),
-      form.append("FromDate", formatDate(formData?.FromDate)),
-      form.append("ToDate", formatDate(formData?.ToDate)),
-      form.append("SearchType", "OnScreen"),
-      form.append("IsExcel", "1"),
-      form.append("PageSize", formData?.PageSize),
-      form.append("PageNo", page ? currentPage - 1 : "0"),
-      axios
-        .post(apiUrls?.Quotation_Search, form, { headers })
-        .then((res) => {
-          const datas = res?.data?.data;
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("ProjectID", formData?.ProjectID),
+    //   form.append("VerticalID", formData?.VerticalID),
+    //   form.append("TeamID", formData?.TeamID),
+    //   form.append("WingID", formData?.WingID),
+    //   form.append("POC1", formData?.POC1),
+    //   form.append("POC2", formData?.POC2),
+    //   form.append("POC3", formData?.POC3),
+    //   form.append("Status", formData?.Status),
+    //   form.append("DateType", formData?.DateType),
+    //   form.append("FromDate", formatDate(formData?.FromDate)),
+    //   form.append("ToDate", formatDate(formData?.ToDate)),
+    //   form.append("SearchType", "OnScreen"),
+    //   form.append("IsExcel", "1"),
+    //   form.append("PageSize", formData?.PageSize),
+    //   form.append("PageNo", page ? currentPage - 1 : "0"),
+    //   axios
+    //     .post(apiUrls?.Quotation_Search, form, { headers })
+    const payload = {
+      ProjectID: formData?.ProjectID ? Number(formData?.ProjectID) : 0,
+      VerticalID: formData?.VerticalID ? Number(formData?.VerticalID) : 0,
+      TeamID: formData?.TeamID ? Number(formData?.TeamID) : 0,
+      WingID: formData?.WingID ? Number(formData?.WingID) : 0,
 
-          if (!datas || datas.length === 0) {
-            console.error("No data available for download.");
-            alert("No data available for download.");
-            setLoading(false);
-            return;
-          }
+      POC1: formData?.POC1 ? String(formData?.POC1) : "",
+      POC2: formData?.POC2 ? String(formData?.POC2) : "",
+      POC3: formData?.POC3 ? String(formData?.POC3) : "",
 
-          const username =
-            useCryptoLocalStorage("user_Data", "get", "realname") || "User";
-          const now = new Date();
-          const currentDate = now.toLocaleDateString("en-GB", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          });
-          const currentTime = now.toLocaleTimeString("en-GB", {
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-          });
-          const titleRow = [
-            { title: `${username} - ${currentDate} ${currentTime}` },
-          ];
-          const dataWithTitle = [...titleRow, ...datas];
-          const fileType =
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-          const fileExtension = ".xlsx";
-          const ws = XLSX.utils.json_to_sheet(datas, { skipHeader: false });
-          const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
-          const excelBuffer = XLSX.write(wb, {
-            bookType: "xlsx",
-            type: "array",
-          });
-          const data = new Blob([excelBuffer], { type: fileType });
+      Status: formData?.Status ? String(formData?.Status) : "",
 
-          FileSaver.saveAs(
-            data,
-            `${username}_${currentDate}_${currentTime}` + fileExtension
-          );
+      DateType: formData?.DateType ? String(formData?.DateType) : "",
+      FromDate: formData?.FromDate ? formatDate(formData?.FromDate) : "",
+      ToDate: formData?.ToDate ? formatDate(formData?.ToDate) : "",
+
+      SearchType: "OnScreen",
+      IsExcel: 1,
+      PageSize: formData?.PageSize ? Number(formData?.PageSize) : 10,
+      PageNo: page ? Number(currentPage - 1) : 0,
+    };
+
+    axiosInstances
+      .post(apiUrls?.Quotation_Search, payload)
+      .then((res) => {
+        const datas = res?.data?.data;
+
+        if (!datas || datas.length === 0) {
+          console.error("No data available for download.");
+          alert("No data available for download.");
           setLoading(false);
-        })
-        .catch((err) => {
-          console.error("Error downloading the file:", err);
-          alert("Failed to download the file. Please try again.");
-          setLoading(false);
+          return;
+        }
+
+        const username =
+          useCryptoLocalStorage("user_Data", "get", "realname") || "User";
+        const now = new Date();
+        const currentDate = now.toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
         });
+        const currentTime = now.toLocaleTimeString("en-GB", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        });
+        const titleRow = [
+          { title: `${username} - ${currentDate} ${currentTime}` },
+        ];
+        const dataWithTitle = [...titleRow, ...datas];
+        const fileType =
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+        const fileExtension = ".xlsx";
+        const ws = XLSX.utils.json_to_sheet(datas, { skipHeader: false });
+        const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+        const excelBuffer = XLSX.write(wb, {
+          bookType: "xlsx",
+          type: "array",
+        });
+        const data = new Blob([excelBuffer], { type: fileType });
+
+        FileSaver.saveAs(
+          data,
+          `${username}_${currentDate}_${currentTime}` + fileExtension
+        );
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error downloading the file:", err);
+        alert("Failed to download the file. Please try again.");
+        setLoading(false);
+      });
   };
   useEffect(() => {
     getProject();
@@ -671,11 +924,15 @@ const SearchSalesBooking = ({ data }) => {
   });
 
   const handleGenerate = (ele) => {
+<<<<<<< HEAD
     axiosInstances
       .post(apiUrls.SalesBooking_GeneratePI, {
   "SalesID":String(ele)
 })
     // let form = new FormData();
+=======
+    let form = new FormData();
+>>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
     // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
     //   form.append(
     //     "LoginName",
@@ -684,6 +941,7 @@ const SearchSalesBooking = ({ data }) => {
     //   form.append("SalesID", ele),
     //   axios
     //     .post(apiUrls?.SalesBooking_GeneratePI, form, { headers })
+<<<<<<< HEAD
         .then((res) => {
           if (res?.data?.status === true) {
             toast.success(res?.data?.message);
@@ -701,6 +959,23 @@ const SearchSalesBooking = ({ data }) => {
       .post(apiUrls.SalesBooking_GenerateTax, {
   "SalesID":String(ele)
 })
+=======
+    //        axiosInstances
+    post(apiUrls?.SalesBooking_GeneratePI, { SalesID: ele })
+      .then((res) => {
+        if (res?.data?.status === true) {
+          toast.success(res?.data?.message);
+          handleSearch();
+        } else {
+          toast.error(res?.data?.message);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handleRequested = (ele) => {
+>>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
     // let form = new FormData();
     // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
     //   form.append(
@@ -710,6 +985,7 @@ const SearchSalesBooking = ({ data }) => {
     //   form.append("SalesID", ele),
     //   axios
     //     .post(apiUrls?.SalesBooking_GenerateTax, form, { headers })
+<<<<<<< HEAD
         .then((res) => {
           if (res?.data?.status === true) {
             toast.success(res?.data?.message);
@@ -721,6 +997,21 @@ const SearchSalesBooking = ({ data }) => {
         .catch((err) => {
           console.log(err);
         });
+=======
+    axiosInstances
+      .post(apiUrls?.SalesBooking_GenerateTax, {})
+      .then((res) => {
+        if (res?.data?.status === true) {
+          toast.success(res?.data?.message);
+          handleSearch();
+        } else {
+          toast.error(res?.data?.message);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+>>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
   };
 
   // const handleSalesId = () => {

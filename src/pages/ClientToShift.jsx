@@ -13,8 +13,8 @@ import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import DatePicker from "../components/formComponent/DatePicker";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
+import { axiosInstances } from "../networkServices/axiosInstance";
 const ClientToShift = ({ data }) => {
- 
   const { VITE_DATE_FORMAT } = import.meta.env;
   const [t] = useTranslation();
   const [loading, setLoading] = useState(false);
@@ -52,34 +52,38 @@ const ClientToShift = ({ data }) => {
     setFormData({ ...formData, [name]: value });
   };
   const getVertical = () => {
-    let form = new FormData();
-    form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Vertical_Select, form, { headers })
-        .then((res) => {
-          const verticals = res?.data.data.map((item) => {
-            return { label: item?.Vertical, value: item?.VerticalID };
-          });
-          setVertical(verticals);
-        })
-        .catch((err) => {
-          console.log(err);
+    // let form = new FormData();
+    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Vertical_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls?.Vertical_Select, {})
+      .then((res) => {
+        const verticals = res?.data.data.map((item) => {
+          return { label: item?.Vertical, value: item?.VerticalID };
         });
+        setVertical(verticals);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getTeam = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Team_Select, form, { headers })
-        .then((res) => {
-          const teams = res?.data.data.map((item) => {
-            return { label: item?.Team, value: item?.TeamID };
-          });
-          setTeam(teams);
-        })
-        .catch((err) => {
-          console.log(err);
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Team_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls?.Team_Select, {})
+      .then((res) => {
+        const teams = res?.data.data.map((item) => {
+          return { label: item?.Team, value: item?.TeamID };
         });
+        setTeam(teams);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const documentTHEAD = [
     "S.No.",
@@ -96,120 +100,238 @@ const ClientToShift = ({ data }) => {
   ];
 
   const handleSearchDocs = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "RoleID",
-        useCryptoLocalStorage("user_Data", "get", "RoleID")
-      ),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("VerticalID", ""),
-      form.append("TeamID", ""),
-      form.append("WingID", ""),
-      form.append("POC1", ""),
-      form.append("POC2", ""),
-      form.append("POC3", ""),
-      form.append("Status", ""),
-      form.append("ProjectID", data?.Id || data?.ProjectID),
-      axios
-        .post(apiUrls?.UploadDocument_Search, form, { headers })
-        .then((res) => {
-          setDocData(res?.data?.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "RoleID",
+    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+    //   ),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("VerticalID", ""),
+    //   form.append("TeamID", ""),
+    //   form.append("WingID", ""),
+    //   form.append("POC1", ""),
+    //   form.append("POC2", ""),
+    //   form.append("POC3", ""),
+    //   form.append("Status", ""),
+    //   form.append("ProjectID", data?.Id || data?.ProjectID),
+    // axios
+    //   .post(apiUrls?.UploadDocument_Search, form, { headers })
+    const payload = {
+      RoleID: useCryptoLocalStorage("user_Data", "get", "RoleID"),
+      VerticalID: "",
+      TeamID: "",
+      WingID: "",
+      POC1: "",
+      POC2: "",
+      POC3: "",
+      Status: "",
+      ProjectID: String(data?.Id || data?.ProjectID),
+    };
+
+    axiosInstances
+      .post(apiUrls?.UploadDocument_Search, payload)
+      .then((res) => {
+        setDocData(res?.data?.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getWing = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Wing_Select, form, { headers })
-        .then((res) => {
-          const wings = res?.data.data.map((item) => {
-            return { label: item?.Wing, value: item?.WingID };
-          });
-          setWing(wings);
-        })
-        .catch((err) => {
-          console.log(err);
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Wing_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls?.Wing_Select, {})
+      .then((res) => {
+        const wings = res?.data.data.map((item) => {
+          return { label: item?.Wing, value: item?.WingID };
         });
+        setWing(wings);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getReporter = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "RoleID",
-        useCryptoLocalStorage("user_Data", "get", "RoleID")
-      ),
-      form.append("OnlyItdose", "1"),
-      axios
-        .post(apiUrls?.Reporter_Select, form, { headers })
-        .then((res) => {
-          const reporters = res?.data.data.map((item) => {
-            return { label: item?.NAME, value: item?.ID };
-          });
-          setUser(reporters);
-        })
-        .catch((err) => {
-          console.log(err);
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "RoleID",
+    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+    //   ),
+    //   form.append("OnlyItdose", "1"),
+    // axios
+    //   .post(apiUrls?.Reporter_Select, form, { headers })
+    const payload = {
+      RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID") || 0),
+      OnlyItdose: "1", // number instead of string
+    };
+    axiosInstances
+      .post(apiUrls?.Reporter_Select, payload)
+      .then((res) => {
+        const reporters = res?.data.data.map((item) => {
+          return { label: item?.Name, value: item?.ID };
         });
+        setUser(reporters);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   function getlabel(id, dropdownData) {
     const ele = dropdownData.filter((item) => item.value === id);
     return ele.length > 0 ? ele[0].label : "";
   }
   const handleSearch = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "RoleID",
-        useCryptoLocalStorage("user_Data", "get", "RoleID")
-      ),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("ProjectID", data?.Id || data?.ProjectID),
-      form.append("Title", "ClickToShift"),
-      axios
-        .post(apiUrls?.getViewProject, form, { headers })
-        .then((res) => {
-          console.log(res);
-          setTableData(res?.data?.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "RoleID",
+    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+    //   ),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("ProjectID", data?.Id || data?.ProjectID),
+    //   form.append("Title", "ClickToShift"),
+    // axios
+    //   .post(apiUrls?.getViewProject, form, { headers })
+    const payload = {
+      RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID") || 0),
+      ProjectID: Number(data?.Id || data?.ProjectID || 0),
+      Title: "ClickToShift",
+    };
+
+    axiosInstances
+      .post(apiUrls?.getViewProject, payload)
+      .then((res) => {
+        console.log(res);
+        setTableData(res?.data?.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const handleSave = () => {
-    const formDataJson = JSON.stringify([
-      {
-        SPOC_Level_1_ID: formData?.Engineer1,
-        SPOC_Level_1_Name: getlabel(formData?.Engineer1, user),
-        SPOC_Level_1_Mobile: formData?.Engineer1Mobile,
-        SPOC_Level_1_Email: formData?.Engineer1Email,
-        SPOC_Level_2_ID: formData?.Engineer2,
-        SPOC_Level_2_Name: getlabel(formData?.Engineer2, user),
-        SPOC_Level_2_Mobile: formData?.Engineer2Mobile,
-        SPOC_Level_2_Email: formData?.Engineer2Email,
-        SPOC_Level_3_ID: formData?.Engineer3,
-        SPOC_Level_3_Name: getlabel(formData?.Engineer3, user),
-        SPOC_Level_3_Mobile: formData?.Engineer3Mobile,
-        SPOC_Level_3_Email: formData?.Engineer3Email,
-        ProjectID: data?.Id || data?.ProjectID,
-        ProjectName: data?.NAME || data?.ProjectName,
-        ToVerticalID: formData?.VerticalID,
-        ToVertical: getlabel(formData?.VerticalID, vertical),
-        ToWingID: formData?.WingID,
-        ToWing: getlabel(formData?.WingID, wing),
-        ToTeamID: formData?.TeamID,
-        ToTeam: getlabel(formData?.TeamID, team),
-      },
-    ]);
+    // const formData =([
+    //   {
+    //     SPOC_Level_1_ID: formData?.Engineer1,
+    //     SPOC_Level_1_Name: getlabel(formData?.Engineer1, user),
+    //     SPOC_Level_1_Mobile: formData?.Engineer1Mobile,
+    //     SPOC_Level_1_Email: formData?.Engineer1Email,
+    //     SPOC_Level_2_ID: formData?.Engineer2,
+    //     SPOC_Level_2_Name: getlabel(formData?.Engineer2, user),
+    //     SPOC_Level_2_Mobile: formData?.Engineer2Mobile,
+    //     SPOC_Level_2_Email: formData?.Engineer2Email,
+    //     SPOC_Level_3_ID: formData?.Engineer3,
+    //     SPOC_Level_3_Name: getlabel(formData?.Engineer3, user),
+    //     SPOC_Level_3_Mobile: formData?.Engineer3Mobile,
+    //     SPOC_Level_3_Email: formData?.Engineer3Email,
+    //     ProjectID: data?.Id || data?.ProjectID,
+    //     ProjectName: data?.NAME || data?.ProjectName,
+    //     ToVerticalID: formData?.VerticalID,
+    //     ToVertical: getlabel(formData?.VerticalID, vertical),
+    //     ToWingID: formData?.WingID,
+    //     ToWing: getlabel(formData?.WingID, wing),
+    //     ToTeamID: formData?.TeamID,
+    //     ToTeam: getlabel(formData?.TeamID, team),
+    //   },
+    // ]);
+
+    // const formDataJson = [
+    //   {
+    //     SPOC_Level_1_ID: Number(formData?.Engineer1 || 0),
+    //     SPOC_Level_1_Name: String(getlabel(formData?.Engineer1, user) || ""),
+    //     SPOC_Level_1_Mobile: String(formData?.Engineer1Mobile || ""),
+    //     SPOC_Level_1_Email: String(formData?.Engineer1Email || ""),
+
+    //     SPOC_Level_2_ID: Number(formData?.Engineer2 || 0),
+    //     SPOC_Level_2_Name: String(getlabel(formData?.Engineer2, user) || ""),
+    //     SPOC_Level_2_Mobile: String(formData?.Engineer2Mobile || ""),
+    //     SPOC_Level_2_Email: String(formData?.Engineer2Email || ""),
+
+    //     SPOC_Level_3_ID: Number(formData?.Engineer3 || 0),
+    //     SPOC_Level_3_Name: String(getlabel(formData?.Engineer3, user) || ""),
+    //     SPOC_Level_3_Mobile: String(formData?.Engineer3Mobile || ""),
+    //     SPOC_Level_3_Email: String(formData?.Engineer3Email || ""),
+
+    //     ProjectID: Number(data?.Id || data?.ProjectID || 0),
+    //     ProjectName: String(data?.NAME || data?.ProjectName || ""),
+
+    //     ToVerticalID: Number(formData?.VerticalID || 0),
+    //     ToVertical: String(getlabel(formData?.VerticalID, vertical) || ""),
+    //     ToWingID: Number(formData?.WingID || 0),
+    //     ToWing: String(getlabel(formData?.WingID, wing) || ""),
+    //     ToTeamID: Number(formData?.TeamID || 0),
+    //     ToTeam: String(getlabel(formData?.TeamID, team) || ""),
+    //   },
+    // ];
+
+    const payload = {
+      RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID") || 0),
+      LoginName: String(
+        useCryptoLocalStorage("user_Data", "get", "realname") || ""
+      ),
+      ActionType: "ClickToShift",
+
+      ProjectShiftDetails: [
+        {
+          ID: 0,
+          ProjectID: Number(data?.Id || data?.ProjectID || 0),
+          ProjectName: String(data?.NAME || data?.ProjectName || ""),
+          ShiftedByID: Number(
+            useCryptoLocalStorage("user_Data", "get", "User_ID") || 0
+          ),
+          ShiftedBy: String(
+            useCryptoLocalStorage("user_Data", "get", "realname") || ""
+          ),
+
+          DtShift: moment(formData?.FromDate).isValid()
+            ? moment(formData?.FromDate).format("YYYY-MM-DD")
+            : "",
+
+          ToVerticalID: Number(formData?.VerticalID || 0),
+          ToVertical: String(getlabel(formData?.VerticalID, vertical) || ""),
+          ToTeamID: Number(formData?.TeamID || 0),
+          ToTeam: String(getlabel(formData?.TeamID, team) || ""),
+          ToWingID: Number(formData?.WingID || 0),
+          ToWing: String(getlabel(formData?.WingID, wing) || ""),
+
+          SPOC_Level_1_ID: Number(formData?.Engineer1 || 0),
+          SPOC_Level_1_Name: String(getlabel(formData?.Engineer1, user) || ""),
+          SPOC_Level_1_Mobile: String(formData?.Engineer1Mobile || ""),
+          SPOC_Level_1_Email: String(formData?.Engineer1Email || ""),
+
+          SPOC_Level_2_ID: Number(formData?.Engineer2 || 0),
+          SPOC_Level_2_Name: String(getlabel(formData?.Engineer2, user) || ""),
+          SPOC_Level_2_Mobile: String(formData?.Engineer2Mobile || ""),
+          SPOC_Level_2_Email: String(formData?.Engineer2Email || ""),
+
+          SPOC_Level_3_ID: Number(formData?.Engineer3 || 0),
+          SPOC_Level_3_Name: String(getlabel(formData?.Engineer3, user) || ""),
+          SPOC_Level_3_Mobile: String(formData?.Engineer3Mobile || ""),
+          SPOC_Level_3_Email: String(formData?.Engineer3Email || ""),
+
+          IsAccept: false,
+          AcceptByID: 0,
+          AcceptBy: "",
+          DtAccept: "",
+
+          IsReject: false,
+          RejectById: 0,
+          RejectBy: "",
+          DtReject: "",
+        },
+      ],
+    };
+
     if (formData?.VerticalID == "") {
       toast.error("Please select Vertical");
     } else if (formData?.TeamID == "") {
@@ -225,53 +347,66 @@ const ClientToShift = ({ data }) => {
     } else if (formData?.FromDate == "") {
       toast.error("Please select Shifted Date");
     } else {
-      let form = new FormData();
-      form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        form.append(
-          "RoleID",
-          useCryptoLocalStorage("user_Data", "get", "RoleID")
-        ),
-        form.append(
-          "LoginName",
-          useCryptoLocalStorage("user_Data", "get", "realname")
-        ),
-        form.append("ActionType", "ClickToShift"),
-        form.append("ProjectID", data?.Id || data?.ProjectID),
-        form.append(
-          "dtShift",
-          moment(formData?.FromDate).isValid()
-            ? moment(formData?.FromDate).format("YYYY-MM-DD")
-            : ""
-        ),
-        form.append("ProjectData", formDataJson),
-        axios
-          .post(apiUrls?.ProjectMasterUpdate, form, { headers })
-          .then((res) => {
-            if (res?.data?.status === true) {
-              toast.success(res?.data?.message);
-              handleSearch();
-              setFormData({
-                ...formData,
-                VerticalID: "",
-                TeamID: "",
-                WingID: "",
-                Engineer1: "",
-                Engineer1Mobile: "",
-                Engineer1Email: "",
-                Engineer2: "",
-                Engineer2Mobile: "",
-                Engineer2Email: "",
-                Engineer3: "",
-                Engineer3Mobile: "",
-                Engineer3Email: "",
-              });
-            } else {
-              toast.error(res?.data?.message);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append(
+      //     "RoleID",
+      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+      //   ),
+      //   form.append(
+      //     "LoginName",
+      //     useCryptoLocalStorage("user_Data", "get", "realname")
+      //   ),
+      //   form.append("ActionType", "ClickToShift"),
+      //   form.append("ProjectID", data?.Id || data?.ProjectID),
+      //   form.append(
+      //     "dtShift",
+      //     moment(formData?.FromDate).isValid()
+      //       ? moment(formData?.FromDate).format("YYYY-MM-DD")
+      //       : ""
+      //   ),
+      //   form.append("ProjectData", formDataJson),
+      // axios
+      //   .post(apiUrls?.ProjectMasterUpdate, form, { headers })
+      // const payload = {
+      //   RoleID: useCryptoLocalStorage("user_Data", "get", "RoleID"),
+      //   LoginName: useCryptoLocalStorage("user_Data", "get", "realname"),
+      //   ActionType: "ClickToShift",
+      //   ProjectID: data?.Id || data?.ProjectID,
+      //   dtShift: moment(formData?.FromDate).isValid()
+      //     ? moment(formData?.FromDate).format("YYYY-MM-DD")
+      //     : "",
+      //   ProjectData: formDataJson,
+      // };
+
+      axiosInstances
+        .post(apiUrls?.ProjectMasterUpdate, payload)
+        .then((res) => {
+          if (res?.data?.success === true) {
+            toast.success(res?.data?.message);
+            handleSearch();
+            setFormData({
+              ...formData,
+              VerticalID: "",
+              TeamID: "",
+              WingID: "",
+              Engineer1: "",
+              Engineer1Mobile: "",
+              Engineer1Email: "",
+              Engineer2: "",
+              Engineer2Mobile: "",
+              Engineer2Email: "",
+              Engineer3: "",
+              Engineer3Mobile: "",
+              Engineer3Email: "",
+            });
+          } else {
+            toast.error(res?.data?.message);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
   // const handleSave = () => {
@@ -421,31 +556,37 @@ const ClientToShift = ({ data }) => {
   };
   const handleDocRemove = (ele) => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("ProjectID", ele?.ProjectID),
-      form.append("ActionType", "DeleteDocument"),
-      form.append("DocumentPrimaryID", ele?.UniqueID),
-      axios
-        .post(apiUrls?.ProjectMasterUpdate, form, { headers })
-        .then((res) => {
-          if (res?.data?.status === true) {
-            toast.success(res?.data?.message);
-            handleSearchDocs();
-            setLoading(false);
-          } else {
-            toast.error(res?.data?.message);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("ProjectID", ele?.ProjectID),
+    //   form.append("ActionType", "DeleteDocument"),
+    //   form.append("DocumentPrimaryID", ele?.UniqueID),
+    // axios
+    //   .post(apiUrls?.ProjectMasterUpdate, form, { headers })
+    axiosInstances
+      .post(apiUrls?.ProjectMasterUpdate, {
+        ProjectID: Number(ele?.ProjectID),
+        ActionType: "DeleteDocument",
+        DocumentPrimaryID: Number(ele?.UniqueID),
+      })
+      .then((res) => {
+        if (res?.data?.status === true) {
+          toast.success(res?.data?.message);
+          handleSearchDocs();
           setLoading(false);
-        });
+        } else {
+          toast.error(res?.data?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
   return (
     <>

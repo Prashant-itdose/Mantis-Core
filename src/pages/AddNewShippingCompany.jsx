@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import Tables from "../components/UI/customTable";
 import Tooltip from "./Tooltip";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../networkServices/axiosInstance";
 
 const AddNewShippingCompany = (projectid, visible) => {
   // console.log(visible);
@@ -53,10 +54,12 @@ const AddNewShippingCompany = (projectid, visible) => {
     return ele.length > 0 ? ele[0].label : "";
   }
   const getState = (value) => {
-    let form = new FormData();
-    form.append("CountryID", "14"),
-      axios
-        .post(apiUrls?.GetState, form, { headers })
+    // let form = new FormData();
+    // form.append("CountryID", "14"),
+    //   axios
+    //     .post(apiUrls?.GetState, form, { headers })
+        axiosInstances
+            .post(apiUrls?.GetState, { CountryID: "14" })
         .then((res) => {
           const states = res?.data.data.map((item) => {
             return { label: item?.StateName, value: item?.StateID };
@@ -68,14 +71,22 @@ const AddNewShippingCompany = (projectid, visible) => {
         });
   };
   const getProject = (proj) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      axios
-        .post(apiUrls?.ProjectSelect, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   axios
+    //     .post(apiUrls?.ProjectSelect, form, { headers })
+     axiosInstances
+          .post(apiUrls?.ProjectSelect, {
+            ProjectID: proj,
+            IsMaster: "string",
+            VerticalID: 0,
+            TeamID: 0,
+            WingID: 0,
+          })
         .then((res) => {
           const poc3s = res?.data.data.map((item) => {
             return { label: item?.Project, value: item?.ProjectId };
