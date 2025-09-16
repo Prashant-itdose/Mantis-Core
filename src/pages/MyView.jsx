@@ -236,7 +236,7 @@ const MyView = () => {
         // Date: String(formatDate(formData?.FromDate)),
         // ManagerID: Number(formData?.ReportingTo),
         ProjectID: Number(0),
-        StatusCode: String(code ? code : "0"),
+        // StatusCode: String(code ? code : "0"),
       })
       .then((res) => {
         if (type == "assign") {
