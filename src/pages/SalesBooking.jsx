@@ -67,33 +67,15 @@ const SalesBooking = ({ data }) => {
     ShippingPanCard: "",
   });
   const getState = (value) => {
-<<<<<<< HEAD
-    axiosInstances
-      .post(apiUrls?.GetState, {
-  "CountryID": "14"
-})
-=======
->>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
     // let form = new FormData();
     // form.append("CountryID", "14"),
     //   axios
     //     .post(apiUrls?.GetState, form, { headers })
-<<<<<<< HEAD
-        .then((res) => {
-          const states = res?.data.data.map((item) => {
-            return { label: item?.StateName, value: item?.StateID };
-          });
-          setStatedata(states);
-        })
-        .catch((err) => {
-          console.log(err);
-=======
     axiosInstances
       .post(apiUrls?.GetState, { CountryID: "14" })
       .then((res) => {
         const states = res?.data.data.map((item) => {
           return { label: item?.StateName, value: item?.StateID };
->>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
         });
         setStatedata(states);
       })
@@ -134,47 +116,12 @@ const SalesBooking = ({ data }) => {
     getCompany(formData.Project);
   };
   const getCompany = (proj) => {
-<<<<<<< HEAD
-    axiosInstances
-      .post(apiUrls.BillingCompany_Select, {
-  "ProjectID": Number(proj),
-  "IsActive": "1"
-})
-=======
->>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
     // let form = new FormData();
     // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
     //   form.append("ProjectID", proj),
     //   form.append("IsActive", "1"),
     //   axios
     //     .post(apiUrls?.BillingCompany_Select, form, { headers })
-<<<<<<< HEAD
-        .then((res) => {
-          // console.log("billingcompany", res?.data?.data);
-          const poc3s = res?.data.data.map((item) => {
-            return { label: item?.BillingCompanyName, value: item?.BillingID };
-          });
-          setBillingCompany(poc3s);
-          setShippingCompany(poc3s);
-          setFormData((val) => ({
-            ...val,
-            BillingCompany: res?.data?.data[0]?.BillingID,
-            BillingAddress: res?.data?.data[0]?.BillingAddress,
-            BillingState: res?.data?.data[0]?.StateID,
-            BillingGST: res?.data?.data[0]?.GSTNo,
-            BillingPanCard: res?.data?.data[0]?.PanCardNo,
-
-            ShippingCompany: res?.data?.data[0]?.BillingID,
-            ShippingAddress: res?.data?.data[0]?.BillingAddress,
-            ShippingState: res?.data?.data[0]?.StateID,
-            ShippingGST: res?.data?.data[0]?.GSTNo,
-            ShippingPanCard: res?.data?.data[0]?.PanCardNo,
-          }));
-          // getState()
-        })
-        .catch((err) => {
-          console.log(err);
-=======
     axiosInstances
       .post(apiUrls?.BillingCompany_Select, {
         ProjectID: Number(proj),
@@ -184,7 +131,6 @@ const SalesBooking = ({ data }) => {
         // console.log("billingcompany", res?.data?.data);
         const poc3s = res?.data.data.map((item) => {
           return { label: item?.BillingCompanyName, value: item?.BillingID };
->>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
         });
         setBillingCompany(poc3s);
         setShippingCompany(poc3s);
@@ -210,18 +156,6 @@ const SalesBooking = ({ data }) => {
   };
 
   const getCompanyBill = (proj) => {
-<<<<<<< HEAD
-    axiosInstances
-      .post(apiUrls.BillingCompanyDetail_Select_ID, {
-  "BillingCompanyID": Number(proj)
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("BillingCompanyID", proj),
-    //   // form.append("IsActive", "1"),
-    //   axios
-    //     .post(apiUrls?.BillingCompanyDetail_Select_ID, form, { headers })
-=======
     // let form = new FormData();
     // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
     //   form.append("BillingCompanyID", proj),
@@ -230,7 +164,6 @@ const SalesBooking = ({ data }) => {
       //   .post(apiUrls?.BillingCompanyDetail_Select_ID, form, { headers })
          axiosInstances
       .post(apiUrls?.BillingCompanyDetail_Select_ID, {BillingCompanyID:proj})
->>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
         .then((res) => {
           // console.log("billingcompanydetail",res?.data?.data[0])
           setFormData((val) => ({
@@ -430,16 +363,6 @@ const SalesBooking = ({ data }) => {
   };
 
   const handleGetItemRate = (value) => {
-<<<<<<< HEAD
-    axiosInstances
-      .post(apiUrls.Payement_Installment_Select, {
-  "ProjectID": formData?.Project ? String(formData?.Project) : String(data?.ProjectID),
-  "ItemID": String(value?.value),
-  "ItemName": String(value?.label),
-  "SearchType": "Rate"
-})
-=======
->>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
     // let form = new FormData();
     // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
     //   form.append(
@@ -459,24 +382,6 @@ const SalesBooking = ({ data }) => {
     //   form.append("SearchType", "Rate"),
     //   axios
     //     .post(apiUrls?.Payement_Installment_Select, form, { headers })
-<<<<<<< HEAD
-        .then((res) => {
-          let data = res?.data?.data[0];
-          data.Amount = data.Rate * 1 + data.Rate * 0.18;
-          data.SalesLabel = data.service = value;
-          data.Quantity = 1;
-          data.Discount = 0;
-          data.DiscountPercent = 0;
-          data.PaymentMode = "Online";
-          data.TaxAmount = data.Rate * 0.18;
-          data.TaxPercent = 18;
-          // data.TaxPercent = data.PaymentMode === "Cash" ? 0 : 18;
-          setTableData((val) => [...val, data]);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-=======
     axiosInstances
       .post(apiUrls?.Payement_Installment_Select, {
         ProjectID: Number(
@@ -501,22 +406,10 @@ const SalesBooking = ({ data }) => {
       .catch((err) => {
         console.log(err);
       });
->>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
   };
   // console.log("tableData", tableData);
 
   const getProject = () => {
-<<<<<<< HEAD
-    axiosInstances
-      .post(apiUrls.ProjectSelect, {
-  "ProjectID": 0,
-  "IsMaster": "0",
-  "VerticalID": 0,
-  "TeamID": 0,
-  "WingID": 0
-})
-=======
->>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
     // let form = new FormData();
     // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
     //   form.append(
@@ -525,17 +418,6 @@ const SalesBooking = ({ data }) => {
     //   ),
     //   axios
     //     .post(apiUrls?.ProjectSelect, form, { headers })
-<<<<<<< HEAD
-        .then((res) => {
-          const poc3s = res?.data.data.map((item) => {
-            return { label: item?.Project, value: item?.ProjectId };
-          });
-          getCategory(poc3s[0]?.value);
-          setProject(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
-=======
     axiosInstances
       .post(apiUrls?.ProjectSelect, {
         ProjectID: 0,
@@ -547,7 +429,6 @@ const SalesBooking = ({ data }) => {
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return { label: item?.Project, value: item?.ProjectId };
->>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
         });
         getCategory(poc3s[0]?.value);
         setProject(poc3s);
@@ -559,35 +440,16 @@ const SalesBooking = ({ data }) => {
   const [salesData, setSalesData] = useState([]);
 
   const getCategory = (proj) => {
-<<<<<<< HEAD
-    axiosInstances
-      .post(apiUrls.Category_Select, {
-  "RoleID": 0,
-  "ProjectID": Number(proj)
-})
-=======
->>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
     // let form = new FormData();
     // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
     //   form.append("ProjectID", proj),
     //   axios
     //     .post(apiUrls?.Category_Select, form, { headers })
-<<<<<<< HEAD
-        .then((res) => {
-          const poc3s = res?.data.data.map((item) => {
-            return { label: item?.NAME, value: item?.ID };
-          });
-          setCategory(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
-=======
     axiosInstances
       .post(apiUrls?.Category_Select, { ProjectID: proj })
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return { label: item?.NAME, value: item?.ID };
->>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
         });
         setCategory(poc3s);
       })
@@ -703,39 +565,6 @@ const SalesBooking = ({ data }) => {
   }, []);
 
   const handleGetItemSearch = (value) => {
-<<<<<<< HEAD
-    axiosInstances
-      .post(apiUrls.Payement_Installment_Select, {
-  "ProjectID": String(value),
-  "ItemID": "",
-  "ItemName": "",
-  "SearchType": "GetItem"
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ProjectID", value),
-    //   form.append("ItemID", ""),
-    //   form.append("ItemName", ""),
-    //   form.append("SearchType", "GetItem"),
-    //   axios
-    //     .post(apiUrls?.Payement_Installment_Select, form, { headers })
-        .then((res) => {
-          const poc3s = res?.data.data.map((item) => {
-            return { label: item?.ItemNameGroup, value: item?.ItemIDGroup };
-          });
-          setItems(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
-=======
     //   let form = new FormData();
     //   form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
     //     form.append(
@@ -766,7 +595,6 @@ const SalesBooking = ({ data }) => {
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return { label: item?.NAME, value: item?.ID };
->>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
         });
         setItems(poc3s);
       })

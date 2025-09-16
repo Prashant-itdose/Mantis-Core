@@ -10,6 +10,7 @@ import { apiUrls } from "../../networkServices/apiEndpoints";
 import { headers } from "../../utils/apitools";
 import axios from "axios";
 import { useCryptoLocalStorage } from "../../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../../networkServices/axiosInstance";
 const DeveloperTask = () => {
   const [t] = useTranslation();
   const [listVisible, setListVisible] = useState(false);
@@ -53,12 +54,18 @@ const DeveloperTask = () => {
   };
 
   const handleFirstDashboardCount = (developerId, searchType) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    form.append("DeveloperID", developerId);
-    form.append("SearchType", searchType == "" ? "0" : searchType);
-    axios
-      .post(apiUrls?.CoorDashboard_Developer_Availability, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
+    // form.append("DeveloperID", developerId);
+    // form.append("SearchType", searchType == "" ? "0" : searchType);
+    // axios
+    //   .post(apiUrls?.CoorDashboard_Developer_Availability, form, { headers })
+      axiosInstances
+      .post(apiUrls.CoorDashboard_Developer_Availability, {
+        CoordinatorID: Number(useCryptoLocalStorage("user_Data", "get", "ID")),
+        DeveloperID: Number(developerId),
+        SearchType: Number(searchType == "" ? "0" : searchType),
+      })
       .then((res) => {
         setTableData(res?.data?.data);
       })

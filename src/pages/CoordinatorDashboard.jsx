@@ -201,11 +201,11 @@ const CoordinatorDashboard = () => {
       });
   };
 
-   const handleFirstDashboardCount = () => {
+  const handleFirstDashboardCount = () => {
     axiosInstances
       .post(apiUrls.DevDashboard_Summary, {
         Title: String("Heads"),
-        DeveloperID: String(memberID || "0"),
+        DeveloperID: Number(memberID || "0"),
       })
       .then((res) => {
         setCountData(res.data.data.dtSummary[0]);
@@ -258,13 +258,21 @@ const CoordinatorDashboard = () => {
   const handleMultiChart = (value, developerId, searchType) => {
     const lotus = moment(value).format("YYYY-MM-DD");
     // console.log("check lotus", lotus);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("dtFrom", lotus),
-      form.append("DeveloperID", developerId);
-    form.append("SearchType", searchType === "" ? "0" : searchType);
-    axios
-      .post(apiUrls?.CoorDashboard_Quotation_Month, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("dtFrom", lotus),
+    //   form.append("DeveloperID", developerId);
+    // form.append("SearchType", searchType === "" ? "0" : searchType);
+    // axios
+    //   .post(apiUrls?.CoorDashboard_Quotation_Month, form, { headers })
+    const payload = {
+      dtFrom: String(lotus || ""),
+      DeveloperID: String(developerId || ""),
+      SearchType: String(searchType === "" ? "0" : searchType),
+    };
+
+    axiosInstances
+      .post(apiUrls?.CoorDashboard_Quotation_Month, payload)
       .then((res) => {
         setFilterData(res?.data?.data);
       })

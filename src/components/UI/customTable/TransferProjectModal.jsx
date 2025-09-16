@@ -32,7 +32,7 @@ const TransferProjectModal = ({ tableData, userData, setVisible }) => {
       })
         .then((res) => {
           const assigntos = res?.data?.data?.map((item) => {
-            return { label: item?.Username, value: item?.id };
+            return { label: item?.Username, value: item?.Id };
           });
           setReporter(assigntos);
         })
@@ -67,6 +67,9 @@ const TransferProjectModal = ({ tableData, userData, setVisible }) => {
   };
   const handleusermapping = () => {
     setLoading(true);
+      console.log("SourceUserrrrrrrrrrrrr:", formData?.SourceUser);
+  console.log("TargetUserrrrrrrrrrrrrrrr:", formData?.TargetUser);
+  console.log("tableDataaaaaaaaaaa:", tableData);
     // let form = new FormData();
     // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
     //   // form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID")),
@@ -81,14 +84,15 @@ const TransferProjectModal = ({ tableData, userData, setVisible }) => {
     //   form.append("ProjectID", "0"),
     //   axios
     //     .post(apiUrls?.UserVsProjectMapping, form, { headers })
-       axiosInstances.post(apiUrls.UserVsProjectMapping, {
-            Status: formData?.Status || "Add",
-            TargetUserID: formData?.User || 0,
-            AccessType: formData?.AccessType || "",
-            ProjectIDs: Array.isArray(formData?.Project)
-              ? formData?.Project   
-              : [formData?.Project] 
-          })
+axiosInstances.post(apiUrls.UserVsProjectMapping, {
+  Status: "Transfer",                          // ✅ string
+  TargetUserID: formData?.TargetUser?.value || 0, // ✅ integer
+  AccessType: "90",                            // ✅ string
+  ProjectIDs: Array.isArray(formData?.Project)
+    ? formData?.Project.map(p => p.value ?? p) // if it's objects, pick .value
+    : [formData?.Project?.value ?? formData?.Project] // wrap single value
+})
+
         .then((res) => {
           if (res?.data?.status === true) {
             toast.success(res?.data?.message);

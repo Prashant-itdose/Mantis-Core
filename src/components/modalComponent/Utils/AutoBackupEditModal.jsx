@@ -37,20 +37,21 @@ const AutoBackupEditModal = ({ visible, setVisible }) => {
 
   const handleSubmit = () => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ProjectID", visible?.showData?.id);
-    form.append("Owner_Name", formData?.OwnerName);
-    form.append("Owner_Mobile", formData?.OwnerMobile);
-    form.append("Owner_Email", formData?.OwnerEmail);
-    form.append("SPOC_Name", formData?.SPOCName);
-    form.append("SPOC_Mobile", formData?.SPOCMobile);
-    form.append("SPOC_EmailID", formData?.SPOCEmail);
-    form.append("ItPersonName", formData?.ItPersonName);
-    form.append("ItPersonMobile", formData?.ItPersonMobile);
-    form.append("ItPersonEmail", formData?.ItPersonEmail);
+    // let form = new FormData();
+    // form.append("ProjectID", visible?.showData?.id);
+    // form.append("Owner_Name", formData?.OwnerName);
+    // form.append("Owner_Mobile", formData?.OwnerMobile);
+    // form.append("Owner_Email", formData?.OwnerEmail);
+    // form.append("SPOC_Name", formData?.SPOCName);
+    // form.append("SPOC_Mobile", formData?.SPOCMobile);
+    // form.append("SPOC_EmailID", formData?.SPOCEmail);
+    // form.append("ItPersonName", formData?.ItPersonName);
+    // form.append("ItPersonMobile", formData?.ItPersonMobile);
+    // form.append("ItPersonEmail", formData?.ItPersonEmail);
 
     // axios
     //   .post(apiUrls?.SPOC_Update, form, { headers })
+<<<<<<< HEAD
     const payload = {
       ProjectID: Number(visible?.showData?.id || 0),
       Owner_Name: String(formData?.OwnerName || ""),
@@ -66,6 +67,22 @@ const AutoBackupEditModal = ({ visible, setVisible }) => {
 
     axiosInstances
       .post(apiUrls?.SPOC_Update, payload)
+=======
+    axiosInstances
+      .post(apiUrls.SPOC_Update, {  
+        ProjectID: visible?.showData?.id,
+        Owner_Name: String(formData?.OwnerName),
+        Owner_Mobile: String(formData?.OwnerMobile),
+        Owner_Email: String(formData?.OwnerEmail),
+        SPOC_Name: String(formData?.SPOCName),
+        SPOC_Mobile: String(formData?.SPOCMobile),
+        SPOC_EmailID: String(formData?.SPOCEmail),
+        ItPersonName: String(formData?.ItPersonName),
+        ItPersonMobile: String(formData?.ItPersonMobile),
+        ItPersonEmail: String(formData?.ItPersonEmail),
+  
+      })
+>>>>>>> 53d531be332c51cedb92569d6b4544e92640b1a4
       .then((res) => {
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);

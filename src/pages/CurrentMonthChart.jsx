@@ -1,4 +1,3 @@
-
 // import React, { useEffect, useState } from "react";
 // import { Bar } from "react-chartjs-2";
 // import {
@@ -25,19 +24,18 @@
 //   Legend
 // );
 
-
 // const CurrentMonthChart = () => {
 //   const { memberID } = useSelector(
 //     (state) => state?.loadingSlice
 //   );
 //   const { developerSearchType } = useSelector(
-//     (state) => state?.loadingSlice 
+//     (state) => state?.loadingSlice
 //   );
 
 //   const [chartRawData, setChartRawData] = useState([]);
 
 //   const fetchSalesData = (developerId, searchType) => {
-//     let form = new FormData();  
+//     let form = new FormData();
 //     form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
 //     form.append("DeveloperID", developerId);
 //     form.append("SearchType", searchType == "" ? "0" : searchType);
@@ -58,10 +56,8 @@
 //   fetchSalesData(memberID, developerSearchType);
 //   }, [memberID, developerSearchType]);
 
-
 //   const transformData = (data) => {
 //     const labels = data.map((item) => item.DataType);
-  
 
 //     return {
 //       labels,
@@ -186,6 +182,7 @@ import { apiUrls } from "../networkServices/apiEndpoints";
 import { headers } from "../utils/apitools";
 import { useSelector } from "react-redux";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../networkServices/axiosInstance";
 
 const CurrentMonthChart = () => {
   const { t } = useTranslation();
@@ -195,12 +192,18 @@ const CurrentMonthChart = () => {
   const [chartData, setChartData] = useState([]);
 
   const handleFetchSalesData = (developerId, searchType) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    form.append("DeveloperID", developerId);
-    form.append("SearchType", searchType === "" ? "0" : searchType);
-    axios
-      .post(apiUrls?.CoorDashboard_Current_Month_Bifurcation, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
+    // form.append("DeveloperID", developerId);
+    // form.append("SearchType", searchType === "" ? "0" : searchType);
+    // axios
+    //   .post(apiUrls?.CoorDashboard_Current_Month_Bifurcation, form, { headers })
+    axiosInstances
+      .post(apiUrls.CoorDashboard_Current_Month_Bifurcation, {
+        CoordinatorID: Number(useCryptoLocalStorage("user_Data", "get", "ID")),
+        DeveloperID: Number(developerId),
+        SearchType: Number(searchType == "" ? "0" : searchType),
+      })
       .then((res) => {
         setChartData(res?.data?.data || []);
       })
