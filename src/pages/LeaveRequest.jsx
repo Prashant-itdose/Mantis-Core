@@ -9,7 +9,7 @@ import { headers } from "../utils/apitools";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import LeaveRequestModal from "./LeaveRequestModal";
 import Loading from "../components/loader/Loading";
-
+import { axiosInstances } from "../networkServices/axiosInstance";
 const getDaysInMonth = (year, month) => {
   return new Array(new Date(year, month, 0).getDate())
     .fill(null)
@@ -94,7 +94,7 @@ const LeaveRequest = ({ data }) => {
     }
 
     // Case 2: Optional leave requested but not approved
-    if (IsApproved == 0 && HasLeave === "OL" ) {
+    if (IsApproved == 0 && HasLeave === "OL") {
       return "optional-leave";
     }
 
@@ -208,7 +208,7 @@ const LeaveRequest = ({ data }) => {
               day,
               i,
               today,
-              CalenderDetails?.Table1 ? CalenderDetails?.Table1 : []
+              CalenderDetails?.[1] ? CalenderDetails?.[1] : []
             ) // Pass today's date to the renderDay function
           ) : (
             <td key={i} className="empty-day"></td> // Render empty cells for padding
@@ -227,35 +227,42 @@ const LeaveRequest = ({ data }) => {
 
   const handleLeaveRequest_BindCalender = (details) => {
     setLoading(true);
-    let form = new FormData();
-    form.append(
-      "ID",
-      data?.EmployeeId ||
-        data?.Employee_Id ||
-        useCryptoLocalStorage("user_Data", "get", "ID")
-    );
+    // let form = new FormData();
+    // form.append(
+    //   "ID",
+    //   data?.EmployeeId ||
+    //     data?.Employee_Id ||
+    //     useCryptoLocalStorage("user_Data", "get", "ID")
+    // );
 
-    form.append(
-      "LoginName",
-      data ? data?.Name : useCryptoLocalStorage("user_Data", "get", "realname")
-    ),
-      form.append("CrmEmpID", data?.Employee_Id || data?.EmployeeId || CRMID),
-      form.append("Month", details ? details?.month : currentMonth),
-      form.append("Year", details ? details?.year : currentYear),
-      axios
-        .post(apiUrls?.LeaveRequest_BindCalender, form, { headers })
-        .then((res) => {
-          setCalenderDetails(res?.data?.data);
+    // form.append(
+    //   "LoginName",
+    //   data ? data?.Name : useCryptoLocalStorage("user_Data", "get", "realname")
+    // ),
+    //   form.append("CrmEmpID", data?.Employee_Id || data?.EmployeeId || CRMID),
+    //   form.append("Month", details ? details?.month : currentMonth),
+    //   form.append("Year", details ? details?.year : currentYear),
+    //   axios
+    //     .post(apiUrls?.LeaveRequest_BindCalender, form, { headers })
+    axiosInstances
+      .post(apiUrls.LeaveRequest_BindCalender, {
+        CrmEmpID: Number(data?.Employee_Id || data?.EmployeeId || CRMID),
+        Year: Number(details ? details?.year : currentYear),
+        Month: Number(details ? details?.month : currentMonth),
+      })
+      .then((res) => {
+        console.log("data data ", res.data.data);
+        setCalenderDetails(res?.data?.data);
 
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-          setLoading(false);
-        });
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
 
-  const leaveData = CalenderDetails?.Table || [];
+  const leaveData = CalenderDetails?.[0] || [];
 
   const getLeaveAvailable = (leaveType) => {
     // console.log("leavetype", leaveType);
@@ -322,88 +329,91 @@ const LeaveRequest = ({ data }) => {
           />
         </Modal>
       )}
-   {loading ? <Loading /> :   <div className="card">
-        <Heading title={"Attendance Calendar"} isBreadcrumb={true} />
-        <div className="row g-4 m-2">
-          <div className="col-sm-2 ">
-            <div className="d-flex">
-              <label className="mr-2">Name :</label>
-              <span style={{ textAlign: "right" }}>
-                {data ? data?.Name : LoginUserName}
-              </span>
+      {loading ? (
+        <Loading />
+      ) : (
+        <div className="card">
+          <Heading title={"Attendance Calendar"} isBreadcrumb={true} />
+          <div className="row g-4 m-2">
+            <div className="col-sm-2 ">
+              <div className="d-flex">
+                <label className="mr-2">Name :</label>
+                <span style={{ textAlign: "right" }}>
+                  {data ? data?.Name : LoginUserName}
+                </span>
+              </div>
             </div>
-          </div>
-          <div className="col-sm-4 d-flex">
-            <div className="">
-              <label>Leave Month/Year :</label>
+            <div className="col-sm-4 d-flex">
+              <div className="">
+                <label>Leave Month/Year :</label>
+              </div>
+              <div className="cl-sm-4">
+                <DatePickerMonth
+                  className="custom-calendar"
+                  id="Month"
+                  name="Month"
+                  lable="Month/Year"
+                  placeholder={"MM/YY"}
+                  respclass="col-xl-12 col-md-6 col-sm-6 col-12"
+                  value={formData?.Month}
+                  handleChange={(e) => handleMonthYearChange("Month", e)}
+                />
+              </div>
             </div>
-            <div className="cl-sm-4">
-              <DatePickerMonth
-                className="custom-calendar"
-                id="Month"
-                name="Month"
-                lable="Month/Year"
-                placeholder={"MM/YY"}
-                respclass="col-xl-12 col-md-6 col-sm-6 col-12"
-                value={formData?.Month}
-                handleChange={(e) => handleMonthYearChange("Month", e)}
-              />
-            </div>
-          </div>
-          <div className="col-sm-2"></div>
+            <div className="col-sm-2"></div>
 
-          <div className="col-sm-4">
-            <div className="d-flex flex-wrap">
-              <label className="mr-5">Available </label>
-              <label className="mr-5">
-                CL :
-                <span style={{ color: "red" }}>
-                  &nbsp;{getLeaveAvailable("CL")}
-                </span>
-              </label>
-              <label className="mr-5">
-                SL :
-                <span style={{ color: "red" }}>
-                  &nbsp;{getLeaveAvailable("SL")}
-                </span>
-              </label>
-              <label className="mr-5">
-                WO :
-                <span style={{ color: "red" }}>
-                  &nbsp; {getLeaveAvailable("WO")}
-                </span>
-              </label>
-              <label className="mr-5">
-                OL :
-                <span style={{ color: "red" }}>
-                  &nbsp; {getLeaveAvailable("OL")}
-                </span>
-              </label>
+            <div className="col-sm-4">
+              <div className="d-flex flex-wrap">
+                <label className="mr-5">Available </label>
+                <label className="mr-5">
+                  CL :
+                  <span style={{ color: "red" }}>
+                    &nbsp;{getLeaveAvailable("CL")}
+                  </span>
+                </label>
+                <label className="mr-5">
+                  SL :
+                  <span style={{ color: "red" }}>
+                    &nbsp;{getLeaveAvailable("SL")}
+                  </span>
+                </label>
+                <label className="mr-5">
+                  WO :
+                  <span style={{ color: "red" }}>
+                    &nbsp; {getLeaveAvailable("WO")}
+                  </span>
+                </label>
+                <label className="mr-5">
+                  OL :
+                  <span style={{ color: "red" }}>
+                    &nbsp; {getLeaveAvailable("OL")}
+                  </span>
+                </label>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="row d-flex custom-layout">
-          <div className="col-md-9 calendar-container-wrapper">
-            <div className="calendar-container">
-              <table className="calendar">
-                <thead style={{ color: "#0099ff" }}>
-                  <tr>
-                    <th>Sunday</th>
-                    <th>Monday</th>
-                    <th>Tuesday</th>
-                    <th>Wednesday</th>
-                    <th>Thursday</th>
-                    <th>Friday</th>
-                    <th>Saturday</th>
-                  </tr>
-                </thead>
-                <tbody>{renderCalendarRows()}</tbody>
-              </table>
+          <div className="row d-flex custom-layout">
+            <div className="col-md-9 calendar-container-wrapper">
+              <div className="calendar-container">
+                <table className="calendar">
+                  <thead style={{ color: "#0099ff" }}>
+                    <tr>
+                      <th>Sunday</th>
+                      <th>Monday</th>
+                      <th>Tuesday</th>
+                      <th>Wednesday</th>
+                      <th>Thursday</th>
+                      <th>Friday</th>
+                      <th>Saturday</th>
+                    </tr>
+                  </thead>
+                  <tbody>{renderCalendarRows()}</tbody>
+                </table>
+              </div>
             </div>
-          </div>
-          <div className="col-md-3 legend-wrapper">
-            {/* {data && ReportingManager == 1 && (
+            <div className="col-md-3 legend-wrapper">
+              {/* {data && ReportingManager == 1 && (
               <button
                 className="btn btn-sm mb-2"
                 style={{
@@ -416,36 +426,38 @@ const LeaveRequest = ({ data }) => {
                 Approve All
               </button>
             )} */}
-            <div className="legend">
-              <p>
-                <span className="pending-approval"></span> Pending Approval
-              </p>
-              <p>
-                <span className="approved-leave"></span> Approved Leave
-              </p>
-              <p>
-                <span className="gazetted-holiday"></span> Gazetted/Restricted
-                Holiday
-              </p>
-              <p>
-                <span className="optional-leave"></span> Optional Leave
-              </p>
-              <p>
-                <span className="missing-attendance"></span> Missing Attendance
-              </p>
-              <p>
-                <span className="working-day"></span> Working Day
-              </p>
-            </div>
-            <div>
-              <span style={{ color: "red" }}>
-                <strong>Note</strong>: Pending SL will carry forward in the next
-                financial year
-              </span>
+              <div className="legend">
+                <p>
+                  <span className="pending-approval"></span> Pending Approval
+                </p>
+                <p>
+                  <span className="approved-leave"></span> Approved Leave
+                </p>
+                <p>
+                  <span className="gazetted-holiday"></span> Gazetted/Restricted
+                  Holiday
+                </p>
+                <p>
+                  <span className="optional-leave"></span> Optional Leave
+                </p>
+                <p>
+                  <span className="missing-attendance"></span> Missing
+                  Attendance
+                </p>
+                <p>
+                  <span className="working-day"></span> Working Day
+                </p>
+              </div>
+              <div>
+                <span style={{ color: "red" }}>
+                  <strong>Note</strong>: Pending SL will carry forward in the
+                  next financial year
+                </span>
+              </div>
             </div>
           </div>
         </div>
-      </div>}
+      )}
     </>
   );
 };

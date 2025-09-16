@@ -5,6 +5,7 @@ import { apiUrls } from "../networkServices/apiEndpoints";
 import { headers } from "../utils/apitools";
 import NoRecordFound from "../components/formComponent/NoRecordFound";
 import Tables from "../components/UI/customTable";
+import { axiosInstances } from "../networkServices/axiosInstance";
 
 const ShortBreakLogModal = ({ visible }) => {
   //   console.log("visisble", visible);
@@ -12,22 +13,27 @@ const ShortBreakLogModal = ({ visible }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tableData, setTableData] = useState([]);
   const handleSearch = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("AttType", "ShortAtt"),
-      form.append("AttSummaryID", visible?.showData?.shortSummaryLogId),
-      axios
-        .post(apiUrls?.ForceFullyShortBreakAttendanceSearch, form, { headers })
-        .then((res) => {
-          setTableData(res?.data?.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("AttType", "ShortAtt"),
+    //   form.append("AttSummaryID", visible?.showData?.shortSummaryLogId),
+    //   axios
+    //     .post(apiUrls?.ForceFullyShortBreakAttendanceSearch, form, { headers })
+    axiosInstances
+      .post(apiUrls.ForceFullyShortBreakAttendanceSearch, {
+        AttType: String("ShortAtt"),
+        AttSummaryID: Number(visible?.showData?.shortSummaryLogId),
+      })
+      .then((res) => {
+        setTableData(res?.data?.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const shortTHEAD = [
     "S.No.",

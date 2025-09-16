@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import { showWorkingDaysTHEAD } from "../components/modalComponent/Utils/HealperThead";
 import { exportToExcel, ExportToExcelColor } from "../networkServices/Tools";
+import { axiosInstances } from "../networkServices/axiosInstance";
 
 const currentDate = new Date();
 const currentMonth = currentDate.getMonth() + 1; // Months are 0-indexed, so add 1
@@ -46,7 +47,6 @@ const AttendanceReport = () => {
     SearchType: "1",
   });
 
- 
   const IsEmployee = useCryptoLocalStorage("user_Data", "get", "realname");
   const ReportingManager = useCryptoLocalStorage(
     "user_Data",
@@ -83,14 +83,13 @@ const AttendanceReport = () => {
     }
   };
   const getReporter = () => {
-    let form = new FormData();
-    form.append(
-      "CrmEmployeeID",
-      useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-    );
-    form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID"));
-    axios
-      .post(apiUrls?.EmployeeEmail, form, { headers })
+    axiosInstances
+      .post(apiUrls.EmployeeEmail, {
+        CrmEmployeeID: Number(
+          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+        ),
+        RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
+      })
       .then((res) => {
         const assigntos = res?.data?.data?.map((item) => {
           return { name: item?.EmployeeName, code: item?.Employee_ID };
@@ -102,36 +101,33 @@ const AttendanceReport = () => {
       });
   };
   const getTeam = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Old_Mantis_Team_Select, form, { headers })
-        .then((res) => {
-          const teams = res?.data.data.map((item) => {
-            return { label: item?.Team, value: item?.TeamID };
-          });
-          setTeam(teams);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls.Old_Mantis_Team_Select, {})
+      .then((res) => {
+        const teams = res?.data.data.map((item) => {
+          return { label: item?.Team, value: item?.TeamID };
         });
+        setTeam(teams);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const getSubTeam = (item) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("TeamName", item?.label),
-      axios
-        .post(apiUrls?.Old_Mantis_Sub_Team_Select, form, { headers })
-        .then((res) => {
-          const teams = res?.data?.data?.map((item) => {
-            return { label: item?.SubTeam, value: item?.ID };
-          });
-          setSubTeam(teams);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls.Old_Mantis_Sub_Team_Select, {
+        TeamName: String(item?.label),
+      })
+      .then((res) => {
+        const teams = res?.data?.data?.map((item) => {
+          return { label: item?.SubTeam, value: item?.ID };
         });
+        setSubTeam(teams);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleMonthYearChange = (name, e) => {
@@ -529,39 +525,54 @@ const AttendanceReport = () => {
     setAttendanceTHEAD(dynamicHeader); // 👈 set header
 
     // 2️⃣ Prepare form data
-    let form = new FormData();
-    form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-    form.append(
-      "LoginName",
-      useCryptoLocalStorage("user_Data", "get", "realname")
-    );
-    form.append("Month", selectedMonth);
-    form.append("Year", selectedYear);
-    form.append(
-      "EmployeeID",
-      formData?.EmployeeName?.length > 0 ? formData.EmployeeName : "0"
-    );
-    form.append("Team", getlabel(formData?.TeamID, team) || "");
-    form.append("SubTeam", formData?.SubTeamID || "");
-    form.append("ReportType", "");
-    form.append("SearchType", formData?.SearchType);
-
-    // 3️⃣ API call
-    axios
-      .post(apiUrls?.AttendanceReoprtTypeWise, form, { headers })
-
+    // let form = new FormData();
+    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
+    // form.append(
+    //   "LoginName",
+    //   useCryptoLocalStorage("user_Data", "get", "realname")
+    // );
+    // form.append("Month", selectedMonth);
+    // form.append("Year", selectedYear);
+    // form.append(
+    //   "EmployeeID",
+    //   formData?.EmployeeName?.length > 0 ? formData.EmployeeName : "0"
+    // );
+    // form.append("Team", getlabel(formData?.TeamID, team) || "");
+    // form.append("SubTeam", formData?.SubTeamID || "");
+    // form.append("ReportType", "");
+    // form.append("SearchType", formData?.SearchType);
+    // axios
+    //   .post(apiUrls?.AttendanceReoprtTypeWise, form, { headers })
+    axiosInstances
+      .post(apiUrls.AttendanceReoprtTypeWise, {
+        Month: String(selectedMonth),
+        Year: String(selectedYear),
+        SubTeam: String(formData?.SubTeamID || ""),
+        Team: String(getlabel(formData?.TeamID, team) || ""),
+        ReportType: String(""),
+        EmployeeID: String(
+          formData?.EmployeeName?.length > 0 ? formData.EmployeeName : "0"
+        ),
+        AttendanceType: Number(formData?.SearchType),
+      })
       .then((res) => {
-        const leaveData = Array.isArray(res?.data?.dtMontReport)
-          ? res.data.dtMontReport
+        // const leaveData = Array.isArray(res?.data?.dtMontReport)
+        //   ? res.data.dtMontReport
+        //   : [];
+        const leaveData = Array.isArray(res?.data?.data)
+          ? res.data.data
           : [];
         // console.log("leaveData", leaveData);
         setTableData1(leaveData);
         setFilteredData1(leaveData);
-        if (res?.data?.status === true) {
-          const apiData = Array.isArray(res?.data?.dtAttReport)
-            ? res.data.dtAttReport
+        if (res?.data?.success === true) {
+          const apiData = Array.isArray(res?.data?.data)
+            ? res.data.data
             : [];
-          // console.log("ApiData", apiData);
+          // const apiData = Array.isArray(res?.data?.dtAttReport)
+          //   ? res.data.dtAttReport
+          //   : [];
+        
 
           const formattedRows = apiData?.map((row, index) => {
             const {
@@ -665,28 +676,37 @@ const AttendanceReport = () => {
     setAttendanceTHEAD(dynamicHeader); // 👈 set header
 
     // 2️⃣ Prepare form data
-    let form = new FormData();
-    form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-    form.append(
-      "LoginName",
-      useCryptoLocalStorage("user_Data", "get", "realname")
-    );
-    form.append("Month", selectedMonth);
-    form.append("Year", selectedYear);
-    form.append(
-      "EmployeeID",
+    // let form = new FormData();
+    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
+    // form.append(
+    //   "LoginName",
+    //   useCryptoLocalStorage("user_Data", "get", "realname")
+    // );
+    // form.append("Month", selectedMonth);
+    // form.append("Year", selectedYear);
+    // form.append(
+    //   "EmployeeID",
 
-      Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID"))
-    );
-    form.append("Team", "");
-    form.append("SubTeam", "");
-    form.append("ReportType", "");
-    form.append("SearchType", formData?.SearchType);
-
-    // 3️⃣ API call
-    axios
-      .post(apiUrls?.AttendanceReoprtTypeWise, form, { headers })
-
+    //   Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID"))
+    // );
+    // form.append("Team", "");
+    // form.append("SubTeam", "");
+    // form.append("ReportType", "");
+    // form.append("SearchType", formData?.SearchType);
+    // axios
+    //   .post(apiUrls?.AttendanceReoprtTypeWise, form, { headers })
+    axiosInstances
+      .post(apiUrls.AttendanceReoprtTypeWise, {
+        Month: String(selectedMonth),
+        Year: String(selectedYear),
+        SubTeam: String(""),
+        Team: String(""),
+        ReportType: String(""),
+        EmployeeID: String(
+          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+        ),
+        AttendanceType: Number(formData?.SearchType),
+      })
       .then((res) => {
         const leaveData = Array.isArray(res?.data?.dtMontReport)
           ? res.data.dtMontReport

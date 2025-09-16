@@ -7,6 +7,7 @@ import { headers } from "../utils/apitools";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import moment from "moment/moment";
 import Loading from "../components/loader/Loading";
+import { axiosInstances } from "../networkServices/axiosInstance";
 
 const LeaveRequestModal = ({
   visible,
@@ -67,91 +68,118 @@ const LeaveRequestModal = ({
   };
 
   const getOLTypeWise = () => {
-    let form = new FormData();
+    // let form = new FormData();
     const now = new Date();
     const currentYear = now.getFullYear();
     const currentMonth = String(now.getMonth() + 1).padStart(2, "0");
-    form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append(
-        "CrmEmpID",
-        useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      ),
-      form.append("Year", currentYear),
-      form.append("Month", currentMonth),
-      form.append("LeaveType", "1"),
-      axios
-        .post(apiUrls?.WOandOLTypeWise, form, { headers })
-        .then((res) => {
-          const verticals = res?.data?.dtOL?.map((item) => {
-            return { label: item?.Day, value: item?.Day };
-          });
-          setOLTypeWise(verticals);
-        })
-        .catch((err) => {
-          console.log(err);
+    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append(
+    //     "CrmEmpID",
+    //     useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+    //   ),
+    //   form.append("Year", currentYear),
+    //   form.append("Month", currentMonth),
+    //   form.append("LeaveType", "1"),
+    //   axios
+    //     .post(apiUrls?.WOandOLTypeWise, form, { headers })
+    axiosInstances
+      .post(apiUrls.WOandOLTypeWise, {
+        Month: String(currentMonth),
+        Year: String(currentYear),
+        CrmEmpID: Number(
+          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+        ),
+        LeaveType: Number(1),
+      })
+      .then((res) => {
+        const verticals = res?.data?.dtOL?.map((item) => {
+          return { label: item?.Day, value: item?.Day };
         });
+        setOLTypeWise(verticals);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getWOTypeWise = () => {
-    let form = new FormData();
+    // let form = new FormData();
     const now = new Date();
     const currentYear = now.getFullYear();
     const currentMonth = String(now.getMonth() + 1).padStart(2, "0");
-    form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append(
-        "CrmEmpID",
-        useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      ),
-      form.append("Year", currentYear),
-      form.append("Month", currentMonth),
-      form.append("LeaveType", "2"),
-      axios
-        .post(apiUrls?.WOandOLTypeWise, form, { headers })
-        .then((res) => {
-          const verticals = res?.data?.dtSunday?.map((item) => {
-            return { label: item?.Day, value: item?.Day };
-          });
-          setWOTypeWise(verticals);
-        })
-        .catch((err) => {
-          console.log(err);
+    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append(
+    //     "CrmEmpID",
+    //     useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+    //   ),
+    //   form.append("Year", currentYear),
+    //   form.append("Month", currentMonth),
+    //   form.append("LeaveType", "2"),
+    //   axios
+    //     .post(apiUrls?.WOandOLTypeWise, form, { headers })
+    axiosInstances
+      .post(apiUrls.WOandOLTypeWise, {
+        Month: String(currentMonth),
+        Year: String(currentYear),
+        CrmEmpID: Number(
+          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+        ),
+        LeaveType: Number(2),
+      })
+      .then((res) => {
+        const verticals = res?.data?.dtSunday?.map((item) => {
+          return { label: item?.Day, value: item?.Day };
         });
+        setWOTypeWise(verticals);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getHLTypeWise = () => {
-    let form = new FormData();
+    // let form = new FormData();
     const now = new Date();
     const currentYear = now.getFullYear();
     const currentMonth = String(now.getMonth() + 1).padStart(2, "0");
-    form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append(
-        "CrmEmpID",
-        useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      ),
-      form.append("Year", currentYear),
-      form.append("Month", currentMonth),
-      form.append("LeaveType", "3"),
-      axios
-        .post(apiUrls?.WOandOLTypeWise, form, { headers })
-        .then((res) => {
-          const verticals = res?.data?.dtHoly?.map((item) => {
-            return { label: item?.Day, value: item?.Day };
-          });
-          setHLTypeWise(verticals);
-        })
-        .catch((err) => {
-          console.log(err);
+    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append(
+    //     "CrmEmpID",
+    //     useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+    //   ),
+    //   form.append("Year", currentYear),
+    //   form.append("Month", currentMonth),
+    //   form.append("LeaveType", "3"),
+    //   axios
+    //     .post(apiUrls?.WOandOLTypeWise, form, { headers })
+    axiosInstances
+      .post(apiUrls.WOandOLTypeWise, {
+        Month: String(currentMonth),
+        Year: String(currentYear),
+        CrmEmpID: Number(
+          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+        ),
+        LeaveType: Number(3),
+      })
+      .then((res) => {
+        const verticals = res?.data?.dtHoly?.map((item) => {
+          return { label: item?.Day, value: item?.Day };
         });
+        setHLTypeWise(verticals);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const handleChange = (e) => {
     const { name, value } = e?.target;
@@ -164,42 +192,52 @@ const LeaveRequestModal = ({
   };
   const handleLeaveRequest_Save = () => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append(
-        "CRMEmpID",
-        useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      ),
-      form.append("FromDate", moment(visible?.data).format("YYYY-MM-DD")),
-      form.append("LeaveType", formData?.LeaveType),
-      form.append("OptionalType", formData?.OptionalType || ""),
-      form.append("Description", formData?.Description),
-      form.append("StatusType", "Save"),
-      form.append(
-        "LeaveTypeDateValue",
-        formData?.woType || formData?.OlType || formData?.hlType
-      ),
-      axios
-        .post(apiUrls?.LeaveRequest_Save, form, { headers })
-        .then((res) => {
-          if (res?.data?.status === true) {
-            toast.success(res?.data?.message);
-            setLoading(false);
-            setVisible(false);
-            handleLeaveRequest_BindCalender();
-          } else {
-            toast.error(res?.data?.message);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append(
+    //     "CRMEmpID",
+    //     useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+    //   ),
+    //   form.append("FromDate", moment(visible?.data).format("YYYY-MM-DD")),
+    //   form.append("LeaveType", formData?.LeaveType),
+    //   form.append("OptionalType", formData?.OptionalType || ""),
+    //   form.append("Description", formData?.Description),
+    //   form.append("StatusType", "Save"),
+    //   form.append(
+    //     "LeaveTypeDateValue",
+    //     formData?.woType || formData?.OlType || formData?.hlType
+    //   ),
+    //   axios
+    // .post(apiUrls?.LeaveRequest_Save, form, { headers })
+    axiosInstances
+      .post(apiUrls.LeaveRequest_Save, {
+        FromDate: String(moment(visible?.data).format("YYYY-MM-DD")),
+        CrmEmpID: Number(
+          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+        ),
+        LeaveType: String(formData?.LeaveType),
+        Description: String(formData?.Description),
+        StatusType: String("Save"),
+      })
+      .then((res) => {
+        if (res?.data?.success === true) {
+          toast.success(res?.data?.message);
           setLoading(false);
-        });
+          setVisible(false);
+          handleLeaveRequest_BindCalender();
+        } else {
+          toast.error(res?.data?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
   const handleLeaveRequest_Update = () => {
     setLoading(true);
@@ -243,80 +281,100 @@ const LeaveRequestModal = ({
 
   const handleLeaveRequest_Approve = () => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      // form.append("LoginName", data?.Name),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("CrmEmpID", data?.EmployeeId),
-      form.append("FromDate", moment(visible?.data).format("YYYY-MM-DD")),
-      form.append("LeaveType", formData?.LeaveType),
-      form.append("OptionalType", formData?.OptionalType || ""),
-      form.append("Description", formData?.Description),
-      form.append("StatusType", "Approve"),
-      form.append(
-        "LeaveTypeDateValue",
-        formData?.woType || formData?.OlType || formData?.hlType
-      ),
-      axios
-        .post(apiUrls?.LeaveRequest_Save, form, { headers })
-        .then((res) => {
-          if (res?.data?.status === true) {
-            toast.success(res?.data?.message);
-            setLoading(false);
-            handleLeaveRequest_BindCalender();
-            setVisible(false);
-          } else {
-            toast.error(res?.data?.message);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("CrmEmpID", data?.EmployeeId),
+    //   form.append("FromDate", moment(visible?.data).format("YYYY-MM-DD")),
+    //   form.append("LeaveType", formData?.LeaveType),
+    //   form.append("OptionalType", formData?.OptionalType || ""),
+    //   form.append("Description", formData?.Description),
+    //   form.append("StatusType", "Approve"),
+    //   form.append(
+    //     "LeaveTypeDateValue",
+    //     formData?.woType || formData?.OlType || formData?.hlType
+    //   ),
+    //   axios
+    //     .post(apiUrls?.LeaveRequest_Save, form, { headers })
+    axiosInstances
+      .post(apiUrls.LeaveRequest_Save, {
+        FromDate: String(moment(visible?.data).format("YYYY-MM-DD")),
+        CrmEmpID: Number(
+          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+        ),
+        LeaveType: String(formData?.LeaveType),
+        Description: String(formData?.Description),
+        StatusType: String("Approve"),
+      })
+
+      .then((res) => {
+        if (res?.data?.success === true) {
+          toast.success(res?.data?.message);
           setLoading(false);
-        });
+          handleLeaveRequest_BindCalender();
+          setVisible(false);
+        } else {
+          toast.error(res?.data?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
   const handleLeaveRequest_Delete = () => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append(
-        "CRMEmpID",
-        data?.EmployeeId ||
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append(
+    //     "CRMEmpID",
+    //     data?.EmployeeId ||
+    //       useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+    //   ),
+    //   form.append("FromDate", moment(visible?.data).format("YYYY-MM-DD")),
+    //   form.append("LeaveType", formData?.LeaveType),
+    //   form.append("OptionalType", formData?.OptionalType || ""),
+    //   form.append("Description", formData?.Description),
+    //   form.append("StatusType", "Delete"),
+    //   form.append(
+    //     "LeaveTypeDateValue",
+    //     formData?.woType || formData?.OlType || formData?.hlType
+    //   ),
+    //   axios
+    //     .post(apiUrls?.LeaveRequest_Save, form, { headers })
+    axiosInstances
+      .post(apiUrls.LeaveRequest_Save, {
+        FromDate: String(moment(visible?.data).format("YYYY-MM-DD")),
+        CrmEmpID: Number(
           useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      ),
-      form.append("FromDate", moment(visible?.data).format("YYYY-MM-DD")),
-      form.append("LeaveType", formData?.LeaveType),
-      form.append("OptionalType", formData?.OptionalType || ""),
-      form.append("Description", formData?.Description),
-      form.append("StatusType", "Delete"),
-      form.append(
-        "LeaveTypeDateValue",
-        formData?.woType || formData?.OlType || formData?.hlType
-      ),
-      axios
-        .post(apiUrls?.LeaveRequest_Save, form, { headers })
-        .then((res) => {
-          if (res?.data?.status === true) {
-            toast.success(res?.data?.message);
-            setLoading(false);
-            handleLeaveRequest_BindCalender();
-            setVisible(false);
-          } else {
-            toast.error(res?.data?.message);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
+        ),
+        LeaveType: String(formData?.LeaveType),
+        Description: String(formData?.Description),
+        StatusType: String("Delete"),
+      })
+      .then((res) => {
+        if (res?.data?.status === true) {
+          toast.success(res?.data?.message);
           setLoading(false);
-        });
+          handleLeaveRequest_BindCalender();
+          setVisible(false);
+        } else {
+          toast.error(res?.data?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
 
   useEffect(() => {

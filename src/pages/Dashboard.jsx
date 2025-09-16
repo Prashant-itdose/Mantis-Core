@@ -48,7 +48,6 @@ const currentYear = currentDate.getFullYear();
 
 const Dashboard = () => {
   const [t] = useTranslation();
-  const [selectedButton, setSelectedButton] = useState();
   const localdata = useLocalStorage("userData", "get");
   const [birthDayData, setBirthDayData] = useState([]);
   const [countData, setCountData] = useState([]);
@@ -175,7 +174,8 @@ const Dashboard = () => {
         searchType: String("Search"),
       })
       .then((res) => {
-        setBirthDayData(res?.data?.dt);
+        setBirthDayData(res?.data?.data);
+        // setBirthDayData(res?.data?.dt);
         setAnniverssary(res?.data?.dtAnniversary);
       })
       .catch((err) => {
@@ -183,32 +183,16 @@ const Dashboard = () => {
       });
   };
   const { memberID } = useSelector((state) => state?.loadingSlice);
-
-  // const handleFirstDashboardCount = () => {
-  //   setLoader(true);
-  //   let form = new FormData();
-  //   form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-  //     form.append("Title", "Heads"),
-  //     form.append("DeveloperID", memberID || 0),
-  //     axios
-  //       .post(apiUrls?.DevDashboard_Summary, form, { headers })
-  //       .then((res) => {
-  //         setCountData(res?.data?.dtSummary[0]);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       })
-  //       .finally(() => setLoader(false));
-  // };
+  console.log(" asif", memberID);
 
   const handleFirstDashboardCount = () => {
     axiosInstances
       .post(apiUrls.DevDashboard_Summary, {
-        title: String("Heads"),
-        developerID: String(memberID || "0"),
+        Title: String("Heads"),
+        DeveloperID: String(memberID || "0"),
       })
       .then((res) => {
-        setCountData(res?.data?.dtSummary[0]);
+        setCountData(res.data.data.dtSummary[0]);
       })
       .catch((err) => {
         toast.error(
@@ -252,7 +236,9 @@ const Dashboard = () => {
   const [filterdata, setFilterData] = useState([]);
 
   const handleMultiChart = (value, memberID) => {
+    console.log("valuevalue ", memberID);
     const datefrom = moment(value).format("YYYY-MM-DD");
+    console.log("valuevalue ", datefrom);
     // let form = new FormData();
     // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
     //   form.append("dtFrom", datefrom),
@@ -261,7 +247,7 @@ const Dashboard = () => {
     //     .post(apiUrls?.DevDashboard_Welcome_Status_Count, form, { headers })
     axiosInstances
       .post(apiUrls.DevDashboard_Welcome_Status_Count, {
-        developerID: String(memberID || "0"),
+        DeveloperID: String(memberID || "0"),
         dtFrom: String(datefrom),
       })
       .then((res) => {
@@ -295,7 +281,8 @@ const Dashboard = () => {
   const handleNews = () => {
     axiosInstances
       .post(apiUrls.Circular_News, {
-        IsFlash: String("0"),
+        // IsFlash: String("0"),
+        RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
       })
       .then((res) => {
         const data = res?.data?.data;
@@ -333,60 +320,69 @@ const Dashboard = () => {
     //   return;
     // }
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("ToEmployeeID", item1),
-      form.append("ToEmployeeName", item2),
-      form.append("ToEMailID", String(item3).toLowerCase()),
-      form.append("WishesType", item4),
-      form.append(
-        "Subject",
-        `Greeting from ${useCryptoLocalStorage("user_Data", "get", "realname")}`
-      ),
-      form.append("SearchType", "WishesInsert"),
-      form.append("dtBirthday", item5),
-      form.append(
-        "Message",
-        item4 == "Birthday" ? "Happy Birthday!" : "Happy Work Anniversary!"
-      ),
-      axios
-        .post(apiUrls?.Birthday_Anniversary_Interface_Search, form, {
-          headers,
-        })
-        .then((res) => {
-          if (res?.data?.status === true) {
-            toast.success(res?.data?.message);
-            setIsClicked(true);
-            handleHeightOfBirthDaycardApi();
-            setLoading(false);
-          } else {
-            toast.error(res?.data?.message);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("ToEmployeeID", item1),
+    //   form.append("ToEmployeeName", item2),
+    //   form.append("ToEMailID", String(item3).toLowerCase()),
+    //   form.append("WishesType", item4),
+    //   form.append(
+    //     "Subject",
+    //     `Greeting from ${useCryptoLocalStorage("user_Data", "get", "realname")}`
+    //   ),
+    //   form.append("SearchType", "WishesInsert"),
+    //   form.append("dtBirthday", item5),
+    //   form.append(
+    //     "Message",
+    //     item4 == "Birthday" ? "Happy Birthday!" : "Happy Work Anniversary!"
+    //   ),
+    //   axios
+    //     .post(apiUrls?.Birthday_Anniversary_Interface_Search, form, {
+    //       headers,
+    //     })
+    axiosInstances
+      .post(apiUrls.Birthday_Anniversary_Interface_Search, {
+        searchType: String("WishesInsert"),
+      })
+      .then((res) => {
+        if (res?.data?.status === true) {
+          toast.success(res?.data?.message);
+          setIsClicked(true);
+          handleHeightOfBirthDaycardApi();
           setLoading(false);
-        });
+        } else {
+          toast.error(res?.data?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
   const handleCircularRead = (eleid) => {
     // console.log("gata",ele)
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("CircularUserID", eleid),
-      axios
-        .post(apiUrls?.Circular_Read, form, { headers })
-        .then((res) => {
-          // toast.success(res?.data?.message);
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("CircularUserID", eleid),
+    //   axios
+    //     .post(apiUrls?.Circular_Read, form, { headers })
+    axiosInstances
+      .post(apiUrls.GetTeamMember, {
+        ID: Number(useCryptoLocalStorage("user_Data", "get", "ID")),
+        CircularUserID: Number(eleid),
+      })
+      .then((res) => {
+        // toast.success(res?.data?.message);
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
@@ -399,16 +395,20 @@ const Dashboard = () => {
   useEffect(() => {
     handleHeightOfBirthDaycardApi();
     handleFirstDashboardCount();
-    // handleNews();
+    handleNews();
 
     // handleCircularRead();
+
+    // handleMultiChart()
   }, []);
 
-  useEffect(() => {
-    const today = new Date();
-    const firstDateOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-    handleMultiChart(firstDateOfMonth);
-  }, []);
+  // useEffect(() => {
+  //   const today = new Date();
+  //   const firstDateOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  //   console.log("kamal",firstDateOfMonth)
+  //   handleMultiChart(firstDateOfMonth);
+  // }, []);
+
   const [score, setScore] = useState([]);
 
   const getItem = (item) => {

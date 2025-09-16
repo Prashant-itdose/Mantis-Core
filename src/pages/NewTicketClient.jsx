@@ -24,6 +24,7 @@ import Tables from "../components/UI/customTable";
 import { useSelector } from "react-redux";
 import BrowseButton from "../components/formComponent/BrowseButton";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../networkServices/axiosInstance";
 
 const NewTicketClient = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -132,14 +133,22 @@ const NewTicketClient = () => {
     }));
   };
   const getProject = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      axios
-        .post(apiUrls?.ProjectSelect, form, { headers })
+    axiosInstances
+      .post(apiUrls.ProjectSelect,{
+  "ProjectID": 0,
+  "IsMaster": "0",
+  "VerticalID": 0,
+  "TeamID": 0,
+  "WingID": 0
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   axios
+    //     .post(apiUrls?.ProjectSelect, form, { headers })
         .then((res) => {
           const datas = res?.data.data;
           const poc3s = datas.map((item) => {
@@ -168,11 +177,16 @@ const NewTicketClient = () => {
   }
 
   const getCategory = (proj) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("ProjectID", proj),
-      axios
-        .post(apiUrls?.Category_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.Category_Select,{
+  "RoleID": 0,
+  "ProjectID": Number(proj)
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("ProjectID", proj),
+    //   axios
+    //     .post(apiUrls?.Category_Select, form, { headers })
         .then((res) => {
           handleReactSelectDropDownOptions(res?.data.data, "NAME", "ID");
           // const poc3s = res?.data.data.map((item) => {
@@ -189,17 +203,24 @@ const NewTicketClient = () => {
         });
   };
   const getModule = (proj) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "RoleID",
-        useCryptoLocalStorage("user_Data", "get", "RoleID")
-      ),
-      form.append("ProjectID", proj),
-      form.append("IsActive", "1"),
-      form.append("IsMaster", "0"),
-      axios
-        .post(apiUrls?.Module_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.Module_Select,{
+  "RoleID": Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
+  "ProjectID": Number(proj),
+  "IsActive": 1,
+  "IsMaster": 0
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "RoleID",
+    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+    //   ),
+    //   form.append("ProjectID", proj),
+    //   form.append("IsActive", "1"),
+    //   form.append("IsMaster", "0"),
+      // axios
+      //   .post(apiUrls?.Module_Select, form, { headers })
         .then((res) => {
           const poc3s = res?.data.data.map((item) => {
             return { label: item?.ModuleName, value: item?.ModuleID };
@@ -211,17 +232,24 @@ const NewTicketClient = () => {
         });
   };
   const getPage = (proj) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "RoleID",
-        useCryptoLocalStorage("user_Data", "get", "RoleID")
-      ),
-      form.append("ProjectID", proj),
-      form.append("IsActive", "1"),
-      form.append("IsMaster", "0"),
-      axios
-        .post(apiUrls?.Pages_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.Pages_Select,{
+  "RoleID": Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
+  "ProjectID": Number(proj),
+  "IsActive": 1,
+  "IsMaster": 0
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "RoleID",
+    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+    //   ),
+    //   form.append("ProjectID", proj),
+    //   form.append("IsActive", "1"),
+    //   form.append("IsMaster", "0"),
+    //   axios
+    //     .post(apiUrls?.Pages_Select, form, { headers })
         .then((res) => {
           const poc3s = res?.data.data.map((item) => {
             return { label: item?.PagesName, value: item?.ID };
@@ -239,14 +267,18 @@ const NewTicketClient = () => {
     getModule(formData?.ProjectID);
   };
   const getAssignTo = (value) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("ProjectID", value),
-      axios
-        .post(apiUrls?.AssignTo_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.AssignTo_Select,{
+  "ProjectID": Number(value)
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("ProjectID", value),
+    //   axios
+    //     .post(apiUrls?.AssignTo_Select, form, { headers })
         .then((res) => {
           const assigntos = res?.data.data.map((item) => {
-            return { label: item?.NAME, value: item?.ID };
+            return { label: item?.Name, value: item?.ID };
           });
           setAssignedto(assigntos);
         })
@@ -264,13 +296,15 @@ const NewTicketClient = () => {
   };
 
   const getPriority = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Priority_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.AssignTo_Select,{})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Priority_Select, form, { headers })
         .then((res) => {
           const assigntos = res?.data.data.map((item) => {
-            return { label: item?.NAME, value: item?.ID };
+            return { label: item?.Name, value: item?.ID };
           });
           setPriority(assigntos);
           // setFormData({ ...formData, Priority: assigntos[0]?.value });
@@ -310,36 +344,63 @@ const NewTicketClient = () => {
     setIsSubmitting(true);
 
     try {
-      const form = new FormData();
-      form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      );
-      form.append(
-        "RoleID",
-        useCryptoLocalStorage("user_Data", "get", "RoleID")
-      );
-      form.append("ProjectID", formData.ProjectID);
-      form.append("CategoryID", formData.Category.value);
-      form.append(
-        "AssignTo",
-        formData?.AssignedTo ? formData?.AssignedTo : "0"
-      );
-      form.append("Summary", formData.Summary);
-      form.append("ReporterMobileNo", formData.ReportedMobile);
-      form.append("ReporterName", formData.ReportedName);
-      form.append("ModuleName", formData.ModuleName);
-      form.append("OtherReferenceNo", formData.OtherReferenceNo);
-      form.append("PagesName", formData.PageName);
-      form.append(
-        "Description",
-        formData.Description ? formData.Description : ""
-      );
-      form.append("PriorityID", formData.Priority);
-      form.append("ImageDetails", picsDocsJson);
 
-      const response = await axios.post(apiUrls.NewTicket, form, { headers });
+     const response = await axiosInstances
+      .post(apiUrls.NewTicket,{
+  "ID": Number(useCryptoLocalStorage("user_Data", "get", "ID")),
+  "LoginName": "",
+  "ProjectID": Number(formData.ProjectID),
+  "CategoryID": Number(formData.Category.value),
+  "AssignTo": formData?.AssignedTo ? String(formData?.AssignedTo) : "0",
+  "PriorityID": String(formData.Priority),
+  "Summary": String(formData.Summary),
+  "ReporterMobileNo": String(formData.ReportedMobile),
+  "ReporterName": String(formData.ReportedMobile),
+  "Description": formData.Description ? String(formData.Description) : "",
+  "ModuleID": "",
+  "ModuleName": String(formData.ModuleName),
+  "PagesID": "",
+  "PagesName": String(formData.PageName),
+  "ImageDetails": [
+    {
+        Document_Base64: formData?.Document_Base64,
+        FileExtension: formData?.FileExtension,
+      }
+  ]
+})
+//       const form = new FormData();
+//       form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
+//       form.append(
+//         "LoginName",
+//         useCryptoLocalStorage("user_Data", "get", "realname")
+//       );
+//       form.append(
+//         "RoleID",
+//         useCryptoLocalStorage("user_Data", "get", "RoleID")
+//       );
+//       form.append("ProjectID", formData.ProjectID);
+//       form.append("CategoryID", formData.Category.value);
+//       form.append(
+//         "AssignTo",
+//         formData?.AssignedTo ? formData?.AssignedTo : "0"
+//       );
+//       form.append("Summary", formData.Summary);
+//       form.append("ReporterMobileNo", formData.ReportedMobile);
+//       form.append("ReporterName", formData.ReportedName);
+//       form.append("ModuleName", formData.ModuleName);
+//       form.append("OtherReferenceNo", formData.OtherReferenceNo);
+//       form.append("PagesName", formData.PageName);
+//       form.append(
+//         "Description",
+//         formData.Description ? formData.Description : ""
+//       );
+//       form.append("PriorityID", formData.Priority);
+//       form.append("ImageDetails", picsDocsJson);
+
+//       const response = axiosInstances
+//       .post(apiUrls.NewTicket,{
+//   "ProjectID": Number(value)
+// })
 
       toast.success(response?.data?.message);
 
@@ -395,15 +456,19 @@ const NewTicketClient = () => {
   const allowedLevelTypes = ["Level-I", "Level-II", "Level-III"];
   const [levelData, setLevelData] = useState([]);
   const getGetProjectInfo = (id) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "RoleID",
-        useCryptoLocalStorage("user_Data", "get", "RoleID")
-      ),
-      form.append("ProjectID", id),
-      axios
-        .post(apiUrls?.GetProjectInfo, form, { headers })
+    axiosInstances
+      .post(apiUrls.GetProjectInfo, {
+  "ProjectID": Number(id)
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "RoleID",
+    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+    //   ),
+    //   form.append("ProjectID", id),
+    //   axios
+    //     .post(apiUrls?.GetProjectInfo, form, { headers })
         .then((res) => {
           let newData = [];
           // let newlevelData = []

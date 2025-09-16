@@ -180,7 +180,8 @@ const DesktopMenuItem = ({ filteredData }) => {
   const getAssignTo = () => {
     axiosInstances
       .post(apiUrls.GetTeamMember, {
-        actionType: String("Child"),
+        ActionType: String("child"),
+        EmployeeId: Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),
       })
       .then((res) => {
         const assigntos = res?.data.data.map((item) => {

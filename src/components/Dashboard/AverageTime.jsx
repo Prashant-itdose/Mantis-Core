@@ -44,9 +44,12 @@ const AverageTime = () => {
       //   form,
       //   { headers }
       // );
-  const response = await axiosInstances.post(apiUrls.DevDashboard_Welcome_AvgTime_Category, {
-        developerID: String(memberID || "0"),
-      });
+      const response = await axiosInstances.post(
+        apiUrls.DevDashboard_Welcome_AvgTime_Category,
+        {
+          DeveloperID: String(memberID || "0"),
+        }
+      );
       setCountData(response?.data?.dtPriority || []);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -71,8 +74,18 @@ const AverageTime = () => {
       };
 
       const months = [
-        "Apr", "May", "Jun", "Jul", "Aug", "Sep",
-        "Oct", "Nov", "Dec", "Jan", "Feb", "Mar"
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+        "Jan",
+        "Feb",
+        "Mar",
       ];
 
       const ticketTotals = months.map(() => 0);

@@ -31,6 +31,7 @@ import SlideScreen from "./SlideScreen";
 import gmaillogo from "../../src/assets/image/Gmail_Logo.png";
 import GmailLedgerModal from "../components/UI/customTable/GmailLedgerModal";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../networkServices/axiosInstance";
 const LedgerStatus = () => {
   const [t] = useTranslation();
   const AllowLockUnLock = useCryptoLocalStorage(
@@ -67,6 +68,7 @@ const LedgerStatus = () => {
   ];
   const { VITE_DATE_FORMAT } = import.meta.env;
   const [tableData, setTableData] = useState([]);
+  console.log("tableDta" , tableData)
   const [vertical, setVertical] = useState([]);
   const [project, setProject] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -151,10 +153,12 @@ const LedgerStatus = () => {
     });
   };
   const getVertical = () => {
-    let form = new FormData();
-    form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Vertical_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.Vertical_Select, {})
+    // let form = new FormData();
+    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Vertical_Select, form, { headers })
         .then((res) => {
           const verticals = res?.data.data.map((item) => {
             return { name: item?.Vertical, code: item?.VerticalID };
@@ -166,10 +170,12 @@ const LedgerStatus = () => {
         });
   };
   const getTeam = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Team_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.Team_Select, {})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Team_Select, form, { headers })
         .then((res) => {
           const teams = res?.data.data.map((item) => {
             return { name: item?.Team, code: item?.TeamID };
@@ -181,10 +187,12 @@ const LedgerStatus = () => {
         });
   };
   const getWing = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Wing_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.Wing_Select, {})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Wing_Select, form, { headers })
         .then((res) => {
           const wings = res?.data.data.map((item) => {
             return { name: item?.Wing, code: item?.WingID };
@@ -196,10 +204,12 @@ const LedgerStatus = () => {
         });
   };
   const getPOC1 = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.POC_1_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.POC_1_Select, {})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.POC_1_Select, form, { headers })
         .then((res) => {
           const poc1s = res?.data.data.map((item) => {
             return { name: item?.POC_1_Name, code: item?.POC_1_ID };
@@ -219,10 +229,12 @@ const LedgerStatus = () => {
   };
 
   const getPOC2 = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.POC_2_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.POC_2_Select, {})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.POC_2_Select, form, { headers })
         .then((res) => {
           const poc2s = res?.data.data.map((item) => {
             return { name: item?.POC_2_Name, code: item?.POC_2_ID };
@@ -234,10 +246,12 @@ const LedgerStatus = () => {
         });
   };
   const getPOC3 = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.POC_3_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.POC_3_Select, {})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.POC_3_Select, form, { headers })
         .then((res) => {
           const poc3s = res?.data.data.map((item) => {
             return { name: item?.POC_3_Name, code: item?.POC_3_ID };
@@ -255,12 +269,17 @@ const LedgerStatus = () => {
     if (savedData) {
       setFormData(JSON.parse(savedData));
     }
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("Type", "LedgerStatus"),
-      form.append("FilterData", savedData),
-      axios
-        .post(apiUrls?.SaveFilterDataSubmission, form, { headers })
+    axiosInstances
+      .post(apiUrls.SaveFilterDataSubmission, {
+  "Type": "LedgerStatus",
+  "FilterData":String(savedData)
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("Type", "LedgerStatus"),
+    //   form.append("FilterData", savedData),
+    //   axios
+    //     .post(apiUrls?.SaveFilterDataSubmission, form, { headers })
         .then((res) => {
           toast.success(res?.data?.message);
         })
@@ -271,14 +290,22 @@ const LedgerStatus = () => {
     // console.log("save data", formData);
   };
   const getProject = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      axios
-        .post(apiUrls?.ProjectSelect, form, { headers })
+    axiosInstances
+      .post(apiUrls.ProjectSelect, {
+  "ProjectID": 0,
+  "IsMaster": "0",
+  "VerticalID": 0,
+  "TeamID": 0,
+  "WingID": 0
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   axios
+    //     .post(apiUrls?.ProjectSelect, form, { headers })
         .then((res) => {
           const poc3s = res?.data.data.map((item) => {
             return { name: item?.Project, code: item?.ProjectId };
@@ -290,14 +317,21 @@ const LedgerStatus = () => {
         });
   };
   const getCity = () => {
-    let form = new FormData();
-    form.append("CountryID", "14"),
-      form.append("StateID", ""),
-      form.append("DistrictID", ""),
-      axios
-        .post(apiUrls?.GetCity, form, {
-          headers,
-        })
+
+    axiosInstances
+      .post(apiUrls.GetCity, {
+  "CountryID": "14",
+  "StateID": "0",
+  "DistrictID": "0"
+})
+    // let form = new FormData();
+    // form.append("CountryID", "14"),
+    //   form.append("StateID", ""),
+    //   form.append("DistrictID", ""),
+    //   axios
+    //     .post(apiUrls?.GetCity, form, {
+    //       headers,
+    //     })
         .then((res) => {
           const states = res?.data.data.map((item) => {
             return { label: item?.City, value: item?.ID };
@@ -340,34 +374,61 @@ const LedgerStatus = () => {
   }
   const handleSearch = (page) => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("SalesManager", formData?.SalesManager ?? ""),
-      form.append("Status", formData?.Status),
-      form.append("City", formData?.City),
-      form.append("ProjectID", formData?.ProjectID),
-      form.append("VerticalID", formData?.VerticalID),
-      form.append("TeamID", formData?.TeamID),
-      form.append("WingID", formData?.WingID),
-      form.append("POC1", formData?.POC1),
-      form.append("POC2", formData?.POC2),
-      form.append("POC3", formData?.POC3),
-      form.append("IsExcel", "0"),
-      form.append("dtFrom", formatDate(formData?.FromDate)),
-      form.append("dtTo", formatDate(formData?.ToDate)),
-      form.append("isDue", formData?.isDue),
-      form.append("PageSize", formData?.PageSize),
-      form.append("FollowupStatus", formData?.FollowupStatus),
-      form.append("PageNo", page ?? currentPage - 1),
-      axios
-        .post(apiUrls?.LedgerStatus, form, {
-          headers,
-        })
+  const payload = {
+  SalesManager: formData?.SalesManager ?  String(formData?.SalesManager) : "",
+  Status: formData?.Status ? formData?.Status : "",
+  City: formData?.City ? String(formData?.City) : "",
+  DtFrom: formData?.FromDate ? (formData.FromDate) : null,
+  DtTo: formData?.ToDate ? (formData.ToDate) : null,
+  IsExcel: false, 
+  OnlyDue: formData?.isDue === 1 ? true : false,
+  PageSize: formData?.PageSize ? formData?.PageSize : 0,
+  PageNo: page ?? currentPage - 1,
+  ProjectIDs: formData?.ProjectID ? formData.ProjectID : [],
+  VerticalIDs: formData?.VerticalID ? formData.VerticalID : [],
+  TeamIDs: formData?.TeamID ?formData.TeamID : [],
+  WingIDs: formData?.WingID ? formData.WingID : [],
+  POC1s: formData?.POC1 ? formData.POC1 : [],
+  POC2s: formData?.POC2 ? formData.POC2 : [],
+  POC3s: formData?.POC3 ? formData.POC3 : [],
+};
+
+axiosInstances
+      .post(apiUrls.LedgerStatus,payload)
+
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("SalesManager", formData?.SalesManager ?? ""),
+    //   form.append("Status", formData?.Status),
+    //   form.append("City", formData?.City),
+    //   form.append("ProjectID", formData?.ProjectID),
+    //   form.append("VerticalID", formData?.VerticalID),
+    //   form.append("TeamID", formData?.TeamID),
+    //   form.append("WingID", formData?.WingID),
+    //   form.append("POC1", formData?.POC1),
+    //   form.append("POC2", formData?.POC2),
+    //   form.append("POC3", formData?.POC3),
+    //   form.append("IsExcel", "0"),
+    //   form.append("dtFrom", formatDate(formData?.FromDate)),
+    //   form.append("dtTo", formatDate(formData?.ToDate)),
+    //   form.append("isDue", formData?.isDue),
+    //   form.append("PageSize", formData?.PageSize),
+    //   form.append("FollowupStatus", formData?.FollowupStatus),
+    //   form.append("PageNo", page ?? currentPage - 1),
+    //   axios
+    //     .post(apiUrls?.LedgerStatus, form, {
+    //       headers,
+    //     })
         .then((res) => {
+          if(!res?.data?.success){
+            toast.error(res?.data?.message);
+            setLoading(false)
+            return
+          }
           setTableData(res?.data?.data);
           const dataTotal = res?.data?.data[0];
 
@@ -433,35 +494,57 @@ const LedgerStatus = () => {
   };
   const handleExcel = () => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("SalesManager", formData?.SalesManager),
-      form.append("Status", formData?.Status),
-      form.append("City", formData?.City),
-      form.append("ProjectID", formData?.ProjectID),
-      form.append("VerticalID", formData?.VerticalID),
-      form.append("TeamID", formData?.TeamID),
-      form.append("WingID", formData?.WingID),
-      form.append("POC1", formData?.POC1),
-      form.append("POC2", formData?.POC2),
-      form.append("POC3", formData?.POC3),
-      form.append("IsExcel", "1"),
-      form.append("dtFrom", formatDate(formData?.FromDate)),
-      form.append("dtTo", formatDate(formData?.ToDate)),
-      axios
-        .post(apiUrls?.LedgerStatus, form, {
-          headers,
-        })
+    const payload = {
+  SalesManager: formData?.SalesManager ?  String(formData?.SalesManager) : "",
+  Status: formData?.Status ? formData?.Status : "",
+  City: formData?.City ? String(formData?.City) : "",
+  DtFrom: formData?.FromDate ? (formData.FromDate) : null,
+  DtTo: formData?.ToDate ? (formData.ToDate) : null,
+  IsExcel: true,
+  OnlyDue: true,
+  PageSize: 0,
+  PageNo: 0,
+  ProjectIDs: formData?.ProjectID ? formData.ProjectID : [],
+  VerticalIDs: formData?.VerticalID ? formData.VerticalID : [],
+  TeamIDs: formData?.TeamID ?formData.TeamID : [],
+  WingIDs: formData?.WingID ? formData.WingID : [],
+  POC1s: formData?.POC1 ? formData.POC1 : [],
+  POC2s: formData?.POC2 ? formData.POC2 : [],
+  POC3s: formData?.POC3 ? formData.POC3 : [], 
+};
+
+axiosInstances
+      .post(apiUrls.LedgerStatus,payload)
+      
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("SalesManager", formData?.SalesManager),
+    //   form.append("Status", formData?.Status),
+    //   form.append("City", formData?.City),
+    //   form.append("ProjectID", formData?.ProjectID),
+    //   form.append("VerticalID", formData?.VerticalID),
+    //   form.append("TeamID", formData?.TeamID),
+    //   form.append("WingID", formData?.WingID),
+    //   form.append("POC1", formData?.POC1),
+    //   form.append("POC2", formData?.POC2),
+    //   form.append("POC3", formData?.POC3),
+    //   form.append("IsExcel", "1"),
+    //   form.append("dtFrom", formatDate(formData?.FromDate)),
+    //   form.append("dtTo", formatDate(formData?.ToDate)),
+    //   axios
+    //     .post(apiUrls?.LedgerStatus, form, {
+    //       headers,
+    //     })
         .then((res) => {
           const datas = res?.data?.data;
 
           if (!datas || datas.length === 0) {
             console.error("No data available for download.");
-            alert("No data available for download.");
+            toast.error("No data available for download.");
             setLoading(false);
             return;
           }
@@ -508,12 +591,16 @@ const LedgerStatus = () => {
         });
   };
   const handleSearchFilter = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("Type", "LedgerStatus"),
-      // form.append("FilterData", savedData),
-      axios
-        .post(apiUrls?.SearchFilterDataSubmission, form, { headers })
+    axiosInstances
+      .post(apiUrls.SearchFilterDataSubmission, {
+  "Type": "LedgerStatus"
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("Type", "LedgerStatus"),
+    //   // form.append("FilterData", savedData),
+    //   axios
+    //     .post(apiUrls?.SearchFilterDataSubmission, form, { headers })
         .then((res) => {
           // console.log("Response data:", res?.data?.data);
           setFormData({
@@ -1163,7 +1250,7 @@ const LedgerStatus = () => {
                   )}
                 </>
               ),
-              colorcode: ele?.rowColor,
+              colorcode: ele?.RowColor,
             }))}
             tableHeight={"tableHeight"}
           />

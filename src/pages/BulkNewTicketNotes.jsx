@@ -49,23 +49,23 @@ const BulkNewTicketNotes = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleAddNote = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID")),
-      axios
-        .post(apiUrls?.Category_Select, form, { headers })
-        .then((res) => {
-          if (res?.data?.status === true) {
-            toast.success(res?.data?.message);
-          } else {
-            toast.error(res?.data?.message);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-  };
+  // const handleAddNote = () => {
+  //   let form = new FormData();
+  //   form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+  //     form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID")),
+  //     axios
+  //       .post(apiUrls?.Category_Select, form, { headers })
+  //       .then((res) => {
+  //         if (res?.data?.status === true) {
+  //           toast.success(res?.data?.message);
+  //         } else {
+  //           toast.error(res?.data?.message);
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  // };
   const transformData = (data) => {
     const headers = data[0]; // First array is the header
     const rows = data.slice(1); // Remaining arrays are the data rows
@@ -160,11 +160,16 @@ const BulkNewTicketNotes = () => {
       });
     });
     setIsSubmitting(true);
-    const form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    form.append("TicketData", JSON.stringify(transformPayload));
-    axios
-      .post(apiUrls?.BulkNoteInsert, form, { headers })
+
+    axiosInstances
+      .post(apiUrls.BulkNoteInsert, {
+        TicketData : transformPayload,
+      })
+    // const form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
+    // form.append("TicketData", JSON.stringify(transformPayload));
+    // axios
+    //   .post(apiUrls?.BulkNoteInsert, form, { headers })
       .then((res) => {
         if (res?.data?.status === true) {
           toast.success(res?.data?.message);

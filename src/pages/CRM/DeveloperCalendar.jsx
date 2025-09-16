@@ -20,6 +20,7 @@ import SeeMoreSlideScreen from "../../components/SearchableTable/SeeMoreSlideScr
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useCryptoLocalStorage } from "../../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../../networkServices/axiosInstance";
 // import { drop } from "lodash";
 
 const currentDate = new Date();
@@ -206,16 +207,14 @@ const DeveloperCalendar = () => {
       toast.error("Please Select month .");
     } else {
       setLoading(true);
-      const form = new FormData();
-      form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-      form.append("AssignToID", formData?.AssignedTo ||  useCryptoLocalStorage("user_Data", "get", "ID"));
-      form.append(
-        "Date",
-        `${selectedYear}-${String(selectedMonth + 1).padStart(2, "0")}-01`
-      );
-      form.append("View", "Calender");
-      axios
-        .post(apiUrls?.Dev_Caledar, form, { headers })
+      axiosInstances
+        .post(apiUrls.Dev_Caledar, {
+          AssignToID:
+            formData?.AssignedTo ||
+            useCryptoLocalStorage("user_Data", "get", "ID"),
+          Date: `${selectedYear}-${String(selectedMonth + 1).padStart(2, "0")}-01`,
+          View: "Calendar",
+        })
         .then((res) => {
           setCalendarData(res?.data?.dtCalender);
           setSummaryData(res?.data?.dtStatusSummary);
@@ -248,14 +247,21 @@ const DeveloperCalendar = () => {
     // console.log("clclclclcl",formattedDate)
     setFormattedDate(formattedDate);
 
-    const form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    form.append("AssignToID", formData?.AssignedTo);
-    form.append("Date", formattedDate);
-    form.append("View", "Detailed");
+    axiosInstances
+      .post(apiUrls.Dev_Caledar, {
+  "AssignToID": formData?.AssignedTo ? Number(formData?.AssignedTo) : 0,
+  "Date": formattedDate,
+  "View": "Detailed"
+})
 
-    axios
-      .post(apiUrls?.Dev_Caledar, form, { headers })
+    // const form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
+    // form.append("AssignToID", formData?.AssignedTo);
+    // form.append("Date", formattedDate);
+    // form.append("View", "Detailed");
+
+    // axios
+    //   .post(apiUrls?.Dev_Caledar, form, { headers })
       .then((res) => {
         const filteredData = res?.data?.dtDetailed?.filter(
           (item) => item.CurrentDeliveryDate === formattedDate
@@ -289,17 +295,35 @@ const DeveloperCalendar = () => {
   };
 
   const handleManHourTable = (details) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("TicketIDs", details?.TicketID),
-      form.append("ActionText", "ManHours"),
-      form.append("ActionId", details?.ManHour),
-      axios
-        .post(apiUrls?.ApplyAction, form, { headers })
+    axiosInstances
+      .post(apiUrls.ApplyAction, {
+  "TicketIDs": String(details?.TicketID),
+  "ActionText": "ManHours",
+  "ActionId": String(details?.ManHour),
+  "RCA": "",
+  "ReferenceCode": "",
+  "ManHour": "",
+  "Summary": "",
+  "ModuleID": "",
+  "ModuleName": "",
+  "PagesID": "",
+  "PagesName": "",
+  "ManHoursClient": "",
+  "DeliveryDateClient": "",
+  "ReOpenReasonID": "",
+  "ReOpenReason": ""
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("TicketIDs", details?.TicketID),
+    //   form.append("ActionText", "ManHours"),
+    //   form.append("ActionId", details?.ManHour),
+    //   axios
+    //     .post(apiUrls?.ApplyAction, form, { headers })
         .then((res) => {
           if (res?.data?.message === "Record Updated Successfully") {
             toast.success(res?.data?.message);
@@ -325,19 +349,19 @@ const DeveloperCalendar = () => {
   };
 
   const getAssignTo = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.AssignTo_Select, form, { headers })
-        .then((res) => {
-          const assigntos = res?.data.data.map((item) => {
-            return { label: item?.NAME, value: item?.ID };
-          });
-          setAssignedto(assigntos);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls.AssignTo_Select, {
+        ProjectID: 0,
+      })
+      .then((res) => {
+        const assigntos = res?.data.data.map((item) => {
+          return { label: item?.Name, value: item?.ID };
         });
+        setAssignedto(assigntos);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const [totalCount, setTotalCount] = useState([]);
   const handleDeliveryChange = (name, e) => {
