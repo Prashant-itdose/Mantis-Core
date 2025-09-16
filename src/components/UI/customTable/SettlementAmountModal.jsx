@@ -224,12 +224,12 @@ const SettlementAmountModal = (visible, edit) => {
     // axios
     //   .post(apiUrls?.Settlement, form, { headers })
     const payload = {
-      SalesID: String(formData?.SalesID || "0"),
-      OnAccount_Req_ID: String(
+      SalesID: Number(formData?.SalesID || "0"),
+      OnAccount_Req_ID: Number(
         visible?.visible?.showData?.OnAccount_Req_ID || "0"
       ),
-      SettlementAmount: String(formData?.SettlementAmount || "0"),
-      TDS: String(formData?.TDSAmount || "0"),
+      SettlementAmount: Number(formData?.SettlementAmount || "0"),
+      TDS: Number(formData?.TDSAmount || "0"),
     };
 
     axiosInstances

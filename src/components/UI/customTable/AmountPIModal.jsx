@@ -16,10 +16,17 @@ const AmountPIModal = (visible) => {
     FileExtension: "",
   });
   const handleUploadDocs = () => {
+<<<<<<< HEAD
     if (formData?.TaxInvoiceNo == "") {
       toast.error("Please Enter Tax Invoice No.");
     } else {
       let form = new FormData();
+=======
+    if(formData?.TaxInvoiceNo ==""){
+      toast.error("Please Enter Tax Invoice No.")
+    }else{
+      // let form = new FormData();
+>>>>>>> b94fdfd0af5ac4956784fc4cbbc2eedf2496e1d5
       // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
       //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
       //   form.append("TaxInvoiceID", visible ?.visible?.showData?.EncryptID),

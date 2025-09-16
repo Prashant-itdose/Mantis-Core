@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { apiUrls } from "../../networkServices/apiEndpoints";
 import { useCryptoLocalStorage } from "../../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../../networkServices/axiosInstance";
 
 ChartJS.register(
   CategoryScale,
@@ -36,11 +37,19 @@ const ClientCategoryBreakdown = () => {
 
   const handleFirstDashboardCount = (developerId, searchType) => {
     let form = new FormData();
-    form.append("ID",  useCryptoLocalStorage("user_Data", "get", "ID"));
-    form.append("DeveloperID", "0");
-    form.append("SearchType", "3");
-    axios
-      .post(apiUrls?.CoorDashboard_Paid_Request_Status, form, { headers })
+    // form.append("ID",  useCryptoLocalStorage("user_Data", "get", "ID"));
+    // form.append("DeveloperID", "0");
+    // form.append("SearchType", "3");
+    // axios
+    //   .post(apiUrls?.CoorDashboard_Paid_Request_Status, form, { headers })
+    const payload = {
+      ID: Number(useCryptoLocalStorage("user_Data", "get", "ID") || 0),
+      DeveloperID: 0,
+      SearchType: 3,
+    };
+
+    axiosInstances
+      .post(apiUrls?.CoorDashboard_Paid_Request_Status, payload)
       .then((res) => {
         const response = res?.data?.data;
         if (Array.isArray(response) && response.length > 0) {
@@ -66,7 +75,7 @@ const ClientCategoryBreakdown = () => {
   useEffect(() => {
     handleFirstDashboardCount(memberID, developerSearchType);
   }, [memberID, developerSearchType]);
-const chartLabelsCustom=["Support","Delivery","Quality","General"]
+  const chartLabelsCustom = ["Support", "Delivery", "Quality", "General"];
   const data = {
     // labels: chartLabels,
     labels: chartLabelsCustom,

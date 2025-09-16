@@ -316,53 +316,73 @@ const ClientFeedbackFlow = () => {
 
   const handleSearch = () => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("SearchBy", formData?.SearchBy),
-      form.append(
-        "FromDate",
-        moment(formData?.FromDate).isValid()
-          ? moment(formData?.FromDate).format("YYYY-MM-DD")
-          : ""
-      );
-    form.append(
-      "ToDate",
-      moment(formData?.ToDate).isValid()
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("SearchBy", formData?.SearchBy),
+    //   form.append(
+    //     "FromDate",
+    //     moment(formData?.FromDate).isValid()
+    //       ? moment(formData?.FromDate).format("YYYY-MM-DD")
+    //       : ""
+    //   );
+    // form.append(
+    //   "ToDate",
+    //   moment(formData?.ToDate).isValid()
+    //     ? moment(formData?.ToDate).format("YYYY-MM-DD")
+    //     : ""
+    // ),
+    //   form.append("ProjectID", formData?.ProjectID),
+    //   form.append(
+    //     "CustomerSearchBy",
+    //     formData?.CustomerName ||
+    //       formData?.CustomerPhone ||
+    //       formData?.CustomerEmail
+    //   ),
+    //   form.append("RatingType", formData?.RatingType),
+    //   form.append("Category", formData?.Category),
+    // axios
+    //   .post(apiUrls?.ProjectSelect, form, { headers })
+    const payload = {
+      SearchBy: String(formData?.SearchBy || ""),
+      FromDate: moment(formData?.FromDate).isValid()
+        ? moment(formData?.FromDate).format("YYYY-MM-DD")
+        : "",
+      ToDate: moment(formData?.ToDate).isValid()
         ? moment(formData?.ToDate).format("YYYY-MM-DD")
-        : ""
-    ),
-      form.append("ProjectID", formData?.ProjectID),
-      form.append(
-        "CustomerSearchBy",
+        : "",
+      ProjectID: Number(formData?.ProjectID || 0),
+      CustomerSearchBy:
         formData?.CustomerName ||
-          formData?.CustomerPhone ||
-          formData?.CustomerEmail
-      ),
-      form.append("RatingType", formData?.RatingType),
-      form.append("Category", formData?.Category),
-      axios
-        .post(apiUrls?.ProjectSelect, form, { headers })
-        .then((res) => {
-          if (res?.data?.status === true) {
-            toast.success(res.data.message);
-            setLoading(false);
-            setFormData({
-              ...formData,
-              CustomerSearchBy: "",
-            });
-          } else {
-            toast.error(res.data.message);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
+        formData?.CustomerPhone ||
+        formData?.CustomerEmail ||
+        "",
+      RatingType: String(formData?.RatingType || ""),
+      Category: String(formData?.Category || ""),
+    };
+
+    axiosInstances
+      .post(apiUrls?.ProjectSelect, payload)
+      .then((res) => {
+        if (res?.data?.status === true) {
+          toast.success(res.data.message);
           setLoading(false);
-        });
+          setFormData({
+            ...formData,
+            CustomerSearchBy: "",
+          });
+        } else {
+          toast.error(res.data.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
