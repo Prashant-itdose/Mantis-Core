@@ -263,14 +263,6 @@ const CoordinatorDashboard = () => {
     //   form.append("dtFrom", lotus),
     //   form.append("DeveloperID", developerId);
     // form.append("SearchType", searchType === "" ? "0" : searchType);
-<<<<<<< HEAD
-    axiosInstances
-      .post(apiUrls.CoorDashboard_Quotation_Month, {
-        DeveloperID: Number(developerId),
-        SearchType: Number(searchType === "" ? "0" : searchType),
-        dtFrom: String(lotus),
-      })
-=======
     // axios
     //   .post(apiUrls?.CoorDashboard_Quotation_Month, form, { headers })
     const payload = {
@@ -281,7 +273,6 @@ const CoordinatorDashboard = () => {
 
     axiosInstances
       .post(apiUrls?.CoorDashboard_Quotation_Month, payload)
->>>>>>> 95950aaafc9f7954b5b740e28db33bf5760ced00
       .then((res) => {
         setFilterData(res?.data?.data);
       })
