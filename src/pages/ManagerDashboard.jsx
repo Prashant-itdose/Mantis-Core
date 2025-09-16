@@ -109,11 +109,15 @@ const ManagerDashboard = () => {
   };
   // console.log("birtdatyfadaadaddaad", birthDayData);
   const handleHeightOfBirthDaycardApi = () => {
-    axiosInstances
-         .post(apiUrls.Birthday_Anniversary_Interface_Search, {
-           searchType: String("Search"),
-         })
+    // axiosInstances
+    //      .post(apiUrls.Birthday_Anniversary_Interface_Search, {
+    //        searchType: String("Search"),
+    //      })
+
+            axiosInstances
+      .post(apiUrls?.Birthday_Anniversary_Interface_Search, {SearchType: String("Search")})
         .then((res) => {
+          console.log("res333",res)
           setBirthDayData(res?.data?.dt);
           setAnniverssary(res?.data?.dtAnniversary);
         })
