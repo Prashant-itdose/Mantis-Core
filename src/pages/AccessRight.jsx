@@ -11,6 +11,7 @@ import { headers } from "../utils/apitools";
 import { toast } from "react-toastify";
 import Loading from "../components/loader/Loading";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../networkServices/axiosInstance";
 const AccessRight = (data) => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -43,38 +44,50 @@ const AccessRight = (data) => {
 
   const bindMenu = () => {
     let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-      form.append("MenuName", ""),
-      axios
-        .post(apiUrls?.SearchMenu, form, { headers })
-        .then((res) => {
-          const poc3s = res?.data.data.map((item) => {
-            return { label: item?.MenuName, value: item?.ID };
-          });
-          setMenuMaster(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
+    //   form.append("MenuName", ""),
+    //   axios
+    //     .post(apiUrls?.SearchMenu, form, { headers })
+    axiosInstances
+      .post(apiUrls.SearchMenu, {
+        ID: useCryptoLocalStorage("user_Data", "get", "ID"),
+        LoginName: useCryptoLocalStorage("user_Data", "get", "realname"),
+        MenuName: "",
+      })
+      .then((res) => {
+        const poc3s = res?.data.data.map((item) => {
+          return { label: item?.MenuName, value: item?.ID };
         });
+        setMenuMaster(poc3s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const bindRole = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-      form.append("RoleName", ""),
-      axios
-        .post(apiUrls?.SearchRole, form, { headers })
-        .then((res) => {
-          const poc3s = res?.data.data.map((item) => {
-            return { label: item?.RoleName, value: item?.ID, ...item };
-          });
-          setRoleMaster(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
+    //   form.append("RoleName", ""),
+    //   axios
+    //     .post(apiUrls?.SearchRole, form, { headers })
+    axiosInstances
+      .post(apiUrls.SearchRole, {
+        ID: useCryptoLocalStorage("user_Data", "get", "ID"),
+        LoginName: useCryptoLocalStorage("user_Data", "get", "realname"),
+        RoleName: "",
+      })
+      .then((res) => {
+        const poc3s = res?.data.data.map((item) => {
+          return { label: item?.RoleName, value: item?.ID, ...item };
         });
+        setRoleMaster(poc3s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   // console.log("remaining check", unmappedItems);
@@ -86,23 +99,34 @@ const AccessRight = (data) => {
       toast.error("Please Select Menu.");
     } else {
       setLoading(true);
-      let form = new FormData();
-      form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-        form.append("RoleID", formData?.RoleMaster?.value),
-        form.append("MenuID", formData?.MenuMaster),
-        axios
-          .post(apiUrls?.AccessRight_Bind, form, { headers })
-          .then((res) => {
-            // console.log("res res", res);
-            setMappedItems(res?.data?.Available);
-            setUnmappedItems(res?.data?.Remaining);
-            setLoading(false);
-          })
-          .catch((err) => {
-            console.log(err);
-            setLoading(false);
-          });
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
+      //   form.append("RoleID", formData?.RoleMaster?.value),
+      //   form.append("MenuID", formData?.MenuMaster),
+      //   axios
+      //     .post(apiUrls?.AccessRight_Bind, form, { headers })
+      axiosInstances
+        .post(apiUrls.AccessRight_Bind, {
+          ID: useCryptoLocalStorage("user_Data", "get", "ID"),
+          LoginName: useCryptoLocalStorage("user_Data", "get", "realname"),
+          RoleID: formData?.RoleMaster?.value,
+          MenuID: formData?.MenuMaster,
+        })
+        .then((res) => {
+          console.log("ressssssssssssssssres", res);
+          const remaining = res?.data?.data?.Remaining || [];
+          console.log("remaingggggItems:", remaining);
+
+          setUnmappedItems(remaining);
+          // setMappedItems(res?.data?.Available);
+          // setUnmappedItems(res?.data?.Remaining);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
     }
   };
 
@@ -119,14 +143,22 @@ const AccessRight = (data) => {
   const [selectedMappedItem, setSelectedMappedItem] = useState(null);
 
   const handleAdd = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-      form.append("RoleID", formData?.RoleMaster?.value),
-      form.append("UrlID", unmappedItems[selectedUnmappedItem]?.id),
-      form.append("ActionType", "Add"),
-      axios
-        .post(apiUrls?.AccessRight_Update, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
+    //   form.append("RoleID", formData?.RoleMaster?.value),
+    //   form.append("UrlID", unmappedItems[selectedUnmappedItem]?.id),
+    //   form.append("ActionType", "Add"),
+    //   axios
+    //     .post(apiUrls?.AccessRight_Update, form, { headers })
+    axiosInstances
+      .post(apiUrls.AccessRight_Update, {
+        ID: useCryptoLocalStorage("user_Data", "get", "ID"),
+        LoginName: useCryptoLocalStorage("user_Data", "get", "realname"),
+        RoleID: formData?.RoleMaster?.value,
+        UrlID: unmappedItems[selectedUnmappedItem]?.id,
+        ActionType: "Add",
+      })
         .then((res) => {
           toast.success(res?.data?.message);
           handleSearch();
@@ -341,7 +373,7 @@ const AccessRight = (data) => {
                     hanldeSelectedUnmappedItem(index);
                   }}
                 >
-                  {item.filename}
+                  {item.FileName}
                 </li>
               ))}
             </ul>

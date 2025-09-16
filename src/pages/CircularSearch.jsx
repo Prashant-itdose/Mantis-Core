@@ -16,6 +16,8 @@ import ViewMessageCircular from "./ViewMessageCircular";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import CircularCountModal from "./CircularCountModal";
 import CircularUNCountModal from "./CircularUNCountModal";
+import { Type } from "lucide-react";
+import { axiosInstances } from "../networkServices/axiosInstance";
 const CircularSearch = () => {
   const { VITE_DATE_FORMAT } = import.meta.env;
   const [tableData, setTableData] = useState([]);
@@ -38,8 +40,12 @@ const CircularSearch = () => {
     let form = new FormData();
     form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
       form.append("Type", "To"),
-      axios
-        .post(apiUrls?.Circular_UserList, form, { headers })
+      // axios
+      //   .post(apiUrls?.Circular_UserList, form, { headers })
+      axiosInstances
+        .post(apiUrls.Circular_UserList, {
+          Type: "To",
+        })
         .then((res) => {
           const poc3s = res?.data.data.map((item) => {
             return { label: item?.RealName, value: item?.Id };
@@ -81,29 +87,35 @@ const CircularSearch = () => {
     return `${year}/${month}/${day}`;
   }
   const handleCircularSearch = () => {
-    if (formData?.DateType == "") {
+    if (formData?.DateType === "") {
       toast.error("Please Select DateType.");
     } else {
       setLoading(true);
-      let form = new FormData();
-      form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        form.append("DateType", formData?.DateType),
-        form.append("dtFrom", formatDate(formData?.FromDate)),
-        form.append("dtTo", formatDate(formData?.ToDate)),
-        form.append("CircularSentByID", formData?.CircularSentBy),
-        form.append("Status", formData?.Status),
-        axios
-          .post(apiUrls?.Circular_Search, form, { headers })
-          .then((res) => {
-            setTableData(res?.data?.data);
-            setLoading(false);
-          })
-          .catch((err) => {
-            console.log(err);
-            setLoading(false);
-          });
+
+      const payload = {
+        ID: Number(useCryptoLocalStorage("user_Data", "get", "ID") || 0),
+        DateType: String(formData?.DateType || ""),
+        DtFrom: String(formatDate(formData?.FromDate)),
+        DtTo: String(formatDate(formData?.ToDate)),
+        CircularSentByID: Number(formData?.CircularSentBy || 0),
+        Status: String(formData?.Status || ""),
+      };
+      // .post(apiUrls?.Circular_Search, payload, { headers })
+      axiosInstances
+        .post(apiUrls?.Circular_Search, {
+          ...payload,
+        })
+        .then((res) => {
+          setTableData(res?.data?.data || []);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error("Circular Search Error:", err);
+          setLoading(false);
+        });
     }
   };
+
   const shortenName = (name) => {
     return name.length > 90 ? name.substring(0, 95) + "..." : name;
   };
@@ -224,7 +236,7 @@ const CircularSearch = () => {
             dynamicOptions={circular}
             handleChange={handleDeliveryChange}
             value={formData.CircularSentBy}
-            // requiredClassName={"required-fields"}
+          // requiredClassName={"required-fields"}
           />
           <ReactSelect
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
@@ -237,7 +249,7 @@ const CircularSearch = () => {
             ]}
             handleChange={handleDeliveryChange}
             value={formData.Status}
-            // requiredClassName={"required-fields"}
+          // requiredClassName={"required-fields"}
           />
           {loading ? (
             <Loading />

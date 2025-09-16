@@ -7,6 +7,7 @@ import Loading from "../../loader/Loading";
 import { toast } from "react-toastify";
 import { apiUrls } from "../../../networkServices/apiEndpoints";
 import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../../../networkServices/axiosInstance";
 
 const TransferProjectModal = ({ tableData, userData, setVisible }) => {
   console.log("tableData", tableData);
@@ -21,13 +22,17 @@ const TransferProjectModal = ({ tableData, userData, setVisible }) => {
     TargetUser: null,
   });
   const getReporter = () => {
-    let form = new FormData();
-    form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.GetUserName, form, { headers })
+    // let form = new FormData();
+    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.GetUserName, form, { headers })
+    axiosInstances
+      .post(apiUrls.GetUserName, {
+        Username: "",
+      })
         .then((res) => {
           const assigntos = res?.data?.data?.map((item) => {
-            return { label: item?.username, value: item?.id };
+            return { label: item?.Username, value: item?.id };
           });
           setReporter(assigntos);
         })
@@ -36,13 +41,17 @@ const TransferProjectModal = ({ tableData, userData, setVisible }) => {
         });
   };
   const getTargetReporter = () => {
-    let form = new FormData();
-    form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.GetUserName, form, { headers })
+    // let form = new FormData();
+    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.GetUserName, form, { headers })
+        axiosInstances
+      .post(apiUrls.GetUserName, {
+        Username: "",
+      })
         .then((res) => {
           const reporters = res?.data.data.map((item) => {
-            return { label: item?.username, value: item?.id };
+            return { label: item?.Username, value: item?.Id };
           });
           setTargetReporter(reporters);
         })
@@ -58,20 +67,28 @@ const TransferProjectModal = ({ tableData, userData, setVisible }) => {
   };
   const handleusermapping = () => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      // form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      // form.append("UserID", tableData?.User),
-      form.append("UserID", formData?.SourceUser?.value),
-      form.append("Status", "Transfer"),
-      form.append("TargetUserID", formData?.TargetUser?.value),
-      form.append("ProjectID", "0"),
-      axios
-        .post(apiUrls?.UserVsProjectMapping, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   // form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   // form.append("UserID", tableData?.User),
+    //   form.append("UserID", formData?.SourceUser?.value),
+    //   form.append("Status", "Transfer"),
+    //   form.append("TargetUserID", formData?.TargetUser?.value),
+    //   form.append("ProjectID", "0"),
+    //   axios
+    //     .post(apiUrls?.UserVsProjectMapping, form, { headers })
+       axiosInstances.post(apiUrls.UserVsProjectMapping, {
+            Status: formData?.Status || "Add",
+            TargetUserID: formData?.User || 0,
+            AccessType: formData?.AccessType || "",
+            ProjectIDs: Array.isArray(formData?.Project)
+              ? formData?.Project   
+              : [formData?.Project] 
+          })
         .then((res) => {
           if (res?.data?.status === true) {
             toast.success(res?.data?.message);

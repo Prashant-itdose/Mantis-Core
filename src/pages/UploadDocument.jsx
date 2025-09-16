@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import { apiUrls } from "../networkServices/apiEndpoints";
 import { toast } from "react-toastify";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../networkServices/axiosInstance";
 
 const UploadDocument = () => {
   const [t] = useTranslation();
@@ -56,10 +57,14 @@ const UploadDocument = () => {
     });
   };
   const getPOC1 = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.POC_1_Select, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.POC_1_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.POC_1_Select, {
+        Id: useCryptoLocalStorage("user_Data", "get", "ID"),
+      })
         .then((res) => {
           const poc1s = res?.data.data.map((item) => {
             return { name: item?.POC_1_Name, code: item?.POC_1_ID };
@@ -72,9 +77,13 @@ const UploadDocument = () => {
   };
   const getPOC2 = () => {
     let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.POC_2_Select, form, { headers })
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.POC_2_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.POC_2_Select, {
+        Id: useCryptoLocalStorage("user_Data", "get", "ID"),
+      })
         .then((res) => {
           const poc2s = res?.data.data.map((item) => {
             return { name: item?.POC_2_Name, code: item?.POC_2_ID };
@@ -87,9 +96,13 @@ const UploadDocument = () => {
   };
   const getPOC3 = () => {
     let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.POC_3_Select, form, { headers })
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.POC_3_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.POC_3_Select, {
+        Id: useCryptoLocalStorage("user_Data", "get", "ID"),
+      })
         .then((res) => {
           const poc3s = res?.data.data.map((item) => {
             return { name: item?.POC_3_Name, code: item?.POC_3_ID };
@@ -101,10 +114,14 @@ const UploadDocument = () => {
         });
   };
   const getStatus = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Status_Select, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Status_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.Status_Select, {
+        Id: useCryptoLocalStorage("user_Data", "get", "ID"),
+      })
         .then((res) => {
           const poc3s = res?.data.data.map((item) => {
             return { label: item?.STATUS, value: item?.id };
@@ -116,12 +133,17 @@ const UploadDocument = () => {
         });
   };
   const getProject = () => {
-    let form = new FormData();
-    console.log("ram", "13");
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-      axios
-        .post(apiUrls?.ProjectSelect, form, { headers })
+    // let form = new FormData();
+    // console.log("ram", "13");
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
+    //   axios
+    //     .post(apiUrls?.ProjectSelect, form, { headers })
+    axiosInstances
+      .post(apiUrls.ProjectSelect, {
+        Id: useCryptoLocalStorage("user_Data", "get", "ID"),
+        LoginName: useCryptoLocalStorage("user_Data", "get", "realname"),
+      })
         .then((res) => {
           const poc3s = res?.data.data.map((item) => {
             return { name: item?.Project, code: item?.ProjectId };
@@ -133,10 +155,14 @@ const UploadDocument = () => {
         });
   };
   const getVertical = () => {
-    let form = new FormData();
-    form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Vertical_Select, form, { headers })
+    // let form = new FormData();
+    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Vertical_Select, form, { headers })
+        axiosInstances
+          .post(apiUrls.Vertical_Select, {
+            Id: useCryptoLocalStorage("user_Data", "get", "ID"),    
+          })
         .then((res) => {
           const verticals = res?.data.data.map((item) => {
             return { name: item?.Vertical, code: item?.VerticalID };
@@ -148,10 +174,14 @@ const UploadDocument = () => {
         });
   };
   const getTeam = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Team_Select, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Team_Select, form, { headers })
+       axiosInstances
+          .post(apiUrls.Team_Select, {
+            Id: useCryptoLocalStorage("user_Data", "get", "ID"),
+          })
         .then((res) => {
           const teams = res?.data.data.map((item) => {
             return { name: item?.Team, code: item?.TeamID };
@@ -163,10 +193,14 @@ const UploadDocument = () => {
         });
   };
   const getWing = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Wing_Select, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Wing_Select, form, { headers })
+        axiosInstances
+          .post(apiUrls.Wing_Select, {
+            Id: useCryptoLocalStorage("user_Data", "get", "ID"),
+          })
         .then((res) => {
           const wings = res?.data.data.map((item) => {
             return { name: item?.Wing, code: item?.WingID };
@@ -185,10 +219,14 @@ const UploadDocument = () => {
     }));
   };
   const getType = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.DocumentType_Select, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.DocumentType_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.DocumentType_Select, {
+        Id: useCryptoLocalStorage("user_Data", "get", "ID"),
+      })
         .then((res) => {
           const wings = res?.data.data.map((item) => {
             return {
@@ -213,19 +251,32 @@ const UploadDocument = () => {
   });
   const getUploadSearch = (code) => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("ProjectID", formData?.ProjectID),
-      form.append("VerticalID", formData?.VerticalID),
-      form.append("TeamID", formData?.TeamID),
-      form.append("WingID", formData?.WingID),
-      form.append("POC1", formData?.POC1),
-      form.append("POC2", formData?.POC2),
-      form.append("POC3", formData?.POC3),
-      form.append("Status", formData?.Status),
-      form.append("colorcode", code ? code : ""),
-      axios
-        .post(apiUrls?.UploadDocument_Search, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("ProjectID", formData?.ProjectID),
+    //   form.append("VerticalID", formData?.VerticalID),
+    //   form.append("TeamID", formData?.TeamID),
+    //   form.append("WingID", formData?.WingID),
+    //   form.append("POC1", formData?.POC1),
+    //   form.append("POC2", formData?.POC2),
+    //   form.append("POC3", formData?.POC3),
+    //   form.append("Status", formData?.Status),
+    //   form.append("colorcode", code ? code : ""),
+    //   axios
+    //     .post(apiUrls?.UploadDocument_Search, form, { headers })
+    axiosInstances
+      .post(apiUrls.UploadDocument_Search, {
+        Id: useCryptoLocalStorage("user_Data", "get", "ID"),
+        ProjectID: String(formData?.ProjectID),
+        VerticalID: String(formData?.VerticalID),
+        TeamID: String(formData?.TeamID),
+        WingID:"",
+        POC1: String(formData?.POC1),
+        POC2: String(formData?.POC2),
+        POC3: String(formData?.POC3),
+        Status: String(formData?.Status),
+        
+      })
         .then((res) => {
           setTableData(res?.data?.data);
           setLoading(false);
@@ -249,16 +300,25 @@ const UploadDocument = () => {
   };
   const handleDocRemove = (ele) => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-      form.append("ProjectID", ele?.ProjectID),
-      form.append("ActionType", "DeleteDocument"),
-      form.append("DocumentPrimaryID", ele?.UniqueID),
-      axios
-        .post(apiUrls?.ProjectMasterUpdate, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
+    //   form.append("ProjectID", ele?.ProjectID),
+    //   form.append("ActionType", "DeleteDocument"),
+    //   form.append("DocumentPrimaryID", ele?.UniqueID),
+    //   axios
+    //     .post(apiUrls?.ProjectMasterUpdate, form, { headers })
+    axiosInstances
+      .post(apiUrls.ProjectMasterUpdate, {
+        ID: useCryptoLocalStorage("user_Data", "get", "ID"),
+        LoginName: useCryptoLocalStorage("user_Data", "get", "realname"),
+        ProjectID: ele?.ProjectID,
+        ActionType: "DeleteDocument",
+        DocumentPrimaryID: ele?.UniqueID,
+       
+      })
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success) {
             toast.success(res?.data?.message);
             getUploadSearch();
             setLoading(false);

@@ -54,7 +54,7 @@ export const apiUrls = {
   UpdateDesignation: "/CRMCOREAPI/API/DesignationMaster/UpdateDesignation",
 
   //EmployeeChangePassword Page Api's
-  ChangePassword: "/CRMCOREAPI/API/BugReport/ChangePassword",
+  ChangePassword: "/CRMCOREAPI/api/BugReport/ChangePassword",
 
   //ProjectMaster Page Api's
   CreateProject: "/CRMCOREAPI/API/ProjectMaster/CreateProject",
@@ -65,13 +65,13 @@ export const apiUrls = {
   GetState: "/CRMCOREAPI/API/MasterBind/GetState",
   GetDistrict: "/CRMCOREAPI/API/MasterBind/GetDistrict",
   GetCity: "/CRMCOREAPI/API/MasterBind/GetCity",
-  GetProductVersion: "/CRMCOREAPI/API/ProjectMaster/GetProductVersion",
+  GetProductVersion: "/CRMCOREAPI/api/ProjectMaster/GetProductVersion",
   UpdateLocality: "/CRMCOREAPI/API/ProjectMaster/UpdateLocality",
   CreateBilling: "/CRMCOREAPI/API/ProjectMaster/CreateBilling",
   UpdateBilling: "/CRMCOREAPI/API/ProjectMaster/UpdateBilling",
   UpdateEscalation: "/CRMCOREAPI/API/ProjectMaster/UpdateEscalation",
   UpdateNotification: "/CRMCOREAPI/API/ProjectMaster/UpdateNotification",
-  GetClientModuleList: "/CRMCOREAPI/API/ProjectMaster/GetClientModuleList",
+  GetClientModuleList: "/CRMCOREAPI/api/ProjectMaster/GetClientModuleList",
   GetPhaseID: "/CRMCOREAPI/API/ProjectMaster/GetPhaseID",
   CreateClientModule: "/CRMCOREAPI/API/ProjectMaster/CreateClientModule",
   UpdateClientModule: "/CRMCOREAPI/API/ProjectMaster/UpdateClientModule",
@@ -89,20 +89,20 @@ export const apiUrls = {
   CreateProjectCategory: "/CRMCOREAPI/API/ProjectMaster/CreateProjectCategory",
 
   //UserVSProjectMapping Page Api's
-  UserVsProject_Select: "/CRMCOREAPI/API/EmployeeMaster/UserVsProject_Select",
-  UserVsProjectMapping: "/CRMCOREAPI/API/EmployeeMaster/UserVsProjectMapping",
+  UserVsProject_Select: "/CRMCOREAPI/api/EmployeeMaster/UserVsProject_Select",
+  UserVsProjectMapping: "/CRMCOREAPI/api/EmployeeMaster/UserVsProjectMapping",
   Remove_UserVsProjectMapping:
     "/CRMCOREAPI/API/EmployeeMaster/UserVsProjectRemove",
   SelectProjectOrdering: "/CRMCOREAPI/API/ProjectMaster/SelectProjectOrdering",
   UpdateProjectOrdering: "/CRMCOREAPI/API/ProjectMaster/UpdateProjectOrdering",
 
   //ChangeSubmitDateofTicket Page Api's
-  ChangeSubmitDate: "/CRMCOREAPI/API/BugReport/ChangeSubmitDate",
+  ChangeSubmitDate: "/CRMCOREAPI/api/BugReport/ChangeSubmitDate",
 
   //UploadDocument Page Api's
-  DocumentType_Select: "/CRMCOREAPI/API/ManageDocument/DocumentType_Select",
-  UploadDocument_Search: "/CRMCOREAPI/API/ManageDocument/UploadDocument_Search",
-  UploadDocument: "/CRMCOREAPI/API/ManageDocument/UploadDocument",
+  DocumentType_Select: "/CRMCOREAPI/api/ManageDocument/DocumentType_Select",
+  UploadDocument_Search: "/CRMCOREAPI/api/ManageDocument/UploadDocument_Search",
+  UploadDocument: "/CRMCOREAPI/api/ManageDocument/UploadDocument",
 
   //Amount Submission Page Api's
   AmountSubmission_ByAccounts:
@@ -113,9 +113,9 @@ export const apiUrls = {
     "/CRMCOREAPI/API/Accounts/AmountSubmission_ByAccounts_IsCancel",
 
   //Query Master Api;s
-  Query_Insert: "/CRMCOREAPI/API/QueryVsResult/Query_Insert",
+  Query_Insert: "/CRMCOREAPI/api/QueryVsResult/Query_Insert",
   Query_Update: "/CRMCOREAPI/API/QueryVsResult/Query_Update",
-  QueryVsResult_Select: "/CRMCOREAPI/API/QueryVsResult/QueryVsResult_Select",
+  QueryVsResult_Select: "/CRMCOREAPI/api/QueryVsResult/QueryVsResultSelect",
   Result_Insert: "/CRMCOREAPI/API/QueryVsResult/Result_Insert",
   Result_Update: "/CRMCOREAPI/API/QueryVsResult/Result_Update",
 
@@ -132,13 +132,13 @@ export const apiUrls = {
   Connector_Update: "/CRMCOREAPI/API/AccountsConnector/Connector_Update",
 
   GetImplementaiondropdown:
-    "/CRMCOREAPI/API/ImplementationSteps/ImplementationSteps_MasterSelect",
+    "/CRMCOREAPI/api/ImplementationSteps/ImplementationSteps_MasterSelect",
   InsertImplementaion:
-    "/CRMCOREAPI/API/ImplementationSteps/ImplementationSteps_Insert",
+    "/CRMCOREAPI/api/ImplementationSteps/ImplementationSteps_Insert",
   DeleteImplementation:
-    "/CRMCOREAPI/API/ImplementationSteps/ImplementationSteps_Delete",
+    "/CRMCOREAPI/api/ImplementationSteps/ImplementationSteps_Delete",
   UpdateImplementation:
-    "/CRMCOREAPI/API/ImplementationSteps/ImplementationSteps_Update",
+    "/CRMCOREAPI/api/ImplementationSteps/ImplementationSteps_Update",
 
   //Attendance//
   Attendence_Login: "/CRMCOREAPI/api/CRMAttendance/AttendanceLogin",
@@ -178,21 +178,21 @@ export const apiUrls = {
 
   // Access right
   CreateRole: "/CRMCOREAPI/API/AccessRight/CreateRole",
-  SearchRole: "/CRMCOREAPI/API/AccessRight/SearchRole",
+  SearchRole: "/CRMCOREAPI/api/AccessRight/SearchRole",
   UpdateRole: "/CRMCOREAPI/API/AccessRight/UpdateRole",
   EmployeeView: "/CRMCOREAPI/API/AccessRight/EmployeeView",
 
   CreateMenu: "/CRMCOREAPI/API/AccessRight/CreateMenu",
   UpdateMenu: "/CRMCOREAPI/API/AccessRight/UpdateMenu",
-  SearchMenu: "/CRMCOREAPI/API/AccessRight/SearchMenu",
+  SearchMenu: "/CRMCOREAPI/api/AccessRight/SearchMenu",
 
-  BindRoleVsMenu_File: "/CRMCOREAPI/API/AccessRight/BindRoleVsMenu_File",
+  BindRoleVsMenu_File: "/CRMCOREAPI/api/AccessRight/BindRoleVsMenu_File",
 
   CreateFile: "/CRMCOREAPI/API/AccessRight/CreateFile",
   SearchFile: "/CRMCOREAPI/API/AccessRight/SearchFile",
   UpdateFile: "/CRMCOREAPI/API/AccessRight/UpdateFile",
-  AccessRight_Bind: "/CRMCOREAPI/API/AccessRight/AccessRight_Bind",
-  AccessRight_Update: "/CRMCOREAPI/API/AccessRight/AccessRight_Update",
+  AccessRight_Bind: "/CRMCOREAPI/api/AccessRight/AccessRight_Bind",
+  AccessRight_Update: "/CRMCOREAPI/api/AccessRight/AccessRight_Insert",
   UserVsRoleMapping: "/CRMCOREAPI/API/EmployeeMaster/UserVsRoleMapping",
   UserVsCategoryMapping: "/CRMCOREAPI/API/EmployeeMaster/UserVsCategoryMapping",
   DotNetMantis_EmployeeID:
@@ -238,7 +238,7 @@ export const apiUrls = {
   UserVsWing_Select: "/CRMCOREAPI/API/EmployeeMaster/UserVsWingSelect",
   UserVsWingMapping: "/CRMCOREAPI/API/EmployeeMaster/UserVsWingMapping",
   UpdateThemeColor: "/CRMCOREAPI/API/EmployeeMaster/UpdateThemeColor",
-  GetUserName: "/CRMCOREAPI/API/ProjectMaster/GetUserName",
+  GetUserName: "/CRMCOREAPI/api/ProjectMaster/GetUserName",
   AmountSub_CancelReason_Select:
     "/CRMCOREAPI/API/MasterBind/AmountSub_CancelReason_Select",
   AmountSubmission_ByAccounts_Search_ProjectID:
@@ -277,12 +277,12 @@ export const apiUrls = {
   SalesSearchFilterData: "/CRMCOREAPI/API/MasterBind/SearchFilterData ",
 
   ///Dashboard Api///////////
-  DevDashboard_Summary: "/CRMCOREAPI/API/MantisSummary/DevDashboardSummary",
+  DevDashboard_Summary: "/CRMCOREAPI/api/MantisSummary/DevDashboardSummary",
   DevDashboard_Detailed: "/CRMCOREAPI/API/MantisSummary/DevDashboard_Detailed",
-  Circular_News: "/CRMCOREAPI/API/Circular/CircularNews",
-  Circular_UserList: "/CRMCOREAPI/API/Circular/Circular_UserList",
-  Circular_Search: "/CRMCOREAPI/API/Circular/Circular_Search",
-  SaveCircular: "/CRMCOREAPI/API/Circular/SaveCircular",
+  Circular_News: "/CRMCOREAPI/api/Circular/CircularNews",
+  Circular_UserList: "/CRMCOREAPI/api/Circular/UserList",
+  Circular_Search: "/CRMCOREAPI/api/Circular/Circular_Search",
+  SaveCircular: "/CRMCOREAPI/api/Circular/SaveCircular",
   Circular_Read: "/CRMCOREAPI/API/Circular/CircularRead",
   PaymentTerms_Select: "/CRMCOREAPI/API/MasterBind/PaymentTerms_Select",
   SalesBooking_Load_SalesID:
@@ -314,13 +314,13 @@ export const apiUrls = {
     "/CRMCOREAPI/API/MantisSummary/DevDashboardWelcomeAvgTimeCategory",
   DevDashboard_Welcome_Status_Count:
     "/CRMCOREAPI/API/MantisSummary/DevDashboardWelcomeStatusCount",
-  TrainingVedio: "/CRMCOREAPI/API/TrainingVedio/TrainingVedio",
+  TrainingVedio: "/CRMCOREAPI/api/TrainingVideo/TrainingVideo",
   PaymentFollowup: "/CRMCOREAPI/API/Accounts/PaymentFollowup",
   ManageGlobalMaster: "/CRMCOREAPI/API/MasterBind/ManageGlobalMaster",
-  GetTeamMember: "/CRMCOREAPI/API/MasterBind/GetTeamMember",
+  GetTeamMember: "/CRMCOREAPI/api/MasterBind/GetTeamMember",
   Reason_Select: "/CRMCOREAPI/API/MasterBind/Reason_Select",
   GetProjectInfo: "/CRMCOREAPI/API/ProjectMaster/GetProjectInfo",
-  ProjectMasterUpdate: "/CRMCOREAPI/API/ProjectMasterUpdate/SaveProject",
+  ProjectMasterUpdate: "/CRMCOREAPI/api/ProjectMasterUpdate/SaveProject",
   getViewProject: "/CRMCOREAPI/API/ProjectMasterUpdate/ViewProject",
   ShowImpleStepsMaster_select:
     "/CRMCOREAPI/API/ImplementationSteps/StepDetail_Project_Select",
@@ -438,8 +438,8 @@ export const apiUrls = {
     "/CRMCOREAPI/API/EmployeeFeedback/ResendEmployeeFeedbackWhatsapp",
   ResendEmployeeFeedbackMail:
     "CRMAPI/API/EmployeeFeedback/ResendEmployeeFeedbackMail",
-  EmployeeFeedbackAvg: "/CRMCOREAPI/API/EmployeeFeedback/EmployeeFeedbackAvg",
-  GetWorkingHours: "/CRMCOREAPI/API/CRMAttendance/GetWorkingHours",
+  EmployeeFeedbackAvg: "/CRMCOREAPI/api/EmployeeFeedback/EmployeeFeedbackAvg",
+  GetWorkingHours: "/CRMCOREAPI/api/CRMAttendance/GetWorkingHours",
   GetEmployeeTransactions: "/CRMCOREAPI/API/Attendence/GetEmployeeTransactions",
   EmployeeBind: "/CRMCOREAPI/API/CRMAttendance/EmployeeBind",
   WeaklyMonthlyBreakCount: "/CRMCOREAPI/API/Attendence/WeaklyMonthlyBreakCount",
@@ -455,7 +455,7 @@ export const apiUrls = {
   SendTaxInvoiceMailFinal:
     "/CRMCOREAPI/API/AccountsPaymentInstallment/SendTaxInvoiceMailFinal",
   TaxInvoiceLog: "/CRMCOREAPI/API/AccountsTaxInvoice/TaxInvoiceLog",
-  MorningWishSave: "/CRMCOREAPI/API/MorningWish/MorningWishSave",
+  MorningWishSave: "/CRMCOREAPI/api/MorningWish/MorningWishSave",
   MorningWishSearch: "/CRMCOREAPI/API/MorningWish/MorningWishSearch",
   RemoveMorningWish: "/CRMCOREAPI/API/MorningWish/RemoveMorningWish",
   UpdateMorningWish: "/CRMCOREAPI/API/MorningWish/UpdateMorningWish",
@@ -477,7 +477,7 @@ export const apiUrls = {
     "/CRMCOREAPI/api/CRMAttendance/AttendanceReportTypeWise",
   WOandOLTypeWise: "/CRMCOREAPI/api/CRMAttendance/WOandOLTypeWise",
   SaveFilterTableReprintData:
-    "/CRMCOREAPI/API/DynamicFilter/SaveFilterTableReprintData",
+    "/CRMCOREAPI/api/DynamicFilter/SaveFilterTableReprintData",
   GetFilterTableReprintData:
     "/CRMCOREAPI/API/DynamicFilter/GetFilterTableReprintData",
   GetFeaturesStatus: "/CRMCOREAPI/API/Circular/GetFeaturesStatus",

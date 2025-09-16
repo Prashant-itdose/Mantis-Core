@@ -13,6 +13,7 @@ import { headers } from "../utils/apitools";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import "./MorningWish.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { axiosInstances } from "../networkServices/axiosInstance";
 
 const MorningWish = () => {
   const fileInputRef = useRef(null);
@@ -169,23 +170,29 @@ const MorningWish = () => {
     // }
 
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("Day", formData?.SelectDate),
-      form.append(
-        "Content",
-        formData.Description ? removeHtmlTags(formData.Description) : ""
-      ),
-      form.append("Image_Base64", formData?.Document_Base64),
-      form.append("FileFormat_Base64", formData?.FileExtension),
-      axios
-        .post(apiUrls?.MorningWishSave, form, {
-          headers,
-        })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("Day", formData?.SelectDate),
+    //   form.append(
+    //     "Content",
+    //     formData.Description ? removeHtmlTags(formData.Description) : ""
+    //   ),
+    //   form.append("Image_Base64", formData?.Document_Base64),
+    //   form.append("FileFormat_Base64", formData?.FileExtension),
+    //   axios
+    //     .post(apiUrls?.MorningWishSave, form, {
+    axiosInstances  
+      .post(apiUrls.MorningWishSave, {
+          Day: formData?.SelectDate,
+          Content: formData.Description ? removeHtmlTags(formData.Description) : "",
+          Image_Base64: formData?.Document_Base64,
+          FileFormat_Base64: formData?.FileExtension,
+ 
+      })
         .then((res) => {
           if (res?.data?.status === true) {
             toast.success(res?.data?.message);
@@ -268,21 +275,27 @@ const MorningWish = () => {
         })
         .catch((err) => {
           console.log(err);
-        });
+        })   .finally(() => {
+      setLoading(false); // ✅ always stop loader
+    });
   };
 
   const EditMorningWish = (id) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("WishID", id),
-      axios
-        .post(apiUrls?.EditMorningWish, form, {
-          headers,
-        })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("WishID", id),
+    //   axios
+    //     .post(apiUrls?.EditMorningWish, form, {
+    //       headers,
+    //     })
+    axiosInstances
+      .post(apiUrls.EditMorningWish, {
+        WishID: id,
+      })
         .then((res) => {
           const datas = res?.data?.data[0];
           setFormData({

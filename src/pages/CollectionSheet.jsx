@@ -18,6 +18,7 @@ import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import SearchLotusFilter from "./SearchLotusFilter";
 import Tables from "../components/UI/customTable";
 import Accordion from "./Accordion";
+import { axiosInstances } from "../networkServices/axiosInstance";
 
 const CollectionSheet = () => {
   const [columnConfig, setColumnConfig] = useState([]);
@@ -120,39 +121,45 @@ const CollectionSheet = () => {
   /////////////////////////////////
 
   const SaveFilter = () => {
-    let form = new FormData();
+    // let form = new FormData();
 
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    form.append(
-      "CrmEmpID",
-      useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-    );
-    form.append(
-      "LoginName",
-      useCryptoLocalStorage("user_Data", "get", "realname")
-    );
-    form.append("PageName", "RecoverySheet");
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
+    // form.append(
+    //   "CrmEmpID",
+    //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+    // );
+    // form.append(
+    //   "LoginName",
+    //   useCryptoLocalStorage("user_Data", "get", "realname")
+    // );
+    // form.append("PageName", "RecoverySheet");
 
-    // Example FilterData array
-    const filterData = [
-      { header: "S.No", visible: true },
-      { header: "ProjectID", visible: true },
-      { header: "VerticalID", visible: true },
-      { header: "TeamID", visible: true },
-      { header: "WingID", visible: true },
-      { header: "POC1", visible: true },
-      { header: "POC2", visible: true },
-      { header: "POC3", visible: true },
-      { header: "FinancialYear", visible: true },
-      { header: "Month", visible: true },
-      { header: "SearchType", visible: true },
-    ];
+    // // Example FilterData array
+    // const filterData = [
+    //   { header: "S.No", visible: true },
+    //   { header: "ProjectID", visible: true },
+    //   { header: "VerticalID", visible: true },
+    //   { header: "TeamID", visible: true },
+    //   { header: "WingID", visible: true },
+    //   { header: "POC1", visible: true },
+    //   { header: "POC2", visible: true },
+    //   { header: "POC3", visible: true },
+    //   { header: "FinancialYear", visible: true },
+    //   { header: "Month", visible: true },
+    //   { header: "SearchType", visible: true },
+    // ];
 
-    // Append stringified FilterData
-    form.append("FilterData", JSON.stringify(filterData));
+    // // Append stringified FilterData
+    // form.append("FilterData", JSON.stringify(filterData));
 
-    axios
-      .post(apiUrls?.SaveFilterTableReprintData, form, { headers })
+    // axios
+    //   .post(apiUrls?.SaveFilterTableReprintData, form, { headers })
+    axiosInstances
+      .post(apiUrls.SaveFilterTableReprintData, {
+        CrmEmpID: String(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),
+        PageName: "RecoverySheet",    
+        FilterData:"string"
+      })
       .then((res) => {
         console.log(res.data.message);
       })
@@ -206,10 +213,13 @@ const CollectionSheet = () => {
       { header: "Total", visible: true },
     ];
     // Append stringified FilterData
-    form.append("FilterData", JSON.stringify(filterData));
-
-    axios
-      .post(apiUrls?.SaveFilterTableReprintData, form, { headers })
+    // form.append("FilterData", JSON.stringify(filterData));
+    axiosInstances
+      .post(apiUrls.SaveFilterTableReprintData, {
+        CrmEmpID: String(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),
+        PageName: "RecoverySheet",    
+        FilterData:"string"
+      })
       .then((res) => {
         console.log(res.data.message);
       })
@@ -220,19 +230,25 @@ const CollectionSheet = () => {
   };
 
   const SearchAmountSubmissionFilter = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "CrmEmpID",
-        useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      ),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("PageName", "RecoverySheet"),
-      axios
-        .post(apiUrls?.GetFilterTableReprintData, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "CrmEmpID",
+    //     useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+    //   ),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("PageName", "RecoverySheet"),
+    //   axios
+    //     .post(apiUrls?.GetFilterTableReprintData, form, { headers })
+        axiosInstances
+      .post(apiUrls.GetFilterTableReprintData, {
+        CrmEmpID: String(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),
+        PageName: "RecoverySheet",
+       
+      })
         .then((res) => {
           const data = res.data.data;
           if (res?.data.status === true) {
@@ -246,19 +262,25 @@ const CollectionSheet = () => {
         });
   };
   const SearchAmountSubmissionTableFilter = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "CrmEmpID",
-        useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      ),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("PageName", "RecoverySheetTable"),
-      axios
-        .post(apiUrls?.GetFilterTableReprintData, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "CrmEmpID",
+    //     useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+    //   ),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("PageName", "RecoverySheetTable"),
+    //   axios
+    //     .post(apiUrls?.GetFilterTableReprintData, form, { headers })
+    axiosInstances
+      .post(apiUrls.GetFilterTableReprintData, {
+        CrmEmpID: String(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),   
+        PageName: "RecoverySheetTable",
+ 
+      })
         .then((res) => {
           const data = res.data.data;
           if (res?.data.status === true) {
@@ -320,14 +342,19 @@ const CollectionSheet = () => {
   };
 
   const getProject = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      axios
-        .post(apiUrls?.ProjectSelect, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   axios
+    //     .post(apiUrls?.ProjectSelect, form, { headers })
+        axiosInstances
+          .post(apiUrls.ProjectSelect, {
+            Id: useCryptoLocalStorage("user_Data", "get", "ID"),
+            LoginName: useCryptoLocalStorage("user_Data", "get", "realname"),
+          })
         .then((res) => {
           const poc3s = res?.data.data.map((item) => {
             return { name: item?.Project, code: item?.ProjectId };
@@ -339,10 +366,14 @@ const CollectionSheet = () => {
         });
   };
   const getVertical = () => {
-    let form = new FormData();
-    form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Vertical_Select, form, { headers })
+    // let form = new FormData();
+    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Vertical_Select, form, { headers })
+       axiosInstances
+          .post(apiUrls.Vertical_Select, {
+            Id: useCryptoLocalStorage("user_Data", "get", "ID"),
+          })
         .then((res) => {
           const verticals = res?.data.data.map((item) => {
             return { name: item?.Vertical, code: item?.VerticalID };
@@ -354,10 +385,14 @@ const CollectionSheet = () => {
         });
   };
   const getTeam = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Team_Select, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Team_Select, form, { headers })
+     axiosInstances
+          .post(apiUrls.Team_Select, {
+            Id: useCryptoLocalStorage("user_Data", "get", "ID"),
+          })
         .then((res) => {
           const teams = res?.data.data.map((item) => {
             return { name: item?.Team, code: item?.TeamID };
@@ -369,10 +404,14 @@ const CollectionSheet = () => {
         });
   };
   const getWing = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Wing_Select, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.Wing_Select, form, { headers })
+       axiosInstances
+          .post(apiUrls.Wing_Select, {
+            Id: useCryptoLocalStorage("user_Data", "get", "ID"),
+          })
         .then((res) => {
           const wings = res?.data.data.map((item) => {
             return { name: item?.Wing, code: item?.WingID };
@@ -384,10 +423,14 @@ const CollectionSheet = () => {
         });
   };
   const getPOC1 = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.POC_1_Select, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.POC_1_Select, form, { headers })
+        axiosInstances
+          .post(apiUrls.POC_1_Select, {
+            Id: useCryptoLocalStorage("user_Data", "get", "ID"),
+          })
         .then((res) => {
           const poc1s = res?.data.data.map((item) => {
             return { name: item?.POC_1_Name, code: item?.POC_1_ID };
@@ -399,10 +442,14 @@ const CollectionSheet = () => {
         });
   };
   const getPOC2 = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.POC_2_Select, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.POC_2_Select, form, { headers })
+       axiosInstances
+          .post(apiUrls.POC_2_Select, {
+            Id: useCryptoLocalStorage("user_Data", "get", "ID"),
+          })
         .then((res) => {
           const poc2s = res?.data.data.map((item) => {
             return { name: item?.POC_2_Name, code: item?.POC_2_ID };
@@ -414,10 +461,14 @@ const CollectionSheet = () => {
         });
   };
   const getPOC3 = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.POC_3_Select, form, { headers })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   axios
+    //     .post(apiUrls?.POC_3_Select, form, { headers })
+        axiosInstances
+          .post(apiUrls.POC_3_Select, {
+            Id: useCryptoLocalStorage("user_Data", "get", "ID"),
+          })
         .then((res) => {
           const poc3s = res?.data.data.map((item) => {
             return { name: item?.POC_3_Name, code: item?.POC_3_ID };
@@ -431,8 +482,10 @@ const CollectionSheet = () => {
   const getSales_MIS_Type = () => {
     let form = new FormData();
     // form.append("ID",  useCryptoLocalStorage("user_Data", "get", "ID")),
-    axios
-      .post(apiUrls?.Sales_MIS_Type, form, { headers })
+    // axios
+    //   .post(apiUrls?.Sales_MIS_Type, form, { headers })
+    axiosInstances
+      .post(apiUrls.Sales_MIS_Type)
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return { label: item?.NAME, value: item?.NAME };
