@@ -264,7 +264,7 @@ const Header = React.memo(() => {
   const handleEmployeeAverage = () => {
     axiosInstances
       .post(apiUrls.EmployeeFeedbackAvg, {
-        employeeID: String(
+        EmployeeID: Number(
           useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
       })

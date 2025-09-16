@@ -19,19 +19,26 @@ const FeedbackWhatsappModal = (showData) => {
   });
   const handleConfirm = () => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("FeedbackID", showData?.visible?.showData?.FeedbackID),
-      form.append("ProjectID", showData?.visible?.showData?.ProjectID),
-      form.append("ProjectName", showData?.visible?.showData?.ProjectName),
-      form.append("MobileNo", formData?.WhatsappNumber),
-      form.append("Content", showData?.visible?.showData?.Content),
-      axios
-        .post(apiUrls?.ResendFeedbackWhatsapp, form, { headers })
+    axiosInstances
+      .post(apiUrls.ResendFeedbackWhatsapp, {
+        EmployeeID: Number(formData?.AssignedTo),
+        SearchType: String(code ? code : "0"),
+        Date: String(formatDate(formData?.FromDate)),
+        ManagerID: Number(formData?.ReportingTo),
+      })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("FeedbackID", showData?.visible?.showData?.FeedbackID),
+    //   form.append("ProjectID", showData?.visible?.showData?.ProjectID),
+    //   form.append("ProjectName", showData?.visible?.showData?.ProjectName),
+    //   form.append("MobileNo", formData?.WhatsappNumber),
+    //   form.append("Content", showData?.visible?.showData?.Content),
+    //   axios
+    //     .post(apiUrls?.ResendFeedbackWhatsapp, form, { headers })
         .then((res) => {
           if (res?.data?.status === true) {
             toast.success(res?.data?.message);

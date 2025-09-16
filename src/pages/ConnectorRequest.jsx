@@ -14,6 +14,7 @@ import BrowseButton from "../components/formComponent/BrowseButton";
 import { useTranslation } from "react-i18next";
 import BrowseInput from "../components/formComponent/BrowseInput";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../networkServices/axiosInstance";
 
 const ConnectorRequest = ({ data }) => {
   const [t] = useTranslation();
@@ -124,15 +125,23 @@ const ConnectorRequest = ({ data }) => {
     }
   };
   const getProject = () => {
-    let form = new FormData();
-    // console.log("ram", "4");
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      axios
-        .post(apiUrls?.ProjectSelect, form, { headers })
+    axiosInstances
+      .post(apiUrls.ProjectSelect, {
+  "ProjectID": 0,
+  "IsMaster": "0",
+  "VerticalID": 0,
+  "TeamID": 0,
+  "WingID": 0
+})
+    // let form = new FormData();
+    // // console.log("ram", "4");
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   axios
+    //     .post(apiUrls?.ProjectSelect, form, { headers })
         .then((res) => {
           const poc3s = res?.data.data.map((item) => {
             return { label: item?.Project, value: item?.ProjectId };
@@ -144,17 +153,23 @@ const ConnectorRequest = ({ data }) => {
         });
   };
   const getPaymentMode = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("SearchType", "PaymentMode"),
-      form.append("ProjectID", ""),
-      form.append("IssueNo", ""),
-      axios
-        .post(apiUrls?.Connector_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.Connector_Select, {
+  "ProjectID": 0,
+  "SearchType": "PaymentMode",
+  "IssueNo": ""
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("SearchType", "PaymentMode"),
+    //   form.append("ProjectID", ""),
+    //   form.append("IssueNo", ""),
+    //   axios
+    //     .post(apiUrls?.Connector_Select, form, { headers })
         .then((res) => {
           const reporters = res?.data.data.map((item) => {
             return { label: item?.PaymentMode, value: item?.PaymentMode };
@@ -168,17 +183,23 @@ const ConnectorRequest = ({ data }) => {
   const [projectaddress, setProjectAddress] = useState([]);
 
   const getProjectAddress = (name, value, type) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("SearchType", "GetProjectAddress"),
-      form.append("ProjectID", type == "Project" ? value : formData?.Project),
-      form.append("IssueNo", ""),
-      axios
-        .post(apiUrls?.Connector_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.Connector_Select, {
+  "ProjectID": type == "Project" ? Number(value) : Number(formData?.Project),
+  "SearchType": "GetProjectAddress",
+  "IssueNo": ""
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("SearchType", "GetProjectAddress"),
+    //   form.append("ProjectID", type == "Project" ? value : formData?.Project),
+    //   form.append("IssueNo", ""),
+    //   axios
+    //     .post(apiUrls?.Connector_Select, form, { headers })
         .then((res) => {
           const data = res?.data?.data;
           setProjectAddress(data);
@@ -218,17 +239,23 @@ const ConnectorRequest = ({ data }) => {
     }
   };
   const getConnectorCharges = (value, type) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("SearchType", "ConnectorCharges"),
-      form.append("ProjectID", ""),
-      form.append("IssueNo", ""),
-      axios
-        .post(apiUrls?.Connector_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.Connector_Select, {
+  "ProjectID":0,
+  "SearchType": "ConnectorCharges",
+  "IssueNo": ""
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("SearchType", "ConnectorCharges"),
+    //   form.append("ProjectID", ""),
+    //   form.append("IssueNo", ""),
+    //   axios
+    //     .post(apiUrls?.Connector_Select, form, { headers })
         .then((res) => {
           const data = res?.data?.data;
           const datacourier = data?.filter(
@@ -254,30 +281,6 @@ const ConnectorRequest = ({ data }) => {
       toast.error("Please Select Project.");
     } else {
       setLoading(true);
-      const form = new FormData();
-      form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      );
-      form.append("ProjectID", formData?.Project);
-      form.append("ProjectName", getlabel(formData?.Project, project));
-      form.append("ClientAddress", formData?.Address);
-      form.append("CourierAddress", formData?.CourierAddress || "");
-      form.append("Remarks", formData?.Remarks || "");
-      form.append("Courier", formData?.Courier || "");
-      form.append("CourierCharges", formData?.CourierCharges || "");
-      form.append("DeliveryDate", formatDate(formData?.IssueDate));
-      form.append(
-        "Document_Base64",
-        formData?.Document_Base64 ? formData?.Document_Base64 : ""
-      );
-      form.append(
-        "Document_FormatType",
-        formData?.FileExtension ? formData?.FileExtension : ""
-      );
-      form.append("PaymentMode", formData?.PaymentType);
-      // Initialize variables for male and female connectors
       let maleConnector_9 = { rate: "", qty: "", amount: "" };
       let femaleConnector_9 = { rate: "", qty: "", amount: "" };
       let maleConnector_25 = { rate: "", qty: "", amount: "" };
@@ -309,26 +312,111 @@ const ConnectorRequest = ({ data }) => {
             break;
         }
       });
+      const payload = {
+  "ProjectID": String(formData?.Project), 
+  "ProjectName": String(getlabel(formData?.Project, project)), 
+  "PaymentMode": String(formData?.PaymentType), 
+  "ClientAddress": String(formData?.Address), 
+  "Courier": String(formData?.Courier || ""), 
+  "CourierAddress": String(formData?.CourierAddress || ""),
+  "CourierCharges": Number(formData?.CourierCharges || ""), 
+  "FemaleConnector_Rate_9": Number(femaleConnector_9.rate), 
+  "FemaleConnector_Qty_9": Number(femaleConnector_9.qty),
+  "FemaleConnector_Amount_9": Number(femaleConnector_9.amount),
+  "MaleConnector_Rate_9": Number(maleConnector_9.rate),
+  "MaleConnector_Qty_9": Number(maleConnector_9.qty),
+  "MaleConnector_Amount_9": Number(maleConnector_9.amount),
+  "FemaleConnector_Rate_25": Number(femaleConnector_25.rate),
+  "FemaleConnector_Qty_25": Number(femaleConnector_25.qty),
+  "FemaleConnector_Amount_25": Number(femaleConnector_25.amount),
+  "MaleConnector_Rate_25": Number(maleConnector_25.rate),
+  "MaleConnector_Qty_25": Number(maleConnector_25.qty),
+  "MaleConnector_Amount_25": Number(maleConnector_25.amount),
+  "Remarks": String(formData?.Remarks || ""), 
+  "DeliveryDate": String(formatDate(formData?.IssueDate)), 
+  "Document_Base64": String(formData?.Document_Base64 ? formData?.Document_Base64 : ""), 
+  "Document_FormatType": String(formData?.FileExtension ? formData?.FileExtension : "") 
+}
 
-      // Add connector values to the form
-      form.append("FemaleConnector_Rate_9", femaleConnector_9.rate);
-      form.append("FemaleConnector_Qty_9", femaleConnector_9.qty);
-      form.append("FemaleConnector_Amount_9", femaleConnector_9.amount);
+axiosInstances
+      .post(apiUrls?.Connector_Insert, payload)
+      // const form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
+      // form.append(
+      //   "LoginName",
+      //   useCryptoLocalStorage("user_Data", "get", "realname")
+      // );
+      // form.append("ProjectID", formData?.Project);
+      // form.append("ProjectName", getlabel(formData?.Project, project));
+      // form.append("ClientAddress", formData?.Address);
+      // form.append("CourierAddress", formData?.CourierAddress || "");
+      // form.append("Remarks", formData?.Remarks || "");
+      // form.append("Courier", formData?.Courier || "");
+      // form.append("CourierCharges", formData?.CourierCharges || "");
+      // form.append("DeliveryDate", formatDate(formData?.IssueDate));
+      // form.appe nd(
+      //   "Document_Base64",
+      //   formData?.Document_Base64 ? formData?.Document_Base64 : ""
+      // );
+      // form.append(
+      //   "Document_FormatType",
+      //   formData?.FileExtension ? formData?.FileExtension : ""
+      // );
+      // form.append("PaymentMode", formData?.PaymentType);
+      // // Initialize variables for male and female connectors
+      // // let maleConnector_9 = { rate: "", qty: "", amount: "" };
+      // // let femaleConnector_9 = { rate: "", qty: "", amount: "" };
+      // // let maleConnector_25 = { rate: "", qty: "", amount: "" };
+      // // let femaleConnector_25 = { rate: "", qty: "", amount: "" };
+      // // // Loop through the array to map the fields
+      // // tableData?.forEach((item) => {
+      // //   switch (item.ConnectorName) {
+      // //     case "9 Pin Male":
+      // //       maleConnector_9.rate = item.Rate || "";
+      // //       maleConnector_9.qty = item.TableQuantity || "";
+      // //       maleConnector_9.amount = item.TableAmount || "";
+      // //       break;
+      // //     case "9 Pin Female":
+      // //       femaleConnector_9.rate = item.Rate || "";
+      // //       femaleConnector_9.qty = item.TableQuantity || "";
+      // //       femaleConnector_9.amount = item.TableAmount || "";
+      // //       break;
+      // //     case "25 Pin Male":
+      // //       maleConnector_25.rate = item.Rate || "";
+      // //       maleConnector_25.qty = item.TableQuantity || "";
+      // //       maleConnector_25.amount = item.TableAmount || "";
+      // //       break;
+      // //     case "25 Pin Female":
+      // //       femaleConnector_25.rate = item.Rate || "";
+      // //       femaleConnector_25.qty = item.TableQuantity || "";
+      // //       femaleConnector_25.amount = item.TableAmount || "";
+      // //       break;
+      // //     default:
+      // //       break;
+      // //   }
+      // // });
 
-      form.append("MaleConnector_Rate_9", maleConnector_9.rate);
-      form.append("MaleConnector_Qty_9", maleConnector_9.qty);
-      form.append("MaleConnector_Amount_9", maleConnector_9.amount);
+      // // Add connector values to the form
+      // form.append("FemaleConnector_Rate_9", femaleConnector_9.rate);
+      // form.append("FemaleConnector_Qty_9", femaleConnector_9.qty);
+      // form.append("FemaleConnector_Amount_9", femaleConnector_9.amount);
 
-      form.append("FemaleConnector_Rate_25", femaleConnector_25.rate);
-      form.append("FemaleConnector_Qty_25", femaleConnector_25.qty);
-      form.append("FemaleConnector_Amount_25", femaleConnector_25.amount);
+      // form.append("MaleConnector_Rate_9", maleConnector_9.rate);
+      // form.append("MaleConnector_Qty_9", maleConnector_9.qty);
+      // form.append("MaleConnector_Amount_9", maleConnector_9.amount);
 
-      form.append("MaleConnector_Rate_25", maleConnector_25.rate);
-      form.append("MaleConnector_Qty_25", maleConnector_25.qty);
-      form.append("MaleConnector_Amount_25", maleConnector_25.amount);
+      // form.append("FemaleConnector_Rate_25", femaleConnector_25.rate);
+      // form.append("FemaleConnector_Qty_25", femaleConnector_25.qty);
+      // form.append("FemaleConnector_Amount_25", femaleConnector_25.amount);
 
-      axios
-        .post(apiUrls?.Connector_Insert, form, { headers })
+      // form.append("MaleConnector_Rate_25", maleConnector_25.rate);
+      // form.append("MaleConnector_Qty_25", maleConnector_25.qty);
+      // form.append("MaleConnector_Amount_25", maleConnector_25.amount);
+
+      // axios
+      //   .post(apiUrls?.Connector_Insert, form, { headers })
+      axiosInstances
+      .post(apiUrls?.Connector_Insert, payload)
         .then((res) => {
           if (res?.data?.status === true) {
             toast.success(res?.data?.message);
@@ -350,32 +438,7 @@ const ConnectorRequest = ({ data }) => {
       toast.error("Please Select Project.");
     } else {
       setLoading(true);
-      const form = new FormData();
-      form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      );
-      form.append("ProjectID", formData?.Project);
-      form.append("ConnectorID", formData?.ConnectorID);
-      form.append("ProjectName", formData?.ProjectName);
-      form.append("ClientAddress", formData?.Address);
-      form.append("CourierAddress", formData?.CourierAddress);
-      form.append("Courier", formData?.Courier);
-      form.append("CourierCharges", formData?.CourierCharges);
-      form.append("Remarks", formData?.Remarks);
-      form.append("DeliveryDate", formatDate(formData?.IssueDate));
-      form.append(
-        "Document_Base64",
-        formData?.Document_Base64 ? formData?.Document_Base64 : ""
-      );
-      form.append(
-        "Document_FormatType",
-        formData?.FileExtension ? formData?.FileExtension : ""
-      );
-      form.append("PaymentMode", formData?.PaymentType);
-      // Initialize variables for male and female connectors
-      let maleConnector_9 = { rate: "", qty: "", amount: "" };
+       let maleConnector_9 = { rate: "", qty: "", amount: "" };
       let femaleConnector_9 = { rate: "", qty: "", amount: "" };
       let maleConnector_25 = { rate: "", qty: "", amount: "" };
       let femaleConnector_25 = { rate: "", qty: "", amount: "" };
@@ -405,27 +468,85 @@ const ConnectorRequest = ({ data }) => {
           default:
             break;
         }
-      });
+      })
 
-      // Add connector values to the form
-      form.append("FemaleConnector_Rate_9", femaleConnector_9.rate);
-      form.append("FemaleConnector_Qty_9", femaleConnector_9.qty);
-      form.append("FemaleConnector_Amount_9", femaleConnector_9.amount);
 
-      form.append("MaleConnector_Rate_9", maleConnector_9.rate);
-      form.append("MaleConnector_Qty_9", maleConnector_9.qty);
-      form.append("MaleConnector_Amount_9", maleConnector_9.amount);
+      // const form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
+      // form.append(
+      //   "LoginName",
+      //   useCryptoLocalStorage("user_Data", "get", "realname")
+      // );
+      // form.append("ProjectID", formData?.Project);
+      // form.append("ConnectorID", formData?.ConnectorID);
+      // form.append("ProjectName", formData?.ProjectName);
+      // form.append("ClientAddress", formData?.Address);
+      // form.append("CourierAddress", formData?.CourierAddress);
+      // form.append("Courier", formData?.Courier);
+      // form.append("CourierCharges", formData?.CourierCharges);
+      // form.append("Remarks", formData?.Remarks);
+      // form.append("DeliveryDate", formatDate(formData?.IssueDate));
+      // form.append(
+      //   "Document_Base64",
+      //   formData?.Document_Base64 ? formData?.Document_Base64 : ""
+      // );
+      // form.append(
+      //   "Document_FormatType",
+      //   formData?.FileExtension ? formData?.FileExtension : ""
+      // );
+      // form.append("PaymentMode", formData?.PaymentType);
+      // // Initialize variables for male and female connectors
+      // let maleConnector_9 = { rate: "", qty: "", amount: "" };
+      // let femaleConnector_9 = { rate: "", qty: "", amount: "" };
+      // let maleConnector_25 = { rate: "", qty: "", amount: "" };
+      // let femaleConnector_25 = { rate: "", qty: "", amount: "" };
+      // // Loop through the array to map the fields
+      // tableData?.forEach((item) => {
+      //   switch (item.ConnectorName) {
+      //     case "9 Pin Male":
+      //       maleConnector_9.rate = item.Rate || "";
+      //       maleConnector_9.qty = item.TableQuantity || "";
+      //       maleConnector_9.amount = item.TableAmount || "";
+      //       break;
+      //     case "9 Pin Female":
+      //       femaleConnector_9.rate = item.Rate || "";
+      //       femaleConnector_9.qty = item.TableQuantity || "";
+      //       femaleConnector_9.amount = item.TableAmount || "";
+      //       break;
+      //     case "25 Pin Male":
+      //       maleConnector_25.rate = item.Rate || "";
+      //       maleConnector_25.qty = item.TableQuantity || "";
+      //       maleConnector_25.amount = item.TableAmount || "";
+      //       break;
+      //     case "25 Pin Female":
+      //       femaleConnector_25.rate = item.Rate || "";
+      //       femaleConnector_25.qty = item.TableQuantity || "";
+      //       femaleConnector_25.amount = item.TableAmount || "";
+      //       break;
+      //     default:
+      //       break;
+      //   }
+      // });
 
-      form.append("FemaleConnector_Rate_25", femaleConnector_25.rate);
-      form.append("FemaleConnector_Qty_25", femaleConnector_25.qty);
-      form.append("FemaleConnector_Amount_25", femaleConnector_25.amount);
+      // // Add connector values to the form
+      // form.append("FemaleConnector_Rate_9", femaleConnector_9.rate);
+      // form.append("FemaleConnector_Qty_9", femaleConnector_9.qty);
+      // form.append("FemaleConnector_Amount_9", femaleConnector_9.amount);
 
-      form.append("MaleConnector_Rate_25", maleConnector_25.rate);
-      form.append("MaleConnector_Qty_25", maleConnector_25.qty);
-      form.append("MaleConnector_Amount_25", maleConnector_25.amount);
+      // form.append("MaleConnector_Rate_9", maleConnector_9.rate);
+      // form.append("MaleConnector_Qty_9", maleConnector_9.qty);
+      // form.append("MaleConnector_Amount_9", maleConnector_9.amount);
 
-      axios
-        .post(apiUrls?.Connector_Update, form, { headers })
+      // form.append("FemaleConnector_Rate_25", femaleConnector_25.rate);
+      // form.append("FemaleConnector_Qty_25", femaleConnector_25.qty);
+      // form.append("FemaleConnector_Amount_25", femaleConnector_25.amount);
+
+      // form.append("MaleConnector_Rate_25", maleConnector_25.rate);
+      // form.append("MaleConnector_Qty_25", maleConnector_25.qty);
+      // form.append("MaleConnector_Amount_25", maleConnector_25.amount);
+
+      // axios
+      //   .post(apiUrls?.Connector_Update, form, { headers })
         .then((res) => {
           if (res?.data?.status === true) {
             toast.success(res?.data?.message);
