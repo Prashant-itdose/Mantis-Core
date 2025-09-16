@@ -14,6 +14,7 @@ import { max7digit } from "../../../utils/constant";
 import Loading from "../../loader/Loading";
 import { useTranslation } from "react-i18next";
 import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../../../networkServices/axiosInstance";
 const SettlementAmountModal = (visible, edit) => {
   const [t] = useTranslation();
   const [tableData, setTableData] = useState([]);
@@ -103,68 +104,82 @@ const SettlementAmountModal = (visible, edit) => {
   };
 
   const getSales = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "RoleID",
-        useCryptoLocalStorage("user_Data", "get", "RoleID")
-      ),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("ProjectID", visible?.visible?.showData?.ProjectID),
-      form.append("OnAccount_Req_ID", visible?.visible?.showData?.EncryptID),
-      axios
-        .post(apiUrls?.Settlement_Select, form, { headers })
-        .then((res) => {
-          const assigntos = res?.data.dtSales.map((item) => {
-            return { label: item?.ItemName, value: item?.SalesID, ...item };
-          });
-          setSale(assigntos);
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "RoleID",
+    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+    //   ),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("ProjectID", visible?.visible?.showData?.ProjectID),
+    //   form.append("OnAccount_Req_ID", visible?.visible?.showData?.EncryptID),
+    // axios
+    //   .post(apiUrls?.Settlement_Select, form, { headers })
+    const payload = {
+      ProjectID: Number(visible?.visible?.showData?.ProjectID || "0"),
+      OnAccount_Req_ID: String(visible?.visible?.showData?.EncryptID || ""),
+    };
 
-          setTableData([res?.data?.dtOnAccount_Req_ID[0]]);
-
-          const dataID = res?.data?.dtSales[0];
-          // console.log("restst", dataID);
-          // setFormData((prevState) => ({
-          //   ...prevState, // Retain any existing values in formData
-          //   Sale: dataID?.SalesID || "", // Set default value if null or undefined
-          //   NetAmount: dataID?.NetAmount || 0, // Default to 0 if not available
-          //   PendingAmount: dataID?.PendingAmount || 0,
-          //   AdjustmentAmount: dataID?.Adjustment || 0,
-          //   SalesNo: dataID?.SalesNo || "",
-          //   SalesID: "", // Explicitly set SalesID as empty string
-          // }));
-          // console.log(res?.data?.dtSales);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls?.Settlement_Select, payload)
+      .then((res) => {
+        const assigntos = res?.data.dtSales.map((item) => {
+          return { label: item?.ItemName, value: item?.SalesID, ...item };
         });
+        setSale(assigntos);
+
+        setTableData([res?.data?.dtOnAccount_Req_ID[0]]);
+
+        const dataID = res?.data?.dtSales[0];
+        // console.log("restst", dataID);
+        // setFormData((prevState) => ({
+        //   ...prevState, // Retain any existing values in formData
+        //   Sale: dataID?.SalesID || "", // Set default value if null or undefined
+        //   NetAmount: dataID?.NetAmount || 0, // Default to 0 if not available
+        //   PendingAmount: dataID?.PendingAmount || 0,
+        //   AdjustmentAmount: dataID?.Adjustment || 0,
+        //   SalesNo: dataID?.SalesNo || "",
+        //   SalesID: "", // Explicitly set SalesID as empty string
+        // }));
+        // console.log(res?.data?.dtSales);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const getsalestable = () => {
     let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "RoleID",
-        useCryptoLocalStorage("user_Data", "get", "RoleID")
-      ),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("ProjectID", visible?.visible?.showData?.ProjectID),
-      form.append("OnAccount_Req_ID", visible?.visible?.showData?.EncryptID),
-      axios
-        .post(apiUrls?.Settlement_Select, form, { headers })
-        .then((res) => {
-          console.log("restst", res);
-          setTableData([res?.data?.dtOnAccount_Req_ID[0]]);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "RoleID",
+    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+    //   ),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("ProjectID", visible?.visible?.showData?.ProjectID),
+    //   form.append("OnAccount_Req_ID", visible?.visible?.showData?.EncryptID),
+    // axios
+    //   .post(apiUrls?.Settlement_Select, form, { headers })
+    const payload = {
+      ProjectID: Number(visible?.visible?.showData?.ProjectID || "0"),
+      OnAccount_Req_ID: String(visible?.visible?.showData?.EncryptID || ""),
+    };
+
+    axiosInstances
+      .post(apiUrls?.Settlement_Select, payload)
+      .then((res) => {
+        console.log("restst", res);
+        setTableData([res?.data?.dtOnAccount_Req_ID[0]]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const handleReset = () => {
     setFormData({
@@ -190,60 +205,81 @@ const SettlementAmountModal = (visible, edit) => {
   const handleSettlement = () => {
     // console.log(formData?.Sale?.SalesID);
     let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "RoleID",
-        useCryptoLocalStorage("user_Data", "get", "RoleID")
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "RoleID",
+    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+    //   ),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("SalesID", formData?.SalesID),
+    //   form.append(
+    //     "OnAccount_Req_ID",
+    //     visible?.visible?.showData?.OnAccount_Req_ID
+    //   ),
+    //   form.append("SettlementAmount", formData?.SettlementAmount),
+    //   form.append("TDS", formData?.TDSAmount),
+    // axios
+    //   .post(apiUrls?.Settlement, form, { headers })
+    const payload = {
+      SalesID: String(formData?.SalesID || "0"),
+      OnAccount_Req_ID: String(
+        visible?.visible?.showData?.OnAccount_Req_ID || "0"
       ),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("SalesID", formData?.SalesID),
-      form.append(
-        "OnAccount_Req_ID",
-        visible?.visible?.showData?.OnAccount_Req_ID
-      ),
-      form.append("SettlementAmount", formData?.SettlementAmount),
-      form.append("TDS", formData?.TDSAmount),
-      axios
-        .post(apiUrls?.Settlement, form, { headers })
-        .then((res) => {
-          if (res?.data?.status == true) {
-            toast.success(res?.data?.message);
-            setLoading(false);
-          } else {
-            toast.error(res?.data?.message);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          s;
-        });
+      SettlementAmount: String(formData?.SettlementAmount || "0"),
+      TDS: String(formData?.TDSAmount || "0"),
+    };
+
+    axiosInstances
+      .post(apiUrls?.Settlement, payload)
+      .then((res) => {
+        if (res?.data?.status == true) {
+          toast.success(res?.data?.message);
+          setLoading(false);
+        } else {
+          toast.error(res?.data?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        s;
+      });
   };
 
   const SettlementCancel = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "RoleID",
-        useCryptoLocalStorage("user_Data", "get", "RoleID")
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "RoleID",
+    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+    //   ),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("SettlementID", ""),
+    //   form.append("Reason", ""),
+    // axios
+    //   .post(apiUrls?.Settlement, form, { headers })
+    const payload = {
+      RoleID: String(
+        useCryptoLocalStorage("user_Data", "get", "RoleID") || "0"
       ),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("SettlementID", ""),
-      form.append("Reason", ""),
-      axios
-        .post(apiUrls?.Settlement, form, { headers })
-        .then((res) => {
-          toast.success(res?.data?.message);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      SettlementID: String(""), // empty string like your form.append
+      Reason: String(""), // empty string like your form.append
+    };
+
+    axiosInstances
+      .post(apiUrls?.Settlement, payload)
+      .then((res) => {
+        toast.success(res?.data?.message);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
