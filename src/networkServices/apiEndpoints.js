@@ -196,7 +196,7 @@ export const apiUrls = {
   UserVsCategory_Select: "/CRMCOREAPI/API/EmployeeMaster/UserVsCategory_Select",
 
   Monthly_CollectionSheet_MIS:
-    "/CRMCOREAPI/API/Accounts/Monthly_CollectionSheet_MIS",
+    "/CRMCOREAPI/api/Accounts/Monthly_CollectionSheet_MIS",
   UpdateFlag: "/CRMCOREAPI/API/EmployeeMaster/UpdateFlag",
   GetFlag: "/CRMCOREAPI/API/EmployeeMaster/GetFlag",
   AmountSubmission_ByAccounts_Update:

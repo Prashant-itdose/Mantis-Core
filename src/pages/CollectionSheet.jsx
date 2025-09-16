@@ -218,7 +218,7 @@ const CollectionSheet = () => {
       .post(apiUrls.SaveFilterTableReprintData, {
         CrmEmpID: String(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),
         PageName: "RecoverySheet",    
-        FilterData:"string"
+        FilterData:JSON.stringify(filterData)
       })
       .then((res) => {
         console.log(res.data.message);
@@ -247,6 +247,7 @@ const CollectionSheet = () => {
       .post(apiUrls.GetFilterTableReprintData, {
         CrmEmpID: String(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),
         PageName: "RecoverySheet",
+
        
       })
         .then((res) => {
@@ -510,28 +511,44 @@ const CollectionSheet = () => {
   };
   const handleSearch = () => {
     setLoading(true);
-    let form = new FormData();
-    form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append(
-        "RoleID",
-        useCryptoLocalStorage("user_Data", "get", "RoleID")
-      ),
-      form.append("FY", formData?.FinancialYear),
-      form.append("ProjectID", formData.ProjectID),
-      form.append("VerticalID", formData.VerticalID),
-      form.append("TeamID", formData.TeamID),
-      form.append("WingID", formData.WingID),
-      form.append("POC1", formData.POC1),
-      form.append("POC2", formData.POC2),
-      form.append("POC3", formData.POC3),
-      form.append("Month", formData.Month),
-      form.append("SearchType", formData.SearchType),
-      axios
-        .post(apiUrls?.Monthly_CollectionSheet_MIS, form, { headers })
+    // let form = new FormData();
+    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append(
+    //     "RoleID",
+    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+    //   ),
+    //   form.append("FY", formData?.FinancialYear),
+    //   form.append("ProjectID", formData.ProjectID),
+    //   form.append("VerticalID", formData.VerticalID),
+    //   form.append("TeamID", formData.TeamID),
+    //   form.append("WingID", formData.WingID),
+    //   form.append("POC1", formData.POC1),
+    //   form.append("POC2", formData.POC2),
+    //   form.append("POC3", formData.POC3),
+    //   form.append("Month", formData.Month),
+    //   form.append("SearchType", formData.SearchType),
+    //   axios
+    //     .post(apiUrls?.Monthly_CollectionSheet_MIS, form, { headers })
+    axiosInstances
+      .post(apiUrls.Monthly_CollectionSheet_MIS, {
+        Id: useCryptoLocalStorage("user_Data", "get", "ID"),
+        LoginName: useCryptoLocalStorage("user_Data", "get", "realname"),
+        RoleID: useCryptoLocalStorage("user_Data", "get", "RoleID"),  
+        FY: formData?.FinancialYear,
+        ProjectID: formData.ProjectID,
+        VerticalID: formData.VerticalID,
+        TeamID: formData.TeamID,
+        WingID: formData.WingID,
+        POC1: formData.POC1,
+        POC2: formData.POC2,
+        POC3: formData.POC3,
+  
+       
+      })
         .then((res) => {
           setTableData(res?.data?.data);
           setFilteredData(res?.data?.data);
