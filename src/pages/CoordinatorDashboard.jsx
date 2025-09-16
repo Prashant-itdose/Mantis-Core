@@ -205,7 +205,7 @@ const CoordinatorDashboard = () => {
     axiosInstances
       .post(apiUrls.DevDashboard_Summary, {
         Title: String("Heads"),
-        DeveloperID: String(memberID || "0"),
+        DeveloperID: Number(memberID || "0"),
       })
       .then((res) => {
         setCountData(res.data.data.dtSummary[0]);
@@ -263,12 +263,25 @@ const CoordinatorDashboard = () => {
     //   form.append("dtFrom", lotus),
     //   form.append("DeveloperID", developerId);
     // form.append("SearchType", searchType === "" ? "0" : searchType);
+<<<<<<< HEAD
     axiosInstances
       .post(apiUrls.CoorDashboard_Quotation_Month, {
         DeveloperID: Number(developerId),
         SearchType: Number(searchType === "" ? "0" : searchType),
         dtFrom: String(lotus),
       })
+=======
+    // axios
+    //   .post(apiUrls?.CoorDashboard_Quotation_Month, form, { headers })
+    const payload = {
+      dtFrom: String(lotus || ""),
+      DeveloperID: String(developerId || ""),
+      SearchType: String(searchType === "" ? "0" : searchType),
+    };
+
+    axiosInstances
+      .post(apiUrls?.CoorDashboard_Quotation_Month, payload)
+>>>>>>> 95950aaafc9f7954b5b740e28db33bf5760ced00
       .then((res) => {
         setFilterData(res?.data?.data);
       })

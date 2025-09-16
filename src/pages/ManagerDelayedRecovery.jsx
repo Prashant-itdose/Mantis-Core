@@ -14,6 +14,7 @@ import { apiUrls } from "../networkServices/apiEndpoints";
 import { headers } from "../utils/apitools";
 import { useSelector } from "react-redux";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../networkServices/axiosInstance";
 
 ChartJS.register(CategoryScale, LinearScale, Title, BarElement, Tooltip);
 
@@ -25,11 +26,16 @@ const ManagerDelayedRecovery = () => {
   const [chartData, setChartData] = useState([]);
 
   const handleFetchSalesData = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
 
-    axios
-      .post(apiUrls?.ManagerDashboard_Delay_Recovery, form, { headers })
+    // axios.post(apiUrls?.ManagerDashboard_Delay_Recovery, form, { headers });
+    axiosInstances
+      .post(apiUrls?.ManagerDashboard_Delay_Recovery, {
+        DeveloperID: String(useCryptoLocalStorage("user_Data", "get", "ID")),
+        SearchType: "",
+      })
+
       .then((res) => {
         setChartData(res?.data?.data || []);
       })
