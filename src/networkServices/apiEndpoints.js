@@ -267,12 +267,7 @@ export const apiUrls = {
   Payment_Installment_Update:
     "/CRMCOREAPI/API/AccountsPaymentInstallment/Payment_Installment_Update",
   Sales_MIS_Type: "/CRMCOREAPI/API/MasterBind/Sales_MIS_Type",
-<<<<<<< HEAD
   BillingCompany_Select: "/CRMCOREAPI/API/ProjectMaster/BillingCompanySelect",
-=======
-  // BillingCompany_Select: "/CRMCOREAPI/API/ProjectMaster/BillingCompany_Select",
-   BillingCompany_Select: "/CRMCOREAPI/API/ProjectMaster/BillingCompanySelect",
->>>>>>> b1bb73040b0c2104c81a19c3cab5084ee1a35c77
   SaveFilterData: "/CRMCOREAPI/API/ViewIssue/SaveFilterData",
   SearchFilterData: "/CRMCOREAPI/API/ViewIssue/SearchFilterData",
   MantisSummary_Search: "/CRMCOREAPI/API/MantisSummary/MantisSummarySearch",
