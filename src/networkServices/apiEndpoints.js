@@ -445,8 +445,10 @@ export const apiUrls = {
   GetEmployeeTransactions:
     "/CRMCOREAPI/API/CRMAttendance/GetEmployeeTransactions",
   EmployeeBind: "/CRMCOREAPI/API/CRMAttendance/EmployeeBind",
-  WeaklyMonthlyBreakCount: "/CRMCOREAPI/API/Attendence/WeaklyMonthlyBreakCount",
-  WeaklyMonthlyBreakHours: "/CRMCOREAPI/API/Attendence/WeaklyMonthlyBreakHours",
+  WeaklyMonthlyBreakCount:
+    "/CRMCOREAPI/API/CRMAttendance/WeaklyMonthlyBreakCount",
+  WeaklyMonthlyBreakHours:
+    "/CRMCOREAPI/API/CRMAttendance/WeaklyMonthlyBreakHours",
   EmployeeFeedbackDashboard:
     "/CRMCOREAPI/API/Attendence/EmployeeFeedbackDashboard",
   ClientFeedbackDashboard: "/CRMCOREAPI/API/Attendence/ClientFeedbackDashboard",

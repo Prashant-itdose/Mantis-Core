@@ -26,7 +26,7 @@ const [t]=useTranslation()
   };
 
   const handleQuotation_Email_Log = () => {
-    let form = new FormData();
+    let form = new FormData();s
     form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
       form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
       form.append("DocumentType", "Connecter"),

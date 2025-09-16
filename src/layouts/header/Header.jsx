@@ -303,11 +303,11 @@ const Header = React.memo(() => {
   const getProject = () => {
     axiosInstances
       .post(apiUrls.ProjectSelect, {
-        projectID: Number("0"),
-        isMaster: String("0"),
-        wingID: Number("0"),
-        teamID: Number("0"),
-        verticalID: Number("0"),
+        ProjectID: Number("0"),
+        IsMaster: String("0"),
+        WingID: Number("0"),
+        TeamID: Number("0"),
+        VerticalID: Number("0"),
       })
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
