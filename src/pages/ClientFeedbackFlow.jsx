@@ -29,6 +29,7 @@ import { MOBILE_NUMBER_VALIDATION_REGX } from "../utils/constant";
 import moment from "moment";
 import ClientFeddbackMsgModal from "./ClientFeddbackMsgModal";
 import Modal from "../components/modalComponent/Modal";
+import { axiosInstances } from "../networkServices/axiosInstance";
 
 const ClientFeedbackFlow = () => {
   const [t] = useTranslation();
@@ -95,23 +96,31 @@ const ClientFeedbackFlow = () => {
     });
   };
   const getProject = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      axios
-        .post(apiUrls?.ProjectSelect, form, { headers })
-        .then((res) => {
-          const poc3s = res?.data.data.map((item) => {
-            return { name: item?.Project, code: item?.ProjectId };
-          });
-          setProject(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   axios
+    //     .post(apiUrls?.ProjectSelect, form, { headers })
+    axiosInstances
+      .post(apiUrls.ProjectSelect, {
+        ProjectID: 0,
+        IsMaster: String(""),
+        VerticalID: 0,
+        TeamID: 0,
+        WingID: 0,
+      })
+      .then((res) => {
+        const poc3s = res?.data.data.map((item) => {
+          return { name: item?.Project, code: item?.ProjectId };
         });
+        setProject(poc3s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const [rowHandler, setRowHandler] = useState({
     overview: true,
@@ -817,7 +826,7 @@ const ClientFeedbackFlow = () => {
                           style={{
                             fontSize: "20px !important",
                             marginLeft: "10px",
-                            cursor:"pointer"
+                            cursor: "pointer",
                           }}
                           onClick={() => {
                             setVisible({
