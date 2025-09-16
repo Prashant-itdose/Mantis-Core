@@ -134,43 +134,43 @@ const NewTicketClient = () => {
   };
   const getProject = () => {
     axiosInstances
-      .post(apiUrls.ProjectSelect,{
-  "ProjectID": 0,
-  "IsMaster": "0",
-  "VerticalID": 0,
-  "TeamID": 0,
-  "WingID": 0
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   axios
-    //     .post(apiUrls?.ProjectSelect, form, { headers })
-        .then((res) => {
-          const datas = res?.data.data;
-          const poc3s = datas.map((item) => {
-            return { label: item?.Project, value: item?.ProjectId };
-          });
-          setProject(poc3s);
-          if (datas.length > 0) {
-            const singleProject = datas[0]?.ProjectId;
-            setFormData((prev) => ({
-              ...prev,
-              ProjectID: singleProject,
-            }));
-            getAssignTo(singleProject);
-            getCategory(singleProject);
-            getModule(singleProject);
-            getPage(singleProject);
-            getGetProjectInfo(singleProject);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
+      .post(apiUrls.ProjectSelect, {
+        ProjectID: 0,
+        IsMaster: "0",
+        VerticalID: 0,
+        TeamID: 0,
+        WingID: 0,
+      })
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append(
+      //     "LoginName",
+      //     useCryptoLocalStorage("user_Data", "get", "realname")
+      //   ),
+      //   axios
+      //     .post(apiUrls?.ProjectSelect, form, { headers })
+      .then((res) => {
+        const datas = res?.data.data;
+        const poc3s = datas.map((item) => {
+          return { label: item?.Project, value: item?.ProjectId };
         });
+        setProject(poc3s);
+        if (datas.length > 0) {
+          const singleProject = datas[0]?.ProjectId;
+          setFormData((prev) => ({
+            ...prev,
+            ProjectID: singleProject,
+          }));
+          getAssignTo(singleProject);
+          getCategory(singleProject);
+          getModule(singleProject);
+          getPage(singleProject);
+          getGetProjectInfo(singleProject);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   function removeHtmlTags(text) {
     return text?.replace(/<[^>]*>?/gm, "");
@@ -178,87 +178,87 @@ const NewTicketClient = () => {
 
   const getCategory = (proj) => {
     axiosInstances
-      .post(apiUrls.Category_Select,{
-  "RoleID": 0,
-  "ProjectID": Number(proj)
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("ProjectID", proj),
-    //   axios
-    //     .post(apiUrls?.Category_Select, form, { headers })
-        .then((res) => {
-          handleReactSelectDropDownOptions(res?.data.data, "NAME", "ID");
-          // const poc3s = res?.data.data.map((item) => {
-          //   return { label: item?.NAME, value: item?.ID };
-          // });
-          setCategory(
-            handleReactSelectDropDownOptions(res?.data.data, "NAME", "ID")
-          );
-          // setFormData({ ...formData, Category: poc3s[0]?.value,ProjectID:proj });
-          setDisplayModulePage(res?.data.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      .post(apiUrls.Category_Select, {
+        RoleID: 0,
+        ProjectID: Number(proj),
+      })
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append("ProjectID", proj),
+      //   axios
+      //     .post(apiUrls?.Category_Select, form, { headers })
+      .then((res) => {
+        handleReactSelectDropDownOptions(res?.data.data, "NAME", "ID");
+        // const poc3s = res?.data.data.map((item) => {
+        //   return { label: item?.NAME, value: item?.ID };
+        // });
+        setCategory(
+          handleReactSelectDropDownOptions(res?.data.data, "NAME", "ID")
+        );
+        // setFormData({ ...formData, Category: poc3s[0]?.value,ProjectID:proj });
+        setDisplayModulePage(res?.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getModule = (proj) => {
     axiosInstances
-      .post(apiUrls.Module_Select,{
-  "RoleID": Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
-  "ProjectID": Number(proj),
-  "IsActive": 1,
-  "IsMaster": 0
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append("ProjectID", proj),
-    //   form.append("IsActive", "1"),
-    //   form.append("IsMaster", "0"),
+      .post(apiUrls.Module_Select, {
+        RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
+        ProjectID: Number(proj),
+        IsActive: 1,
+        IsMaster: 0,
+      })
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append(
+      //     "RoleID",
+      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+      //   ),
+      //   form.append("ProjectID", proj),
+      //   form.append("IsActive", "1"),
+      //   form.append("IsMaster", "0"),
       // axios
       //   .post(apiUrls?.Module_Select, form, { headers })
-        .then((res) => {
-          const poc3s = res?.data.data.map((item) => {
-            return { label: item?.ModuleName, value: item?.ModuleID };
-          });
-          setModuleName(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
+      .then((res) => {
+        const poc3s = res?.data.data.map((item) => {
+          return { label: item?.ModuleName, value: item?.ModuleID };
         });
+        setModuleName(poc3s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getPage = (proj) => {
     axiosInstances
-      .post(apiUrls.Pages_Select,{
-  "RoleID": Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
-  "ProjectID": Number(proj),
-  "IsActive": 1,
-  "IsMaster": 0
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append("ProjectID", proj),
-    //   form.append("IsActive", "1"),
-    //   form.append("IsMaster", "0"),
-    //   axios
-    //     .post(apiUrls?.Pages_Select, form, { headers })
-        .then((res) => {
-          const poc3s = res?.data.data.map((item) => {
-            return { label: item?.PagesName, value: item?.ID };
-          });
-          setPageName(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
+      .post(apiUrls.Pages_Select, {
+        RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
+        ProjectID: Number(proj),
+        IsActive: 1,
+        IsMaster: 0,
+      })
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append(
+      //     "RoleID",
+      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+      //   ),
+      //   form.append("ProjectID", proj),
+      //   form.append("IsActive", "1"),
+      //   form.append("IsMaster", "0"),
+      //   axios
+      //     .post(apiUrls?.Pages_Select, form, { headers })
+      .then((res) => {
+        const poc3s = res?.data.data.map((item) => {
+          return { label: item?.PagesName, value: item?.ID };
         });
+        setPageName(poc3s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const handlerefresh = () => {
     getPage(formData?.ProjectID);
@@ -268,23 +268,23 @@ const NewTicketClient = () => {
   };
   const getAssignTo = (value) => {
     axiosInstances
-      .post(apiUrls.AssignTo_Select,{
-  "ProjectID": Number(value)
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("ProjectID", value),
-    //   axios
-    //     .post(apiUrls?.AssignTo_Select, form, { headers })
-        .then((res) => {
-          const assigntos = res?.data.data.map((item) => {
-            return { label: item?.Name, value: item?.ID };
-          });
-          setAssignedto(assigntos);
-        })
-        .catch((err) => {
-          console.log(err);
+      .post(apiUrls.AssignTo_Select, {
+        ProjectID: Number(value),
+      })
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append("ProjectID", value),
+      //   axios
+      //     .post(apiUrls?.AssignTo_Select, form, { headers })
+      .then((res) => {
+        const assigntos = res?.data.data.map((item) => {
+          return { label: item?.Name, value: item?.ID };
         });
+        setAssignedto(assigntos);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const handleIndicator = (state) => {
     return (
@@ -297,21 +297,21 @@ const NewTicketClient = () => {
 
   const getPriority = () => {
     axiosInstances
-      .post(apiUrls.AssignTo_Select,{})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Priority_Select, form, { headers })
-        .then((res) => {
-          const assigntos = res?.data.data.map((item) => {
-            return { label: item?.Name, value: item?.ID };
-          });
-          setPriority(assigntos);
-          // setFormData({ ...formData, Priority: assigntos[0]?.value });
-        })
-        .catch((err) => {
-          console.log(err);
+      .post(apiUrls.Priority_Select, {})
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   axios
+      //     .post(apiUrls?.Priority_Select, form, { headers })
+      .then((res) => {
+        const assigntos = res?.data.data.map((item) => {
+          return { label: item?.NAME, value: item?.ID };
         });
+        setPriority(assigntos);
+        // setFormData({ ...formData, Priority: assigntos[0]?.value });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const getReportNote = async () => {
@@ -344,67 +344,68 @@ const NewTicketClient = () => {
     setIsSubmitting(true);
 
     try {
+      const response = await axiosInstances.post(apiUrls.NewTicket, {
+        // ID: Number(useCryptoLocalStorage("user_Data", "get", "ID")),
+        // LoginName: "",
+        ProjectID: Number(formData.ProjectID),
+        CategoryID: Number(formData.Category.value),
+        AssignTo: formData?.AssignedTo ? String(formData?.AssignedTo) : "0",
+        PriorityID: String(formData.Priority),
+        Summary: String(formData.Summary),
+        ReporterMobileNo: String(formData.ReportedMobile),
+        ReporterName: String(formData.ReportedMobile),
+        Description: formData.Description ? String(formData.Description) : "",
+        ModuleID: "0",
+        ModuleName: String(formData.ModuleName),
+        PagesID: "0",
+        PagesName: String(formData.PageName),
+        ImageDetails: [
+          {
+            Document_Base64: formData?.Document_Base64,
+            FileExtension: formData?.FileExtension,
+          },
+        ],
+      });
+      //       const form = new FormData();
+      //       form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
+      //       form.append(
+      //         "LoginName",
+      //         useCryptoLocalStorage("user_Data", "get", "realname")
+      //       );
+      //       form.append(
+      //         "RoleID",
+      //         useCryptoLocalStorage("user_Data", "get", "RoleID")
+      //       );
+      //       form.append("ProjectID", formData.ProjectID);
+      //       form.append("CategoryID", formData.Category.value);
+      //       form.append(
+      //         "AssignTo",
+      //         formData?.AssignedTo ? formData?.AssignedTo : "0"
+      //       );
+      //       form.append("Summary", formData.Summary);
+      //       form.append("ReporterMobileNo", formData.ReportedMobile);
+      //       form.append("ReporterName", formData.ReportedName);
+      //       form.append("ModuleName", formData.ModuleName);
+      //       form.append("OtherReferenceNo", formData.OtherReferenceNo);
+      //       form.append("PagesName", formData.PageName);
+      //       form.append(
+      //         "Description",
+      //         formData.Description ? formData.Description : ""
+      //       );
+      //       form.append("PriorityID", formData.Priority);
+      //       form.append("ImageDetails", picsDocsJson);
 
-     const response = await axiosInstances
-      .post(apiUrls.NewTicket,{
-  "ID": Number(useCryptoLocalStorage("user_Data", "get", "ID")),
-  "LoginName": "",
-  "ProjectID": Number(formData.ProjectID),
-  "CategoryID": Number(formData.Category.value),
-  "AssignTo": formData?.AssignedTo ? String(formData?.AssignedTo) : "0",
-  "PriorityID": String(formData.Priority),
-  "Summary": String(formData.Summary),
-  "ReporterMobileNo": String(formData.ReportedMobile),
-  "ReporterName": String(formData.ReportedMobile),
-  "Description": formData.Description ? String(formData.Description) : "",
-  "ModuleID": "",
-  "ModuleName": String(formData.ModuleName),
-  "PagesID": "",
-  "PagesName": String(formData.PageName),
-  "ImageDetails": [
-    {
-        Document_Base64: formData?.Document_Base64,
-        FileExtension: formData?.FileExtension,
+      //       const response = axiosInstances
+      //       .post(apiUrls.NewTicket,{
+      //   "ProjectID": Number(value)
+      // })
+      if (response?.data?.success) {
+        toast.success(response?.data?.message);
+      } else {
+        toast.error(response?.data?.message);
       }
-  ]
-})
-//       const form = new FormData();
-//       form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-//       form.append(
-//         "LoginName",
-//         useCryptoLocalStorage("user_Data", "get", "realname")
-//       );
-//       form.append(
-//         "RoleID",
-//         useCryptoLocalStorage("user_Data", "get", "RoleID")
-//       );
-//       form.append("ProjectID", formData.ProjectID);
-//       form.append("CategoryID", formData.Category.value);
-//       form.append(
-//         "AssignTo",
-//         formData?.AssignedTo ? formData?.AssignedTo : "0"
-//       );
-//       form.append("Summary", formData.Summary);
-//       form.append("ReporterMobileNo", formData.ReportedMobile);
-//       form.append("ReporterName", formData.ReportedName);
-//       form.append("ModuleName", formData.ModuleName);
-//       form.append("OtherReferenceNo", formData.OtherReferenceNo);
-//       form.append("PagesName", formData.PageName);
-//       form.append(
-//         "Description",
-//         formData.Description ? formData.Description : ""
-//       );
-//       form.append("PriorityID", formData.Priority);
-//       form.append("ImageDetails", picsDocsJson);
 
-//       const response = axiosInstances
-//       .post(apiUrls.NewTicket,{
-//   "ProjectID": Number(value)
-// })
-
-      toast.success(response?.data?.message);
-
-      if (response?.data?.status) {
+      if (response?.data?.success) {
         setticketid(response.data.TicketID);
         if (formData?.IsActive === "1") {
           setVisible({ showVisible: true, visible: response.data.data });
@@ -458,58 +459,58 @@ const NewTicketClient = () => {
   const getGetProjectInfo = (id) => {
     axiosInstances
       .post(apiUrls.GetProjectInfo, {
-  "ProjectID": Number(id)
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append("ProjectID", id),
-    //   axios
-    //     .post(apiUrls?.GetProjectInfo, form, { headers })
-        .then((res) => {
-          let newData = [];
-          // let newlevelData = []
-          // "ItPerson", "SPOC_", "Owner_"
-          ["ItPerson", "SPOC", "Owner"].forEach((type) => {
-            let obj = {
-              type: type,
-              name: res?.data?.data?.[0]?.[`${type}Name`],
-              mobile: res?.data?.data?.[0]?.[`${type}Mobile`],
-              email: res?.data?.data?.[0]?.[`${type}Email`],
-            };
-            newData.push(obj);
-          });
-
-          let itArr = [];
-
-          // for (let i = 1; i <= 3; i++) {
-          //   let obj = {
-          //     type: `Level${i}`,
-          //     name: res?.data?.data?.[0]?.[`POC1${i}Name`] || "",
-          //     mobile: res?.data?.data?.[0]?.[`POC2${i}Mobile`] || "",
-          //     email: res?.data?.data?.[0]?.[`POC3${i}Email`] || "",
-          //   };
-          //   itArr.push(obj);
-          // }
-          ["Level1", "Level2", "Level3"].forEach((type) => {
-            let obj = {
-              type: type,
-              name: res?.data?.data?.[0]?.[`${type}Name`],
-              mobile: res?.data?.data?.[0]?.[`${type}Mobile`],
-              email: res?.data?.data?.[0]?.[`${type}Email`],
-            };
-            itArr.push(obj);
-          });
-          // console.log("itArr::", itArr);
-          setTableData(newData);
-          setLevelData(itArr);
-        })
-        .catch((err) => {
-          console.log(err);
+        ProjectID: Number(id),
+      })
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append(
+      //     "RoleID",
+      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+      //   ),
+      //   form.append("ProjectID", id),
+      //   axios
+      //     .post(apiUrls?.GetProjectInfo, form, { headers })
+      .then((res) => {
+        let newData = [];
+        // let newlevelData = []
+        // "ItPerson", "SPOC_", "Owner_"
+        ["ItPerson", "SPOC", "Owner"].forEach((type) => {
+          let obj = {
+            type: type,
+            name: res?.data?.data?.[0]?.[`${type}Name`],
+            mobile: res?.data?.data?.[0]?.[`${type}Mobile`],
+            email: res?.data?.data?.[0]?.[`${type}Email`],
+          };
+          newData.push(obj);
         });
+
+        let itArr = [];
+
+        // for (let i = 1; i <= 3; i++) {
+        //   let obj = {
+        //     type: `Level${i}`,
+        //     name: res?.data?.data?.[0]?.[`POC1${i}Name`] || "",
+        //     mobile: res?.data?.data?.[0]?.[`POC2${i}Mobile`] || "",
+        //     email: res?.data?.data?.[0]?.[`POC3${i}Email`] || "",
+        //   };
+        //   itArr.push(obj);
+        // }
+        ["Level1", "Level2", "Level3"].forEach((type) => {
+          let obj = {
+            type: type,
+            name: res?.data?.data?.[0]?.[`${type}Name`],
+            mobile: res?.data?.data?.[0]?.[`${type}Mobile`],
+            email: res?.data?.data?.[0]?.[`${type}Email`],
+          };
+          itArr.push(obj);
+        });
+        // console.log("itArr::", itArr);
+        setTableData(newData);
+        setLevelData(itArr);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleImageChange = (e) => {

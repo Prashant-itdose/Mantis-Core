@@ -316,7 +316,7 @@ const FeedbackList = () => {
           setTableData(res?.data?.data);
           setLoading(false);
         } else {
-          toast.error("No Record Found.");
+          toast.error(res?.data?.message);
           setLoading(false);
           setTableData([]);
         }

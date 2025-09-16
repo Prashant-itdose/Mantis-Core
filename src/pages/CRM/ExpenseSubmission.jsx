@@ -319,7 +319,7 @@ const ExpenseSubmission = () => {
     //   return;
     // }
 
-    const GeneralDetailsJson = JSON.stringify([
+    const GeneralDetailsJson = ([
       {
         Date: moment(formData?.FromDate).format("YYYY-MM-DD"),
         TripName: formData?.TripName,
@@ -368,11 +368,15 @@ const ExpenseSubmission = () => {
     setLoading(true);
 
     const payload = {
-  "EmpID": 0,
+  "EmpID": Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),
   "GeneralDetails": [
       {
         Date: moment(formData?.FromDate).format("YYYY-MM-DD"),
         TripName: formData?.TripName,
+        expenseDate:0,
+        expenseMonth:0,
+        expenseYear:0,
+        expenceDay: moment(formData?.FromDate).format("dddd"),
         // State: getlabel(formData?.State, states),
         stateID: formData?.State,
         City: formData?.City,
@@ -393,6 +397,8 @@ const ExpenseSubmission = () => {
         Client_Enterment_Desc: formData?.EntertainmentDescription,
         amount: formData?.OtherAmount || "0",
         Other_Desc: formData?.OtherDescription,
+        expenseMonthName : moment(formData?.FromDate).format("MMMM"),
+        ExpenseHeadName : ""
       },
     ],
   "Document_Base64": String(formData?.Document_Base64),
@@ -423,7 +429,7 @@ const ExpenseSubmission = () => {
     // axios
     //   .post(apiUrls?.ManageExpense_Insert, form, { headers })
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           setLoading(false);
           setFormData((prev) => ({
@@ -802,9 +808,11 @@ const ExpenseSubmission = () => {
   const [reportidd, setreportid] = useState("");
 
   const handleIsExpenseExists = (check) => {
+    
     // console.log("check", check);
     const formatDateToLocal = (date) => {
-      const d = new Date(date);
+      debugger
+      const d = new Date(date?.Value);
       const year = d.getFullYear();
       const month = String(d.getMonth() + 1).padStart(2, "0");
       const day = String(d.getDate()).padStart(2, "0");

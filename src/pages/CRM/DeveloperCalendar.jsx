@@ -213,13 +213,14 @@ const DeveloperCalendar = () => {
             formData?.AssignedTo ||
             useCryptoLocalStorage("user_Data", "get", "ID"),
           Date: `${selectedYear}-${String(selectedMonth + 1).padStart(2, "0")}-01`,
-          View: "Calendar",
+          View: "Calender",
         })
         .then((res) => {
-          setCalendarData(res?.data?.dtCalender);
-          setSummaryData(res?.data?.dtStatusSummary);
-          setTotalCount(res?.data?.dtLoginDays[0]);
-          const updatedData = res?.data?.dtAssigned?.map((ele, index) => {
+          debugger
+          setCalendarData(res?.data?.data?.dtCalender);
+          setSummaryData(res?.data?.data?.dtStatusSummary);
+          setTotalCount(res?.data?.data?.dtLoginDays[0]);
+          const updatedData = res?.data?.data?.dtAssigned?.map((ele, index) => {
             return {
               ...ele,
               isManHour: false,
@@ -263,7 +264,8 @@ const DeveloperCalendar = () => {
     // axios
     //   .post(apiUrls?.Dev_Caledar, form, { headers })
       .then((res) => {
-        const filteredData = res?.data?.dtDetailed?.filter(
+        // debugger
+        const filteredData = res?.data?.data?.dtDetailed?.filter(
           (item) => item.CurrentDeliveryDate === formattedDate
         );
 

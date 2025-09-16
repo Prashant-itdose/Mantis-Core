@@ -2148,6 +2148,7 @@ const ViewIssues = ({ data }) => {
     HideStatusId = formData?.HideStatus,
     deliveryDate = ""
   ) => {
+    
     const paylaod = {
       RoleID: String(useCryptoLocalStorage("user_Data", "get", "RoleID") || ""),
       ProjectID: String(ProjectID || ""),
@@ -2188,8 +2189,8 @@ const ViewIssues = ({ data }) => {
       Resolvetodate: String(formatDate(formData?.ResolveDateAfter) || ""),
 
       AssignedDateStatus: String(formData?.AssignedDate || ""),
-      AssignedFromDate: String(
-        formatDate(deliveryDate || formData?.AssignedDateBefore) || ""
+      AssignedFromDate:deliveryDate || String(
+       formatDate(formData?.AssignedDateBefore) || ""
       ),
       Assignedtodate: String(formatDate(formData?.AssignedDateAfter) || ""),
 

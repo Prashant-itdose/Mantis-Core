@@ -329,10 +329,10 @@ const Summary = () => {
       });
   };
   const shortenName = (name) => {
-    return name.length > 95 ? name.substring(0, 25) + "..." : name;
+    return name?.length > 95 ? name?.substring(0, 25) + "..." : name;
   };
   const shortenName1 = (name) => {
-    return name.length > 30 ? name.substring(0, 25) + "..." : name;
+    return name?.length > 30 ? name?.substring(0, 25) + "..." : name;
   };
 
   const handleDeliveryChange = (name, e) => {

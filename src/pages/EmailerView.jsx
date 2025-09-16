@@ -93,7 +93,7 @@ const EmailerView = () => {
       //     })
       .then((res) => {
         if (res?.data?.success === true) {
-          debugger
+          
           setTableData(res?.data?.data?.Records);
           setLoading(false);
         } else {

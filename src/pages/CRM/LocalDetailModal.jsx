@@ -3,6 +3,7 @@ import Tables from "../../components/UI/customTable";
 import axios from "axios";
 import { apiUrls } from "../../networkServices/apiEndpoints";
 import { headers } from "../../utils/apitools";
+import { axiosInstances } from "../../networkServices/axiosInstance";
 const LocalDetailModal = ({ visible, setVisible }) => {
   console.log(visible);
   // const localData = localTabelData?.filter(

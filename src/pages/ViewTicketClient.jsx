@@ -365,7 +365,7 @@ const ViewTicketClient = () => {
     //     .post(apiUrls?.AssignTo_Select, form, { headers })
         .then((res) => {
           const assigntos = res?.data.data.map((item) => {
-            return { name: item?.NAME, code: item?.ID };
+            return { name: item?.Name, code: item?.ID };
           });
           setAssignedto(assigntos);
         })
@@ -945,15 +945,15 @@ const ViewTicketClient = () => {
       .post(apiUrls.DeleteTicket, {
   "TicketIDs": Number(ticketIDs)
 })
-    let form = new FormData();
-    form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("TicketIDs", ticketIDs),
-      axios
-        .post(apiUrls?.DeleteTicket, form, { headers })
+    // let form = new FormData();
+    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("TicketIDs", ticketIDs),
+    //   axios
+    //     .post(apiUrls?.DeleteTicket, form, { headers })
         .then((res) => {
           toast.success(res?.data?.message);
           handleViewSearch();
@@ -963,18 +963,36 @@ const ViewTicketClient = () => {
         });
   };
   const getApplyActionReason = (data, index, ele) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("TicketIDs", tableData[index]?.TicketID),
-      form.append("ReOpenReason", data?.label),
-      form.append("ReOpenReasonID", data?.value),
-      form.append("ActionText", "ReOpen"),
-      axios
-        .post(apiUrls?.ApplyAction, form, { headers })
+    axiosInstances
+      .post(apiUrls.ApplyAction, {
+  "TicketIDs": String(tableData[index]?.TicketID),
+  "ActionText": "ReOpen",
+  "ActionId": "",
+  "RCA": "",
+  "ReferenceCode": "",
+  "ManHour": "",
+  "Summary": "",
+  "ModuleID": "",
+  "ModuleName": "",
+  "PagesID": "",
+  "PagesName": "",
+  "ManHoursClient": "",
+  "DeliveryDateClient": "",
+  "ReOpenReasonID": String(data?.value),
+  "ReOpenReason": String(data?.label)
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("TicketIDs", tableData[index]?.TicketID),
+    //   form.append("ReOpenReason", data?.label),
+    //   form.append("ReOpenReasonID", data?.value),
+    //   form.append("ActionText", "ReOpen"),
+    //   axios
+    //     .post(apiUrls?.ApplyAction, form, { headers })
         .then((res) => {
           if (res?.data?.status === true) {
             toast.success(res?.data?.message);
@@ -989,17 +1007,35 @@ const ViewTicketClient = () => {
   };
 
   const updateReceivedDate = (details) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("TicketIDs", details?.TicketID),
-      form.append("ActionText", "ResolveDate"),
-      form.append("ActionId", new Date().toISOString().split("T")[0]),
-      axios
-        .post(apiUrls?.ApplyAction, form, { headers })
+    axiosInstances
+      .post(apiUrls.ApplyAction, {
+  "TicketIDs": String(details?.TicketID),
+  "ActionText": "ResolveDate",
+  "ActionId": String(new Date().toISOString().split("T")[0]),
+  "RCA": "",
+  "ReferenceCode": "",
+  "ManHour": "",
+  "Summary": "",
+  "ModuleID": "",
+  "ModuleName": "",
+  "PagesID": "",
+  "PagesName": "",
+  "ManHoursClient": "",
+  "DeliveryDateClient": "",
+  "ReOpenReasonID": String(""),
+  "ReOpenReason": String("")
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("TicketIDs", details?.TicketID),
+    //   form.append("ActionText", "ResolveDate"),
+    //   form.append("ActionId", new Date().toISOString().split("T")[0]),
+    //   axios
+    //     .post(apiUrls?.ApplyAction, form, { headers })
         .then((res) => {
           if (res?.data?.status === true) {
             toast.success(res?.data?.message);
