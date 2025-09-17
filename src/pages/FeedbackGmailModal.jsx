@@ -7,6 +7,8 @@ import { headers } from "../utils/apitools";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import { useTranslation } from "react-i18next";
 import Input from "../components/formComponent/Input";
+import { axiosInstances } from "../networkServices/axiosInstance";
+import { formatDate } from "date-fns";
 const FeedbackGmailModal = (showData) => {
   console.log("showdata", showData);
   const [loading, setLoading] = useState(false);
@@ -20,11 +22,12 @@ const FeedbackGmailModal = (showData) => {
     setLoading(true);
     axiosInstances
       .post(apiUrls.ResendFeedbackMail, {
-        EmployeeID: Number(formData?.AssignedTo),
-        SearchType: String(code ? code : "0"),
-        Date: String(formatDate(formData?.FromDate)),
-        ManagerID: Number(formData?.ReportingTo),
-      })
+  "FeedbackID": Number(showData?.visible?.showData?.FeedbackID),
+  "ProjectID": Number(showData?.visible?.showData?.ProjectID),
+  "ProjectName": String(showData?.visible?.showData?.ProjectName),
+  "ToEmailID":  String(formData?.Gmail),
+  "Content": String(showData?.visible?.showData?.Content)
+})
     // let form = new FormData();
     // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
     //   form.append(
@@ -39,7 +42,7 @@ const FeedbackGmailModal = (showData) => {
     //   axios
     //     .post(apiUrls?.ResendFeedbackMail, form, { headers })
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.message);
             showData?.setVisible(false);
             showData?.handleSearchFeedback();

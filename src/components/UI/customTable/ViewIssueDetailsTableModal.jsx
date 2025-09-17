@@ -519,7 +519,7 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
     // } else {
     axiosInstances
       .post(apiUrls.UpdateNote, {
-        NoteID: id,
+        NoteID: ele?.NoteId,
         TicketID: formDataUpdate?.TicketID,
         NoteText: ele?.note,
       })

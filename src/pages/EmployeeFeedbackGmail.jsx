@@ -7,6 +7,7 @@ import { headers } from "../utils/apitools";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import { useTranslation } from "react-i18next";
 import Input from "../components/formComponent/Input";
+import { axiosInstances } from "../networkServices/axiosInstance";
 const EmployeeFeedbackGmail = (showData) => {
   console.log("showdata", showData);
   const [loading, setLoading] = useState(false);
@@ -18,20 +19,28 @@ const EmployeeFeedbackGmail = (showData) => {
   });
   const handleConfirm = () => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("FeedbackID", showData?.visible?.showData?.FeedbackID),
-      form.append("EmployeeID", showData?.visible?.showData?.CrmEmployeeID),
-      form.append("EmployeeName", showData?.visible?.showData?.EmployeeName),
-      form.append("ToEmailID", formData?.Gmail),
-      axios
-        .post(apiUrls?.ResendEmployeeFeedbackMail, form, { headers })
+
+    axiosInstances
+      .post(apiUrls.ResendEmployeeFeedbackMail, {
+  "FeedbackID": Number(showData?.visible?.showData?.FeedbackID),
+  "EmployeeID": Number(showData?.visible?.showData?.CrmEmployeeID),
+  "EmployeeName": String(showData?.visible?.showData?.EmployeeName),
+  "MobileNo": String(formData?.Gmail)
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("FeedbackID", showData?.visible?.showData?.FeedbackID),
+    //   form.append("EmployeeID", showData?.visible?.showData?.CrmEmployeeID),
+    //   form.append("EmployeeName", showData?.visible?.showData?.EmployeeName),
+    //   form.append("ToEmailID", formData?.Gmail),
+    //   axios
+    //     .post(apiUrls?.ResendEmployeeFeedbackMail, form, { headers })
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.message);
             showData?.setVisible(false);
             showData?.handleSearchList();
@@ -43,6 +52,7 @@ const EmployeeFeedbackGmail = (showData) => {
         })
         .catch((err) => {
           console.log(err);
+          setLoading(false);
         });
   };
 

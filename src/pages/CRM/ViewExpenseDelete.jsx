@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { set } from "lodash";
 import Loading from "../../components/loader/Loading";
 import { useCryptoLocalStorage } from "../../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../../networkServices/axiosInstance";
 const ViewExpenseDelete = ({ visible, setVisible ,handleTableSearch }) => {
   console.log(visible);
   const [loading, setLoading] = useState(false);
@@ -25,7 +26,7 @@ const ViewExpenseDelete = ({ visible, setVisible ,handleTableSearch }) => {
     //   axios
     //     .post(apiUrls?.UpdateStatusCopy, form, { headers })
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.message);
             setVisible(false);
             handleTableSearch()

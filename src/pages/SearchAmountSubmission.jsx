@@ -229,7 +229,7 @@ const SearchAmountSubmission = ({ data }) => {
       //     .post(apiUrls?.GetFilterTableReprintData, form, { headers })
       .then((res) => {
         const data = res.data.data;
-        if (res?.data.status === true) {
+        if (res?.data.success === true) {
           setDynamicFilter(data);
         } else {
           SaveFilter();
@@ -261,8 +261,9 @@ const SearchAmountSubmission = ({ data }) => {
       //   axios
       //     .post(apiUrls?.GetFilterTableReprintData, form, { headers })
       .then((res) => {
+        debugger
         const data = res.data.data;
-        if (res?.data.status === true) {
+        if (res?.data.success === true) {
           setColumnConfig(data);
         } else {
           SaveTableFilter();
@@ -275,9 +276,11 @@ const SearchAmountSubmission = ({ data }) => {
 
   const isVisible = (header) =>
     dynamicFilter.find((f) => f?.header === header)?.visible;
+  
+  
   const isTableVisible = (header) =>
     columnConfig.find((f) => f?.header === header)?.visible;
-
+  
   useEffect(() => {
     SearchAmountSubmissionFilter();
     SearchAmountSubmissionTableFilter();

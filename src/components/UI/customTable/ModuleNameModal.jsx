@@ -54,6 +54,11 @@ const ModuleNameModal = ({ visible }) => {
       toast.error("Please Enter Module Name.");
     } else {
       setLoading(true);
+      axiosInstances
+      .post(apiUrls.CreateModule, {
+  "ProjectID": Number(visible?.showData?.ProjectID),
+  "ModuleName": String(formData?.ModuleName)
+})
       // let form = new FormData();
       // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
       //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),

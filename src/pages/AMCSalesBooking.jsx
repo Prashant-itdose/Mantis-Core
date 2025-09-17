@@ -273,7 +273,7 @@ const AMCSalesBooking = () => {
         // axios
         //   .post(apiUrls?.AMC_Payment_Installment_Insert, form, { headers })
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.message);
             setLoading(false);
             setFormData({ ...formData, Items: "" });
