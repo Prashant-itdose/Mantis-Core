@@ -10,6 +10,7 @@ import moment from "moment";
 import Loading from "../../loader/Loading";
 import { useTranslation } from "react-i18next";
 import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../../../networkServices/axiosInstance";
 
 const GmailConnecterModal = (visible) => {
 const [t]=useTranslation()
@@ -26,13 +27,18 @@ const [t]=useTranslation()
   };
 
   const handleQuotation_Email_Log = () => {
-    let form = new FormData();s
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-      form.append("DocumentType", "Connecter"),
-      form.append("DocumentID", visible?.visible?.showData?.EncryptID),
-      axios
-        .post(apiUrls?.Quotation_Email_Log, form, { headers })
+    axiosInstances
+      .post(apiUrls.Quotation_Email_Log,{
+  "DocumentID": String(visible?.visible?.showData?.EncryptID),
+  "DocumentType": "Connecter"
+})
+    // let form = new FormData();s
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
+    //   form.append("DocumentType", "Connecter"),
+    //   form.append("DocumentID", visible?.visible?.showData?.EncryptID),
+    //   axios
+    //     .post(apiUrls?.Quotation_Email_Log, form, { headers })
         .then((res) => {
           console.log("email log", res);
           setTableData(res?.data?.data);
@@ -48,15 +54,25 @@ const [t]=useTranslation()
       toast.error("Please Enter EmailCC.");
     } else {
       setLoading(true);
-      let form = new FormData();
-      form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-        form.append("DocumentType", "Connecter"),
-        form.append("DocumentID", visible?.visible?.showData?.EncryptID),
-        form.append("EmailTo", formData?.EmailTo),
-        form.append("EmailCC", formData?.EmailCC),
-        axios
-          .post(apiUrls?.Quotation_Email, form, { headers })
+      const payloadData = {
+  DocumentID: visible?.visible?.showData?.EncryptID || "",
+  EmailTo: formData?.EmailTo || "",
+  EmailCC: formData?.EmailCC || "",
+  DocumentType: "Connecter", // fixed value from your code
+  ActionType: "", // not in FormData, so you can fill as needed
+};
+
+      axiosInstances
+      .post(apiUrls.Quotation_Email,payloadData)
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
+      //   form.append("DocumentType", "Connecter"),
+      //   form.append("DocumentID", visible?.visible?.showData?.EncryptID),
+      //   form.append("EmailTo", formData?.EmailTo),
+      //   form.append("EmailCC", formData?.EmailCC),
+      //   axios
+      //     .post(apiUrls?.Quotation_Email, form, { headers })
           .then((res) => {
             toast.success(res?.data?.messsage);
             handleQuotation_Email_Log();
@@ -72,21 +88,21 @@ const [t]=useTranslation()
           });
     }
   };
-  const getProjectEmail = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-      form.append("ProjectID", visible?.visible?.showData?.ProjectID),
-      axios
-        .post(apiUrls?.ProjectSelect, form, { headers })
-        .then((res) => {
-          console.log("res lotus", res);
-          setProjectEmail(res?.data?.data[0]);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-  };
+  // const getProjectEmail = () => {
+  //   let form = new FormData();
+  //   form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+  //     form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
+  //     form.append("ProjectID", visible?.visible?.showData?.ProjectID),
+  //     axios
+  //       .post(apiUrls?.ProjectSelect, form, { headers })
+  //       .then((res) => {
+  //         console.log("res lotus", res);
+  //         setProjectEmail(res?.data?.data[0]);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  // };
 
   useEffect(() => {
     handleQuotation_Email_Log();

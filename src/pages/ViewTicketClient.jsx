@@ -846,7 +846,7 @@ const ViewTicketClient = () => {
     // axios
     //   .post(apiUrls?.ApplyActionClient, form, { headers })
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           handleViewSearch();
         } else {
@@ -994,7 +994,7 @@ const ViewTicketClient = () => {
     //   axios
     //     .post(apiUrls?.ApplyAction, form, { headers })
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.message);
             handleViewSearch();
           } else {
@@ -1037,7 +1037,7 @@ const ViewTicketClient = () => {
     //   axios
     //     .post(apiUrls?.ApplyAction, form, { headers })
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.message);
             handleViewSearch();
           } else {

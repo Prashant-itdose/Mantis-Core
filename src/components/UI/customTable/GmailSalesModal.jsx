@@ -89,7 +89,7 @@ const GmailSalesModal = ({ visible, setVisible }) => {
       //   axios
       //     .post(apiUrls?.Quotation_Email, form, { headers })
       axiosInstances
-        .post(apiUrls.SalesBooking_IsCancel, {
+        .post(apiUrls.Quotation_Email, {
           DocumentID: String(visible?.showData?.EncryptID),
           EmailTo: String(formData?.EmailTo),
           EmailCC: String(formData?.EmailCC),

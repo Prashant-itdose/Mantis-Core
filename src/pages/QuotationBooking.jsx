@@ -1355,64 +1355,67 @@ const QuotationBooking = ({ data }) => {
       setIsSubmitting(true);
 
       const FinalPayload = {
-        ProjectID: formData?.Project ? String(formData.Project) : "",
-        ProjectName: getlabel(formData?.Project, project) || "",
+  ProjectID: formData?.Project ? String(formData.Project) : "",
+  ProjectName: String(getlabel(formData?.Project, project) || ""),
 
-        BillingCompanyID: formData?.BillingCompany
-          ? String(formData.BillingCompany)
-          : "",
-        BillingCompanyName:
-          getlabel(formData?.BillingCompany, billingcompany) || "",
-        BillingCompanyAddress: formData?.BillingAddress || "",
-        BillingState: formData?.BillingState || "",
-        GSTNo: formData?.BillingGST || "",
-        PanCardNo: formData?.BillingPanCard || "",
+  BillingCompanyID: formData?.BillingCompany
+    ? String(formData.BillingCompany)
+    : "",
+  BillingCompanyName: String(
+    getlabel(formData?.BillingCompany, billingcompany) || ""
+  ),
+  BillingCompanyAddress: String(formData?.BillingAddress || ""),
+  BillingState: String(formData?.BillingState || ""),
+  GSTNo: String(formData?.BillingGST || ""),
+  PanCardNo: String(formData?.BillingPanCard || ""),
 
-        ShippingCompanyID: formData?.ShippingCompany
-          ? String(formData.ShippingCompany)
-          : "",
-        ShippingCompanyName:
-          getlabel(formData?.ShippingCompany, shippingcompany) || "",
-        ShippingCompanyAddress: formData?.ShippingAddress || "",
-        ShippingState: formData?.ShippingState || "",
-        ShippingGSTNo: formData?.ShippingGST || "",
-        ShippingPanCardNo: formData?.ShippingPanCard || "",
+  ShippingCompanyID: formData?.ShippingCompany
+    ? String(formData.ShippingCompany)
+    : "",
+  ShippingCompanyName: String(
+    getlabel(formData?.ShippingCompany, shippingcompany) || ""
+  ),
+  ShippingCompanyAddress: String(formData?.ShippingAddress || ""),
+  ShippingState: String(formData?.ShippingState || ""),
+  ShippingGSTNo: String(formData?.ShippingGST || ""),
+  ShippingPanCardNo: String(formData?.ShippingPanCard || ""),
 
-        dtSales: formData?.SalesDate
-          ? moment(formData?.SalesDate).format("YYYY-MM-DD")
-          : "",
-        ExpiryDate: formData?.ExpiryDate
-          ? moment(formData?.ExpiryDate).format("YYYY-MM-DD")
-          : "",
+  dtSales: formData?.SalesDate
+    ? String(moment(formData?.SalesDate).format("YYYY-MM-DD"))
+    : "",
+  ExpiryDate: formData?.ExpiryDate
+    ? String(moment(formData?.ExpiryDate).format("YYYY-MM-DD"))
+    : "",
 
-        GrossAmount: formData?.TotalAmount ? String(formData?.TotalAmount) : "",
-        DiscountAmount: payload[0]?.DiscountAmount
-          ? String(payload[0]?.DiscountAmount)
-          : "",
-        TaxAmount: Tax ? String(Tax) : "",
-        Tax_Per: "18",
-        CGST_Amount: formData?.CgstAmount ? String(formData?.CgstAmount) : "",
-        SGST_Amount: formData?.SgstAmount ? String(formData?.SgstAmount) : "",
-        IGST_Amount: "",
-        CGST_Per: "",
-        SGST_Per: "",
-        IGST_Per: "",
-        RoundOff: formData?.RoundOff ? String(formData?.RoundOff) : "",
+  GrossAmount: formData?.TotalAmount ? String(formData?.TotalAmount) : "",
+  DiscountAmount: payload[0]?.DiscountAmount
+    ? String(payload[0]?.DiscountAmount)
+    : "",
+  TaxAmount: Tax ? String(Tax) : "",
+  Tax_Per: String("18"),
+  CGST_Amount: formData?.CgstAmount ? String(formData?.CgstAmount) : "",
+  SGST_Amount: formData?.SgstAmount ? String(formData?.SgstAmount) : "",
+  IGST_Amount: String(""),
+  CGST_Per: String(""),
+  SGST_Per: String(""),
+  IGST_Per: String(""),
+  RoundOff: formData?.RoundOff ? String(formData?.RoundOff) : "",
 
-        Document_Base64: "",
-        Document_FormatType: "",
+  Document_Base64: String(""),
+  Document_FormatType: String(""),
 
-        ItemData: JSON.stringify(payload),
-        PaymentTerms: JSON.stringify(termsPayload),
+  ItemData: String(JSON.stringify(payload)),
+  PaymentTerms: String(JSON.stringify(termsPayload)),
 
-        IsApproved: "1",
-        PoNo: formData?.PoNumber || "",
+  IsApproved: String("1"),
+  PoNo: String(formData?.PoNumber || ""),
 
-        // Extra fields from schema (set empty if not in FormData)
-        EmailStatus: "",
-        EmailTo: "",
-        EmailCC: "",
-      };
+  // Extra fields from schema (set empty if not in FormData)
+  EmailStatus: String(""),
+  EmailTo: String(""),
+  EmailCC: String(""),
+};
+
 
       axiosInstances
         .post(apiUrls.Quotation_Insert, FinalPayload)

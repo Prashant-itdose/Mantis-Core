@@ -778,7 +778,7 @@ const ClientViewIssueModal = ({ visible, tableData, setVisible ,handleViewSearch
     //     .post(apiUrls?.Reason_Select, form, { headers })
         axiosInstances
       .post(apiUrls.Reason_Select, {
-    Title: updatedTitle || ""
+    Title: "ReOpenReason" || ""
 
 
       })

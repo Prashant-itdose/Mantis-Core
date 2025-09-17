@@ -10,6 +10,7 @@ import DatePicker from "../../formComponent/DatePicker";
 import moment from "moment";
 import Loading from "../../loader/Loading";
 import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../../../networkServices/axiosInstance";
 
 const SaleConvertModalEdit = ({ visible, setVisible, handleSearch }) => {
   console.log("lotus edit ", visible);
@@ -34,12 +35,20 @@ const SaleConvertModalEdit = ({ visible, setVisible, handleSearch }) => {
   });
   const [errors, setErrors] = useState({});
   const getProjectEmail = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-      form.append("ProjectID", visible?.showData?.saveEditData?.ProjectID),
-      axios
-        .post(apiUrls?.ProjectSelect, form, { headers })
+    axiosInstances
+      .post(apiUrls.ProjectSelect,{
+  "ProjectID":String(visible?.showData?.saveEditData?.ProjectID),
+  "IsMaster": "0",
+  "VerticalID": 0,
+  "TeamID": 0,
+  "WingID": 0
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
+    //   form.append("ProjectID", visible?.showData?.saveEditData?.ProjectID),
+    //   axios
+    //     .post(apiUrls?.ProjectSelect, form, { headers })
         .then((res) => {
           setProjectEmail(res?.data?.data[0]);
         })
@@ -162,15 +171,19 @@ const SaleConvertModalEdit = ({ visible, setVisible, handleSearch }) => {
   };
 
   const Quotation_PaymentTerms_Select = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-      form.append(
-        "QuotationID",
-        visible?.showData?.recordID || visible?.encryptFile
-      ),
-      axios
-        .post(apiUrls?.Quotation_PaymentTerms_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.Quotation_PaymentTerms_Select, {
+  "QuotationID": String(visible?.showData?.recordID || visible?.encryptFile)
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
+    //   form.append(
+    //     "QuotationID",
+    //     visible?.showData?.recordID || visible?.encryptFile
+    //   ),
+    //   axios
+    //     .post(apiUrls?.Quotation_PaymentTerms_Select, form, { headers })
         .then((res) => {
           const uploadData = res?.data?.data;
           const updatedData = uploadData.map((item) => ({
@@ -213,21 +226,27 @@ const SaleConvertModalEdit = ({ visible, setVisible, handleSearch }) => {
     //   });
     // });
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-      form.append("QuotationID", visible?.showData?.recordID),
-      form.append("EmailTo", formData?.EmailTo),
-      form.append("EmailCC", formData?.EmailCC),
-      // form.append("InstallmentNo", formData?.Installment),
-      form.append(
-        "dtAcknowledgment",
-        moment(formData?.AcknowledgmentDate).format("YYYY-MM-DD")
-      ),
-      form.append("InstallmentData", JSON.stringify(DatePayload));
-    // form.append("PaymentTerms", JSON.stringify(PaymentTerms));
-    axios
-      .post(apiUrls?.Quotation_SalesConvert, form, { headers })
+    axiosInstances
+      .post(apiUrls.Quotation_SalesConvert, {
+  "QuotationID": String(visible?.showData?.recordID),
+  "dtAcknowledgement":String(moment(formData?.AcknowledgmentDate).format("YYYY-MM-DD")),
+  "InstallmentData": JSON.stringify(DatePayload)
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
+    //   form.append("QuotationID", visible?.showData?.recordID),
+    //   form.append("EmailTo", formData?.EmailTo),
+    //   form.append("EmailCC", formData?.EmailCC),
+    //   // form.append("InstallmentNo", formData?.Installment),
+    //   form.append(
+    //     "dtAcknowledgment",
+    //     moment(formData?.AcknowledgmentDate).format("YYYY-MM-DD")
+    //   ),
+    //   form.append("InstallmentData", JSON.stringify(DatePayload));
+    // // form.append("PaymentTerms", JSON.stringify(PaymentTerms));
+    // axios
+    //   .post(apiUrls?.Quotation_SalesConvert, form, { headers })
       .then((res) => {
         if (res?.data?.status == true) {
           toast.success(res?.data?.message);

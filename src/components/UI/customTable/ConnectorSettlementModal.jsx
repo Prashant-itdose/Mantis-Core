@@ -10,6 +10,7 @@ import Tables from ".";
 import { settlementTHAED } from "../../modalComponent/Utils/HealperThead";
 import { useTranslation } from "react-i18next";
 import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../../../networkServices/axiosInstance";
 const ConnectorSettlementModal = (visible) => {
   const [t]=useTranslation()
  

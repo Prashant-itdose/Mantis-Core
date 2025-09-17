@@ -145,23 +145,35 @@ const AddNewShippingCompany = (projectid, visible) => {
     }
   };
   const handleUpdate = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("ProjectID", formData?.Project),
-      form.append("BillingCompanyName", formData?.BillingCompnayName),
-      form.append("BillingId", formData?.BillingID),
-      form.append("BillingAddress", formData?.Address),
-      form.append("GSTNo", formData?.GST),
-      form.append("PanCardNo", formData?.PanCardNo),
-      form.append("PanCardNo", formData?.PanCardNo),
-      form.append("StateID", formData?.State),
-      form.append("State", getlabel(formData?.State, state)),
-      axios
-        .post(apiUrls?.UpdateBilling, form, { headers })
+    axiosInstances
+      .post(apiUrls.UpdateBilling, {
+  "ProjectID": Number(formData?.Project),
+  "BillingId": Number(formData?.BillingID),
+  "BillingCompanyName": String(formData?.BillingCompnayName),
+  "BillingAddress": String(formData?.Address),
+  "StateID": String(formData?.State),
+  "State":  String(getlabel(formData?.State, state)),
+  "GSTNo": String(formData?.GST),
+  "PanCardNo": String(formData?.PanCardNo),
+  "IsActive": 0
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("ProjectID", formData?.Project),
+    //   form.append("BillingCompanyName", formData?.BillingCompnayName),
+    //   form.append("BillingId", formData?.BillingID),
+    //   form.append("BillingAddress", formData?.Address),
+    //   form.append("GSTNo", formData?.GST),
+    //   form.append("PanCardNo", formData?.PanCardNo),
+    //   form.append("PanCardNo", formData?.PanCardNo),
+    //   form.append("StateID", formData?.State),
+    //   form.append("State", getlabel(formData?.State, state)),
+    //   axios
+    //     .post(apiUrls?.UpdateBilling, form, { headers })
         .then((res) => {
           toast.success(res?.data?.message);
           handleSearch();
@@ -211,15 +223,20 @@ const AddNewShippingCompany = (projectid, visible) => {
     "Edit",
   ];
   const handleSearch = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("ProjectID", projectid?.projectid);
-    axios
-      .post(apiUrls?.BillingCompany_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.BillingCompany_Select, {
+  "ProjectID": Number(projectid?.projectid),
+  "IsActive": "0"
+})
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("ProjectID", projectid?.projectid);
+    // axios
+    //   .post(apiUrls?.BillingCompany_Select, form, { headers })
       .then((res) => {
         setTableData(res?.data?.data);
       })
