@@ -183,9 +183,9 @@ const LedgerFollowupStatus = (visible) => {
       axiosInstances
       .post(apiUrls.PaymentFollowup,{
   "ActionType": "Insert",
-  "FollowupHeadID": String(formData?.FollowUpType),
+  "FollowupHeadID": Number(formData?.FollowUpType),
   "FolloupHead":String(getlabel(formData?.FollowUpType, followup)),
-  "dtFollowup": String(moment(formData?.LockingDate).format("YYYY-MM-DD")),
+  "dtFollowup": String(moment(formData?.LockingDate).format("YYYY-MM-DD")) ,
   "IsNextFollowupReq": formData?.IsNextFollowupReq == 1 ? true : false,
   "dtNextFollowup": String(formData?.dtNextFollowup == ""
             ? "2001-01-01"

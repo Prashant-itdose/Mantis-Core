@@ -261,7 +261,7 @@ const SearchAmountSubmission = ({ data }) => {
       //   axios
       //     .post(apiUrls?.GetFilterTableReprintData, form, { headers })
       .then((res) => {
-        debugger
+        
         const data = res.data.data;
         if (res?.data.success === true) {
           setColumnConfig(data);
@@ -913,7 +913,7 @@ const SearchAmountSubmission = ({ data }) => {
   };
 
   const [currentPage, setCurrentPage] = useState(1);
-  const totalRecords = parseInt(tableData[0]?.TotalRecord);
+  const totalRecords = tableData?.length > 0 && parseInt(tableData[0]?.TotalRecord);
   const totalPages = Math.ceil(totalRecords / formData?.PageSize);
   const currentData = tableData;
   const handlePageChange = (newPage) => {

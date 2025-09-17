@@ -231,7 +231,7 @@ const SearchSalesBooking = ({ data }) => {
       })
       .then((res) => {
         const data = res.data.data;
-        if (res?.data.status === true) {
+        if (res?.data?.success === true) {
           setColumnConfig(data);
         } else {
           SaveTableFilter();
@@ -433,24 +433,6 @@ const SearchSalesBooking = ({ data }) => {
   }
   const handleSearch = (page, project, DateType = formData?.DateType) => {
     setLoading(true);
-    axiosInstances
-      .post(apiUrls.Payment_Installment_Search, {
-  "DateType": String(DateType),
-  "FromDate": String(formData?.FromDate),
-  "ToDate" : String(formData?.ToDate),
-  "Status": String(formData?.Status),
-  "SearchType": String("OnScreen"),
-  "ProjectID": project?.length > 0 && project !== "0" ?String( project) : String(formData?.ProjectID),
-  "VerticalID": String(formData?.VerticalID),
-  "TeamID": String(formData?.TeamID),
-  "WingID": String(formData?.WingID),
-  "POC1": String(formData?.POC1),
-  "POC2": String(formData?.POC2),
-  "POC3": String(formData?.POC3),
-  "PageSize": String(formData?.PageSize),
-  "PageNo": Number(page ?? currentPage - 1),
-  "IsExcel": false
-})
     // let form = new FormData();
     // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
     //   form.append(
@@ -511,7 +493,8 @@ const SearchSalesBooking = ({ data }) => {
     axiosInstances
       .post(apiUrls?.Payment_Installment_Search, payload)
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
+          debugger
           setTableData(res?.data?.data);
           // const datas = res?.data?.data?.map((val) => {
           //   val.QuotationApproved = false;
@@ -685,7 +668,7 @@ const SearchSalesBooking = ({ data }) => {
     //   axios
     //     .post(apiUrls?.SalesBooking_GeneratePI, form, { headers })
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.message);
             handleSearch();
           } else {
@@ -710,10 +693,10 @@ const SearchSalesBooking = ({ data }) => {
     //   form.append("SalesID", ele),
     //   axios
     //     .post(apiUrls?.SalesBooking_GenerateTax, form, { headers })
-    axiosInstances
-      .post(apiUrls?.SalesBooking_GenerateTax, {})
+    // axiosInstances
+    //   .post(apiUrls?.SalesBooking_GenerateTax, {})
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           handleSearch();
         } else {
@@ -922,9 +905,7 @@ const SearchSalesBooking = ({ data }) => {
     "Cancel",
   ];
 
-  const salesSearchThead = staticHeaders
-    .filter((header) =>
-      isTableVisible(typeof header === "string" ? header : header.name)
+  const salesSearchThead = staticHeaders.filter((header) =>isTableVisible(typeof header === "string" ? header : header.name)
     )
     .map((header) =>
       typeof header === "string"
@@ -1284,10 +1265,11 @@ const SearchSalesBooking = ({ data }) => {
               </div>
             }
           />
+          {console.log("salesSearchTheadsalesSearchThead",salesSearchThead)}
           <Tables
             thead={salesSearchThead}
-            tbody={currentData
-              ?.map((ele, index) => {
+            tbody={currentData?.map((ele, index) => {
+                
                 const fullRow = {
                   "S.No": (
                     <>
@@ -1510,6 +1492,7 @@ const SearchSalesBooking = ({ data }) => {
                   ),
                   colorcode: ele?.rowColor,
                 };
+                
                 const visibleHeaders = salesSearchThead.map((h) =>
                   typeof h === "string" ? h : h.name
                 );
@@ -1517,7 +1500,7 @@ const SearchSalesBooking = ({ data }) => {
                 // ✅ Build filtered row with only visible fields
                 const filteredRow = {};
                 let isEmptyRow = true;
-
+debugger
                 visibleHeaders.forEach((key) => {
                   const value = fullRow[key];
                   filteredRow[key] = value;
@@ -1532,7 +1515,7 @@ const SearchSalesBooking = ({ data }) => {
                 // ✅ Skip row if all visible values are empty
                 if (isEmptyRow) return null;
 
-                return filteredRow;
+                return fullRow;
               })
               .filter(Boolean)} // remove null (empty) rows
             tableHeight="tableHeight"
