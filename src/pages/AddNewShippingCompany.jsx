@@ -109,6 +109,17 @@ const AddNewShippingCompany = (projectid, visible) => {
     } else if (formData?.GST == "") {
       toast.error("Please Enter GST.");
     } else {
+
+      axiosInstances
+      .post(apiUrls.CreateBilling, {
+  "ProjectID": Number(formData?.Project),
+  "BillingCompanyName": String(formData?.BillingCompnayName),
+  "BillingAddress": String(formData?.Address),
+  "StateID": String(formData?.State),
+  "State": String(getlabel(formData?.State, state)),
+  "GSTNo": String(formData?.GST),
+  "PanCardNo": String(formData?.PanCardNo)
+})
       let form = new FormData();
       form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
         form.append(
@@ -119,7 +130,6 @@ const AddNewShippingCompany = (projectid, visible) => {
         form.append("BillingCompanyName", formData?.BillingCompnayName),
         form.append("BillingAddress", formData?.Address),
         form.append("GSTNo", formData?.GST),
-        form.append("PanCardNo", formData?.PanCardNo),
         form.append("PanCardNo", formData?.PanCardNo),
         form.append("StateID", formData?.State),
         form.append("State", getlabel(formData?.State, state)),

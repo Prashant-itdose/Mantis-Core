@@ -625,32 +625,54 @@ const SearchQuotationBooking = ({ data }) => {
   const handleSearch = (page, project, Status = formData?.Status) => {
     // console.log("project project", project?.length);
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append(
-        "ProjectID",
-        project?.length > 0 && project !== "0" ? project : formData?.ProjectID
-      ),
-      form.append("VerticalID", formData?.VerticalID),
-      form.append("TeamID", formData?.TeamID),
-      form.append("WingID", formData?.WingID),
-      form.append("POC1", formData?.POC1),
-      form.append("POC2", formData?.POC2),
-      form.append("POC3", formData?.POC3),
-      form.append("Status", Status),
-      form.append("DateType", formData?.DateType),
-      form.append("FromDate", formatDate(formData?.FromDate)),
-      form.append("ToDate", formatDate(formData?.ToDate)),
-      form.append("SearchType", "OnScreen"),
-      form.append("IsExcel", "0"),
-      form.append("PageSize", formData?.PageSize),
-      form.append("PageNo", page ?? currentPage - 1),
-      axios
-        .post(apiUrls?.Quotation_Search, form, { headers })
+    const payloadData = {
+  DateType: formData?.DateType || "",
+  FromDate: formatDate(formData?.FromDate) || "",
+  ToDate: formatDate(formData?.ToDate) || "",
+  Status: Status || "",
+  SearchType: "OnScreen", // fixed value
+  PageSize: Number(formData?.PageSize) || 0,
+  PageNo: Number(page ?? currentPage - 1) || 0,
+  IsExcel: 0, // fixed value
+  ProjectID:
+    project?.length > 0 && project !== "0" ? project : formData?.ProjectID || "",
+  VerticalID: formData?.VerticalID || "",
+  TeamID: formData?.TeamID || "",
+  WingID: formData?.WingID || "",
+  POC1: formData?.POC1 || "",
+  POC2: formData?.POC2 || "",
+  POC3: formData?.POC3 || "",
+}
+ axiosInstances
+      .post(apiUrls.Quotation_Search, payloadData)
+
+
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append(
+    //     "ProjectID",
+    //     project?.length > 0 && project !== "0" ? project : formData?.ProjectID
+    //   ),
+    //   form.append("VerticalID", formData?.VerticalID),
+    //   form.append("TeamID", formData?.TeamID),
+    //   form.append("WingID", formData?.WingID),
+    //   form.append("POC1", formData?.POC1),
+    //   form.append("POC2", formData?.POC2),
+    //   form.append("POC3", formData?.POC3),
+    //   form.append("Status", Status),
+    //   form.append("DateType", formData?.DateType),
+    //   form.append("FromDate", formatDate(formData?.FromDate)),
+    //   form.append("ToDate", formatDate(formData?.ToDate)),
+    //   form.append("SearchType", "OnScreen"),
+    //   form.append("IsExcel", "0"),
+    //   form.append("PageSize", formData?.PageSize),
+    //   form.append("PageNo", page ?? currentPage - 1),
+    //   axios
+    //     .post(apiUrls?.Quotation_Search, form, { headers })
         .then((res) => {
           if (res?.data?.status === true) {
             setTableData(res?.data?.data);
@@ -674,29 +696,50 @@ const SearchQuotationBooking = ({ data }) => {
   };
   const handleExcel = (page) => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("ProjectID", formData?.ProjectID),
-      form.append("VerticalID", formData?.VerticalID),
-      form.append("TeamID", formData?.TeamID),
-      form.append("WingID", formData?.WingID),
-      form.append("POC1", formData?.POC1),
-      form.append("POC2", formData?.POC2),
-      form.append("POC3", formData?.POC3),
-      form.append("Status", formData?.Status),
-      form.append("DateType", formData?.DateType),
-      form.append("FromDate", formatDate(formData?.FromDate)),
-      form.append("ToDate", formatDate(formData?.ToDate)),
-      form.append("SearchType", "OnScreen"),
-      form.append("IsExcel", "1"),
-      form.append("PageSize", formData?.PageSize),
-      form.append("PageNo", page ?? currentPage - 1),
-      axios
-        .post(apiUrls?.Quotation_Search, form, { headers })
+    const payloadData = {
+  DateType: formData?.DateType || "",
+  FromDate: formatDate(formData?.FromDate) || "",
+  ToDate: formatDate(formData?.ToDate) || "",
+  Status: formData?.Status || "",
+  SearchType: "OnScreen", // fixed value
+  PageSize: Number(formData?.PageSize) || 0,
+  PageNo: Number(page ?? currentPage - 1) || 0,
+  IsExcel: 1, // from your FormData
+  ProjectID: formData?.ProjectID || "",
+  VerticalID: formData?.VerticalID || "",
+  TeamID: formData?.TeamID || "",
+  WingID: formData?.WingID || "",
+  POC1: formData?.POC1 || "",
+  POC2: formData?.POC2 || "",
+  POC3: formData?.POC3 || "",
+};
+
+     axiosInstances
+      .post(apiUrls.Quotation_Search, payloadData)
+
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("ProjectID", formData?.ProjectID),
+    //   form.append("VerticalID", formData?.VerticalID),
+    //   form.append("TeamID", formData?.TeamID),
+    //   form.append("WingID", formData?.WingID),
+    //   form.append("POC1", formData?.POC1),
+    //   form.append("POC2", formData?.POC2),
+    //   form.append("POC3", formData?.POC3),
+    //   form.append("Status", formData?.Status),
+    //   form.append("DateType", formData?.DateType),
+    //   form.append("FromDate", formatDate(formData?.FromDate)),
+    //   form.append("ToDate", formatDate(formData?.ToDate)),
+    //   form.append("SearchType", "OnScreen"),
+    //   form.append("IsExcel", "1"),
+    //   form.append("PageSize", formData?.PageSize),
+    //   form.append("PageNo", page ?? currentPage - 1),
+    //   axios
+    //     .post(apiUrls?.Quotation_Search, form, { headers })
         .then((res) => {
           // console.log("dataatata", res?.data?.data);
           const datas = res?.data?.data;
