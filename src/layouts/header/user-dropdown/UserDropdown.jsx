@@ -15,6 +15,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Loading from "../../../components/loader/Loading";
 import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../../../networkServices/axiosInstance";
 
 // declare const FB;
 
@@ -245,34 +246,41 @@ const UserDropdown = ({
       return;
     }
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("EmailID", inputs?.EmailId),
-      form.append("MobileNo", inputs?.MobileNo),
-      form.append("Image_Base64", inputs?.preview),
-      form.append("FileFormat_Base64", inputs?.doctype),
-      axios
-        .post(apiUrls?.UpdateProfile, form, { headers })
-        .then((res) => {
-          if (res?.data?.status == true) {
-            toast.success(res?.data?.message);
-            localStorage.setItem("MobileNo", inputs?.MobileNo);
-            localStorage.setItem("EmailId", inputs?.EmailId);
-            localStorage.setItem("ProfileImage", inputs?.preview);
-            setLoading(false);
-          } else {
-            toast.error(res?.data?.message);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("EmailID", inputs?.EmailId),
+    //   form.append("MobileNo", inputs?.MobileNo),
+    //   form.append("Image_Base64", inputs?.preview),
+    //   form.append("FileFormat_Base64", inputs?.doctype),
+    //   axios
+    //     .post(apiUrls?.UpdateProfile, form, { headers })
+    axiosInstances
+      .post(apiUrls.UpdateProfile, {
+        EmailID: String(inputs?.EmailId),
+        MobileNo: String(inputs?.MobileNo),
+        Image_Base64: String(inputs?.preview),
+        FileFormat_Base64: String(inputs?.doctype),
+      })
+      .then((res) => {
+        if (res?.data?.success == true) {
+          toast.success(res?.data?.message);
+          localStorage.setItem("MobileNo", inputs?.MobileNo);
+          localStorage.setItem("EmailId", inputs?.EmailId);
+          localStorage.setItem("ProfileImage", inputs?.preview);
           setLoading(false);
-        });
+        } else {
+          toast.error(res?.data?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
   // useEffect(()=>{
   //   handleUpdateProfile()
