@@ -721,9 +721,193 @@ const ViewExpense = () => {
         <div className="card mt-3">
           <Heading
             title={<span style={{ fontWeight: "bold" }}>Search Details</span>}
-            secondTitle={
+             secondTitle={
               <div className="d-flex">
-                <div style={{ padding: "0px !important", marginLeft: "10px" }}>
+                <div className="d-flex flex-wrap align-items-center">
+                  <div
+                    className="d-flex "
+                    style={{
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div
+                      className="legendcircleExpense"
+                      style={{
+                        backgroundColor: "#007bff",
+                        cursor: "pointer",
+                        width: "16px",
+                        height: "16px",
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "white",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      V
+                    </div>
+                    <span
+                      style={{
+                        color: "#007bff",
+                        fontWeight: "bold",
+                        marginLeft: "4px",
+                      }}
+                    >
+                      View
+                    </span>
+                  </div>
+
+                  <div
+                    className="d-flex "
+                    style={{
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div
+                      className="legendcircleExpense"
+                      style={{
+                        backgroundColor: "green",
+                        cursor: "pointer",
+                        width: "16px",
+                        height: "16px",
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "white",
+                        fontWeight: "bold",
+                        marginLeft:"5px"
+                      }}
+                    >
+                      A
+                    </div>
+                    <span
+                      style={{
+                        color: "green",
+                        fontWeight: "bold",
+                        marginLeft: "4px",
+                      }}
+                    >
+                      Approve
+                    </span>
+                  </div>
+
+                  <div
+                    className="d-flex "
+                    style={{
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div
+                      className="legendcircleExpense"
+                      style={{
+                        backgroundColor: "red",
+                        cursor: "pointer",
+                        width: "16px",
+                        height: "16px",
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "white",
+                        fontWeight: "bold",
+                          marginLeft:"5px"
+                      }}
+                    >
+                      R
+                    </div>
+                    <span
+                      style={{
+                        color: "red",
+                        fontWeight: "bold",
+                        marginLeft: "4px",
+                      }}
+                    >
+                      Reject
+                    </span>
+                  </div>
+
+                  <div
+                    className="d-flex "
+                    style={{
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div
+                      className="legendcircleExpense"
+                      style={{
+                        backgroundColor: "orange",
+                        cursor: "pointer",
+                        width: "16px",
+                        height: "16px",
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "white",
+                        fontWeight: "bold",
+                          marginLeft:"5px"
+                      }}
+                    >
+                      S
+                    </div>
+                    <span
+                      style={{
+                        color: "orange",
+                        fontWeight: "bold",
+                        marginLeft: "4px",
+                      }}
+                    >
+                      Submit
+                    </span>
+                  </div>
+                  <div
+                    className="d-flex "
+                    style={{
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div
+                      className="legendcircleExpense"
+                      style={{
+                        backgroundColor: "#EB3467",
+                        cursor: "pointer",
+                        width: "16px",
+                        height: "16px",
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "white",
+                        fontWeight: "bold",
+                          marginLeft:"5px"
+                      }}
+                    >
+                      D
+                    </div>
+                    <span
+                      style={{
+                        color: "#EB3467",
+                        fontWeight: "bold",
+                        marginLeft: "4px",
+                        marginRight: "10px",
+                      }}
+                    >
+                      Delete
+                    </span>
+                  </div>
+                </div>
+                <span style={{ fontWeight: "bold", marginLeft: "10px" }}>
+                  Grand Total :&nbsp;
+                  {tableData?.reduce((acc, curr) => acc + (curr.Total || 0), 0)}
+                </span>
+                {/* <div style={{ padding: "0px !important", marginLeft: "10px" }}>
                   <Input
                     type="text"
                     className="form-control"
@@ -735,8 +919,8 @@ const ViewExpense = () => {
                     value={searchQuery}
                     respclass="col-xl-12 col-md-4 col-sm-6 col-12"
                   />
-                </div>
-                <span style={{ fontWeight: "bold" }}>
+                </div> */}
+                <span style={{ fontWeight: "bold", marginLeft: "10px" }}>
                   Total Record :&nbsp;{tableData?.length}
                 </span>
               </div>
@@ -942,116 +1126,138 @@ const ViewExpense = () => {
               //         />
               //       </span>
               // </div>
-              Action: (
-                <>
-                  &nbsp;
-                  <div style={{ marginTop: "0px" }}>
-                    <Link
-                      style={{
-                        color: "white",
-                        fontWeight: "bold",
-                        border: "1px solid #355ec4",
-                        padding: "2px 9px",
-                        background: "#355ec4",
-                        borderRadius: "2px",
-                      }}
-                      to="/ExpenseSubmission"
-                      state={{
-                        data: ele?.DATE,
-                        edit: true,
-                        givenData: ele,
-                      }}
-                    >
-                      View
-                    </Link>
+             Action: (
+                <div
+                  style={{
+                    display: "flex",
+                    // flexWrap: "wrap",
+                    gap: "8px", // spacing between buttons
+                    padding: "3px",
+                  }}
+                >
+                  <Link
+                    style={{
+                      color: "white",
+                      fontWeight: "bold",
+                      border: "1px solid #355ec4",
+                      width: "20px",
+                      height: "20px",
+                      background: "#355ec4",
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      textDecoration: "none",
+                    }}
+                    to="/ExpenseSubmission"
+                    state={{
+                      data: ele?.DATE,
+                      edit: true,
+                      givenData: ele,
+                    }}
+                    title="Click to View/Edit"
+                  >
+                    V
+                  </Link>
 
-                    {ele?.EmpID ==
+                  {ele?.EmpID ==
                     useCryptoLocalStorage(
                       "user_Data",
                       "get",
                       "CrmEmployeeID"
-                    ) ? (
-                      <button
-                        className="btn btn-sm btn-info"
-                        style={{
-                          background: "green",
-                          fontWeight: "bold",
-                          border: "none",
-                          marginLeft: "10px",
-                        }}
-                        onClick={() => {
-                          setVisible({ ShowApprove: true, showData: ele });
-                        }}
-                        disabled
-                      >
-                        Approve
-                      </button>
-                    ) : (
-                      <button
-                        className="btn btn-sm btn-info"
-                        style={{
-                          background: "green",
-                          fontWeight: "bold",
-                          border: "none",
-                          marginLeft: "10px",
-                        }}
-                        onClick={() => {
-                          setVisible({ ShowApprove: true, showData: ele });
-                        }}
-                        disabled={ele?.is_approved === 1}
-                      >
-                        Approve
-                      </button>
-                    )}
-                  </div>
-                  <br></br>
-                  <button
-                    className="btn btn-sm btn-info"
+                    ) || ele?.is_approved === 1 ? null : (
+                    <span
+                      style={{
+                        color: "white",
+                        fontWeight: "bold",
+                        border: "1px solid green",
+                        width: "20px",
+                        height: "20px",
+                        background: "green",
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        textDecoration: "none",
+                      }}
+                      onClick={() => {
+                        setVisible({ ShowApprove: true, showData: ele });
+                      }}
+                      title="Click to Approve"
+                    >
+                      A
+                    </span>
+                  )}
+
+                  {ele?.is_approved !== 1 && (
+                    <span
+                      style={{
+                        color: "white",
+                        fontWeight: "bold",
+                        border: "1px solid red",
+                        width: "20px",
+                        height: "20px",
+                        background: "red",
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        textDecoration: "none",
+                      }}
+                      onClick={() => {
+                        setVisible({ ShowReject: true, showData: ele });
+                      }}
+                      title="Click to Reject"
+                    >
+                      R
+                    </span>
+                  )}
+
+                  {!["Submitted", "Approved"].includes(ele?.Status) && (
+                    <span
+                      style={{
+                        color: "white",
+                        fontWeight: "bold",
+                        border: "1px solid orange",
+                        width: "20px",
+                        height: "20px",
+                        background: "orange",
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        textDecoration: "none",
+                      }}
+                      onClick={() => {
+                        setVisible({ ShowSubmit: true, showData: ele });
+                      }}
+                      title="Click to Submit"
+                    >
+                      S
+                    </span>
+                  )}
+
+                  <span
                     style={{
-                      background: "red",
+                      color: "white",
                       fontWeight: "bold",
-                      marginTop: "0px",
-                      border: "none",
-                    }}
-                    onClick={() => {
-                      setVisible({ ShowReject: true, showData: ele });
-                    }}
-                    disabled={ele?.is_approved === 1}
-                  >
-                    Reject
-                  </button>
-                  &nbsp;&nbsp;&nbsp;&nbsp;
-                  <button
-                    className="btn btn-sm btn-info"
-                    style={{
-                      background: "orange",
-                      fontWeight: "bold",
-                      marginTop: "5px",
-                      border: "none",
-                    }}
-                    onClick={() => {
-                      setVisible({ ShowSubmit: true, showData: ele });
-                    }}
-                    disabled={["Submitted", "Approved"].includes(ele?.Status)}
-                  >
-                    Submit
-                  </button>
-                  <br></br>
-                  <button
-                    className="btn btn-sm btn-info"
-                    style={{
+                      border: "1px solid #eb3467",
+                      width: "20px",
+                      height: "20px",
                       background: "#eb3467",
-                      fontWeight: "bold",
-                      marginTop: "5px",
-                      border: "none",
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      textDecoration: "none",
                     }}
                     onClick={() => {
                       setVisible({ deleteShow: true, showData: ele });
                     }}
                   >
-                    Delete
-                  </button>
-                </>
+                    D
+                  </span>
+                </div>
               ),
               Attachment: ele?.FileURLs ? (
                 <>
