@@ -261,7 +261,7 @@ const SearchAmountSubmission = ({ data }) => {
       //   axios
       //     .post(apiUrls?.GetFilterTableReprintData, form, { headers })
       .then((res) => {
-        debugger
+      
         const data = res.data.data;
         if (res?.data.success === true) {
           setColumnConfig(data);

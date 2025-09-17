@@ -139,7 +139,7 @@ const QuotationBooking = ({ data }) => {
   };
 
   const handleDeliveryChange = (name, e, index) => {
-    // debugger
+
     const { value } = e;
 
     if (name === "Terms") {
@@ -1569,7 +1569,7 @@ const QuotationBooking = ({ data }) => {
   };
 
   const searchHandleChange = (e, index) => {
-    // debugger;
+ 
     const { name, value } = e?.target;
 
     let updatedFormData = { ...formData, [name]: value };

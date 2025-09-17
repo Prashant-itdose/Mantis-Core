@@ -569,7 +569,6 @@ const MenuSidebar = () => {
   // role bind
   const handleChangeRole = async (e) => {
     const { value } = e;
-    // debugger
     // useLocalStorage("userData", "set", { ...localData, defaultRole: value });
     try {
       // setFormData({
@@ -585,7 +584,7 @@ const MenuSidebar = () => {
       //     RoleID: value,
       //   })
       // );
-      // debugger
+  
       navigate("/dashboard");
     } catch (error) {
       console.error("Error occurred:", error);

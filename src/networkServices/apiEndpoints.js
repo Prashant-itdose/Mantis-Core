@@ -128,7 +128,7 @@ export const apiUrls = {
   Connector_Insert: "/CRMCOREAPI/api/AccountsConnector/ConnectorInsert",
   Connector_Status_Update:
     "/CRMCOREAPI/api/AccountsConnector/ConnectorStatusUpdate",
-  Connector_Update: "/CRMCOREAPI/API/AccountsConnector/Connector_Update",
+  Connector_Update: "/CRMCOREAPI/API/AccountsConnector/ConnectorUpdate",
 
   GetImplementaiondropdown:
     "/CRMCOREAPI/api/ImplementationSteps/ImplementationSteps_MasterSelect",
@@ -451,7 +451,8 @@ export const apiUrls = {
     "/CRMCOREAPI/API/CRMAttendance/WeaklyMonthlyBreakHours",
   EmployeeFeedbackDashboard:
     "/CRMCOREAPI/API/Attendence/EmployeeFeedbackDashboard",
-  ClientFeedbackDashboard: "/CRMCOREAPI/API/CRMAttendance/ClientFeedbackDashboard",
+  ClientFeedbackDashboard:
+    "/CRMCOREAPI/API/CRMAttendance/ClientFeedbackDashboard",
   EmailerSearch: "/CRMCOREAPI/API/Email/EmailerSearch",
   RepushMail: "/CRMCOREAPI/API/Email/RepushMail",
   GetFlagProject: "/CRMCOREAPI/API/ProjectMasterUpdate/GetFlagProject",

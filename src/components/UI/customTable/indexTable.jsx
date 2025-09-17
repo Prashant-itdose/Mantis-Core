@@ -34,7 +34,6 @@ function Tables({
 
   useEffect(() => {
     if (tbody?.length > 0) {
-        debugger
       let data = thead?.map((val, index) => {
         if (typeof val === "object") {
           if (typeof Object?.values(tbody[0])[index] === "object") {

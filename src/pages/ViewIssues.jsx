@@ -1199,9 +1199,6 @@ const ViewIssues = ({ data }) => {
     }
   };
   const handleAgainChange = (name, value, index, ele) => {
-    debugger
-    // console.log("ttttttttttttt",name, value, index);
-
     let updatedData = [...tableData];
     updatedData[index][name] = value;
     setTableData(updatedData);
@@ -2150,7 +2147,6 @@ const ViewIssues = ({ data }) => {
     HideStatusId = formData?.HideStatus,
     deliveryDate = ""
   ) => {
-    // debugger
     const paylaod = {
       RoleID: String(useCryptoLocalStorage("user_Data", "get", "RoleID") || ""),
       ProjectID: String(ProjectID || ""),

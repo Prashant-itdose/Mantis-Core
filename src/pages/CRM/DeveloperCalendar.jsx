@@ -216,7 +216,6 @@ const DeveloperCalendar = () => {
           View: "Calender",
         })
         .then((res) => {
-          debugger
           setCalendarData(res?.data?.data?.dtCalender);
           setSummaryData(res?.data?.data?.dtStatusSummary);
           setTotalCount(res?.data?.data?.dtLoginDays[0]);
@@ -264,7 +263,6 @@ const DeveloperCalendar = () => {
     // axios
     //   .post(apiUrls?.Dev_Caledar, form, { headers })
       .then((res) => {
-        // debugger
         const filteredData = res?.data?.data?.dtDetailed?.filter(
           (item) => item.CurrentDeliveryDate === formattedDate
         );

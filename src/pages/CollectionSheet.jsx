@@ -316,7 +316,6 @@ const CollectionSheet = () => {
       // If the search query is empty, reset the filtered data to the original table data
       setTableData([...tableData]);
     } else {
-      // debugger;
       const filtered = filteredData.filter((item) =>
         // item.POC_1.toLowerCase().includes(query)
         {

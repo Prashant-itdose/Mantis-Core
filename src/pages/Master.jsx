@@ -50,7 +50,7 @@ const Master = () => {
     handleMasterTypeSearch(value);
   };
   const handleMasterTypeSearch = (id) => {
-    debugger
+ 
     // let form = new FormData();
     // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
     //   form.append(

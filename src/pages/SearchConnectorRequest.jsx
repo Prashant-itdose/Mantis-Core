@@ -118,7 +118,7 @@ const SearchConnectorRequest = ({ data }) => {
     if (savedData) {
       setFormData(JSON.parse(savedData));
     }
-    debugger
+    
     axiosInstances
       .post(apiUrls.SaveFilterDataSubmission, {
   "Type": "AmountSubmission",
@@ -223,7 +223,6 @@ const SearchConnectorRequest = ({ data }) => {
     });
   };
   const getMultiReporter = () => {
-    debugger
     axiosInstances
       .post(apiUrls.Reporter_Select, {
   "IsMaster": 0,

@@ -1227,7 +1227,6 @@ const SalesBooking = ({ data }) => {
         setTableData(updatedData);
         // setTableData(res?.data?.dataDetail);
         if (res?.data?.data[0]?.ProjectID > 0) {
-          // debugger
           handleGetItemSearch(res?.data?.data[0]?.ProjectID);
 
           // handleGetItemRate(res?.data?.dataDetail[0])

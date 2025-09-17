@@ -811,7 +811,6 @@ const ExpenseSubmission = () => {
     
     // console.log("check", check);
     const formatDateToLocal = (date) => {
-      // debugger
       const d = new Date(date?.Value);
       const year = d.getFullYear();
       const month = String(d.getMonth() + 1).padStart(2, "0");
