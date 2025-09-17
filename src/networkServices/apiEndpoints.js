@@ -125,7 +125,7 @@ export const apiUrls = {
   Connector_Discount_Insert:
     "/CRMCOREAPI/api/AccountsConnector/ConnectorDiscountInsert",
   Connector_Select: "/CRMCOREAPI/api/AccountsConnector/ConnectorSelect",
-  Connector_Insert: "/CRMCOREAPI/API/AccountsConnector/ConnectorInsert",
+  Connector_Insert: "/CRMCOREAPI/api/AccountsConnector/ConnectorInsert",
   Connector_Status_Update:
     "/CRMCOREAPI/api/AccountsConnector/ConnectorStatusUpdate",
   Connector_Update: "/CRMCOREAPI/API/AccountsConnector/Connector_Update",
