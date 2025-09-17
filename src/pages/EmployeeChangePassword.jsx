@@ -68,40 +68,6 @@ const EmployeeChangePassword = () => {
           console.log(err);
         });
   };
-  const getChangePassword = () => {
-    if (formData?.Reporter == "") {
-      toast.error("Please Select User.");
-      setLoading(false);
-    } else if (formData?.Password == "") {
-      toast.error("Please Enter Password.");
-      setLoading(false);
-    } else {
-      setLoading(true);
-      let form = new FormData();
-      form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        form.append(
-          "LoginName",
-          useCryptoLocalStorage("user_Data", "get", "realname")
-        ),
-        form.append("UserID", formData?.Reporter),
-        form.append("Password", formData?.Password),
-        axios
-          .post(apiUrls?.ChangePassword, form, { headers })
-          .then((res) => {
-            if (res?.data?.status === true) {
-              toast.success(res?.data?.message);
-              setLoading(false);
-            } else {
-              toast.error(res?.data?.message);
-              setLoading(false);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-            setLoading(false);
-          });
-    }
-  };
 
   const getChangePasswordEmployee = () => {
     if (formData?.Password == "") {

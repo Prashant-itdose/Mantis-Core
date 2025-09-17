@@ -41,13 +41,6 @@ const CancelQuotationBookingModal = ({ visible, setVisible, handleSearch }) => {
       toast.error("Please Select CancelReason.");
     } else {
       setLoading(true);
-      axiosInstances
-      .post(apiUrls.Quotation_IsCancel, {
-  "QuotationID": Number(visible?.showData?.EncryptID),
-  "CancelReasonID": Number(getlabel(formData?.CancelReason, reason)),
-  "CancelReason": String(formData?.CancelReason),
-  "OtherCancelReason": String(formData?.OtherReason)
-})
       // let form = new FormData();
       // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
       //   form.append(
@@ -62,42 +55,49 @@ const CancelQuotationBookingModal = ({ visible, setVisible, handleSearch }) => {
       //     .post(apiUrls?.Quotation_IsCancel, form, {
       //       headers,
       //     })
-          .then((res) => {
-            if (res?.data?.status === true) {
-              toast.success(res?.data?.message);
-              // setVisible((val) => ({ ...val, removeVisible: false }));
-              setVisible(false);
-              setLoading(false);
-              handleSearch()
-            } else {
-              toast.error(res?.data?.message);
-              setLoading(false);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+      axiosInstances
+        .post(apiUrls.Quotation_IsCancel, {
+          QuotationID: Number(visible?.showData?.EncryptID),
+          CancelReasonID: Number(formData?.CancelReason),
+          CancelReason: String(getlabel(formData?.CancelReason, reason)),
+          OtherCancelReason: String(formData?.OtherReason),
+        })
+        .then((res) => {
+          if (res?.data?.success === true) {
+            toast.success(res?.data?.message);
+            // setVisible((val) => ({ ...val, removeVisible: false }));
+            setVisible(false);
+            setLoading(false);
+            handleSearch();
+          } else {
+            toast.error(res?.data?.message);
+            setLoading(false);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
   const handleSearchReason = () => {
-    axiosInstances
-      .post(apiUrls.Quotation_CancelReason_Select, {})
     // let form = new FormData();
     // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
     //   axios
     //     .post(apiUrls?.Quotation_CancelReason_Select, form, {
     //       headers,
     //     })
-        .then((res) => {
-          const verticals = res?.data.data.map((item) => {
-            return { label: item?.NAME, value: item?.ID };
-          });
-          setreason(verticals);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls.Quotation_CancelReason_Select, {})
+      .then((res) => {
+        const verticals = res?.data.data.map((item) => {
+          return { label: item?.NAME, value: item?.ID };
         });
+        setreason(verticals);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const othersReason = reason?.find(

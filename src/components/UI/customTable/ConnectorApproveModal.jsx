@@ -7,22 +7,28 @@ import { useTranslation } from "react-i18next";
 import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorage";
 
 const ConnectorApproveModal = (visible) => {
- 
+
   const [t] = useTranslation();
   const handleSave = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-      form.append("ConnectorID", visible?.visible?.connectdata?.ID),
-      form.append("Status", "Approve"),
-      axios
-        .post(apiUrls?.Connector_Status_Update, form, { headers })
-        .then((res) => {
-          toast.success(res?.data?.message);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
+    //   form.append("ConnectorID", visible?.visible?.connectdata?.ID),
+    //   form.append("Status", "Approve"),
+    //   axios
+    //     .post(apiUrls?.Connector_Status_Update, form, { headers })
+    axiosInstances
+      .post(apiUrls.Connector_Status_Update, {
+      ConnectorID: visible?.visible?.connectdata?.ID || 0,
+      Status: "Approve" 
+
+      })
+      .then((res) => {
+        toast.success(res?.data?.message);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <>

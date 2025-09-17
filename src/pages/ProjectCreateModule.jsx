@@ -14,7 +14,7 @@ const ProjectCreateModule = ({ tableDatas }) => {
   const [tableData, setTableData] = useState([]);
   const [t] = useTranslation();
   const [loading, setLoading] = useState(false);
-  const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState(false);s
   const [formData, setFormData] = useState({
     ModuleName: "",
     IsActive: "",

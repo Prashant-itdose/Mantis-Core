@@ -120,21 +120,21 @@ const AddNewShippingCompany = (projectid, visible) => {
   "GSTNo": String(formData?.GST),
   "PanCardNo": String(formData?.PanCardNo)
 })
-      let form = new FormData();
-      form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        form.append(
-          "LoginName",
-          useCryptoLocalStorage("user_Data", "get", "realname")
-        ),
-        form.append("ProjectID", formData?.Project),
-        form.append("BillingCompanyName", formData?.BillingCompnayName),
-        form.append("BillingAddress", formData?.Address),
-        form.append("GSTNo", formData?.GST),
-        form.append("PanCardNo", formData?.PanCardNo),
-        form.append("StateID", formData?.State),
-        form.append("State", getlabel(formData?.State, state)),
-        axios
-          .post(apiUrls?.CreateBilling, form, { headers })
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append(
+      //     "LoginName",
+      //     useCryptoLocalStorage("user_Data", "get", "realname")
+      //   ),
+      //   form.append("ProjectID", formData?.Project),
+      //   form.append("BillingCompanyName", formData?.BillingCompnayName),
+      //   form.append("BillingAddress", formData?.Address),
+      //   form.append("GSTNo", formData?.GST),
+      //   form.append("PanCardNo", formData?.PanCardNo),
+      //   form.append("StateID", formData?.State),
+      //   form.append("State", getlabel(formData?.State, state)),
+      //   axios
+      //     .post(apiUrls?.CreateBilling, form, { headers })
           .then((res) => {
             toast.success(res?.data?.message);
             handleSearch();
