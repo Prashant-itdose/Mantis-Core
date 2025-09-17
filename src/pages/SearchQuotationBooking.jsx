@@ -699,6 +699,27 @@ const SearchQuotationBooking = ({ data }) => {
   };
   const handleExcel = (page) => {
     setLoading(true);
+    const payloadData = {
+  DateType: formData?.DateType || "",
+  FromDate: formatDate(formData?.FromDate) || "",
+  ToDate: formatDate(formData?.ToDate) || "",
+  Status: formData?.Status || "",
+  SearchType: "OnScreen", // fixed value
+  PageSize: Number(formData?.PageSize) || 0,
+  PageNo: Number(page ?? currentPage - 1) || 0,
+  IsExcel: 1, // from your FormData
+  ProjectID: formData?.ProjectID || "",
+  VerticalID: formData?.VerticalID || "",
+  TeamID: formData?.TeamID || "",
+  WingID: formData?.WingID || "",
+  POC1: formData?.POC1 || "",
+  POC2: formData?.POC2 || "",
+  POC3: formData?.POC3 || "",
+};
+
+     axiosInstances
+      .post(apiUrls.Quotation_Search, payloadData)
+
     // let form = new FormData();
     // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
     //   form.append(
@@ -721,30 +742,10 @@ const SearchQuotationBooking = ({ data }) => {
     //   form.append("PageSize", formData?.PageSize),
     //   form.append("PageNo", page ?? currentPage - 1),
     //   axios
-    // .post(apiUrls?.Quotation_Search, form, { headers })
-    axiosInstances
-      .post(apiUrls.Quotation_Search, {
-        DateType: String(formData?.DateType),
-        FromDate: String(formatDate(formData?.FromDate)),
-        ToDate: String(formatDate(formData?.ToDate)),
-        Status: String(Status),
-        SearchType: String("OnScreen"),
-        PageSize: Number(formData?.PageSize),
-        PageNo: Number(page ?? currentPage - 1),
-        IsExcel: Number(1),
-        ProjectID: String(
-          project?.length > 0 && project !== "0" ? project : formData?.ProjectID
-        ),
-        VerticalID: String(formData?.VerticalID),
-        TeamID: String(formData?.TeamID),
-        WingID: String(formData?.WingID),
-        POC1: String(formData?.POC1),
-        POC2: String(formData?.POC2),
-        POC3: String(formData?.POC3),
-      })
-      .then((res) => {
-        // console.log("dataatata", res?.data?.data);
-        const datas = res?.data?.data;
+    //     .post(apiUrls?.Quotation_Search, form, { headers })
+        .then((res) => {
+          // console.log("dataatata", res?.data?.data);
+          const datas = res?.data?.data;
 
         if (!datas || datas.length === 0) {
           console.error("No data available for download.");

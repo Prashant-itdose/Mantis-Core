@@ -777,67 +777,99 @@ const QuotationBooking = ({ data }) => {
     // console.log("Amount", Amount);
 
     setLoading(true);
-    axiosInstances.post(apiUrls.Quotation_Update, {
-      BillingCompanyID: Number(proj),
-    });
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "RoleID",
-        useCryptoLocalStorage("user_Data", "get", "RoleID")
-      ),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("ProjectID", formData?.Project),
-      form.append("ProjectName", getlabel(formData?.Project, project)),
-      form.append("BillingCompanyID", formData?.BillingCompany),
-      form.append(
-        "BillingCompanyName",
-        getlabel(formData?.BillingCompany, billingcompany)
-      ),
-      form.append("BillingCompanyAddress", formData?.BillingAddress),
-      form.append("BillingState", formData?.BillingState),
-      form.append("GSTNo", formData?.BillingGST),
-      form.append("PanCardNo", formData?.BillingPanCard),
-      form.append("ShippingCompanyID", formData?.ShippingCompany),
-      form.append(
-        "ShippingCompanyName",
-        getlabel(formData?.ShippingCompany, shippingcompany)
-      ),
-      form.append("ShippingCompanyAddress", formData?.ShippingAddress),
-      form.append("ShippingState", formData?.ShippingState),
-      form.append("ShippingGSTNo", formData?.ShippingGST),
-      form.append("ShippingPanCardNo", formData?.ShippingPanCard),
-      form.append("dtSales", moment(formData?.SalesDate).format("YYYY-MM-DD")),
-      form.append("PONo", formData?.PoNumber ?? ""),
-      form.append(
-        "ExpiryDate",
-        moment(formData?.ExpiryDate).format("YYYY-MM-DD")
-      ),
-      form.append("GrossAmount", GrossAmount),
-      // form.append("GrossAmount", formData?.TotalAmount),
-      form.append("DiscountAmount", payload[0]?.DiscountAmount ?? ""),
-      form.append("TaxAmount", Tax || ""),
-      form.append("Tax_Per", 18),
-      form.append("CGST_Amount", formData?.CgstAmount),
-      form.append("SGST_Amount", formData?.SgstAmount),
-      form.append("IGST_Amount", ""),
-      form.append("CGST_Per", ""),
-      form.append("SGST_Per", ""),
-      form.append("IGST_Per", ""),
-      form.append("RoundOff", formData?.RoundOff || ""),
-      form.append("Document_Base64", ""),
-      form.append("Document_FormatType", ""),
-      form.append("QuotationID", state?.data || recordID),
-      form.append("EmailTo", formData?.EmailTo),
-      form.append("EmailCC", formData?.EmailCC),
-      form.append("EmailStatus", formData?.EmailStatus),
-      form.append("ItemData", JSON.stringify(payload));
-    form.append("PaymentTerms", JSON.stringify(termsPayload));
-    axios
-      .post(apiUrls?.Quotation_Update, form, { headers })
+    const payloadData = {
+  QuotationID: state?.data || recordID || "",
+  ProjectID: formData?.Project || 0,
+  ProjectName: getlabel(formData?.Project, project) || "",
+  BillingCompanyID: formData?.BillingCompany || 0,
+  BillingCompanyName: getlabel(formData?.BillingCompany, billingcompany) || "",
+  BillingCompanyAddress: formData?.BillingAddress || "",
+  BillingState: formData?.BillingState || "",
+  GSTNo: formData?.BillingGST || "",
+  PanCardNo: formData?.BillingPanCard || "",
+  ShippingCompanyID: formData?.ShippingCompany || 0,
+  ShippingCompanyName: getlabel(formData?.ShippingCompany, shippingcompany) || "",
+  ShippingCompanyAddress: formData?.ShippingAddress || "",
+  ShippingState: formData?.ShippingState || "",
+  ShippingGSTNo: formData?.ShippingGST || "",
+  ShippingPanCardNo: formData?.ShippingPanCard || "",
+  GrossAmount: Number(GrossAmount) || 0,
+  DiscountAmount: Number(payload[0]?.DiscountAmount) || 0,
+  TaxAmount: Number(Tax) || 0,
+  Tax_Per: 18,
+  CGST_Amount: Number(formData?.CgstAmount) || 0,
+  SGST_Amount: Number(formData?.SgstAmount) || 0,
+  IGST_Amount: 0,
+  CGST_Per: 0,
+  SGST_Per: 0,
+  IGST_Per: 0,
+  RoundOff: Number(formData?.RoundOff) || 0,
+  Document_Base64: "",
+  Document_FormatType: "",
+  ItemData: payload || [],
+  PaymentTerms: termsPayload || [],
+};
+
+    axiosInstances
+      .post(apiUrls.Quotation_Update,payloadData)
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "RoleID",
+    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+    //   ),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("ProjectID", formData?.Project),
+    //   form.append("ProjectName", getlabel(formData?.Project, project)),
+    //   form.append("BillingCompanyID", formData?.BillingCompany),
+    //   form.append(
+    //     "BillingCompanyName",
+    //     getlabel(formData?.BillingCompany, billingcompany)
+    //   ),
+    //   form.append("BillingCompanyAddress", formData?.BillingAddress),
+    //   form.append("BillingState", formData?.BillingState),
+    //   form.append("GSTNo", formData?.BillingGST),
+    //   form.append("PanCardNo", formData?.BillingPanCard),
+    //   form.append("ShippingCompanyID", formData?.ShippingCompany),
+    //   form.append(
+    //     "ShippingCompanyName",
+    //     getlabel(formData?.ShippingCompany, shippingcompany)
+    //   ),
+    //   form.append("ShippingCompanyAddress", formData?.ShippingAddress),
+    //   form.append("ShippingState", formData?.ShippingState),
+    //   form.append("ShippingGSTNo", formData?.ShippingGST),
+    //   form.append("ShippingPanCardNo", formData?.ShippingPanCard),
+    //   form.append("dtSales", moment(formData?.SalesDate).format("YYYY-MM-DD")),
+    //   form.append("PONo", formData?.PoNumber ?? ""),
+    //   form.append(
+    //     "ExpiryDate",
+    //     moment(formData?.ExpiryDate).format("YYYY-MM-DD")
+    //   ),
+    //   form.append("GrossAmount", GrossAmount),
+    //   // form.append("GrossAmount", formData?.TotalAmount),
+    //   form.append("DiscountAmount", payload[0]?.DiscountAmount ?? ""),
+    //   form.append("TaxAmount", Tax || ""),
+    //   form.append("Tax_Per", 18),
+    //   form.append("CGST_Amount", formData?.CgstAmount),
+    //   form.append("SGST_Amount", formData?.SgstAmount),
+    //   form.append("IGST_Amount", ""),
+    //   form.append("CGST_Per", ""),
+    //   form.append("SGST_Per", ""),
+    //   form.append("IGST_Per", ""),
+    //   form.append("RoundOff", formData?.RoundOff || ""),
+    //   form.append("Document_Base64", ""),
+    //   form.append("Document_FormatType", ""),
+    //   form.append("QuotationID", state?.data || recordID),
+    //   form.append("EmailTo", formData?.EmailTo),
+    //   form.append("EmailCC", formData?.EmailCC),
+    //   form.append("EmailStatus", formData?.EmailStatus),
+    //   form.append("ItemData", JSON.stringify(payload));
+    // form.append("PaymentTerms", JSON.stringify(termsPayload));
+    // axios
+    //   .post(apiUrls?.Quotation_Update, form, { headers })
       .then((res) => {
         if (res?.data?.status == true) {
           toast.success(res?.data?.message);
@@ -1148,67 +1180,71 @@ const QuotationBooking = ({ data }) => {
 
       setLoading(true);
       setIsSubmitting(true);
-      let form = new FormData();
-      form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        form.append(
-          "RoleID",
-          useCryptoLocalStorage("user_Data", "get", "RoleID")
-        ),
-        form.append(
-          "LoginName",
-          useCryptoLocalStorage("user_Data", "get", "realname")
-        ),
-        form.append("ProjectID", formData?.Project),
-        form.append("IsApproved", "0"),
-        form.append("ProjectName", getlabel(formData?.Project, project)),
-        form.append("BillingCompanyID", formData?.BillingCompany),
-        form.append(
-          "BillingCompanyName",
-          getlabel(formData?.BillingCompany, billingcompany)
-        ),
-        form.append("BillingCompanyAddress", formData?.BillingAddress),
-        form.append("BillingState", formData?.BillingState),
-        form.append("GSTNo", formData?.BillingGST),
-        form.append("PoNo", formData?.PoNumber),
-        form.append("PanCardNo", formData?.BillingPanCard),
-        form.append("ShippingCompanyID", formData?.ShippingCompany),
-        form.append(
-          "ShippingCompanyName",
-          getlabel(formData?.ShippingCompany, shippingcompany)
-        ),
-        form.append("ShippingCompanyAddress", formData?.ShippingAddress),
-        form.append("ShippingGSTNo", formData?.ShippingGST),
-        form.append("ShippingPanCardNo", formData?.ShippingPanCard),
-        form.append("ShippingState", formData?.ShippingState),
-        form.append(
-          "dtSales",
-          moment(formData?.SalesDate).format("YYYY-MM-DD")
-        ),
-        form.append(
-          "ExpiryDate",
-          moment(formData?.ExpiryDate).format("YYYY-MM-DD")
-        ),
-        // form.append("GrossAmount", GrossAmount),
-        form.append("GrossAmount", formData?.TotalAmount),
-        form.append("DiscountAmount", payload[0]?.DiscountAmount),
-        form.append("TaxAmount", Tax),
-        form.append("Tax_Per", 18),
-        form.append("CGST_Amount", formData?.CgstAmount),
-        form.append("SGST_Amount", formData?.SgstAmount),
-        form.append("IGST_Amount", ""),
-        form.append("CGST_Per", ""),
-        form.append("SGST_Per", ""),
-        form.append("IGST_Per", ""),
-        form.append("RoundOff", formData?.RoundOff ?? ""),
-        form.append("Document_Base64", ""),
-        form.append("Document_FormatType", ""),
-        form.append("QuotationID", state?.data || recordID),
-        form.append("ItemData", JSON.stringify(payload));
-      form.append("PaymentTerms", JSON.stringify(termsPayload));
-      axios
-        .post(apiUrls?.Quotation_Approved, form, { headers })
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append(
+      //     "RoleID",
+      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+      //   ),
+      //   form.append(
+      //     "LoginName",
+      //     useCryptoLocalStorage("user_Data", "get", "realname")
+      //   ),
+      //   form.append("ProjectID", formData?.Project),
+      //   form.append("IsApproved", "0"),
+      //   form.append("ProjectName", getlabel(formData?.Project, project)),
+      //   form.append("BillingCompanyID", formData?.BillingCompany),
+      //   form.append(
+      //     "BillingCompanyName",
+      //     getlabel(formData?.BillingCompany, billingcompany)
+      //   ),
+      //   form.append("BillingCompanyAddress", formData?.BillingAddress),
+      //   form.append("BillingState", formData?.BillingState),
+      //   form.append("GSTNo", formData?.BillingGST),
+      //   form.append("PoNo", formData?.PoNumber),
+      //   form.append("PanCardNo", formData?.BillingPanCard),
+      //   form.append("ShippingCompanyID", formData?.ShippingCompany),
+      //   form.append(
+      //     "ShippingCompanyName",
+      //     getlabel(formData?.ShippingCompany, shippingcompany)
+      //   ),
+      //   form.append("ShippingCompanyAddress", formData?.ShippingAddress),
+      //   form.append("ShippingGSTNo", formData?.ShippingGST),
+      //   form.append("ShippingPanCardNo", formData?.ShippingPanCard),
+      //   form.append("ShippingState", formData?.ShippingState),
+      //   form.append(
+      //     "dtSales",
+      //     moment(formData?.SalesDate).format("YYYY-MM-DD")
+      //   ),
+      //   form.append(
+      //     "ExpiryDate",
+      //     moment(formData?.ExpiryDate).format("YYYY-MM-DD")
+      //   ),
+      //   // form.append("GrossAmount", GrossAmount),
+      //   form.append("GrossAmount", formData?.TotalAmount),
+      //   form.append("DiscountAmount", payload[0]?.DiscountAmount),
+      //   form.append("TaxAmount", Tax),
+      //   form.append("Tax_Per", 18),
+      //   form.append("CGST_Amount", formData?.CgstAmount),
+      //   form.append("SGST_Amount", formData?.SgstAmount),
+      //   form.append("IGST_Amount", ""),
+      //   form.append("CGST_Per", ""),
+      //   form.append("SGST_Per", ""),
+      //   form.append("IGST_Per", ""),
+      //   form.append("RoundOff", formData?.RoundOff ?? ""),
+      //   form.append("Document_Base64", ""),
+      //   form.append("Document_FormatType", ""),
+      //   form.append("QuotationID", state?.data || recordID),
+      //   form.append("ItemData", JSON.stringify(payload));
+      // form.append("PaymentTerms", JSON.stringify(termsPayload));
+      // axios
+      //   .post(apiUrls?.Quotation_Approved, form, { headers })
+       axiosInstances
+      .post(apiUrls.Quotation_Approved, {
+  "QuotationID": String(state?.data || recordID)
+})
         .then((res) => {
-          if (res?.data?.status == true) {
+          if (res?.data?.success == true) {
             toast.success(res?.data?.message);
             setLoading(false);
             setSaveEditData(res?.data?.data[0]);
