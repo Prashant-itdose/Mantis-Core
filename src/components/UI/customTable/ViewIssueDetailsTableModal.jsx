@@ -373,32 +373,44 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
     if (edit) {
       setLoading(true);
       axiosInstances
-        .post(apiUrls.UpdateTicket,  {
-  TicketID: Number(formDataUpdate?.TicketID ?? 0),
-  User_id: 0,
-  CategoryID: Number(formDataUpdate?.Category ?? 0),
-  AssignToID: Number(formDataUpdate?.AssignedTo ?? 0),
-  PriorityID: Number(formDataUpdate?.Priority ?? 0),
-  DeliveryDate: formatDate(formDataUpdate?.DeliveryDate) || "",
-  DeliveryDateClient: formatDate(formDataUpdate?.ClientDeliveryDate) || "",
-  Summary: String(formDataUpdate?.Summary || ""),
-  Description: String(removeHtmlTags(formDataUpdate?.Description) || ""),
-  Note: String(formDataUpdate?.Note || ""),
-  ReferenceCode: String(formDataUpdate?.ReferenceCode || ""),
-  ManHour: String(formDataUpdate?.ManHour || "0"),
-  ManHoursClient: String(formDataUpdate?.ClientManHour || "0"),
-  ReportedByName: String(formDataUpdate?.ReportedByName || ""),
-  ReportedByMobileNo: String(formDataUpdate?.ReportedByMobile || ""),
-  HoldReason: String(formDataUpdate?.HoldReason || ""),
-  Status: String(formDataUpdate?.Status || ""),
-  ModuleID: Number(formDataUpdate?.ModuleName ?? 0),
-  ModuleName: String(getlabel(formDataUpdate?.ModuleName, moduleName) || ""),
-  PagesID: Number(formDataUpdate?.PageName ?? 0),
-  PagesName: String(getlabel(formDataUpdate?.PageName, pageName) || ""),
-  IsReOpen: Boolean(Number(formDataUpdate?.IsReOpen ?? 1)), // "1" → true, "0" → false
-  ReOpenReasonID: Number(formDataUpdate?.ReOpen ?? 0),
-  ReOpenReason: String(getlabel(formDataUpdate?.ReOpen, reopen) || "")
-})
+        .post(apiUrls.UpdateTicket, {
+          TicketID: Number(formDataUpdate?.TicketID ?? 0),
+          User_id: 0,
+          CategoryID: Number(formDataUpdate?.Category ?? 0),
+          AssignToID: Number(formDataUpdate?.AssignedTo ?? 0),
+          PriorityID: Number(formDataUpdate?.Priority ?? 0),
+          DeliveryDate: String(
+            formDataUpdate?.DeliveryDate == ""
+              ? moment(new Date()).format("YYYY-MM-DD")
+              : formatDate(formDataUpdate?.DeliveryDate)
+          ),
+          DeliveryDateClient: String(
+            formDataUpdate?.ClientDeliveryDate == ""
+              ? moment(new Date()).format("YYYY-MM-DD")
+              : formatDate(formDataUpdate?.ClientDeliveryDate)
+          ),
+          Summary: String(formDataUpdate?.Summary || ""),
+          Description: String(
+            removeHtmlTags(formDataUpdate?.Description) || ""
+          ),
+          Note: String(formDataUpdate?.Note || ""),
+          ReferenceCode: String(formDataUpdate?.ReferenceCode || ""),
+          ManHour: String(formDataUpdate?.ManHour || "0"),
+          ManHoursClient: String(formDataUpdate?.ClientManHour || "0"),
+          ReportedByName: String(formDataUpdate?.ReportedByName || ""),
+          ReportedByMobileNo: String(formDataUpdate?.ReportedByMobile || ""),
+          HoldReason: String(formDataUpdate?.HoldReason || ""),
+          Status: String(formDataUpdate?.Status || ""),
+          ModuleID: Number(formDataUpdate?.ModuleName ?? 0),
+          ModuleName: String(
+            getlabel(formDataUpdate?.ModuleName, moduleName) || ""
+          ),
+          PagesID: Number(formDataUpdate?.PageName ?? 0),
+          PagesName: String(getlabel(formDataUpdate?.PageName, pageName) || ""),
+          IsReOpen: Boolean(Number(formDataUpdate?.IsReOpen ?? 1)), // "1" → true, "0" → false
+          ReOpenReasonID: Number(formDataUpdate?.ReOpen ?? 0),
+          ReOpenReason: String(getlabel(formDataUpdate?.ReOpen, reopen) || ""),
+        })
         // let form = new FormData();
         // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
         //   form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID")),
@@ -1567,8 +1579,8 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
                   DateModified: ele?.Updatedate,
                   "User Name": ele?.username,
                   Field: ele?.field_name,
-                  "Old Value": ele?.leble1,
-                  "New Value": ele?.leble2,
+                  "Old Value": ele?.leble1 == "01-01-1970" ? "" : ele.leble1,
+                  "New Value": ele?.leble2 == "01-01-1970" ? "" : ele.leble2,
                 }))}
                 tableHeight={"tableHeight"}
               />

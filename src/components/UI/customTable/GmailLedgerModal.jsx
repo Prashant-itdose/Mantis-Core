@@ -15,7 +15,7 @@ import { axiosInstances } from "../../../networkServices/axiosInstance";
 
 const GmailLedgerModal = (visible) => {
   // console.log("visible visible", visible);
-  const [t]=useTranslation()
+  const [t] = useTranslation();
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [quotationLog, setQuotationLog] = useState([]);
@@ -31,24 +31,16 @@ const GmailLedgerModal = (visible) => {
 
   const handleQuotation_Email_Log = () => {
     axiosInstances
-              .post(apiUrls.LedgerStatus_LockUnLock_Log,{
-  "DocumentID": String(visible?.visible?.showData?.EncryptID),
-  "DocumentType": "Ledger"
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-    //   form.append("DocumentType", "Ledger"),
-    //   form.append("DocumentID", visible?.visible?.showData?.EncryptID),
-    //   axios
-    //     .post(apiUrls?.Quotation_Email_Log, form, { headers })
-        .then((res) => {
-          console.log("email log", res);
-          setTableData(res?.data?.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      .post(apiUrls.Quotation_Email_Log, {
+        DocumentID: String(visible?.visible?.showData?.EncryptID),
+        DocumentType: "Ledger",
+      })
+      .then((res) => {
+        setTableData(res?.data?.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const handleQuotation_Email = () => {
     if (formData?.EmailTo == "") {
@@ -59,35 +51,35 @@ const GmailLedgerModal = (visible) => {
       setLoading(true);
 
       axiosInstances
-          .post(apiUrls.Quotation_Email,{
-  "DocumentID": String(visible?.visible?.showData?.EncryptID),
-  "EmailTo": String(formData?.EmailTo),
-  "EmailCC": String(formData?.EmailCC),
-  "DocumentType": "Ledger",
-  "ActionType": ""
-})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-      //   form.append("DocumentType", "Ledger"),
-      //   form.append("DocumentID", visible?.visible?.showData?.EncryptID),
-      //   form.append("EmailTo", formData?.EmailTo),
-      //   form.append("EmailCC", formData?.EmailCC),
-      //   axios
-      //     .post(apiUrls?.Quotation_Email, form, { headers })
-          .then((res) => {
-            toast.success(res?.data?.messsage);
-            handleQuotation_Email_Log();
-            setFormData({
-              EmailTo: "",
-              EmailCC: "",
-            })
-            setLoading(false);
-          })
-          .catch((err) => {
-            console.log(err);
-            setLoading(false);
+        .post(apiUrls.Quotation_Email, {
+          DocumentID: String(visible?.visible?.showData?.EncryptID),
+          EmailTo: String(formData?.EmailTo),
+          EmailCC: String(formData?.EmailCC),
+          DocumentType: "Ledger",
+          ActionType: "",
+        })
+        // let form = new FormData();
+        // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+        //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
+        //   form.append("DocumentType", "Ledger"),
+        //   form.append("DocumentID", visible?.visible?.showData?.EncryptID),
+        //   form.append("EmailTo", formData?.EmailTo),
+        //   form.append("EmailCC", formData?.EmailCC),
+        //   axios
+        //     .post(apiUrls?.Quotation_Email, form, { headers })
+        .then((res) => {
+          toast.success(res?.data?.messsage);
+          handleQuotation_Email_Log();
+          setFormData({
+            EmailTo: "",
+            EmailCC: "",
           });
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
     }
   };
   // const getProjectEmail = () => {
@@ -112,19 +104,20 @@ const GmailLedgerModal = (visible) => {
   }, []);
 
   const gmailQuotationTHEAD = [
-    { name: t("S.No.") , width: "7%"},
+    { name: t("S.No."), width: "7%" },
     t("EmailTo"),
     t("EmailCC"),
     t("Email Status"),
     t("Entry Date"),
-    t("Send Date")
-  ]
+    t("Send Date"),
+  ];
   return (
     <>
       <div className="card p-2">
         <div className="d-flex">
           <span style={{ fontWeight: "bold" }}>
-            {t("Project Name")}:- &nbsp;{visible?.visible?.showData?.ProjectName}
+            {t("Project Name")}:- &nbsp;
+            {visible?.visible?.showData?.ProjectName}
           </span>
           {/* <span style={{ fontWeight: "bold", marginLeft: "20px" }}>
             Tax Invoice No.:- &nbsp;{visible?.visible?.showData?.TaxInvoiceNo}

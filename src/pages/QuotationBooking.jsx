@@ -32,6 +32,8 @@ const QuotationBooking = ({ data }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { state } = location;
+
+  console.log("kamal lotus", state);
   const AllowQuotationApproved = useCryptoLocalStorage(
     "user_Data",
     "get",
@@ -53,7 +55,7 @@ const QuotationBooking = ({ data }) => {
   const [category, setCategory] = useState([]);
   const [terms, setTerms] = useState([]);
   const [saveEditData, setSaveEditData] = useState([]);
-  // console.log("saveEditData", saveEditData);
+  console.log("saveEditData", saveEditData);
   const [items, setItems] = useState([]);
   const { VITE_DATE_FORMAT } = import.meta.env;
   const [emailShow, setEmailShow] = useState({ Email: "" });
@@ -132,14 +134,22 @@ const QuotationBooking = ({ data }) => {
 
   const handleCheckBoxEmail = (e) => {
     const { name, value, checked, type } = e?.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? (checked ? 1 : 0) : value,
-    });
+    if (checked) {
+      setFormData({
+        ...formData,
+        [name]: type === "checkbox" ? 1 : value,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: "", // blank instead of 0
+        EmailCC: "",
+        EmailTo: "",
+      });
+    }
   };
 
   const handleDeliveryChange = (name, e, index) => {
-
     const { value } = e;
 
     if (name === "Terms") {
@@ -385,7 +395,7 @@ const QuotationBooking = ({ data }) => {
   const getProjectEmail = (proj) => {
     axiosInstances
       .post(apiUrls.ProjectSelect, {
-        ProjectID: 0,
+        ProjectID: Number(proj),
         IsMaster: "0",
         VerticalID: 0,
         TeamID: 0,
@@ -443,7 +453,7 @@ const QuotationBooking = ({ data }) => {
   const getCompany = (proj) => {
     axiosInstances
       .post(apiUrls.BillingCompany_Select, {
-        ProjectID: proj,
+        ProjectID: Number(proj),
         IsActive: "1",
       })
       // let form = new FormData();
@@ -727,9 +737,9 @@ const QuotationBooking = ({ data }) => {
     let termsPayload = [];
     tableData1?.map((val, index) => {
       termsPayload?.push({
-        "S.No.": index,
-        ID: val?.ID,
-        Terms: val?.Terms,
+        // "S.No.": index,
+        TermsID: String(val?.ID),
+        Terms: String(val?.Terms),
         // OtherReason: val?.OtherReason,
       });
     });
@@ -737,23 +747,25 @@ const QuotationBooking = ({ data }) => {
     tableData?.map((val, index) => {
       // console.log("valllll Update", val);
       payload.push({
-        Installment_No: index,
-        Remark: val?.Remark,
-        IsPaid: val?.isPaid ? "1" : "0",
-        ExpectedDate: moment(val?.ExpectedDate).format("YYYY-MM-DD"),
-        ItemID: val?.service?.value ? val?.service?.value : val?.ItemID,
-        ItemName: val?.service?.label ? val?.service?.label : val?.ItemName,
-        SAC: "",
-        IsActive: "",
-        PaymentMode: val?.PaymentMode,
-        TaxAmount: val?.TaxAmount,
-        TaxPrecentage: val?.TaxPercent,
-        Rate: val?.Rate,
-        Quantity: val?.Quantity,
-        DiscountAmount: val?.Discount,
-        Amount: val?.Amount,
-        EndDate: moment(val?.EndDate).format("YYYY-MM-DD"),
-        GrossAmount: val?.GrossAmount,
+        // Installment_No: index,
+        Remark: String(val?.Remark || ""),
+        IsPaid: String(val?.isPaid ? 1 : 0),
+        ExpectedDate: String(moment(val?.ExpectedDate).format("YYYY-MM-DD")),
+        ItemID: String(val?.service?.value ? val?.service?.value : val?.ItemID),
+        ItemName: String(
+          val?.service?.label ? val?.service?.label : val?.ItemName
+        ),
+        SAC: String(""),
+        IsActive: String("0"),
+        PaymentMode: String(val?.PaymentMode || ""),
+        TaxAmount: String(val?.TaxAmount),
+        TaxPrecentage: String(val?.TaxPercent || ""),
+        Rate: String(val?.Rate),
+        Quantity: String(val?.Quantity),
+        DiscountAmount: String(val?.Discount),
+        Amount: String(val?.Amount),
+        EndDate: String(moment(val?.EndDate).format("YYYY-MM-DD")),
+        GrossAmount: String(val?.GrossAmount),
       });
       // console.log("data of payload", payload);
     });
@@ -778,100 +790,103 @@ const QuotationBooking = ({ data }) => {
 
     setLoading(true);
     const payloadData = {
-  QuotationID: state?.data || recordID || "",
-  ProjectID: formData?.Project || 0,
-  ProjectName: getlabel(formData?.Project, project) || "",
-  BillingCompanyID: formData?.BillingCompany || 0,
-  BillingCompanyName: getlabel(formData?.BillingCompany, billingcompany) || "",
-  BillingCompanyAddress: formData?.BillingAddress || "",
-  BillingState: formData?.BillingState || "",
-  GSTNo: formData?.BillingGST || "",
-  PanCardNo: formData?.BillingPanCard || "",
-  ShippingCompanyID: formData?.ShippingCompany || 0,
-  ShippingCompanyName: getlabel(formData?.ShippingCompany, shippingcompany) || "",
-  ShippingCompanyAddress: formData?.ShippingAddress || "",
-  ShippingState: formData?.ShippingState || "",
-  ShippingGSTNo: formData?.ShippingGST || "",
-  ShippingPanCardNo: formData?.ShippingPanCard || "",
-  GrossAmount: Number(GrossAmount) || 0,
-  DiscountAmount: Number(payload[0]?.DiscountAmount) || 0,
-  TaxAmount: Number(Tax) || 0,
-  Tax_Per: 18,
-  CGST_Amount: Number(formData?.CgstAmount) || 0,
-  SGST_Amount: Number(formData?.SgstAmount) || 0,
-  IGST_Amount: 0,
-  CGST_Per: 0,
-  SGST_Per: 0,
-  IGST_Per: 0,
-  RoundOff: Number(formData?.RoundOff) || 0,
-  Document_Base64: "",
-  Document_FormatType: "",
-  ItemData: payload || [],
-  PaymentTerms: termsPayload || [],
-};
+      QuotationID: String(state?.data || recordID || ""),
+      ProjectID: Number(formData?.Project || 0),
+      ProjectName: getlabel(formData?.Project, project) || "",
+      BillingCompanyID: Number(formData?.BillingCompany || 0),
+      BillingCompanyName:
+        getlabel(formData?.BillingCompany, billingcompany) || "",
+      BillingCompanyAddress: String(formData?.BillingAddress || ""),
+      BillingState: String(formData?.BillingState || ""),
+      GSTNo: String(formData?.BillingGST || ""),
+      PanCardNo: String(formData?.BillingPanCard || ""),
+      ShippingCompanyID: Number(formData?.ShippingCompany || 0),
+      ShippingCompanyName: String(
+        getlabel(formData?.ShippingCompany, shippingcompany) || ""
+      ),
+      ShippingCompanyAddress: String(formData?.ShippingAddress || ""),
+      ShippingState: String(formData?.ShippingState || ""),
+      ShippingGSTNo: String(formData?.ShippingGST || ""),
+      ShippingPanCardNo: String(formData?.ShippingPanCard || ""),
+      GrossAmount: Number(GrossAmount || 0),
+      DiscountAmount: Number(payload[0]?.DiscountAmount || 0),
+      TaxAmount: Number(Tax || 0),
+      Tax_Per: 18,
+      CGST_Amount: Number(formData?.CgstAmount || 0),
+      SGST_Amount: Number(formData?.SgstAmount || 0),
+      IGST_Amount: 0,
+      CGST_Per: 0,
+      SGST_Per: 0,
+      IGST_Per: 0,
+      RoundOff: Number(formData?.RoundOff || 0),
+      Document_Base64: "",
+      Document_FormatType: "",
+      ItemData: payload || [],
+      PaymentTerms: termsPayload || [],
+    };
 
     axiosInstances
-      .post(apiUrls.Quotation_Update,payloadData)
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ProjectID", formData?.Project),
-    //   form.append("ProjectName", getlabel(formData?.Project, project)),
-    //   form.append("BillingCompanyID", formData?.BillingCompany),
-    //   form.append(
-    //     "BillingCompanyName",
-    //     getlabel(formData?.BillingCompany, billingcompany)
-    //   ),
-    //   form.append("BillingCompanyAddress", formData?.BillingAddress),
-    //   form.append("BillingState", formData?.BillingState),
-    //   form.append("GSTNo", formData?.BillingGST),
-    //   form.append("PanCardNo", formData?.BillingPanCard),
-    //   form.append("ShippingCompanyID", formData?.ShippingCompany),
-    //   form.append(
-    //     "ShippingCompanyName",
-    //     getlabel(formData?.ShippingCompany, shippingcompany)
-    //   ),
-    //   form.append("ShippingCompanyAddress", formData?.ShippingAddress),
-    //   form.append("ShippingState", formData?.ShippingState),
-    //   form.append("ShippingGSTNo", formData?.ShippingGST),
-    //   form.append("ShippingPanCardNo", formData?.ShippingPanCard),
-    //   form.append("dtSales", moment(formData?.SalesDate).format("YYYY-MM-DD")),
-    //   form.append("PONo", formData?.PoNumber ?? ""),
-    //   form.append(
-    //     "ExpiryDate",
-    //     moment(formData?.ExpiryDate).format("YYYY-MM-DD")
-    //   ),
-    //   form.append("GrossAmount", GrossAmount),
-    //   // form.append("GrossAmount", formData?.TotalAmount),
-    //   form.append("DiscountAmount", payload[0]?.DiscountAmount ?? ""),
-    //   form.append("TaxAmount", Tax || ""),
-    //   form.append("Tax_Per", 18),
-    //   form.append("CGST_Amount", formData?.CgstAmount),
-    //   form.append("SGST_Amount", formData?.SgstAmount),
-    //   form.append("IGST_Amount", ""),
-    //   form.append("CGST_Per", ""),
-    //   form.append("SGST_Per", ""),
-    //   form.append("IGST_Per", ""),
-    //   form.append("RoundOff", formData?.RoundOff || ""),
-    //   form.append("Document_Base64", ""),
-    //   form.append("Document_FormatType", ""),
-    //   form.append("QuotationID", state?.data || recordID),
-    //   form.append("EmailTo", formData?.EmailTo),
-    //   form.append("EmailCC", formData?.EmailCC),
-    //   form.append("EmailStatus", formData?.EmailStatus),
-    //   form.append("ItemData", JSON.stringify(payload));
-    // form.append("PaymentTerms", JSON.stringify(termsPayload));
-    // axios
-    //   .post(apiUrls?.Quotation_Update, form, { headers })
+      .post(apiUrls.Quotation_Update, payloadData)
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append(
+      //     "RoleID",
+      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+      //   ),
+      //   form.append(
+      //     "LoginName",
+      //     useCryptoLocalStorage("user_Data", "get", "realname")
+      //   ),
+      //   form.append("ProjectID", formData?.Project),
+      //   form.append("ProjectName", getlabel(formData?.Project, project)),
+      //   form.append("BillingCompanyID", formData?.BillingCompany),
+      //   form.append(
+      //     "BillingCompanyName",
+      //     getlabel(formData?.BillingCompany, billingcompany)
+      //   ),
+      //   form.append("BillingCompanyAddress", formData?.BillingAddress),
+      //   form.append("BillingState", formData?.BillingState),
+      //   form.append("GSTNo", formData?.BillingGST),
+      //   form.append("PanCardNo", formData?.BillingPanCard),
+      //   form.append("ShippingCompanyID", formData?.ShippingCompany),
+      //   form.append(
+      //     "ShippingCompanyName",
+      //     getlabel(formData?.ShippingCompany, shippingcompany)
+      //   ),
+      //   form.append("ShippingCompanyAddress", formData?.ShippingAddress),
+      //   form.append("ShippingState", formData?.ShippingState),
+      //   form.append("ShippingGSTNo", formData?.ShippingGST),
+      //   form.append("ShippingPanCardNo", formData?.ShippingPanCard),
+      //   form.append("dtSales", moment(formData?.SalesDate).format("YYYY-MM-DD")),
+      //   form.append("PONo", formData?.PoNumber ?? ""),
+      //   form.append(
+      //     "ExpiryDate",
+      //     moment(formData?.ExpiryDate).format("YYYY-MM-DD")
+      //   ),
+      //   form.append("GrossAmount", GrossAmount),
+      //   // form.append("GrossAmount", formData?.TotalAmount),
+      //   form.append("DiscountAmount", payload[0]?.DiscountAmount ?? ""),
+      //   form.append("TaxAmount", Tax || ""),
+      //   form.append("Tax_Per", 18),
+      //   form.append("CGST_Amount", formData?.CgstAmount),
+      //   form.append("SGST_Amount", formData?.SgstAmount),
+      //   form.append("IGST_Amount", ""),
+      //   form.append("CGST_Per", ""),
+      //   form.append("SGST_Per", ""),
+      //   form.append("IGST_Per", ""),
+      //   form.append("RoundOff", formData?.RoundOff || ""),
+      //   form.append("Document_Base64", ""),
+      //   form.append("Document_FormatType", ""),
+      //   form.append("QuotationID", state?.data || recordID),
+      //   form.append("EmailTo", formData?.EmailTo),
+      //   form.append("EmailCC", formData?.EmailCC),
+      //   form.append("EmailStatus", formData?.EmailStatus),
+      //   form.append("ItemData", JSON.stringify(payload));
+      // form.append("PaymentTerms", JSON.stringify(termsPayload));
+      // axios
+      //   .post(apiUrls?.Quotation_Update, form, { headers })
       .then((res) => {
-        if (res?.data?.status == true) {
+        if (res?.data?.success == true) {
           toast.success(res?.data?.message);
           setLoading(false);
           // setTableData([]);
@@ -892,6 +907,7 @@ const QuotationBooking = ({ data }) => {
       });
   };
   const [recordID, setRecordID] = useState("");
+
   const handleSave = () => {
     if (new Date(formData?.SalesDate) >= new Date(formData?.ExpiryDate)) {
       toast.error("Expiry Date must be greater than Sales Date.");
@@ -1009,70 +1025,9 @@ const QuotationBooking = ({ data }) => {
 
       axiosInstances
         .post(apiUrls.Quotation_Insert, FinalPayload)
-        // let form = new FormData();
-        // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        //   form.append(
-        //     "RoleID",
-        //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-        //   ),
-        //   form.append(
-        //     "LoginName",
-        //     useCryptoLocalStorage("user_Data", "get", "realname")
-        //   ),
-        //   form.append("ProjectID", formData?.Project),
-        //   form.append("IsApproved", "0"),
-        //   form.append("ProjectName", getlabel(formData?.Project, project)),
-        //   form.append("BillingCompanyID", formData?.BillingCompany),
-        //   form.append(
-        //     "BillingCompanyName",
-        //     getlabel(formData?.BillingCompany, billingcompany)
-        //   ),
-        //   form.append("BillingCompanyAddress", formData?.BillingAddress),
-        //   form.append("BillingState", formData?.BillingState),
-        //   form.append("GSTNo", formData?.BillingGST),
-        //   form.append("PoNo", formData?.PoNumber),
-        //   form.append("PanCardNo", formData?.BillingPanCard),
-        //   form.append("ShippingCompanyID", formData?.ShippingCompany),
-        //   form.append(
-        //     "ShippingCompanyName",
-        //     getlabel(formData?.ShippingCompany, shippingcompany)
-        //   ),
-        //   form.append("ShippingCompanyAddress", formData?.ShippingAddress),
-        //   form.append("ShippingGSTNo", formData?.ShippingGST),
-        //   form.append("ShippingPanCardNo", formData?.ShippingPanCard),
-        //   form.append("ShippingState", formData?.ShippingState),
-        //   form.append(
-        //     "dtSales",
-        //     moment(formData?.SalesDate).format("YYYY-MM-DD")
-        //   ),
-        //   form.append(
-        //     "ExpiryDate",
-        //     moment(formData?.ExpiryDate).format("YYYY-MM-DD")
-        //   ),
-        //   // form.append("GrossAmount", GrossAmount),
-        //   form.append("GrossAmount", formData?.TotalAmount),
-        //   form.append("DiscountAmount", payload[0]?.DiscountAmount),
-        //   form.append("TaxAmount", Tax),
-        //   form.append("Tax_Per", 18),
-        //   form.append("CGST_Amount", formData?.CgstAmount),
-        //   form.append("SGST_Amount", formData?.SgstAmount),
-        //   form.append("IGST_Amount", ""),
-        //   form.append("CGST_Per", ""),
-        //   form.append("SGST_Per", ""),
-        //   form.append("IGST_Per", ""),
-        //   form.append("RoundOff", formData?.RoundOff ?? ""),
-        //   form.append("Document_Base64", ""),
-        //   form.append("Document_FormatType", ""),
-        //   form.append("EmailTo", formData?.EmailTo),
-        //   form.append("EmailCC", formData?.EmailCC),
-        //   // form.append("EmailStatus", formData?.EmailStatus),
-        //   form.append("EmailStatus", "0"),
-        //   form.append("ItemData", JSON.stringify(payload));
-        // form.append("PaymentTerms", JSON.stringify(termsPayload));
-        // axios
-        //   .post(apiUrls?.Quotation_Insert, form, { headers })
         .then((res) => {
-          if (res?.data?.status == true) {
+          console.log("handlesave", res.data.data);
+          if (res?.data?.success == true) {
             toast.success(res?.data?.message);
             setLoading(false);
             setSaveEditData(res?.data?.data[0]);
@@ -1239,11 +1194,12 @@ const QuotationBooking = ({ data }) => {
       // form.append("PaymentTerms", JSON.stringify(termsPayload));
       // axios
       //   .post(apiUrls?.Quotation_Approved, form, { headers })
-       axiosInstances
-      .post(apiUrls.Quotation_Approved, {
-  "QuotationID": String(state?.data || recordID)
-})
+      axiosInstances
+        .post(apiUrls.Quotation_Approved, {
+          QuotationID: String(state?.data || recordID),
+        })
         .then((res) => {
+          console.log("sav edit data", res?.data?.data);
           if (res?.data?.success == true) {
             toast.success(res?.data?.message);
             setLoading(false);
@@ -1293,14 +1249,7 @@ const QuotationBooking = ({ data }) => {
   const handleSaveApprove = () => {
     if (new Date(formData?.SalesDate) >= new Date(formData?.ExpiryDate)) {
       toast.error("Expiry Date must be greater than Sales Date.");
-      // return; // Prevent the API call
     } else {
-      // let ids=[]
-      // tableData?.map((val,index)=>{
-      //     console.log("iddssss",val)
-      //   ids+=`${index ,val?.service?.value},`
-      // })
-      // console.log("tableData idd idd",tableData1)
       let termsPayload = [];
       tableData1?.map((val, index) => {
         termsPayload?.push({
@@ -1355,67 +1304,66 @@ const QuotationBooking = ({ data }) => {
       setIsSubmitting(true);
 
       const FinalPayload = {
-  ProjectID: formData?.Project ? String(formData.Project) : "",
-  ProjectName: String(getlabel(formData?.Project, project) || ""),
+        ProjectID: formData?.Project ? String(formData.Project) : "",
+        ProjectName: String(getlabel(formData?.Project, project) || ""),
 
-  BillingCompanyID: formData?.BillingCompany
-    ? String(formData.BillingCompany)
-    : "",
-  BillingCompanyName: String(
-    getlabel(formData?.BillingCompany, billingcompany) || ""
-  ),
-  BillingCompanyAddress: String(formData?.BillingAddress || ""),
-  BillingState: String(formData?.BillingState || ""),
-  GSTNo: String(formData?.BillingGST || ""),
-  PanCardNo: String(formData?.BillingPanCard || ""),
+        BillingCompanyID: formData?.BillingCompany
+          ? String(formData.BillingCompany)
+          : "",
+        BillingCompanyName: String(
+          getlabel(formData?.BillingCompany, billingcompany) || ""
+        ),
+        BillingCompanyAddress: String(formData?.BillingAddress || ""),
+        BillingState: String(formData?.BillingState || ""),
+        GSTNo: String(formData?.BillingGST || ""),
+        PanCardNo: String(formData?.BillingPanCard || ""),
 
-  ShippingCompanyID: formData?.ShippingCompany
-    ? String(formData.ShippingCompany)
-    : "",
-  ShippingCompanyName: String(
-    getlabel(formData?.ShippingCompany, shippingcompany) || ""
-  ),
-  ShippingCompanyAddress: String(formData?.ShippingAddress || ""),
-  ShippingState: String(formData?.ShippingState || ""),
-  ShippingGSTNo: String(formData?.ShippingGST || ""),
-  ShippingPanCardNo: String(formData?.ShippingPanCard || ""),
+        ShippingCompanyID: formData?.ShippingCompany
+          ? String(formData.ShippingCompany)
+          : "",
+        ShippingCompanyName: String(
+          getlabel(formData?.ShippingCompany, shippingcompany) || ""
+        ),
+        ShippingCompanyAddress: String(formData?.ShippingAddress || ""),
+        ShippingState: String(formData?.ShippingState || ""),
+        ShippingGSTNo: String(formData?.ShippingGST || ""),
+        ShippingPanCardNo: String(formData?.ShippingPanCard || ""),
 
-  dtSales: formData?.SalesDate
-    ? String(moment(formData?.SalesDate).format("YYYY-MM-DD"))
-    : "",
-  ExpiryDate: formData?.ExpiryDate
-    ? String(moment(formData?.ExpiryDate).format("YYYY-MM-DD"))
-    : "",
+        dtSales: formData?.SalesDate
+          ? String(moment(formData?.SalesDate).format("YYYY-MM-DD"))
+          : "",
+        ExpiryDate: formData?.ExpiryDate
+          ? String(moment(formData?.ExpiryDate).format("YYYY-MM-DD"))
+          : "",
 
-  GrossAmount: formData?.TotalAmount ? String(formData?.TotalAmount) : "",
-  DiscountAmount: payload[0]?.DiscountAmount
-    ? String(payload[0]?.DiscountAmount)
-    : "",
-  TaxAmount: Tax ? String(Tax) : "",
-  Tax_Per: String("18"),
-  CGST_Amount: formData?.CgstAmount ? String(formData?.CgstAmount) : "",
-  SGST_Amount: formData?.SgstAmount ? String(formData?.SgstAmount) : "",
-  IGST_Amount: String(""),
-  CGST_Per: String(""),
-  SGST_Per: String(""),
-  IGST_Per: String(""),
-  RoundOff: formData?.RoundOff ? String(formData?.RoundOff) : "",
+        GrossAmount: formData?.TotalAmount ? String(formData?.TotalAmount) : "",
+        DiscountAmount: payload[0]?.DiscountAmount
+          ? String(payload[0]?.DiscountAmount)
+          : "",
+        TaxAmount: Tax ? String(Tax) : "",
+        Tax_Per: String("18"),
+        CGST_Amount: formData?.CgstAmount ? String(formData?.CgstAmount) : "",
+        SGST_Amount: formData?.SgstAmount ? String(formData?.SgstAmount) : "",
+        IGST_Amount: String(""),
+        CGST_Per: String(""),
+        SGST_Per: String(""),
+        IGST_Per: String(""),
+        RoundOff: formData?.RoundOff ? String(formData?.RoundOff) : "",
 
-  Document_Base64: String(""),
-  Document_FormatType: String(""),
+        Document_Base64: String(""),
+        Document_FormatType: String(""),
 
-  ItemData: String(JSON.stringify(payload)),
-  PaymentTerms: String(JSON.stringify(termsPayload)),
+        ItemData: String(JSON.stringify(payload)),
+        PaymentTerms: String(JSON.stringify(termsPayload)),
 
-  IsApproved: String("1"),
-  PoNo: String(formData?.PoNumber || ""),
+        IsApproved: String("1"),
+        PoNo: String(formData?.PoNumber || ""),
 
-  // Extra fields from schema (set empty if not in FormData)
-  EmailStatus: String(""),
-  EmailTo: String(""),
-  EmailCC: String(""),
-};
-
+        // Extra fields from schema (set empty if not in FormData)
+        EmailStatus: String(""),
+        EmailTo: String(""),
+        EmailCC: String(""),
+      };
 
       axiosInstances
         .post(apiUrls.Quotation_Insert, FinalPayload)
@@ -1479,7 +1427,7 @@ const QuotationBooking = ({ data }) => {
         // axios
         // .post(apiUrls?.Quotation_Insert, form, { headers })
         .then((res) => {
-          if (res?.data?.status == true) {
+          if (res?.data?.success == true) {
             toast.success(res?.data?.message);
             setApproveData(res?.data?.data[0]);
             setLoading(false);
@@ -1572,7 +1520,6 @@ const QuotationBooking = ({ data }) => {
   };
 
   const searchHandleChange = (e, index) => {
- 
     const { name, value } = e?.target;
 
     let updatedFormData = { ...formData, [name]: value };
@@ -1715,132 +1662,105 @@ const QuotationBooking = ({ data }) => {
   }, [tableData]);
 
   useEffect(() => {
-    if (state?.edit) {
+    if (state?.edit === true) {
       fetchDatabyId(state.data);
       getProjectEmail(formData?.Project);
       fetchDatabyEdit(state.data);
     }
   }, []);
   const [savelotus, setSaveLotus] = useState([]);
+
   const fetchDatabyId = (id) => {
+    console.log("master", id);
     axiosInstances
       .post(apiUrls.Quotation_Load_QuotationID, {
         QuotationID: String(id),
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-      // form.append(
-      //   "LoginName",
-      //   useCryptoLocalStorage("user_Data", "get", "realname")
-      // );
-      // form.append("QuotationID", id);
-
-      // axios
-      //   .post(apiUrls?.Quotation_Load_QuotationID, form, {
-      //     headers,
-      //   })
       .then((res) => {
-        setSaveLotus(res?.data?.data[0]);
-        // console.log("fetch by edit id", res?.data?.data[0]);
+        console.log("data ", res.data.data.data);
+        console.log("dataDetail ", res.data.data.dataDetail);
+        console.log("dataterms ", res.data.data.dtTerms);
+        setSaveLotus(res?.data?.data?.data[0]);
         setFormData({
           ...formData,
-          Project: res?.data?.data[0]?.ProjectID,
-          Items: res?.data?.dataDetail[0]?.ItemID,
-          ItemName: res?.data?.dataDetail[0]?.ItemName,
-          ExpectedDate: res?.data?.dataDetail[0]?.ExpectedDate,
-          BillingCompany: res?.data?.data[0]?.BillingCompanyID,
-          ShippingCompany: res?.data?.data[0]?.ShippingCompanyID,
-          BillingState: res?.data?.data[0]?.BillingState,
-          ShippingState: res?.data?.data[0]?.ShippingState,
-          BillingGST: res?.data?.data[0]?.GSTNo,
-          ShippingGST: res?.data?.data[0]?.ShippingGSTNo,
-          BillingPanCard: res?.data?.data[0]?.PanCardNo,
-          ShippingPanCard: res?.data?.data[0]?.ShippingPanCardNo,
-          PoNumber: res?.data?.data[0]?.PoNo,
-          SalesDate: new Date(res?.data?.data[0]?.dtEntry),
-          ExpiryDate: new Date(res?.data?.data[0]?.dtExpiry),
-          BillingAddress: res?.data?.data[0]?.BillingCompanyAddress,
-          ShippingAddress: res?.data?.data[0]?.ShippingCompanyAddress,
-          // ItemName:res?.data?.dataDetail[0]?.ItemName
+          Project: res?.data?.data?.data[0]?.ProjectID,
+          Items: res?.data?.data?.dataDetail[0]?.ItemID,
+          ItemName: res?.data?.data.dataDetail[0]?.ItemName,
+          ExpectedDate: res?.data?.data.dataDetail[0]?.ExpectedDate,
+          BillingCompany: res?.data?.data.data[0]?.BillingCompanyID,
+          ShippingCompany: res?.data?.data.data[0]?.ShippingCompanyID,
+          BillingState: res?.data?.data?.data[0]?.BillingState,
+          ShippingState: res?.data?.data?.data[0]?.ShippingState,
+          BillingGST: res?.data?.data?.data[0]?.GSTNo,
+          ShippingGST: res?.data?.data?.data[0]?.ShippingGSTNo,
+          BillingPanCard: res?.data?.data?.data[0]?.PanCardNo,
+          ShippingPanCard: res?.data?.data?.data[0]?.ShippingPanCardNo,
+          PoNumber: res?.data?.data?.data[0]?.PoNo,
+          SalesDate: new Date(res?.data?.data?.data[0]?.dtEntry),
+          ExpiryDate: new Date(res?.data?.data?.data[0]?.dtExpiry),
+          BillingAddress: res?.data?.data?.data[0]?.BillingCompanyAddress,
+          ShippingAddress: res?.data?.data?.data[0]?.ShippingCompanyAddress,
         });
-        // console.log("expectedcheckk", res?.data?.dataDetail[0]?.ExpectedDate);
-        const updatedData = res?.data?.dataDetail.map((ele) => ({
+        const updatedData = res?.data?.data?.dataDetail?.map((ele) => ({
           ...ele,
           label: ele?.service?.label || "",
-          ExpectedDate: ele?.ExpectedDate,
+          ExpectedDate: new Date(ele?.ExpectedDate),
           TaxPercent: ele?.TaxPrecentage,
           Discount: ele?.DiscountAmount,
           DiscountPercent: ele?.DiscountPercent,
         }));
-
-        // console.log(updatedData);
         setTableData(updatedData);
-        const updateTerms = res?.data?.dtTerms?.map((ele) => ({
+        const updateTerms = res?.data?.data?.dtTerms?.map((ele) => ({
           ...ele,
           label: ele?.Terms || "",
         }));
         setTableData1(updateTerms);
 
-        if (res?.data?.data[0]?.ProjectID > 0) {
-          handleGetItemSearch(res?.data?.data[0]?.ProjectID);
-          getCompany(res?.data?.data[0]?.ProjectID);
-          getProjectEmail(res?.data?.data[0]?.ProjectID);
-          // getState()
+        if (res?.data?.data?.data[0]?.ProjectID > 0) {
+          handleGetItemSearch(res?.data?.data?.data[0]?.ProjectID);
+          getCompany(res?.data?.data?.data[0]?.ProjectID);
+          getProjectEmail(res?.data?.data?.data[0]?.ProjectID);
         }
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  // const lotusRecordId = localStorage.getItem("lotus");
-
-  // console.log("lotusRecordId", lotusRecordId);
 
   const fetchDatabyEdit = (id) => {
+   
     axiosInstances
       .post(apiUrls.Quotation_Load_QuotationID, {
-        QuotationID: String(localStorage.getItem("lotus")) || String(id),
+        QuotationID: String(id),
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-      // form.append(
-      //   "LoginName",
-      //   useCryptoLocalStorage("user_Data", "get", "realname")
-      // );
-      // form.append("QuotationID", localStorage.getItem("lotus") || id);
-
-      // axios
-      //   .post(apiUrls?.Quotation_Load_QuotationID, form, {
-      //     headers,
-      //   })
       .then((res) => {
-        // console.log("Edit Check Value", res?.data?.data[0]);
-        setSaveEditData(res?.data?.data[0]);
-        setApproveData(res?.data?.data[0]);
+        console.log("Edit Check Value", res?.data?.data?.data);
+        setSaveEditData(res?.data?.data?.data[0]);
+        setApproveData(res?.data?.data?.data[0]);
         setFormData({
           ...formData,
-          Project: res?.data?.data[0]?.ProjectID,
-          Items: res?.data?.dataDetail[0]?.ItemID,
-          ItemName: res?.data?.dataDetail[0]?.ItemName,
-          ExpectedDate: res?.data?.dataDetail[0]?.ExpectedDate,
-          BillingCompany: res?.data?.data[0]?.BillingCompanyID,
-          ShippingCompany: res?.data?.data[0]?.ShippingCompanyID,
-          BillingState: res?.data?.data[0]?.BillingState,
-          ShippingState: res?.data?.data[0]?.ShippingState,
-          BillingGST: res?.data?.data[0]?.GSTNo,
-          ShippingGST: res?.data?.data[0]?.GSTNo,
-          BillingPanCard: res?.data?.data[0]?.PanCardNo,
-          ShippingPanCard: res?.data?.data[0]?.PanCardNo,
-          PoNumber: res?.data?.data[0]?.PoNo,
-          SalesDate: new Date(res?.data?.data[0]?.dtEntry),
-          ExpiryDate: new Date(res?.data?.data[0]?.dtExpiry),
+          Project: res?.data?.data?.data[0]?.ProjectID,
+          Items: res?.data?.data?.dataDetail[0]?.ItemID,
+          ItemName: res?.data?.data?.dataDetail[0]?.ItemName,
+          ExpectedDate: res?.data?.data?.dataDetail[0]?.ExpectedDate,
+          BillingCompany: res?.data?.data?.data[0]?.BillingCompanyID,
+          ShippingCompany: res?.data?.data?.data[0]?.ShippingCompanyID,
+          BillingState: res?.data?.data?.data[0]?.BillingState,
+          ShippingState: res?.data?.data?.data[0]?.ShippingState,
+          BillingGST: res?.data?.data?.data[0]?.GSTNo,
+          ShippingGST: res?.data?.data?.data[0]?.GSTNo,
+          BillingPanCard: res?.data?.data?.data[0]?.PanCardNo,
+          ShippingPanCard: res?.data?.data?.data[0]?.PanCardNo,
+          PoNumber: res?.data?.data?.data[0]?.PoNo,
+          SalesDate: new Date(res?.data?.data?.data[0]?.dtEntry),
+          ExpiryDate: new Date(res?.data?.data?.data[0]?.dtExpiry),
           // ItemName:res?.data?.dataDetail[0]?.ItemName
         });
         // console.log("expectedcheckk", res?.data?.dataDetail[0]?.ExpectedDate);
-        const updatedData = res?.data?.dataDetail.map((ele) => ({
+        const updatedData = res?.data?.data?.dataDetail?.map((ele) => ({
           ...ele,
           label: ele?.service?.label || "",
-          ExpectedDate: ele?.ExpectedDate,
+          ExpectedDate: new Date(ele?.ExpectedDate),
           TaxPercent: ele?.TaxPrecentage,
           Discount: ele?.DiscountAmount,
           DiscountPercent: ele?.DiscountPercent,
@@ -1848,15 +1768,15 @@ const QuotationBooking = ({ data }) => {
 
         // console.log(updatedData);
         setTableData(updatedData);
-        const updateTerms = res?.data?.dtTerms?.map((ele) => ({
+        const updateTerms = res?.data?.data?.dtTerms?.map((ele) => ({
           ...ele,
           label: ele?.Terms || "",
         }));
         setTableData1(updateTerms);
 
         if (res?.data?.data[0]?.ProjectID > 0) {
-          handleGetItemSearch(res?.data?.data[0]?.ProjectID);
-          getCompany(res?.data?.data[0]?.ProjectID);
+          handleGetItemSearch(res?.data?.data?.data[0]?.ProjectID);
+          getCompany(res?.data?.data?.data[0]?.ProjectID);
           // getState()
         }
         // localStorage.removeItem("lotus")
@@ -2130,6 +2050,7 @@ const QuotationBooking = ({ data }) => {
             </Link>
           </div>
 
+          {console.log("suneel ", saveEditData)}
           {saveEditData?.CreatedBy && saveEditData?.dtEntry && (
             <div className="col-xl-6 col-md-4 col-sm-6 col-12">
               <span style={{ fontWeight: "bold", marginLeft: "10px" }}>

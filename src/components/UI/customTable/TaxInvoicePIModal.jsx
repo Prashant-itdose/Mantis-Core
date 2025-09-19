@@ -48,18 +48,6 @@ const TaxInvoicePIModal = (visible, setVisible) => {
       toast.error("Please Select Document.");
     } else {
       setLoading(true);
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("TaxInvoiceID", visible?.visible?.showData?.EncryptID),
-      //   form.append("TaxInvoiceNo", formData?.TaxInvoiceNo),
-      //   form.append("Document_Base64", formData?.Document_Base64),
-      //   form.append("Document_FormatType", formData?.FileExtension),
-      // axios
-      //   .post(apiUrls?.TaxInvoice_Upload, form, { headers })
       const payload = {
         TaxInvoiceID: String(visible?.visible?.showData?.EncryptID || 0),
         TaxInvoiceNo: String(formData?.TaxInvoiceNo || ""),
@@ -70,7 +58,7 @@ const TaxInvoicePIModal = (visible, setVisible) => {
       axiosInstances
         .post(apiUrls?.TaxInvoice_Upload, payload)
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.message);
             visible?.setVisible(false);
             setLoading(false);

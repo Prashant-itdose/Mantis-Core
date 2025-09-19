@@ -2908,7 +2908,7 @@ const ViewIssues = ({ data }) => {
           modalWidth={"1100px"}
           visible={visible}
           setVisible={setVisible}
-          Header={t("View Issues Details")}
+          Header={t("View Ticket Details")}
           tableData={currentData}
           setTableData={setTableData}
         >
@@ -2980,7 +2980,7 @@ const ViewIssues = ({ data }) => {
       )}
       <div className="card ViewIssues border">
         <Heading
-          title={<span style={{ fontWeight: "bold" }}>{t("View Issues")}</span>}
+          title={<span style={{ fontWeight: "bold" }}>{t("View Ticket")}</span>}
           isBreadcrumb={data ? true : false}
           secondTitle={
             <div className="row g-4">

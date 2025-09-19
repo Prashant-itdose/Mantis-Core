@@ -487,14 +487,13 @@ const SearchSalesBooking = ({ data }) => {
       // extra fields
       Centre: "testing22", // ✅ string
       ActionType: "InsertCentre", // ✅ string
-      IsExcel:0
+      IsExcel: 0,
     };
 
     axiosInstances
       .post(apiUrls?.Payment_Installment_Search, payload)
       .then((res) => {
         if (res?.data?.success === true) {
-          debugger
           setTableData(res?.data?.data);
           // const datas = res?.data?.data?.map((val) => {
           //   val.QuotationApproved = false;
@@ -656,45 +655,45 @@ const SearchSalesBooking = ({ data }) => {
   const handleGenerate = (ele) => {
     axiosInstances
       .post(apiUrls.SalesBooking_GeneratePI, {
-  "SalesID":String(ele)
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("SalesID", ele),
-    //   axios
-    //     .post(apiUrls?.SalesBooking_GeneratePI, form, { headers })
-        .then((res) => {
-          if (res?.data?.success === true) {
-            toast.success(res?.data?.message);
-            handleSearch();
-          } else {
-            toast.error(res?.data?.message);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        SalesID: String(ele),
+      })
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append(
+      //     "LoginName",
+      //     useCryptoLocalStorage("user_Data", "get", "realname")
+      //   ),
+      //   form.append("SalesID", ele),
+      //   axios
+      //     .post(apiUrls?.SalesBooking_GeneratePI, form, { headers })
+      .then((res) => {
+        if (res?.data?.success === true) {
+          toast.success(res?.data?.message);
+          handleSearch();
+        } else {
+          toast.error(res?.data?.message);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const handleRequested = (ele) => {
     axiosInstances
       .post(apiUrls.SalesBooking_GenerateTax, {
-  "SalesID":String(ele)
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("SalesID", ele),
-    //   axios
-    //     .post(apiUrls?.SalesBooking_GenerateTax, form, { headers })
-    // axiosInstances
-    //   .post(apiUrls?.SalesBooking_GenerateTax, {})
+        SalesID: String(ele),
+      })
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append(
+      //     "LoginName",
+      //     useCryptoLocalStorage("user_Data", "get", "realname")
+      //   ),
+      //   form.append("SalesID", ele),
+      //   axios
+      //     .post(apiUrls?.SalesBooking_GenerateTax, form, { headers })
+      // axiosInstances
+      //   .post(apiUrls?.SalesBooking_GenerateTax, {})
       .then((res) => {
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);
@@ -797,8 +796,6 @@ const SearchSalesBooking = ({ data }) => {
   //   // console.log("save data", formData);
   // };
 
-
-
   // const handleSearchFilter = () => {
   //   let form = new FormData();
   //   form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
@@ -835,8 +832,7 @@ const SearchSalesBooking = ({ data }) => {
 
   //   // console.log("save data", formData);
   // };
-  
-  
+
   const TaxInvoiceStatus = ""; // Replace with actual value
   const TaxInvoiceNo = "";
   const renderButton = (TaxInvoiceStatus, TaxInvoiceNo) => {
@@ -905,7 +901,9 @@ const SearchSalesBooking = ({ data }) => {
     "Cancel",
   ];
 
-  const salesSearchThead = staticHeaders.filter((header) =>isTableVisible(typeof header === "string" ? header : header.name)
+  const salesSearchThead = staticHeaders
+    .filter((header) =>
+      isTableVisible(typeof header === "string" ? header : header.name)
     )
     .map((header) =>
       typeof header === "string"
@@ -1265,11 +1263,11 @@ const SearchSalesBooking = ({ data }) => {
               </div>
             }
           />
-          {console.log("salesSearchTheadsalesSearchThead",salesSearchThead)}
+          {console.log("salesSearchTheadsalesSearchThead", salesSearchThead)}
           <Tables
             thead={salesSearchThead}
-            tbody={currentData?.map((ele, index) => {
-                
+            tbody={currentData
+              ?.map((ele, index) => {
                 const fullRow = {
                   "S.No": (
                     <>
@@ -1492,7 +1490,7 @@ const SearchSalesBooking = ({ data }) => {
                   ),
                   colorcode: ele?.rowColor,
                 };
-                
+
                 const visibleHeaders = salesSearchThead.map((h) =>
                   typeof h === "string" ? h : h.name
                 );
@@ -1500,7 +1498,7 @@ const SearchSalesBooking = ({ data }) => {
                 // ✅ Build filtered row with only visible fields
                 const filteredRow = {};
                 let isEmptyRow = true;
-debugger
+
                 visibleHeaders.forEach((key) => {
                   const value = fullRow[key];
                   filteredRow[key] = value;

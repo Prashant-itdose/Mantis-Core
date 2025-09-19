@@ -193,6 +193,7 @@ export const apiUrls = {
   UpdateFile: "/CRMCOREAPI/API/AccessRight/UpdateFile",
   AccessRight_Bind: "/CRMCOREAPI/api/AccessRight/AccessRight_Bind",
   AccessRight_Update: "/CRMCOREAPI/api/AccessRight/AccessRight_Insert",
+  AccessRight_Insert: "/CRMCOREAPI/api/AccessRight/AccessRight_Insert",
   UserVsRoleMapping: "/CRMCOREAPI/API/EmployeeMaster/UserVsRoleMapping",
   UserVsCategoryMapping: "/CRMCOREAPI/API/EmployeeMaster/UserVsCategoryMapping",
   DotNetMantis_EmployeeID:
@@ -215,6 +216,7 @@ export const apiUrls = {
   BulkNewTicket: "/CRMCOREAPI/API/BugReport/BulkNewTicket",
   Settlement_Select: "/CRMCOREAPI/API/Accounts/SettlementSelect",
   UpdateProfile: "/CRMCOREAPI/API/EmployeeMaster/UpdateProfile",
+  SaveSettlement:"/CRMCOREAPI/API/Accounts/SaveSettlement",
   // ForgetPassword_ValdiateEmailMobile:'/CRMCOREAPI/API/EmployeeMaster/ForgetPassword_ValdiateEmailMobile',
   ForgetPassword_ValdiateEmailMobile:
     "/CRMCOREAPI/API/LoginAPIDynamic/ForgetPassword_ValdiateEmailMobile",
@@ -242,7 +244,7 @@ export const apiUrls = {
   AmountSub_CancelReason_Select:
     "/CRMCOREAPI/API/MasterBind/AmountSub_CancelReason_Select",
   AmountSubmission_ByAccounts_Search_ProjectID:
-    "/CRMCOREAPI/API/Accounts/AmountSubmissionByAccountsSearch",
+    "/CRMCOREAPI/API/Accounts/SearchByProjectId",
   SalesBooking_CancelReason_Select:
     "/CRMCOREAPI/API/MasterBind/SalesBooking_CancelReason_Select",
   SalesBooking_IsCancel:

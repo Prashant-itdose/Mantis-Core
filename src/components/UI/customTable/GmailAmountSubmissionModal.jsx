@@ -12,7 +12,7 @@ import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorag
 import { axiosInstances } from "../../../networkServices/axiosInstance";
 
 const GmailAmountSubmissionModal = (visible) => {
-  // console.log("visible visible", visible);
+  console.log("visible visible", visible?.visible);
   const [t] = useTranslation();
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -28,19 +28,9 @@ const GmailAmountSubmissionModal = (visible) => {
   };
 
   const handleQuotation_Email_Log = () => {
-    // let form = new FormData();
-    // form.append("ID",  useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-    //   form.append("DocumentType", "AmountSubmission"),
-    //   form.append("DocumentID", visible?.visible?.showData?.EncryptID),
-    // axios
-    //   .post(apiUrls?.Quotation_Email_Log, form, { headers })
     const payload = {
-      LoginName: String(
-        useCryptoLocalStorage("user_Data", "get", "realname") || ""
-      ),
-      DocumentType: "AmountSubmission",
-      DocumentID: String(visible?.visible?.showData?.EncryptID || ""),
+      DocumentType: String("AmountSubmission"),
+      DocumentID: String(visible?.visible?.data?.EncryptID || ""),
     };
 
     axiosInstances
@@ -60,21 +50,9 @@ const GmailAmountSubmissionModal = (visible) => {
       toast.error("Please Enter EmailCC.");
     } else {
       setLoading(true);
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("DocumentType", "AmountSubmission"),
-      //   form.append("DocumentID", visible?.visible?.showData?.EncryptID),
-      //   form.append("EmailTo", formData?.EmailTo),
-      //   form.append("EmailCC", formData?.EmailCC),
-      // axios
-      //   .post(apiUrls?.Quotation_Email, form, { headers })
       const payload = {
         DocumentType: "AmountSubmission",
-        DocumentID: String(visible?.visible?.showData?.EncryptID || ""),
+        DocumentID: String(visible?.visible?.data?.EncryptID || ""),
         EmailTo: String(formData?.EmailTo || ""),
         EmailCC: String(formData?.EmailCC || ""),
       };
@@ -82,13 +60,18 @@ const GmailAmountSubmissionModal = (visible) => {
       axiosInstances
         .post(apiUrls?.Quotation_Email, payload)
         .then((res) => {
-          toast.success(res?.data?.messsage);
-          handleQuotation_Email_Log();
-          setFormData({
-            EmailTo: "",
-            EmailCC: "",
-          });
-          setLoading(false);
+          if (res.data.success === true) {
+            toast.success(res?.data?.messsage);
+            handleQuotation_Email_Log();
+            setFormData({
+              EmailTo: "",
+              EmailCC: "",
+            });
+            setLoading(false);
+          } else {
+            toast.error(res?.data?.messsage);
+            setLoading(false);
+          }
         })
         .catch((err) => {
           console.log(err);

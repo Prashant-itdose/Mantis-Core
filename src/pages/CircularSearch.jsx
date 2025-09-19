@@ -295,9 +295,9 @@ const CircularSearch = () => {
                 //     {shortenName(ele?.Message)}
                 //   </span>
                 // ),
-                "Entry Date": ele?.dtEntry,
-                "Valid From": ele?.dtFrom,
-                "Valid To": ele?.dtTo,
+                "Entry Date": ele?.DtEntry,
+                "Valid From": ele?.DtFrom,
+                "Valid To": ele?.DtTo,
                 TotalUserCount: ele?.TotalUserCount,
                 ReadByCount: (
                   <div
@@ -305,7 +305,7 @@ const CircularSearch = () => {
                   >
                     <div>{ele?.ReadByCount}</div>
                     <div>
-                      {
+                      {ele?.ReadByCount > 0 ?
                         <i
                           className="fa fa-eye"
                           onClick={() => {
@@ -313,7 +313,7 @@ const CircularSearch = () => {
                           }}
                         >
                           {" "}
-                        </i>
+                        </i>:""
                       }
                     </div>
                   </div>
@@ -324,7 +324,7 @@ const CircularSearch = () => {
                   >
                     <div>{ele?.UnReadByCount}</div>
                     <div>
-                      {
+                      {ele?.UnReadByCount >0 ? 
                         <i
                           className="fa fa-eye"
                           onClick={() => {
@@ -332,7 +332,7 @@ const CircularSearch = () => {
                           }}
                         >
                           {" "}
-                        </i>
+                        </i>:""
                       }
                     </div>
                   </div>

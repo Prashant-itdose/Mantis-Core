@@ -112,8 +112,8 @@ const SalesLeadCreate = () => {
       .post(apiUrls?.EditSalesLead, { LeadID: Number(id) })
       .then((res) => {
         const data = res?.data?.data;
-        console.log("EditSalesLead",data);
-        
+        console.log("EditSalesLead", data);
+
         setFormData({
           ...formData,
           Centre: data?.IsUpcomingCentre,
@@ -696,7 +696,6 @@ const SalesLeadCreate = () => {
     axiosInstances
       .post(apiUrls?.UpdateSalesLead, paylode)
       .then((res) => {
-
         if (res?.data?.status == true) {
           toast.success(res?.data?.message);
           setLoading(false);

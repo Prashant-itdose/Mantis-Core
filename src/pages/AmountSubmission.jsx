@@ -104,193 +104,114 @@ const AmountSubmission = ({ data }) => {
     setLoading(true);
     axiosInstances
       .post(apiUrls.AmountSubmission_ByAccounts_Search_ProjectID, {
-  "DateType": "",
-  "FromDate": "",
-  "ToDate": "",
-  "Status": "",
-  "SearchType": "OnScreen",
-  "BankName": "",
-  "PageSize": "",
-  "PageNo": "",
-  "RowColor": "",
-  "ProjectID": String(item),
-  "VerticalID": "",
-  "TeamID": "",
-  "WingID": "",
-  "POC1": "",
-  "POC2": "",
-  "POC3": "",
-  "RecoveryTeam": ""
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ProjectID", item),
-    //   form.append("SearchType", "OnScreen"),
-    //   axios
-    //     .post(apiUrls?.AmountSubmission_ByAccounts_Search_ProjectID, form, {
-    //       headers,
-    //     })
-        .then((res) => {
-          setTableData(res?.data?.data);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-          setLoading(false);
-        });
+        SearchType: String("OnScreen"),
+        ProjectID: Number(item),
+      })
+      .then((res) => {
+        setTableData(res?.data?.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
 
   const handleExcel = () => {
     setLoading(true);
     axiosInstances
       .post(apiUrls.AmountSubmission_ByAccounts_Search_ProjectID, {
-  "DateType": "EntryDate",
-  "FromDate": "",
-  "ToDate": "",
-  "Status": "",
-  "SearchType": "Excel",
-  "BankName": "",
-  "PageSize": "",
-  "PageNo": "",
-  "RowColor": "",
-  "ProjectID": String(tableData[0]?.ProjectID),
-  "VerticalID": "",
-  "TeamID": "",
-  "WingID": "",
-  "POC1": "",
-  "POC2": "",
-  "POC3": ""
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ProjectID", tableData[0]?.ProjectID),
-    //   form.append("SearchType", "Excel"),
-    //   axios
-    //     .post(apiUrls?.AmountSubmission_ByAccounts_Search_ProjectID, form, {
-    //       headers,
-    //     })
-        .then((res) => {
-          const datas = res?.data?.data;
+        SearchType: String("Excel"),
+        ProjectID: Number(tableData[0]?.ProjectID),
+      })
+      .then((res) => {
+        const datas = res?.data?.data;
 
-          if (!datas || datas.length === 0) {
-            console.error("No data available for download.");
-            alert("No data available for download.");
-            setLoading(false);
-            return;
-          }
-          const username =
-            useCryptoLocalStorage("user_Data", "get", "realname") || "User";
-          // const currentDate = new Date().toLocaleDateString();
-          const currentDate = new Date().toLocaleDateString("en-GB", {
-            // day: "numeric",
-            // month: "short",
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          });
-          const titleRow = [{ title: `${username} - ${currentDate}` }];
-          const dataWithTitle = [...titleRow, ...datas];
-          const fileType =
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-          const fileExtension = ".xlsx";
-          const ws = XLSX.utils.json_to_sheet(datas, { skipHeader: false });
-          const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
-          const excelBuffer = XLSX.write(wb, {
-            bookType: "xlsx",
-            type: "array",
-          });
-          const data = new Blob([excelBuffer], { type: fileType });
-          // Save the file with the title as username and current date
-          FileSaver.saveAs(data, `${username}_${currentDate}` + fileExtension);
+        if (!datas || datas.length === 0) {
+          console.error("No data available for download.");
+          alert("No data available for download.");
           setLoading(false);
-        })
-        .catch((err) => {
-          console.error("Error downloading the file:", err);
-          alert("Failed to download the file. Please try again.");
-          setLoading(false);
+          return;
+        }
+        const username =
+          useCryptoLocalStorage("user_Data", "get", "realname") || "User";
+        // const currentDate = new Date().toLocaleDateString();
+        const currentDate = new Date().toLocaleDateString("en-GB", {
+          // day: "numeric",
+          // month: "short",
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
         });
+        const titleRow = [{ title: `${username} - ${currentDate}` }];
+        const dataWithTitle = [...titleRow, ...datas];
+        const fileType =
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+        const fileExtension = ".xlsx";
+        const ws = XLSX.utils.json_to_sheet(datas, { skipHeader: false });
+        const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+        const excelBuffer = XLSX.write(wb, {
+          bookType: "xlsx",
+          type: "array",s
+        });
+        const data = new Blob([excelBuffer], { type: fileType });
+        // Save the file with the title as username and current date
+        FileSaver.saveAs(data, `${username}_${currentDate}` + fileExtension);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error downloading the file:", err);
+        alert("Failed to download the file. Please try again.");
+        setLoading(false);
+      });
   };
   const handleCancelExcel = () => {
     setLoading(true);
     axiosInstances
       .post(apiUrls.AmountSubmission_ByAccounts_Search_ProjectID, {
-  "DateType": "",
-  "FromDate": "",
-  "ToDate": "",
-  "Status": "",
-  "SearchType": "CancelExcel",
-  "BankName": "",
-  "PageSize": "",
-  "PageNo": "",
-  "RowColor": "",
-  "ProjectID": String(tableData[0]?.ProjectID),
-  "VerticalID": "",
-  "TeamID": "",
-  "WingID": "",
-  "POC1": "",
-  "POC2": "",
-  "POC3": ""
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ProjectID", tableData[0]?.ProjectID),
-    //   form.append("SearchType", "CancelExcel"),
-    //   axios
-    //     .post(apiUrls?.AmountSubmission_ByAccounts_Search_ProjectID, form, {
-    //       headers,
-    //     })
-        .then((res) => {
-          const datas = res?.data?.data;
+        SearchType: String("CancelExcel"),
+        ProjectID: Number(tableData[0]?.ProjectID),
+      })
+      .then((res) => {
+        const datas = res?.data?.data;
 
-          if (!datas || datas.length === 0) {
-            console.error("No data available for download.");
-            alert("No data available for download.");
-            setLoading(false);
-            return;
-          }
-          const username =
-            useCryptoLocalStorage("user_Data", "get", "realname") || "User";
-          // const currentDate = new Date().toLocaleDateString();
-          const currentDate = new Date().toLocaleDateString("en-GB", {
-            // day: "numeric",
-            // month: "short",
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          });
-          const titleRow = [{ title: `${username} - ${currentDate}` }];
-          const dataWithTitle = [...titleRow, ...datas];
-          const fileType =
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-          const fileExtension = ".xlsx";
-          const ws = XLSX.utils.json_to_sheet(datas, { skipHeader: false });
-          const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
-          const excelBuffer = XLSX.write(wb, {
-            bookType: "xlsx",
-            type: "array",
-          });
-          const data = new Blob([excelBuffer], { type: fileType });
-          // Save the file with the title as username and current date
-          FileSaver.saveAs(data, `${username}_${currentDate}` + fileExtension);
+        if (!datas || datas.length === 0) {
+          console.error("No data available for download.");
+          alert("No data available for download.");
           setLoading(false);
-        })
-        .catch((err) => {
-          console.error("Error downloading the file:", err);
-          alert("Failed to download the file. Please try again.");
-          setLoading(false);
+          return;
+        }
+        const username =
+          useCryptoLocalStorage("user_Data", "get", "realname") || "User";
+        // const currentDate = new Date().toLocaleDateString();
+        const currentDate = new Date().toLocaleDateString("en-GB", {
+          // day: "numeric",
+          // month: "short",
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
         });
+        const titleRow = [{ title: `${username} - ${currentDate}` }];
+        const dataWithTitle = [...titleRow, ...datas];
+        const fileType =
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+        const fileExtension = ".xlsx";
+        const ws = XLSX.utils.json_to_sheet(datas, { skipHeader: false });
+        const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+        const excelBuffer = XLSX.write(wb, {
+          bookType: "xlsx",
+          type: "array",
+        });
+        const data = new Blob([excelBuffer], { type: fileType });
+        // Save the file with the title as username and current date
+        FileSaver.saveAs(data, `${username}_${currentDate}` + fileExtension);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error downloading the file:", err);
+        alert("Failed to download the file. Please try again.");
+        setLoading(false);
+      });
   };
 
   const searchHandleChange = (e) => {
@@ -316,37 +237,25 @@ const AmountSubmission = ({ data }) => {
   const getProject = () => {
     axiosInstances
       .post(apiUrls.ProjectSelect, {
-  "ProjectID": 0,
-  "IsMaster": "0",
-  "VerticalID": 0,
-  "TeamID": 0,
-  "WingID": 0
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   axios
-    //     .post(apiUrls?.ProjectSelect, form, { headers })
-        .then((res) => {
-          const poc3s = res?.data?.data?.map((item) => {
-            return {
-              label: item?.Project,
-              value: item?.ProjectId,
-              fullData: item,
-            };
-          });
-          setProject(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
+        ProjectID: 0,
+        IsMaster: "0",
+        VerticalID: 0,
+        TeamID: 0,
+        WingID: 0,
+      })
+      .then((res) => {
+        const poc3s = res?.data?.data?.map((item) => {
+          return {
+            label: item?.Project,
+            value: item?.ProjectId,
+            fullData: item,
+          };
         });
+        setProject(poc3s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   function getlabel(id, dropdownData) {
     const ele = dropdownData.filter((item) => item.value === id);
@@ -366,12 +275,10 @@ const AmountSubmission = ({ data }) => {
     if (formData?.Project == "") {
       error = true;
       message = "Please Select Project.";
-    } 
-    else if (formData?.RecoveryTeam == "") {
+    } else if (formData?.RecoveryTeam == "") {
       error = true;
       message = "Please Select RecoveryTeam.";
-    }
-    else if (formData?.PaymentMode == "") {
+    } else if (formData?.PaymentMode == "") {
       error = true;
       message = "Please Select PaymentMode.";
     } else if (formData?.Amount == "") {
@@ -380,7 +287,7 @@ const AmountSubmission = ({ data }) => {
     } else if (formData?.ReceivedBy == "" && formData?.PaymentMode === "Cash") {
       error = true;
       message = "Please Enter ReceivedBy.";
-    } 
+    }
 
     return {
       error,
@@ -413,110 +320,110 @@ const AmountSubmission = ({ data }) => {
     }
     setLoading(true);
     const payload = {
-  ProjectID: String(formData?.Project || ""), 
-  ProjectName: String(getlabel(formData?.Project, project) || ""), 
-  BillingCompanyID: String(""),
-  BillingCompanyName: String(""),
-  BillingCompanyAddress: String(""),
-  BillingState: String( ""),
-  GSTNo: String(""),
-  PanCardNo: String(""),
-  ShippingCompanyID: String(""),
-  ShippingCompanyName: String(""),
-  ShippingCompanyAddress: String(""),
-  ShippingState: String(""),
-  ShippingGSTNo: String(""),
-  ShippingPanCardNo: String(""),
-  ReceivedDate: formatDate(formData?.ReceiveDate) || "",
-  PaymentMode: String(formData?.PaymentMode || ""), 
-  Amount: String(formData?.Amount || ""),
-  ReceivedBy: String(formData?.ReceivedBy || ""), 
-  Remark: String(formData?.Remarks || ""),
-  UtrNo: String(formData?.UTRNO || ""), 
-  BankName:
-    formData?.PaymentMode === "NEFT"
-      ? String(formData?.BankNeft || "")
-      : String(formData?.BankName || ""), 
-  ChequeNo: String(formData?.ChequeNumber || ""), 
-  ChequeDate: formData?.ChequeDate
-    ? moment(formData?.ChequeDate).format("YYYY-MM-DD")
-    : "", 
-  Document_Base64: String(formData?.Document_Base64 || ""), 
-  Document_FormatType: String(formData?.FileExtension || ""), 
-  VoucherNo: String(formData?.VoucherNo || ""), 
-  RecoveryTeam : String(formData?.RecoveryTeam), 
-};
-axiosInstances.post(apiUrls.AmountSubmission_ByAccounts, payload)
+      ProjectID: String(formData?.Project || ""),
+      ProjectName: String(getlabel(formData?.Project, project) || ""),
+      BillingCompanyID: String(""),
+      BillingCompanyName: String(""),
+      BillingCompanyAddress: String(""),
+      BillingState: String(""),
+      GSTNo: String(""),
+      PanCardNo: String(""),
+      ShippingCompanyID: String(""),
+      ShippingCompanyName: String(""),
+      ShippingCompanyAddress: String(""),
+      ShippingState: String(""),
+      ShippingGSTNo: String(""),
+      ShippingPanCardNo: String(""),
+      ReceivedDate: formatDate(formData?.ReceiveDate) || "",
+      PaymentMode: String(formData?.PaymentMode || ""),
+      Amount: String(formData?.Amount || ""),
+      ReceivedBy: String(formData?.ReceivedBy || ""),
+      Remark: String(formData?.Remarks || ""),
+      UtrNo: String(formData?.UTRNO || ""),
+      BankName:
+        formData?.PaymentMode === "NEFT"
+          ? String(formData?.BankNeft || "")
+          : String(formData?.BankName || ""),
+      ChequeNo: String(formData?.ChequeNumber || ""),
+      ChequeDate: formData?.ChequeDate
+        ? moment(formData?.ChequeDate).format("YYYY-MM-DD")
+        : "",
+      Document_Base64: String(formData?.Document_Base64 || ""),
+      Document_FormatType: String(formData?.FileExtension || ""),
+      VoucherNo: String(formData?.VoucherNo || ""),
+      RecoveryTeam: String(formData?.RecoveryTeam),
+    };
+    axiosInstances
+      .post(apiUrls.AmountSubmission_ByAccounts, payload)
 
-    // let form = new FormData();
+      // let form = new FormData();
 
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ProjectID", formData?.Project),
-    //   form.append("ProjectName", getlabel(formData?.Project, project)),
-    //   form.append("ReceivedDate", formatDate(formData?.ReceiveDate)),
-    //   form.append(
-    //     "ReceivedBy",
-    //     formData?.ReceivedBy ? formData?.ReceivedBy : ""
-    //   ),
-    //   form.append("PaymentMode", formData?.PaymentMode),
-    //   form.append("Amount", formData?.Amount),
-    //   form.append(
-    //     "BankName",
-    //     formData?.PaymentMode == "NEFT"
-    //       ? formData?.BankNeft
-    //       : formData?.BankName
-    //   );
-    // form.append("ChequeNo", formData?.ChequeNumber),
-    //   form.append("RecoveryTeam", formData?.RecoveryTeam),
-    //   form.append(
-    //     "ChequeDate",
-    //     moment(formData?.ChequeDate).format("YYYY-MM-DD")
-    //   ),
-    //   form.append("UtrNo", formData?.UTRNO ? formData?.UTRNO : ""),
-    //   form.append("Remark", formData?.Remarks),
-    //   form.append("VoucherNo", formData?.VoucherNo ? formData?.VoucherNo : ""),
-    //   form.append("Document_Base64", formData?.Document_Base64),
-    //   form.append("Document_FormatType", formData?.FileExtension),
-    //   axios
-    //     .post(apiUrls?.AmountSubmission_ByAccounts, form, { headers })
-        .then((res) => {
-          
-          if (res?.data?.success == true) {
-            toast.success(res?.data?.message);
-            setFormData({
-              // Project: "",
-              ReceiveDate: new Date(),
-              ReceivedBy: "",
-              UTRNO: "",
-              BankNeft: "",
-              ChequeNumber: "",
-              BankName: "",
-              ChequeDate: new Date(),
-              PaymentMode: "",
-              Amount: "",
-              Remarks: "",
-              Documents: "",
-              DocumentType: "",
-              SelectFile: "",
-              Document_Base64: "",
-              FileExtension: "",
-            });
-            handleSearch(formData?.Project);
-          } else {
-            toast.error(res?.data?.message);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => {
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append(
+      //     "LoginName",
+      //     useCryptoLocalStorage("user_Data", "get", "realname")
+      //   ),
+      //   form.append("ProjectID", formData?.Project),
+      //   form.append("ProjectName", getlabel(formData?.Project, project)),
+      //   form.append("ReceivedDate", formatDate(formData?.ReceiveDate)),
+      //   form.append(
+      //     "ReceivedBy",
+      //     formData?.ReceivedBy ? formData?.ReceivedBy : ""
+      //   ),
+      //   form.append("PaymentMode", formData?.PaymentMode),
+      //   form.append("Amount", formData?.Amount),
+      //   form.append(
+      //     "BankName",
+      //     formData?.PaymentMode == "NEFT"
+      //       ? formData?.BankNeft
+      //       : formData?.BankName
+      //   );
+      // form.append("ChequeNo", formData?.ChequeNumber),
+      //   form.append("RecoveryTeam", formData?.RecoveryTeam),
+      //   form.append(
+      //     "ChequeDate",
+      //     moment(formData?.ChequeDate).format("YYYY-MM-DD")
+      //   ),
+      //   form.append("UtrNo", formData?.UTRNO ? formData?.UTRNO : ""),
+      //   form.append("Remark", formData?.Remarks),
+      //   form.append("VoucherNo", formData?.VoucherNo ? formData?.VoucherNo : ""),
+      //   form.append("Document_Base64", formData?.Document_Base64),
+      //   form.append("Document_FormatType", formData?.FileExtension),
+      //   axios
+      //     .post(apiUrls?.AmountSubmission_ByAccounts, form, { headers })
+      .then((res) => {
+        if (res?.data?.success == true) {
+          toast.success(res?.data?.message);
+          setFormData({
+            // Project: "",
+            ReceiveDate: new Date(),
+            ReceivedBy: "",
+            UTRNO: "",
+            BankNeft: "",
+            ChequeNumber: "",
+            BankName: "",
+            ChequeDate: new Date(),
+            PaymentMode: "",
+            Amount: "",
+            Remarks: "",
+            Documents: "",
+            DocumentType: "",
+            SelectFile: "",
+            Document_Base64: "",
+            FileExtension: "",
+          });
+          handleSearch(formData?.Project);
+        } else {
+          toast.error(res?.data?.message);
           setLoading(false);
-        });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const handleImageChange = (e) => {

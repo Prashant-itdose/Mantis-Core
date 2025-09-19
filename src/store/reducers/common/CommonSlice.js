@@ -41,10 +41,10 @@ const initialState = {
           breadcrumb: "Tickets / My View",
         },
         {
-          childrenName: "View Issues",
+          childrenName: "View Ticket",
           url: "/viewissues",
           childrenOrder: "2",
-          breadcrumb: "Tickets / View Issues",
+          breadcrumb: "Tickets / View Ticket",
         },
         {
           childrenName: "Summary",
