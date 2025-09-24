@@ -88,20 +88,20 @@ export const apiUrls = {
   CreateProjectCategory: "/CRMCOREAPI/API/ProjectMaster/CreateProjectCategory",
 
   //UserVSProjectMapping Page Api's
-  UserVsProject_Select: "/CRMCOREAPI/api/EmployeeMaster/UserVsProject_Select",
-  UserVsProjectMapping: "/CRMCOREAPI/api/EmployeeMaster/UserVsProjectMapping",
+  UserVsProject_Select: "/CRMCOREAPI/API/EmployeeMaster/UserVsProject_Select",
+  UserVsProjectMapping: "/CRMCOREAPI/API/EmployeeMaster/UserVsProjectMapping",
   Remove_UserVsProjectMapping:
     "/CRMCOREAPI/API/EmployeeMaster/UserVsProjectRemove",
   SelectProjectOrdering: "/CRMCOREAPI/API/ProjectMaster/SelectProjectOrdering",
   UpdateProjectOrdering: "/CRMCOREAPI/API/ProjectMaster/UpdateProjectOrdering",
 
   //ChangeSubmitDateofTicket Page Api's
-  ChangeSubmitDate: "/CRMCOREAPI/api/BugReport/ChangeSubmitDate",
+  ChangeSubmitDate: "/CRMCOREAPI/API/BugReport/ChangeSubmitDate",
 
   //UploadDocument Page Api's
-  DocumentType_Select: "/CRMCOREAPI/api/ManageDocument/DocumentType_Select",
-  UploadDocument_Search: "/CRMCOREAPI/api/ManageDocument/UploadDocument_Search",
-  UploadDocument: "/CRMCOREAPI/api/ManageDocument/UploadDocument",
+  DocumentType_Select: "/CRMCOREAPI/API/ManageDocument/DocumentType_Select",
+  UploadDocument_Search: "/CRMCOREAPI/API/ManageDocument/UploadDocument_Search",
+  UploadDocument: "/CRMCOREAPI/API/ManageDocument/UploadDocument",
 
   //Amount Submission Page Api's
   AmountSubmission_ByAccounts:

@@ -4,7 +4,6 @@ import ReactSelect from "../components/formComponent/ReactSelect";
 import Heading from "../components/UI/Heading";
 import Tables from "../components/UI/customTable";
 import { implementTHEAD } from "../components/modalComponent/Utils/HealperThead";
-import { Link } from "react-router-dom";
 import {
   DeleteImplementaionMaster,
   GetImplementaionMaster,
@@ -16,13 +15,9 @@ import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 
 const ImplementationStepMaster = () => {
   const [group, setGroup] = useState([]);
-  const [responsible, setResponsible] = useState([]);
   const [interdependent, setInterdependent] = useState([]);
   const [productVersion, setProductVersion] = useState([]);
-  const [type, setType] = useState([]);
   const [details, setDetails] = useState([]);
-
-  const { VITE_DATE_FORMAT } = import.meta.env;
   const [formData, setFormData] = useState({
     Group: "",
     Steps: "",
@@ -34,7 +29,6 @@ const ImplementationStepMaster = () => {
   });
   const handleDeliveryChange = (name, e) => {
     const { value } = e;
-    console.log(value);
     setFormData({
       ...formData,
       [name]: value,
@@ -49,98 +43,24 @@ const ImplementationStepMaster = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const tableData1 = [
-    {
-      "S.No.": "1",
-      GroupName: "Group 1",
-      Steps: "Step 1",
-      Responsible: "Person A",
-      Type: "Type A",
-      RequiredDays: 5,
-      Interdependent: "Yes",
-      Project: "Project 1",
-    },
-  ];
   const fetchproductdetails = async (value) => {
     try {
-      // let product = new FormData();
-      // product.append("Type", "Detail");
-      // product.append("ProductID", value);
-
       const detailresponse = await GetImplementaionMaster({
         Type: "Detail",
         ProductID: String(value || ""),
       });
-      console.log(detailresponse);
-     
-    setDetails(detailresponse?.data?.data || []);
+
+      setDetails(detailresponse?.data?.data || []);
     } catch (error) {
       console.error(error);
     }
   };
-const handleUpdate = async () => {
-  const getLabel = (id) => {
-    let ele = productVersion.filter((item) => item.value == id);
-    return ele[0]?.label;
-  };
-
-  if (
-    formData?.Group == "" ||
-    formData?.Steps == "" ||
-    formData?.Responsible == "" ||
-    formData?.Type == "" ||
-    formData?.RequiredDays == "" ||
-    formData?.Interdependent == "" ||
-    formData?.ProductVersion == ""
-  ) {
-    toast.error("All fields are mandatory");
-    return;
-  }
-
-  try {
-    const payload = {
-      ID: String(useCryptoLocalStorage("user_Data", "get", "ID") || ""),
-      StepID: String(formData?.Id || ""),
-      GroupId: String(formData?.Group || ""),
-      Steps: String(formData?.Steps || ""),
-      ResponsibleID: String(formData?.Responsible || ""),
-      ImpleTypeId: String(formData?.Type || ""),
-      ReqDays: String(formData?.RequiredDays || ""),
-      InterdependentId: String(formData?.Interdependent || ""),
-      ProductID: String(formData?.ProductVersion || ""),
-      Product: String(getLabel(formData?.ProductVersion) || ""),
+  const handleUpdate = async () => {
+    const getLabel = (id) => {
+      let ele = productVersion?.filter((item) => item.value == id);
+      return ele[0]?.label;
     };
 
-    const detailresponse = await UpdateImplementation(payload);
-
-    if (detailresponse?.data?.success) {
-      toast.success(detailresponse?.data?.message || "Updated successfully");
-      fetchproductdetails(formData?.ProductVersion);
-
-      setFormData({
-        ProductVersion: formData?.ProductVersion,
-        Group: "",
-        Steps: "",
-        Responsible: "",
-        Type: "",
-        RequiredDays: "",
-        Interdependent: "",
-      });
-    }
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-const handleSubmit = async () => {
-  const getLabel = (id) => {
-    let ele = productVersion.filter((item) => {
-      return item.value == id;
-    });
-    return ele[0]?.label;
-  };
-
-  try {
     if (
       formData?.Group == "" ||
       formData?.Steps == "" ||
@@ -154,99 +74,148 @@ const handleSubmit = async () => {
       return;
     }
 
-   
-    const payload = {
-      ID: String(useCryptoLocalStorage("user_Data", "get", "ID") || ""),
-      GroupId: String(formData?.Group || ""),
-      Steps: String(formData?.Steps || ""),
-      ResponsibleID: String(formData?.Responsible || ""),
-      ImpleTypeId: String(formData?.Type || ""),
-      ReqDays: String(formData?.RequiredDays || ""),
-      InterdependentId: String(formData?.Interdependent || ""),
-      ProductID: String(formData?.ProductVersion || ""),
-      Product: String(getLabel(formData?.ProductVersion) || ""),
-    };
+    try {
+      const payload = {
+        ID: String(useCryptoLocalStorage("user_Data", "get", "ID") || ""),
+        StepID: String(formData?.Id || ""),
+        GroupId: String(formData?.Group || ""),
+        Steps: String(formData?.Steps || ""),
+        ResponsibleID: String(formData?.Responsible || ""),
+        ImpleTypeId: String(formData?.Type || ""),
+        ReqDays: String(formData?.RequiredDays || ""),
+        InterdependentId: String(formData?.Interdependent || ""),
+        ProductID: String(formData?.ProductVersion || ""),
+        Product: String(getLabel(formData?.ProductVersion) || ""),
+      };
 
-    const detailresponse = await SaveImplementaionMaster(payload); 
-      console.log("API Response:", detailresponse);
+      const detailresponse = await UpdateImplementation(payload);
 
-    if (detailresponse?.data?.success) {
-      toast.success(detailresponse?.data?.message);
-      fetchproductdetails(formData?.ProductVersion);
+      if (detailresponse?.data?.success === true) {
+        toast.success(detailresponse?.data?.message || "Updated successfully");
+        fetchproductdetails(formData?.ProductVersion);
 
-      setFormData({
-        ...formData,
-        Group: "",
-        Steps: "",
-        Responsible: "",
-        Type: "",
-        RequiredDays: "",
-        Interdependent: "",
-      });
+        setFormData({
+          ProductVersion: formData?.ProductVersion,
+          Group: "",
+          Steps: "",
+          Responsible: "",
+          Type: "",
+          RequiredDays: "",
+          Interdependent: "",
+        });
+      }
+    } catch (error) {
+      console.error(error);
     }
-  } catch (error) {
-    console.error(error);
-  }
-};
+  };
 
-
-const fetchdropdowns = async () => {
-  try {
-    // Build JSON payloads instead of FormData
-    const productPayload = {
-      Type: "Product",
-      ProductID: "",
+  const handleSubmit = async () => {
+    const getLabel = (id) => {
+      let ele = productVersion.filter((item) => {
+        return item.value == id;
+      });
+      return ele[0]?.label;
     };
 
-    const groupPayload = {
-      Type: "Group",
-      ProductID: "",
-    };
+    try {
+      if (
+        formData?.Group == "" ||
+        formData?.Steps == "" ||
+        formData?.Responsible == "" ||
+        formData?.Type == "" ||
+        formData?.RequiredDays == "" ||
+        formData?.Interdependent == "" ||
+        formData?.ProductVersion == ""
+      ) {
+        toast.error("All fields are mandatory");
+        return;
+      }
 
-    const dependentPayload = {
-      Type: "Dependent",
-      ProductID: "",
-    };
+      const payload = {
+        ID: String(useCryptoLocalStorage("user_Data", "get", "ID") || ""),
+        GroupId: String(formData?.Group || ""),
+        Steps: String(formData?.Steps || ""),
+        ResponsibleID: String(formData?.Responsible || ""),
+        ImpleTypeId: String(formData?.Type || ""),
+        ReqDays: String(formData?.RequiredDays || ""),
+        InterdependentId: String(formData?.Interdependent || ""),
+        ProductID: String(formData?.ProductVersion || ""),
+        Product: String(getLabel(formData?.ProductVersion) || ""),
+      };
 
-    const productresponse = await GetImplementaionMaster(productPayload);
-    const groupresponse = await GetImplementaionMaster(groupPayload);
-    const depresponse = await GetImplementaionMaster(dependentPayload);
+      const detailresponse = await SaveImplementaionMaster(payload);
 
-    setProductVersion(
-      productresponse?.data?.data.map((item) => ({
-        label: item?.NAME,
-        value: item?.id,
-      }))
-    );
+      if (detailresponse?.data?.success === true) {
+        toast.success(detailresponse?.data?.message);
+        fetchproductdetails(formData?.ProductVersion);
+        setFormData({
+          ...formData,
+          Group: "",
+          Steps: "",
+          Responsible: "",
+          Type: "",
+          RequiredDays: "",
+          Interdependent: "",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    setGroup(
-      groupresponse?.data?.data.map((item) => ({
-        label: item?.GroupName,
-        value: item?.Groupid,
-      }))
-    );
+  const fetchdropdowns = async () => {
+    try {
+      // Build JSON payloads instead of FormData
+      const productPayload = {
+        Type: "Product",
+        ProductID: "",
+      };
 
-    setInterdependent(
-      depresponse?.data?.data.map((item) => ({
-        label: item?.Steps,
-        value: item?.Id,
-      }))
-    );
-  } catch (error) {
-    console.error(error);
-  }
-};
+      const groupPayload = {
+        Type: "Group",
+        ProductID: "",
+      };
+
+      const dependentPayload = {
+        Type: "Dependent",
+        ProductID: "",
+      };
+
+      const productresponse = await GetImplementaionMaster(productPayload);
+      const groupresponse = await GetImplementaionMaster(groupPayload);
+      const depresponse = await GetImplementaionMaster(dependentPayload);
+
+      setProductVersion(
+        productresponse?.data?.data.map((item) => ({
+          label: item?.NAME,
+          value: item?.id,
+        }))
+      );
+
+      setGroup(
+        groupresponse?.data?.data.map((item) => ({
+          label: item?.GroupName,
+          value: item?.Groupid,
+        }))
+      );
+
+      setInterdependent(
+        depresponse?.data?.data.map((item) => ({
+          label: item?.Steps,
+          value: item?.Id,
+        }))
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const removeStep = async (id) => {
     try {
-      let product = new FormData();
-    const payload = {
-      ID: String(useCryptoLocalStorage("user_Data", "get", "ID") || ""),
-      StepID: String(id || ""),
-    };
-    // product.append("ID", payload.ID);
-    // product.append("StepID", payload.StepID);
-
+      const payload = {
+        ID: String(useCryptoLocalStorage("user_Data", "get", "ID") || ""),
+        StepID: String(id || ""),
+      };
       const detailresponse = await DeleteImplementaionMaster(payload);
 
       toast.success(detailresponse?.data?.message);

@@ -74,8 +74,6 @@ const AccessRight = (data) => {
       });
   };
 
-  // console.log("remaining check", unmappedItems);
-
   const handleSearch = () => {
     if (!Object.keys(formData?.RoleMaster)?.length > 0) {
       toast.error("Please Select Role.");
@@ -89,10 +87,8 @@ const AccessRight = (data) => {
           MenuID: Number(formData?.MenuMaster),
         })
         .then((res) => {
-          const remaining = res?.data?.data?.Remaining || [];
-          setUnmappedItems(remaining);
-          // setMappedItems(res?.data?.Available);
-          // setUnmappedItems(res?.data?.Remaining);
+          setMappedItems(res?.data?.data?.Available);
+          setUnmappedItems(res?.data?.data?.Remaining);
           setLoading(false);
         })
         .catch((err) => {
@@ -146,7 +142,7 @@ const AccessRight = (data) => {
     axiosInstances
       .post(apiUrls.AccessRight_Update, {
         RoleID: Number(formData?.RoleMaster?.value),
-        UrlID: Number(unmappedItems[selectedUnmappedItem]?.id),
+        UrlID: Number(mappedItems[selectedMappedItem]?.ID),
         ActionType: String("Remove"),
       })
       .then((res) => {
@@ -162,7 +158,6 @@ const AccessRight = (data) => {
       });
   };
 
-  console.log(formData);
   return (
     <>
       {visible?.ShowRole && (

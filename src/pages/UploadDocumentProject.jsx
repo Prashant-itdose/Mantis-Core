@@ -74,18 +74,18 @@ const UploadDocumentProject = ({ data }) => {
       type: "application/pdf",
     });
 
- const toBase64 =  (file) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      const result = reader.result;
-      // Remove the "data:application/...;base64," prefix
-      const base64 = result.split(",")[1]?.trim();
-      resolve(base64);
-    };
-    reader.onerror = (error) => reject(error);
-  });
+    const toBase64 = (file) =>
+      new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          const result = reader.result;
+          // Remove the "data:application/...;base64," prefix
+          const base64 = result.split(",")[1]?.trim();
+          resolve(base64);
+        };
+        reader.onerror = (error) => reject(error);
+      });
 
     // console.log("pdfFile", pdfFile);
     // let form = new FormData();
@@ -106,7 +106,7 @@ const UploadDocumentProject = ({ data }) => {
     // form.append("FileExtension", formData?.FileExtension),
     // axios
     //   .post(apiUrls?.UploadDocument, form, { headers })
-   const base64File = pdfFile ? await toBase64(pdfFile) : "";
+    const base64File = pdfFile ? await toBase64(pdfFile) : "";
     const payload = {
       ProjectID: Number(data?.ProjectID || data?.Id),
       DocumentTypeID: Number(formData?.DocumentType),
@@ -115,8 +115,8 @@ const UploadDocumentProject = ({ data }) => {
           documenttype.find((item) => item?.value === formData?.DocumentType)
             ?.label
         ) || "",
-        Document_Base64: base64File,
-      FileExtension: String(formData?.FileExtension || "pdf"),
+      Document_Base64: base64File,
+      FileExtension: String(formData?.FileExtension),
     };
     axiosInstances
       .post(apiUrls?.UploadDocument, payload)
@@ -170,75 +170,59 @@ const UploadDocumentProject = ({ data }) => {
 
   const handleDocRemove = (ele) => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("ProjectID", ele?.ProjectID),
-      form.append("ActionType", "DeleteDocument"),
-      form.append("DocumentPrimaryID", ele?.UniqueID),
-      axios
-        .post(apiUrls?.ProjectMasterUpdate, form, { headers })
-        .then((res) => {
-          if (res?.data?.status === true) {
-            toast.success(res?.data?.message);
-            handleSearch();
-            setLoading(false);
-          } else {
-            toast.error(res?.data?.message);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          setLoading(false);
-        });
-  };
-
-  const handleSearch = () => {
     // let form = new FormData();
     // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
     //   form.append(
     //     "LoginName",
     //     useCryptoLocalStorage("user_Data", "get", "realname")
     //   ),
-    //   form.append("VerticalID", ""),
-    //   form.append("TeamID", ""),
-    //   form.append("WingID", ""),
-    //   form.append("POC1", ""),
-    //   form.append("POC2", ""),
-    //   form.append("POC3", ""),
-    //   form.append("Status", ""),
-    //   form.append("ProjectID", data?.Id || data?.ProjectID),
-      // form.append("Title", "ClickToShift"),
-      // axios
-      //   .post(apiUrls?.UploadDocument_Search, form, { headers })
+    //   form.append("ProjectID", ele?.ProjectID),
+    //   form.append("ActionType", "DeleteDocument"),
+    //   form.append("DocumentPrimaryID", ele?.UniqueID),
+    //   axios
+    //     .post(apiUrls?.ProjectMasterUpdate, form, { headers })
+    axiosInstances
+      .post(apiUrls.ProjectMasterUpdate, {
+        ProjectID: Number(ele?.ProjectID),
+        ActionType: "DeleteDocument",
+        User_ID: ele?.UniqueID,
+      })
+      .then((res) => {
+        if (res?.data?.success === true) {
+          toast.success(res?.data?.message);
+          handleSearch();
+          setLoading(false);
+        } else {
+          toast.error(res?.data?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  };
 
-       const payload = {
-            RoleID: useCryptoLocalStorage("user_Data", "get", "RoleID"),
-            VerticalID: "",
-            TeamID: "",
-            WingID: "",
-            POC1: "",
-            POC2: "",
-            POC3: "",
-            Status: "",
-            ProjectID: String(data?.Id || data?.ProjectID),
-          };
-           axiosInstances
+  const handleSearch = () => {
+    const payload = {
+      RoleID: useCryptoLocalStorage("user_Data", "get", "RoleID"),
+      VerticalID: "",
+      TeamID: "",
+      WingID: "",
+      POC1: "",
+      POC2: "",
+      POC3: "",
+      Status: "",
+      ProjectID: String(data?.Id || data?.ProjectID),
+    };
+    axiosInstances
       .post(apiUrls?.UploadDocument_Search, payload)
-        .then((res) => {
-          setTableData(res?.data?.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      .then((res) => {
+        setTableData(res?.data?.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   useEffect(() => {
     getType();

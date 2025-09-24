@@ -204,24 +204,6 @@ const ViewIssues = ({ data }) => {
     SearhType: "0",
   });
 
-  console.log("formData", formData);
-
-  // function debounce(func, delay) {
-  //   let timeout;
-  //   return function (...args) {
-  //     const context = this;
-  //     if (timeout) clearTimeout(timeout);
-  //     timeout = setTimeout(() => func.apply(context, args), delay);
-  //   };
-  // }
-
-  // const debouncedApiCall = debounce((code) => {
-  //   const filterdata = tableData?.filter((item) => item.IsActive == true);
-  //   const ticketIDs = filterdata.map((item) => item.TicketID).join(",");
-  //   getmultiApplyAction(ticketIDs,{label:formData?.RefereRCA,value:code});
-  // }, 1000);
-  // console.log("formData. checkk", formData);
-
   const viewissuesTHEAD = [
     t("S.No."),
     // t("Notes"),
@@ -239,11 +221,14 @@ const ViewIssues = ({ data }) => {
     t("Status"),
     t("Date Submitted"),
     t("Delivery Date"),
-    t("ManMinutes"),
+    // t("PMM"),
+    t("M.ManMinutes"),
     { name: t("Change Action"), width: "9%" },
     t("Module Name"),
-    t("Dev. ManMinutes"),
+    // t("Dev.MM"),
+    t("Dev.ManMinutes"),
     t("DeliveryDate-"),
+    // t("CMM"),
     t("ManMinutes-"),
   ];
 
@@ -537,51 +522,47 @@ const ViewIssues = ({ data }) => {
     const ticketIDs = filterdata.map((item) => item.TicketID).join(",");
     if (ticketIDs == "") {
       toast.error("Please Select atleast one Ticket.");
-    } else {
+    } 
+    else if (
+      !formData?.RefereCode ||
+      isNaN(formData?.RefereCode) ||
+      Number(formData?.RefereCode) <= 0
+    ){
+       toast.error("Developer Manminutes cannot be Zero or Empty.");
+    }
+    else {
       axiosInstances
-      .post(apiUrls.ApplyAction,{
-  "TicketIDs": String(ticketIDs),
-  "ActionText": "Resolve",
-  "ActionId": "",
-  "RCA": String(formData?.RefereRCA),
-  "ReferenceCode": String(formData?.RefereCode),
-  "ManHour": String(formData?.ManHours),
-  "Summary": "",
-  "ModuleID": "",
-  "ModuleName": "",
-  "PagesID": "",
-  "PagesName": "",
-  "ManHoursClient": "",
-  "DeliveryDateClient": "",
-  "ReOpenReasonID": "",
-  "ReOpenReason": ""
-})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("TicketIDs", ticketIDs),
-      //   form.append("ActionText", "Resolve"),
-      //   form.append("ReferenceCode", formData?.RefereCode),
-      //   form.append("RCA", formData?.RefereRCA),
-      //   form.append("ManHour", formData?.ManHours),
-      //   axios
-      //     .post(apiUrls?.ApplyAction, form, { headers })
-          .then((res) => {
-            toast.success(res?.data?.message);
-            setFormData({
-              ...formData,
-              RefereRCA: "",
-              RefereCode: "",
-              ManHours: "",
-            });
-            handleViewSearch();
-          })
-          .catch((err) => {
-            console.log(err);
+        .post(apiUrls.ApplyAction, {
+          TicketIDs: String(ticketIDs),
+          ActionText: "Resolve",
+          ActionId: "",
+          RCA: String(formData?.RefereRCA),
+          ReferenceCode: String(formData?.RefereCode),
+          ManHour: String(formData?.ManHours),
+          Summary: "",
+          ModuleID: "",
+          ModuleName: "",
+          PagesID: "",
+          PagesName: "",
+          ManHoursClient: "",
+          DeliveryDateClient: "",
+          ReOpenReasonID: "",
+          ReOpenReason: "",
+        })
+       
+        .then((res) => {
+          toast.success(res?.data?.message);
+          setFormData({
+            ...formData,
+            RefereRCA: "",
+            RefereCode: "",
+            ManHours: "",
           });
+          handleViewSearch();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -594,49 +575,49 @@ const ViewIssues = ({ data }) => {
       // const filterdata = tableData?.filter((item) => item.IsActive == true);
       // const ticketIDs = filterdata.map((item) => item.TicketID).join(",");
       axiosInstances
-      .post(apiUrls.ApplyAction, {
-  "TicketIDs": String(ticketIDs),
-  "ActionText": "Close",
-  "ActionId": "",
-  "RCA": String(formData?.RefereRCA),
-  "ReferenceCode": String(formData?.RefereCode),
-  "ManHour": String(formData?.ManHours),
-  "Summary": "",
-  "ModuleID": "",
-  "ModuleName": "",
-  "PagesID": "",
-  "PagesName": "",
-  "ManHoursClient": "",
-  "DeliveryDateClient": "",
-  "ReOpenReasonID": "",
-  "ReOpenReason": ""
-})
-//       let form = new FormData();
-//       form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-//         form.append(
-//           "LoginName",
-//           useCryptoLocalStorage("user_Data", "get", "realname")
-//         ),
-//         form.append("TicketIDs", ticketIDs),
-//         form.append("ActionText", "Close"),
-//         form.append("ReferenceCode", formData?.RefereCode),
-//         form.append("RCA", formData?.RefereRCA),
-//         form.append("ManHour", formData?.ManHours),
-//         axios
-//           .post(apiUrls?.ApplyAction, form, { headers })
-          .then((res) => {
-            toast.success(res?.data?.message);
-            setFormData({
-              ...formData,
-              RefereRCA: "",
-              RefereCode: "",
-              ManHours: "",
-            });
-            handleViewSearch();
-          })
-          .catch((err) => {
-            console.log(err);
+        .post(apiUrls.ApplyAction, {
+          TicketIDs: String(ticketIDs),
+          ActionText: "Close",
+          ActionId: "",
+          RCA: String(formData?.RefereRCA),
+          ReferenceCode: String(formData?.RefereCode),
+          ManHour: String(formData?.ManHours),
+          Summary: "",
+          ModuleID: "",
+          ModuleName: "",
+          PagesID: "",
+          PagesName: "",
+          ManHoursClient: "",
+          DeliveryDateClient: "",
+          ReOpenReasonID: "",
+          ReOpenReason: "",
+        })
+        //       let form = new FormData();
+        //       form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+        //         form.append(
+        //           "LoginName",
+        //           useCryptoLocalStorage("user_Data", "get", "realname")
+        //         ),
+        //         form.append("TicketIDs", ticketIDs),
+        //         form.append("ActionText", "Close"),
+        //         form.append("ReferenceCode", formData?.RefereCode),
+        //         form.append("RCA", formData?.RefereRCA),
+        //         form.append("ManHour", formData?.ManHours),
+        //         axios
+        //           .post(apiUrls?.ApplyAction, form, { headers })
+        .then((res) => {
+          toast.success(res?.data?.message);
+          setFormData({
+            ...formData,
+            RefereRCA: "",
+            RefereCode: "",
+            ManHours: "",
           });
+          handleViewSearch();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -648,107 +629,107 @@ const ViewIssues = ({ data }) => {
       toast.error("Please Select atleast one Ticket.");
     } else {
       axiosInstances
-      .post(apiUrls.ApplyAction, {
-  "TicketIDs": String(ticketIDs),
-  "ActionText": "ManHours",
-  "ActionId": String(formData?.ManHours),
-  "RCA": "",
-  "ReferenceCode": "",
-  "ManHour": "",
-  "Summary": "",
-  "ModuleID": "",
-  "ModuleName": "",
-  "PagesID": "",
-  "PagesName": "",
-  "ManHoursClient": "",
-  "DeliveryDateClient": "",
-  "ReOpenReasonID": "",
-  "ReOpenReason": ""
-})
-      // const filterdata = tableData?.filter((item) => item.IsActive == true);
-      // const ticketIDs = filterdata.map((item) => item.TicketID).join(",");
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("TicketIDs", ticketIDs),
-      //   form.append("ActionText", "ManHours"),
-      //   form.append("ActionId", formData?.ManHours),
-      //   axios
-      //     .post(apiUrls?.ApplyAction, form, { headers })
-          .then((res) => {
-            toast.success(res?.data?.message);
-            setFormData({
-              ...formData,
-              ManHours: "",
-            });
-            handleViewSearch();
-          })
-          .catch((err) => {
-            console.log(err);
+        .post(apiUrls.ApplyAction, {
+          TicketIDs: String(ticketIDs),
+          ActionText: "ManHours",
+          ActionId: String(formData?.ManHours),
+          RCA: "",
+          ReferenceCode: "",
+          ManHour: "",
+          Summary: "",
+          ModuleID: "",
+          ModuleName: "",
+          PagesID: "",
+          PagesName: "",
+          ManHoursClient: "",
+          DeliveryDateClient: "",
+          ReOpenReasonID: "",
+          ReOpenReason: "",
+        })
+        // const filterdata = tableData?.filter((item) => item.IsActive == true);
+        // const ticketIDs = filterdata.map((item) => item.TicketID).join(",");
+        // let form = new FormData();
+        // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+        //   form.append(
+        //     "LoginName",
+        //     useCryptoLocalStorage("user_Data", "get", "realname")
+        //   ),
+        //   form.append("TicketIDs", ticketIDs),
+        //   form.append("ActionText", "ManHours"),
+        //   form.append("ActionId", formData?.ManHours),
+        //   axios
+        //     .post(apiUrls?.ApplyAction, form, { headers })
+        .then((res) => {
+          toast.success(res?.data?.message);
+          setFormData({
+            ...formData,
+            ManHours: "",
           });
+          handleViewSearch();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
   const getModule = () => {
     axiosInstances
       .post(apiUrls.Module_Select, {
-  "RoleID": useCryptoLocalStorage("user_Data", "get", "RoleID"),
-  "ProjectID": 0,
-  "IsActive": 1,
-  "IsMaster": 2
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append("ProjectID", "0"),
-    //   form.append("IsActive", "1"),
-    //   form.append("IsMaster", "2"),
-    //   axios
-    //     .post(apiUrls?.Module_Select, form, { headers })
-        .then((res) => {
-          const poc3s = res?.data.data.map((item) => {
-            return { name: item?.ModuleName, code: item?.ModuleID };
-          });
-          setModuleName(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
+        RoleID: useCryptoLocalStorage("user_Data", "get", "RoleID"),
+        ProjectID: 0,
+        IsActive: 1,
+        IsMaster: 2,
+      })
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append(
+      //     "RoleID",
+      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+      //   ),
+      //   form.append("ProjectID", "0"),
+      //   form.append("IsActive", "1"),
+      //   form.append("IsMaster", "2"),
+      //   axios
+      //     .post(apiUrls?.Module_Select, form, { headers })
+      .then((res) => {
+        const poc3s = res?.data.data.map((item) => {
+          return { name: item?.ModuleName, code: item?.ModuleID };
         });
+        setModuleName(poc3s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getPage = () => {
     axiosInstances
       .post(apiUrls.Pages_Select, {
-  "RoleID": useCryptoLocalStorage("user_Data", "get", "RoleID"),
-  "ProjectID": 0,
-  "IsActive": 1,
-  "IsMaster": 0
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append("ProjectID", "0"),
-    //   form.append("IsActive", "1"),
-    //   form.append("IsMaster", "0"),
-    //   axios
-    //     .post(apiUrls?.Pages_Select, form, { headers })
-        .then((res) => {
-          const poc3s = res?.data?.data?.map((item) => {
-            return { label: item?.PagesName, value: item?.ID };
-          });
-          setPageName(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
+        RoleID: useCryptoLocalStorage("user_Data", "get", "RoleID"),
+        ProjectID: 0,
+        IsActive: 1,
+        IsMaster: 0,
+      })
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append(
+      //     "RoleID",
+      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+      //   ),
+      //   form.append("ProjectID", "0"),
+      //   form.append("IsActive", "1"),
+      //   form.append("IsMaster", "0"),
+      //   axios
+      //     .post(apiUrls?.Pages_Select, form, { headers })
+      .then((res) => {
+        const poc3s = res?.data?.data?.map((item) => {
+          return { label: item?.PagesName, value: item?.ID };
         });
+        setPageName(poc3s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const handleHoldTable = () => {
     const filterdata = tableData?.filter((item) => item.IsActive == true);
@@ -759,101 +740,90 @@ const ViewIssues = ({ data }) => {
       // const filterdata = tableData?.filter((item) => item.IsActive == true);
       // const ticketIDs = filterdata.map((item) => item.TicketID).join(",");
       axiosInstances
-      .post(apiUrls.ApplyAction, {
-  "TicketIDs": String(ticketIDs),
-  "ActionText": "Hold",
-  "ActionId": String(formData?.Hold),
-  "RCA": "",
-  "ReferenceCode": "",
-  "ManHour": "",
-  "Summary": "",
-  "ModuleID": "",
-  "ModuleName": "",
-  "PagesID": "",
-  "PagesName": "",
-  "ManHoursClient": "",
-  "DeliveryDateClient": "",
-  "ReOpenReasonID": "",
-  "ReOpenReason": ""
-})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("TicketIDs", ticketIDs),
-      //   form.append("ActionText", "Hold"),
-      //   form.append("ActionId", formData?.Hold),
-      //   // form.append("HoldReason", formData?.Hold),
-      //   axios
-      //     .post(apiUrls?.ApplyAction, form, { headers })
-          .then((res) => {
-            toast.success(res?.data?.message);
-            setFormData({
-              ...formData,
-              Hold: "",
-            });
-            handleViewSearch();
-          })
-          .catch((err) => {
-            console.log(err);
+        .post(apiUrls.ApplyAction, {
+          TicketIDs: String(ticketIDs),
+          ActionText: "Hold",
+          ActionId: String(formData?.Hold),
+          RCA: "",
+          ReferenceCode: "",
+          ManHour: "",
+          Summary: "",
+          ModuleID: "",
+          ModuleName: "",
+          PagesID: "",
+          PagesName: "",
+          ManHoursClient: "",
+          DeliveryDateClient: "",
+          ReOpenReasonID: "",
+          ReOpenReason: "",
+        })
+        // let form = new FormData();
+        // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+        //   form.append(
+        //     "LoginName",
+        //     useCryptoLocalStorage("user_Data", "get", "realname")
+        //   ),
+        //   form.append("TicketIDs", ticketIDs),
+        //   form.append("ActionText", "Hold"),
+        //   form.append("ActionId", formData?.Hold),
+        //   // form.append("HoldReason", formData?.Hold),
+        //   axios
+        //     .post(apiUrls?.ApplyAction, form, { headers })
+        .then((res) => {
+          toast.success(res?.data?.message);
+          setFormData({
+            ...formData,
+            Hold: "",
           });
+          handleViewSearch();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
   const handleResolveElement = (item) => {
     if (formData?.RefereRCA == "") {
       toast.error("Please Enter Summary.");
-    } else if (formData?.RefereCode == "") {
-      toast.error("Please Enter Developer Manminutes.");
-      // } else if (formData?.ManHours == "") {
-      //   toast.error("Please Enter ManMinutes.");
+    } else if (
+      !formData?.RefereCode ||
+      isNaN(formData?.RefereCode) ||
+      Number(formData?.RefereCode) <= 0
+    ) {
+      toast.error("Developer Manminutes cannot be Zero or Empty.");
     } else {
       axiosInstances
-      .post(apiUrls.ApplyAction, {
-  "TicketIDs": String(item?.TicketID),
-  "ActionText": "Resolve",
-  "ActionId": "",
-  "RCA": String(formData?.RefereRCA),
-  "ReferenceCode": "",
-  "ManHour": String(formData?.ManHours),
-  "Summary": "",
-  "ModuleID": "",
-  "ModuleName": "",
-  "PagesID": "",
-  "PagesName": "",
-  "ManHoursClient": "",
-  "DeliveryDateClient": "",
-  "ReOpenReasonID": "",
-  "ReOpenReason": ""
-})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("TicketIDs", item?.TicketID),
-      //   form.append("ActionText", "Resolve"),
-      //   form.append("ReferenceCode", formData?.RefereCode),
-      //   form.append("RCA", formData?.RefereRCA),
-      //   form.append("ManHour", formData?.ManHours),
-      //   axios
-      //     .post(apiUrls?.ApplyAction, form, { headers })
-          .then((res) => {
-            toast.success(res?.data?.message);
-            setFormData({
-              ...formData,
-              RefereRCA: "",
-              RefereCode: "",
-              ManHours: "",
-            });
-            handleViewSearch();
-          })
-          .catch((err) => {
-            console.log(err);
+        .post(apiUrls.ApplyAction, {
+          TicketIDs: String(item?.TicketID),
+          ActionText: "Resolve",
+          ActionId: "",
+          RCA: String(formData?.RefereRCA),
+          ReferenceCode: String(formData?.RefereCode),
+          ManHour: String(""),
+          Summary: "",
+          ModuleID: "",
+          ModuleName: "",
+          PagesID: "",
+          PagesName: "",
+          ManHoursClient: "",
+          DeliveryDateClient: "",
+          ReOpenReasonID: "",
+          ReOpenReason: "",
+        })
+        .then((res) => {
+          toast.success(res?.data?.message);
+          setFormData({
+            ...formData,
+            RefereRCA: "",
+            RefereCode: "",
+            ManHours: "",
           });
+          handleViewSearch();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -881,46 +851,45 @@ const ViewIssues = ({ data }) => {
   const handleHold = (item) => {
     axiosInstances
       .post(apiUrls.ApplyAction, {
-  "TicketIDs": String(item?.TicketID),
-  "ActionText": "Hold",
-  "ActionId": String(formData?.Hold),
-  "RCA": "",
-  "ReferenceCode": "",
-  "ManHour": "",
-  "Summary": "",
-  "ModuleID": "",
-  "ModuleName": "",
-  "PagesID": "",
-  "PagesName": "",
-  "ManHoursClient": "",
-  "DeliveryDateClient": "",
-  "ReOpenReasonID": "",
-  "ReOpenReason": ""
-
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("TicketIDs", item?.TicketID),
-    //   form.append("ActionText", "Hold"),
-    //   form.append("ActionId", formData?.Hold),
-    //   // form.append("HoldReason", formData?.Hold),
-    //   axios
-    //     .post(apiUrls?.ApplyAction, form, { headers })
-        .then((res) => {
-          toast.success(res?.data?.message);
-          setFormData({
-            ...formData,
-            Hold: "",
-          });
-          handleViewSearch();
-        })
-        .catch((err) => {
-          console.log(err);
+        TicketIDs: String(item?.TicketID),
+        ActionText: "Hold",
+        ActionId: String(formData?.Hold),
+        RCA: "",
+        ReferenceCode: "",
+        ManHour: "",
+        Summary: "",
+        ModuleID: "",
+        ModuleName: "",
+        PagesID: "",
+        PagesName: "",
+        ManHoursClient: "",
+        DeliveryDateClient: "",
+        ReOpenReasonID: "",
+        ReOpenReason: "",
+      })
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append(
+      //     "LoginName",
+      //     useCryptoLocalStorage("user_Data", "get", "realname")
+      //   ),
+      //   form.append("TicketIDs", item?.TicketID),
+      //   form.append("ActionText", "Hold"),
+      //   form.append("ActionId", formData?.Hold),
+      //   // form.append("HoldReason", formData?.Hold),
+      //   axios
+      //     .post(apiUrls?.ApplyAction, form, { headers })
+      .then((res) => {
+        toast.success(res?.data?.message);
+        setFormData({
+          ...formData,
+          Hold: "",
         });
+        handleViewSearch();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleResolveElementClose = (item) => {
@@ -931,54 +900,53 @@ const ViewIssues = ({ data }) => {
       //   toast.error("Please Enter Reference RCA Code.");
     } else {
       axiosInstances
-      .post(apiUrls.ApplyAction, {
-  "TicketIDs": String(item?.TicketID),
-  "ActionText": "Close",
-  "ActionId": String(formData?.Hold),
-  "RCA": String(formData?.RefereRCA),
-  "ReferenceCode": "",
-  "ManHour": String(formData?.ManHours),
-  "Summary": "",
-  "ModuleID": "",
-  "ModuleName": "",
-  "PagesID": "",
-  "PagesName": "",
-  "ManHoursClient": "",
-  "DeliveryDateClient": "",
-  "ReOpenReasonID": "",
-  "ReOpenReason": ""
-  
-})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("TicketIDs", item?.TicketID),
-      //   form.append("ActionText", "Close"),
-      //   form.append("ReferenceCode", ""),
-      //   form.append("RCA", formData?.RefereRCA),
-      //   form.append("ManHour", formData?.ManHours),
-      //   axios
-      //     .post(apiUrls?.ApplyAction, form, { headers })
-          .then((res) => {
-            if (res?.data?.status === true) {
-              toast.success(res?.data?.message);
-              setFormData({
-                ...formData,
-                RefereRCA: "",
-                RefereCode: "",
-                ManHours: "",
-              });
-              handleViewSearch();
-            } else {
-              toast.error(res?.data?.message);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        .post(apiUrls.ApplyAction, {
+          TicketIDs: String(item?.TicketID),
+          ActionText: "Close",
+          ActionId: String(formData?.Hold),
+          RCA: String(formData?.RefereRCA),
+          ReferenceCode: "",
+          ManHour: String(formData?.ManHours),
+          Summary: "",
+          ModuleID: "",
+          ModuleName: "",
+          PagesID: "",
+          PagesName: "",
+          ManHoursClient: "",
+          DeliveryDateClient: "",
+          ReOpenReasonID: "",
+          ReOpenReason: "",
+        })
+        // let form = new FormData();
+        // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+        //   form.append(
+        //     "LoginName",
+        //     useCryptoLocalStorage("user_Data", "get", "realname")
+        //   ),
+        //   form.append("TicketIDs", item?.TicketID),
+        //   form.append("ActionText", "Close"),
+        //   form.append("ReferenceCode", ""),
+        //   form.append("RCA", formData?.RefereRCA),
+        //   form.append("ManHour", formData?.ManHours),
+        //   axios
+        //     .post(apiUrls?.ApplyAction, form, { headers })
+        .then((res) => {
+          if (res?.data?.status === true) {
+            toast.success(res?.data?.message);
+            setFormData({
+              ...formData,
+              RefereRCA: "",
+              RefereCode: "",
+              ManHours: "",
+            });
+            handleViewSearch();
+          } else {
+            toast.error(res?.data?.message);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
   const handleDeliveryChange = (name, e) => {
@@ -1038,46 +1006,45 @@ const ViewIssues = ({ data }) => {
       toast.error("Please Select atleast one Ticket.");
     } else {
       axiosInstances
-      .post(apiUrls.ApplyAction, {
-  "TicketIDs": String(ticketIDs),
-  "ActionText": "DeliveryDate",
-  "ActionId": "0",
-  "RCA": "",
-  "ReferenceCode": "",
-  "ManHour": "",
-  "Summary": "",
-  "ModuleID": "",
-  "ModuleName": "",
-  "PagesID": "",
-  "PagesName": "",
-  "ManHoursClient": "",
-  "DeliveryDateClient": "",
-  "ReOpenReasonID": "",
-  "ReOpenReason": ""
-  
-})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("TicketIDs", ticketIDs),
-      //   form.append("ActionText", "DeliveryDate"),
-      //   form.append("ActionId", ""),
-      //   axios
-      //     .post(apiUrls?.ApplyAction, form, { headers })
-          .then((res) => {
-            toast.success(res?.data?.message);
-            setFormData({
-              ...formData,
-              RemoveDeliveryToStatus: "",
-            });
-            handleViewSearch();
-          })
-          .catch((err) => {
-            console.log(err);
+        .post(apiUrls.ApplyAction, {
+          TicketIDs: String(ticketIDs),
+          ActionText: "DeliveryDate",
+          ActionId: "0",
+          RCA: "",
+          ReferenceCode: "",
+          ManHour: "",
+          Summary: "",
+          ModuleID: "",
+          ModuleName: "",
+          PagesID: "",
+          PagesName: "",
+          ManHoursClient: "",
+          DeliveryDateClient: "",
+          ReOpenReasonID: "",
+          ReOpenReason: "",
+        })
+        // let form = new FormData();
+        // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+        //   form.append(
+        //     "LoginName",
+        //     useCryptoLocalStorage("user_Data", "get", "realname")
+        //   ),
+        //   form.append("TicketIDs", ticketIDs),
+        //   form.append("ActionText", "DeliveryDate"),
+        //   form.append("ActionId", ""),
+        //   axios
+        //     .post(apiUrls?.ApplyAction, form, { headers })
+        .then((res) => {
+          toast.success(res?.data?.message);
+          setFormData({
+            ...formData,
+            RemoveDeliveryToStatus: "",
           });
+          handleViewSearch();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
   const getmultiApplyAction = (ids, data) => {
@@ -1085,43 +1052,42 @@ const ViewIssues = ({ data }) => {
       toast.error("Please Select atleast one Ticket.");
     } else {
       axiosInstances
-      .post(apiUrls.ApplyAction, {
-  "TicketIDs": String(ids),
-  "ActionText": String(data?.label),
-  "ActionId": String(data?.value),
-  "RCA": "",
-  "ReferenceCode": "",
-  "ManHour": "",
-  "Summary": "",
-  "ModuleID": "",
-  "ModuleName": "",
-  "PagesID": "",
-  "PagesName": "",
-  "ManHoursClient": "",
-  "DeliveryDateClient": "",
-  "ReOpenReasonID": "",
-  "ReOpenReason": ""
-  
-})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("TicketIDs", ids),
-      //   form.append("ActionText", data?.label),
-      //   form.append("ActionId", data?.value),
-      //   axios
-      //     .post(apiUrls?.ApplyAction, form, { headers })
-          .then((res) => {
-            toast.success(res?.data?.message);
-            handleViewSearch();
-            setFormData((val) => ({ ...val, TableStatus: {} }));
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        .post(apiUrls.ApplyAction, {
+          TicketIDs: String(ids),
+          ActionText: String(data?.label),
+          ActionId: String(data?.value),
+          RCA: "",
+          ReferenceCode: "",
+          ManHour: "",
+          Summary: "",
+          ModuleID: "",
+          ModuleName: "",
+          PagesID: "",
+          PagesName: "",
+          ManHoursClient: "",
+          DeliveryDateClient: "",
+          ReOpenReasonID: "",
+          ReOpenReason: "",
+        })
+        // let form = new FormData();
+        // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+        //   form.append(
+        //     "LoginName",
+        //     useCryptoLocalStorage("user_Data", "get", "realname")
+        //   ),
+        //   form.append("TicketIDs", ids),
+        //   form.append("ActionText", data?.label),
+        //   form.append("ActionId", data?.value),
+        //   axios
+        //     .post(apiUrls?.ApplyAction, form, { headers })
+        .then((res) => {
+          toast.success(res?.data?.message);
+          handleViewSearch();
+          setFormData((val) => ({ ...val, TableStatus: {} }));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -1455,29 +1421,29 @@ const ViewIssues = ({ data }) => {
     }
     axiosInstances
       .post(apiUrls.SaveFilterData, {
-  "FiterData": savedData
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("_FiterData", savedData),
-    //   axios
-    //     .post(apiUrls?.SaveFilterData, form, { headers })
-        .then((res) => {
-          toast.success(res?.data?.message);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        FiterData: savedData,
+      })
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append("_FiterData", savedData),
+      //   axios
+      //     .post(apiUrls?.SaveFilterData, form, { headers })
+      .then((res) => {
+        toast.success(res?.data?.message);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleGetFilter = () => {
     axiosInstances
       .post(apiUrls.SearchFilterData, {})
-    // let form = new FormData();
+      // let form = new FormData();
 
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // axios
-    //   .post(apiUrls?.SearchFilterData, form, { headers })
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
+      // axios
+      //   .post(apiUrls?.SearchFilterData, form, { headers })
       .then((res) => {
         if (res?.data) {
           let resultObject = res?.data;
@@ -1860,55 +1826,53 @@ const ViewIssues = ({ data }) => {
   const getUpdateCategory = () => {
     axiosInstances
       .post(apiUrls.Category_Select, {
-  "RoleID": useCryptoLocalStorage("user_Data", "get", "RoleID"),
-  "ProjectID": 0
-})
-        .then((res) => {
-          const poc3s = res?.data.data.map((item) => {
-            return { label: item?.NAME, value: item?.NAME };
-          });
-          setUpdateCategory(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
+        RoleID: useCryptoLocalStorage("user_Data", "get", "RoleID"),
+        ProjectID: 0,
+      })
+      .then((res) => {
+        const poc3s = res?.data.data.map((item) => {
+          return { label: item?.NAME, value: item?.NAME };
         });
+        setUpdateCategory(poc3s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const getStatus = () => {
     axiosInstances
-      .post(apiUrls.Status_Select, {
-      })
-        .then((res) => {
-          console.log("check", res.data.data);
-          const poc3s = res?.data?.data?.map((item) => {
-            return {
-              name: item?.STATUS,
-              // code: item?.id !== undefined ? item?.id : null,
-              code: item?.id,
-            };
-          });
-          setStatus(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
+      .post(apiUrls.Status_Select, {})
+      .then((res) => {
+        console.log("check", res.data.data);
+        const poc3s = res?.data?.data?.map((item) => {
+          return {
+            name: item?.STATUS,
+            // code: item?.id !== undefined ? item?.id : null,
+            code: item?.id,
+          };
         });
+        setStatus(poc3s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getHideStatus = () => {
     axiosInstances
-      .post(apiUrls.Status_Select, {
-      })
-        .then((res) => {
-          const poc3s = res?.data?.data?.map((item) => {
-            return {
-              label: item?.STATUS,
-              value: item?.id !== undefined ? item?.id : null,
-            };
-          });
-          setHideStatus(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
+      .post(apiUrls.Status_Select, {})
+      .then((res) => {
+        const poc3s = res?.data?.data?.map((item) => {
+          return {
+            label: item?.STATUS,
+            value: item?.id !== undefined ? item?.id : null,
+          };
         });
+        setHideStatus(poc3s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getReporter = () => {
     axiosInstances
@@ -1962,133 +1926,137 @@ const ViewIssues = ({ data }) => {
       .post(apiUrls.AssignTo_Select, {
         ProjectID: projectID ?? "",
       })
-        .then((res) => {
-          const assigntos = res?.data.data.map((item) => {
-            return { label: item?.Name, value: item?.ID };
-          });
-          setAssignedtoValueProjectId(assigntos);
-        })
-        .catch((err) => {
-          console.log(err);
+      .then((res) => {
+        const assigntos = res?.data.data.map((item) => {
+          return { label: item?.Name, value: item?.ID };
         });
+        setAssignedtoValueProjectId(assigntos);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     // }
   };
   const getPriority = () => {
     axiosInstances
-      .post(apiUrls.Priority_Select, {
-      })
-        .then((res) => {
-          const assigntos = res?.data.data.map((item) => {
-            return { label: item?.NAME, value: item?.ID };
-          });
-          setPriority(assigntos);
-        })
-        .catch((err) => {
-          console.log(err);
+      .post(apiUrls.Priority_Select, {})
+      .then((res) => {
+        const assigntos = res?.data.data.map((item) => {
+          return { label: item?.NAME, value: item?.ID };
         });
+        setPriority(assigntos);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getApplyActionAssign = (data, index, ele) => {
+  
     axiosInstances
       .post(apiUrls.ApplyAction, {
-  "TicketIDs": String(tableData[index]?.TicketID),
-  "ActionText": String(data?.label),
-  "ActionId": String(data?.value),
-  "RCA": "",
-  "ReferenceCode": "",
-  "ManHour": "",
-  "Summary": "",
-  "ModuleID": "",
-  "ModuleName": "",
-  "PagesID": "",
-  "PagesName": "",
-  "ManHoursClient": "",
-  "DeliveryDateClient": "",
-  "ReOpenReasonID": "",
-  "ReOpenReason": ""
-})
-        .then((res) => {
-          toast.success(res?.data?.message);
-          handleViewSearch();
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        TicketIDs: String(tableData[index]?.TicketID),
+        ActionText: String(data?.label),
+        ActionId: String(data?.value),
+        RCA: "",
+        ReferenceCode: "",
+        ManHour: String(""),
+        Summary: "",
+        ModuleID: "",
+        ModuleName: "",
+        PagesID: "",
+        PagesName: "",
+        ManHoursClient: "",
+        DeliveryDateClient: "",
+        ReOpenReasonID: "",
+        ReOpenReason: "",
+      })
+      .then((res) => {
+        if (res.data.success === true) {
+            toast.success(res?.data?.message);
+            handleViewSearch();
+          } else {
+            toast.error(res.data.message);
+          }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getApplyActionReason = (data, index, ele) => {
     axiosInstances
       .post(apiUrls.ApplyAction, {
-  "TicketIDs": String(tableData[index]?.TicketID),
-  "ActionText": "ReOpen",
-  "ActionId": String(data?.value),
-  "RCA": "",
-  "ReferenceCode": "",
-  "ManHour": "",
-  "Summary": "",
-  "ModuleID": "",
-  "ModuleName": "",
-  "PagesID": "",
-  "PagesName": "",
-  "ManHoursClient": "",
-  "DeliveryDateClient": "",
-  "ReOpenReasonID": String(data?.value),
-  "ReOpenReason": String(data?.label)
-})
-        .then((res) => {
-          if (res?.data?.status === true) {
-            toast.success(res?.data?.message);
-            handleViewSearch();
-          } else {
-            toast.error(res?.data?.message);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        TicketIDs: String(tableData[index]?.TicketID),
+        ActionText: "ReOpen",
+        ActionId: String(data?.value),
+        RCA: "",
+        ReferenceCode: "",
+        ManHour: "",
+        Summary: "",
+        ModuleID: "",
+        ModuleName: "",
+        PagesID: "",
+        PagesName: "",
+        ManHoursClient: "",
+        DeliveryDateClient: "",
+        ReOpenReasonID: String(data?.value),
+        ReOpenReason: String(data?.label),
+      })
+      .then((res) => {
+        if (res?.data?.status === true) {
+          toast.success(res?.data?.message);
+          handleViewSearch();
+        } else {
+          toast.error(res?.data?.message);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const getApplyAction = (data, index) => {
     axiosInstances
       .post(apiUrls.ApplyAction, {
-  "TicketIDs": String(tableData[index]?.TicketID),
-  "ActionText": String(data?.label),
-  "ActionId": String(data?.value),
-  "RCA": "",
-  "ReferenceCode": "",
-  "ManHour": "",
-  "Summary": "",
-  "ModuleID": "",
-  "ModuleName": "",
-  "PagesID": "",
-  "PagesName": "",
-  "ManHoursClient": "",
-  "DeliveryDateClient": "",
-  "ReOpenReasonID": String(data?.value),
-  "ReOpenReason": String(data?.label)
-})
-    // console.log("check latest", data);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("TicketIDs", tableData[index]?.TicketID),
-    //   form.append("ActionText", data?.label),
-    //   form.append("ActionId", data?.value),
-    //   axios
-    //     .post(apiUrls?.ApplyAction, form, { headers })
-        .then((res) => {
-          if (res?.data?.success === true) {
-            toast.success(res?.data?.message);
-            handleViewSearch();
-          } else {
-            toast.error(res?.data?.message);
-            handleViewSearch();
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        TicketIDs: String(tableData[index]?.TicketID),
+        ActionText: String(data?.label),
+        ActionId: String(data?.value),
+        RCA: "",
+        ReferenceCode: "",
+        ManHour: "",
+        Summary: "",
+        ModuleID: "",
+        ModuleName: "",
+        PagesID: "",
+        PagesName: "",
+        ManHoursClient: "",
+        DeliveryDateClient: "",
+        ReOpenReasonID: String(data?.value),
+        ReOpenReason: String(data?.label),
+      })
+      // console.log("check latest", data);
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append(
+      //     "LoginName",
+      //     useCryptoLocalStorage("user_Data", "get", "realname")
+      //   ),
+      //   form.append("TicketIDs", tableData[index]?.TicketID),
+      //   form.append("ActionText", data?.label),
+      //   form.append("ActionId", data?.value),
+      //   axios
+      //     .post(apiUrls?.ApplyAction, form, { headers })
+      .then((res) => {
+        if (res?.data?.success === true) {
+          toast.success(res?.data?.message);
+          handleViewSearch();
+        } else {
+          toast.error(res?.data?.message);
+          handleViewSearch();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const fetchAllData = async () => {
@@ -2187,15 +2155,16 @@ const ViewIssues = ({ data }) => {
       Resolvetodate: String(formatDate(formData?.ResolveDateAfter) || ""),
 
       AssignedDateStatus: String(formData?.AssignedDate || ""),
-      AssignedFromDate:String(formatDate(deliveryDate || (formData?.AssignedDateBefore ?? new Date()))),
+      AssignedFromDate: String(
+        formatDate(deliveryDate || (formData?.AssignedDateBefore ?? new Date()))
+      ),
       // Assignedtodate: formatDate(formData?.AssignedDateAfter) ? String(formatDate(formData?.AssignedDateAfter)) : new Date(),
       Assignedtodate: String(
-  formData?.AssignedDateAfter
-    ? new Date(formData?.AssignedDateAfter).toISOString().split("T")[0]
-    : new Date().toISOString().split("T")[0]
-),
-  // Assignedtodate: "2025-09-16",
-
+        formData?.AssignedDateAfter
+          ? new Date(formData?.AssignedDateAfter).toISOString().split("T")[0]
+          : new Date().toISOString().split("T")[0]
+      ),
+      // Assignedtodate: "2025-09-16",
 
       ClosedDateStatus: String(formData?.CloseDate || ""),
       ClosedFromDate: String(formatDate(formData?.CloseDateBefore) || ""),
@@ -2522,17 +2491,17 @@ const ViewIssues = ({ data }) => {
       toast.error("Please Select atleast one Ticket.");
     } else {
       axiosInstances
-      .post(apiUrls.DeleteTicket, {
-  "TicketIDs":String(ticketIDs)
-})
-      
-          .then((res) => {
-            toast.success(res?.data?.message);
-            handleViewSearch();
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        .post(apiUrls.DeleteTicket, {
+          TicketIDs: String(ticketIDs),
+        })
+
+        .then((res) => {
+          toast.success(res?.data?.message);
+          handleViewSearch();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -2664,88 +2633,87 @@ const ViewIssues = ({ data }) => {
     // console.log("master check", details);
     axiosInstances
       .post(apiUrls.ApplyAction, {
-  "TicketIDs": String(details?.TicketID),
-  "ActionText":String(name),
-  "ActionId": formatDate(details?.DeliveryDate),
-  "RCA": "",
-  "ReferenceCode": "",
-  "ManHour": "",
-  "Summary": "",
-  "ModuleID": "",
-  "ModuleName": "",
-  "PagesID": "",
-  "PagesName": "",
-  "ManHoursClient": "",
-  "DeliveryDateClient": "",
-  "ReOpenReasonID": "",
-  "ReOpenReason": ""
-})
-//     let form = new FormData();
-//     form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-//       form.append(
-//         "LoginName",
-//         useCryptoLocalStorage("user_Data", "get", "realname")
-//       ),
-//       form.append("TicketIDs", details?.TicketID),
-//       form.append("ActionText", name),
-//       form.append("ActionId", formatDate(details?.DeliveryDate)),
-//       axios
-//         .post(apiUrls?.ApplyAction, form, { headers })
-        .then((res) => {
-          if (res?.data?.success === true) {
-            toast.success(res?.data?.message);
-            handleViewSearch();
-          } else {
-            toast.error(res?.data?.message);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        TicketIDs: String(details?.TicketID),
+        ActionText: String(name),
+        ActionId: formatDate(details?.DeliveryDate),
+        RCA: "",
+        ReferenceCode: "",
+        ManHour: "",
+        Summary: "",
+        ModuleID: "",
+        ModuleName: "",
+        PagesID: "",
+        PagesName: "",
+        ManHoursClient: "",
+        DeliveryDateClient: "",
+        ReOpenReasonID: "",
+        ReOpenReason: "",
+      })
+      //     let form = new FormData();
+      //     form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //       form.append(
+      //         "LoginName",
+      //         useCryptoLocalStorage("user_Data", "get", "realname")
+      //       ),
+      //       form.append("TicketIDs", details?.TicketID),
+      //       form.append("ActionText", name),
+      //       form.append("ActionId", formatDate(details?.DeliveryDate)),
+      //       axios
+      //         .post(apiUrls?.ApplyAction, form, { headers })
+      .then((res) => {
+        if (res?.data?.success === true) {
+          toast.success(res?.data?.message);
+          handleViewSearch();
+        } else {
+          toast.error(res?.data?.message);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const ClientupdateReceivedDate = (details, item, value, name) => {
-
     const finaldate = new Date(details?.ClientDeliveryDate);
     axiosInstances
       .post(apiUrls.ApplyAction, {
-  "TicketIDs": String(details?.TicketID),
-  "ActionText": "DeliveryDateClient",
-  "ActionId": formatDate(finaldate),
-  "RCA": "",
-  "ReferenceCode": "",
-  "ManHour": "",
-  "Summary": "",
-  "ModuleID": "",
-  "ModuleName": "",
-  "PagesID": "",
-  "PagesName": "",
-  "ManHoursClient": "",
-  "DeliveryDateClient": "",
-  "ReOpenReasonID": "",
-  "ReOpenReason": ""
-})
-//     let form = new FormData();
-//     form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-//       form.append(
-//         "LoginName",
-//         useCryptoLocalStorage("user_Data", "get", "realname")
-//       ),
-//       form.append("TicketIDs", details?.TicketID),
-//       form.append("ActionText", "DeliveryDateClient"),
-//       form.append("ActionId", formatDate(finaldate)),
-//       axios
-//         .post(apiUrls?.ApplyAction, form, { headers })
-        .then((res) => {
-          if (res?.data?.success === true) {
-            toast.success(res?.data?.message);
-            handleViewSearch();
-          } else {
-            toast.error(res?.data?.message);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        TicketIDs: String(details?.TicketID),
+        ActionText: "DeliveryDateClient",
+        ActionId: formatDate(finaldate),
+        RCA: "",
+        ReferenceCode: "",
+        ManHour: "",
+        Summary: "",
+        ModuleID: "",
+        ModuleName: "",
+        PagesID: "",
+        PagesName: "",
+        ManHoursClient: "",
+        DeliveryDateClient: "",
+        ReOpenReasonID: "",
+        ReOpenReason: "",
+      })
+      //     let form = new FormData();
+      //     form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //       form.append(
+      //         "LoginName",
+      //         useCryptoLocalStorage("user_Data", "get", "realname")
+      //       ),
+      //       form.append("TicketIDs", details?.TicketID),
+      //       form.append("ActionText", "DeliveryDateClient"),
+      //       form.append("ActionId", formatDate(finaldate)),
+      //       axios
+      //         .post(apiUrls?.ApplyAction, form, { headers })
+      .then((res) => {
+        if (res?.data?.success === true) {
+          toast.success(res?.data?.message);
+          handleViewSearch();
+        } else {
+          toast.error(res?.data?.message);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const handleIconClick = (value, index) => {
     let data = [...tableData];
@@ -2764,137 +2732,124 @@ const ViewIssues = ({ data }) => {
   };
 
   const [viewIssueDetail, setViewIssueDetail] = useState({});
-  // const [disabledIndexes, setDisabledIndexes] = useState(
-  //   tableData.map((ele) => ele?.ManHour > 0)
-  // );
-
-  // useEffect(() => {
-  //   const handleKeyDown = (event) => {
-  //     if (event.altKey && event.key.toLowerCase() === "s") {
-  //       event.preventDefault();
-  //     }
-  //   };
-  //   window.addEventListener("keydown", handleKeyDown);
-  //   return () => {
-  //     window.removeEventListener("keydown", handleKeyDown);
-  //   };
-  // }, []);
 
   const handleManHourTable = (details) => {
-    axiosInstances
-      .post(apiUrls.ApplyAction,{
-  "TicketIDs": String(details?.TicketID),
-  "ActionText":"ManHours",
-  "ActionId": String(details?.ManHour),
-  "RCA": "",
-  "ReferenceCode": "",
-  "ManHour": "",
-  "Summary": "",
-  "ModuleID": "",
-  "ModuleName": "",
-  "PagesID": "",
-  "PagesName": "",
-  "ManHoursClient": "",
-  "DeliveryDateClient": "",
-  "ReOpenReasonID": "",
-  "ReOpenReason": ""
-})
-//     let form = new FormData();
-//     form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-//       form.append(
-//         "LoginName",
-//         useCryptoLocalStorage("user_Data", "get", "realname")
-//       ),
-//       form.append("TicketIDs", details?.TicketID),
-//       form.append("ActionText", "ManHours"),
-//       form.append("ActionId", details?.ManHour),
-//       axios
-//         .post(apiUrls?.ApplyAction, form, { headers })
+    console.log("handleManHourTable", details);
+    if (
+      !details?.ManHour ||
+      isNaN(details?.ManHour) ||
+      Number(details?.ManHour) <= 0
+    ) {
+      toast.error("Developer Manminutes cannot be Zero or Empty.");
+    } else {
+      axiosInstances
+        .post(apiUrls.ApplyAction, {
+          TicketIDs: String(details?.TicketID),
+          ActionText: "ManHours",
+          ActionId: String(details?.ManHour),
+          RCA: "",
+          ReferenceCode: "",
+          ManHour: "",
+          Summary: "",
+          ModuleID: "",
+          ModuleName: "",
+          PagesID: "",
+          PagesName: "",
+          ManHoursClient: "",
+          DeliveryDateClient: "",
+          ReOpenReasonID: "",
+          ReOpenReason: "",
+        })
         .then((res) => {
-          toast.success(res?.data?.message);
-          handleViewSearch();
+          if (res.data.success === true) {
+            toast.success(res?.data?.message);
+            handleViewSearch();
+          } else {
+            toast.error(res.data.message);
+          }
         })
         .catch((err) => {
           console.log(err);
         });
+    }
   };
   const handleClientManHourTable = (details) => {
     // console.log("details manhour", details);
     axiosInstances
       .post(apiUrls.ApplyAction, {
-  "TicketIDs": String(details?.TicketID),
-  "ActionText": "ManHoursClient",
-  "ActionId": String(details?.ManHoursClient),
-  "RCA": "",
-  "ReferenceCode": "",
-  "ManHour": "",
-  "Summary": "",
-  "ModuleID": "",
-  "ModuleName": "",
-  "PagesID": "",
-  "PagesName": "",
-  "ManHoursClient": "",
-  "DeliveryDateClient": "",
-  "ReOpenReasonID": "",
-  "ReOpenReason": ""
-})
-//     let form = new FormData();
-//     form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-//       form.append(
-//         "LoginName",
-//         useCryptoLocalStorage("user_Data", "get", "realname")
-//       ),
-//       form.append("TicketIDs", details?.TicketID),
-//       form.append("ActionText", "ManHoursClient"),
-//       form.append("ActionId", details?.ManHoursClient),
-//       axios
-//         .post(apiUrls?.ApplyAction, form, { headers })
-        .then((res) => {
-          toast.success(res?.data?.message);
-          handleViewSearch();
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        TicketIDs: String(details?.TicketID),
+        ActionText: "ManHoursClient",
+        ActionId: String(details?.ManHoursClient),
+        RCA: "",
+        ReferenceCode: "",
+        ManHour: "",
+        Summary: "",
+        ModuleID: "",
+        ModuleName: "",
+        PagesID: "",
+        PagesName: "",
+        ManHoursClient: "",
+        DeliveryDateClient: "",
+        ReOpenReasonID: "",
+        ReOpenReason: "",
+      })
+      //     let form = new FormData();
+      //     form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //       form.append(
+      //         "LoginName",
+      //         useCryptoLocalStorage("user_Data", "get", "realname")
+      //       ),
+      //       form.append("TicketIDs", details?.TicketID),
+      //       form.append("ActionText", "ManHoursClient"),
+      //       form.append("ActionId", details?.ManHoursClient),
+      //       axios
+      //         .post(apiUrls?.ApplyAction, form, { headers })
+      .then((res) => {
+        toast.success(res?.data?.message);
+        handleViewSearch();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const handleSummaryTable = (details) => {
     // console.log("SummaryTable", details);
     axiosInstances
-      .post(apiUrls.ApplyAction,{
-  "TicketIDs":  String(details?.TicketID),
-  "ActionText": "Summary",
-  "ActionId": "",
-  "RCA": "",
-  "ReferenceCode": "",
-  "ManHour": "",
-  "Summary": details?.summary,
-  "ModuleID": "",
-  "ModuleName": "",
-  "PagesID": "",
-  "PagesName": "",
-  "ManHoursClient": "",
-  "DeliveryDateClient": "",
-  "ReOpenReasonID": "",
-  "ReOpenReason": ""
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("TicketIDs", details?.TicketID),
-    //   form.append("ActionText", "Summary"),
-    //   form.append("Summary", details?.summary),
-    //   axios
-    //     .post(apiUrls?.ApplyAction, form, { headers })
-        .then((res) => {
-          toast.success(res?.data?.message);
-          handleViewSearch();
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      .post(apiUrls.ApplyAction, {
+        TicketIDs: String(details?.TicketID),
+        ActionText: "Summary",
+        ActionId: "",
+        RCA: "",
+        ReferenceCode: "",
+        ManHour: "",
+        Summary: details?.summary,
+        ModuleID: "",
+        ModuleName: "",
+        PagesID: "",
+        PagesName: "",
+        ManHoursClient: "",
+        DeliveryDateClient: "",
+        ReOpenReasonID: "",
+        ReOpenReason: "",
+      })
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append(
+      //     "LoginName",
+      //     useCryptoLocalStorage("user_Data", "get", "realname")
+      //   ),
+      //   form.append("TicketIDs", details?.TicketID),
+      //   form.append("ActionText", "Summary"),
+      //   form.append("Summary", details?.summary),
+      //   axios
+      //     .post(apiUrls?.ApplyAction, form, { headers })
+      .then((res) => {
+        toast.success(res?.data?.message);
+        handleViewSearch();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -4478,8 +4433,16 @@ const ViewIssues = ({ data }) => {
                   secondTitle={
                     <div>
                       <span style={{ fontWeight: "bold" }}>
-                        {t("Total ManMinutes")} : &nbsp;{" "}
+                        {t("Total Manager ManMinutes")} : &nbsp;{" "}
                         {tableData[0]?.SumOfManMinute}
+                      </span>
+                      <span style={{ fontWeight: "bold", marginLeft: "10px" }}>
+                        {t("Total Dev. ManMinutes")} : &nbsp;{" "}
+                        {tableData?.reduce(
+                          (acc, curr) =>
+                            acc + (Number(curr?.ReferenceCode) || 0),
+                          0
+                        )}
                       </span>
                       <span style={{ fontWeight: "bold", marginLeft: "10px" }}>
                         {t("Total Records")} : &nbsp;{" "}
@@ -4810,7 +4773,7 @@ const ViewIssues = ({ data }) => {
 
                           {ele?.isAssignTo && (
                             <>
-                              {AllowManHourEdit == 1 ? (
+                              {/* {AllowManHourEdit == 1 ? (
                                 <Input
                                   type="text"
                                   className="form-control mt-1 required-fields"
@@ -4840,11 +4803,11 @@ const ViewIssues = ({ data }) => {
                                       : ele?.AssignToManHour
                                   }
                                   respclass="width801px"
-                                  disabled={ele?.ManHour > 0}
+                                  // disabled={ele?.ManHour > 0}
                                   style={{ width: "50%" }}
                                   onChange={(e) => handleSelectChange(e, index)}
                                 />
-                              )}
+                              )} */}
                               <ReactSelect
                                 style={{ width: "100%", marginLeft: "3px" }}
                                 height={"6px"}
@@ -5142,7 +5105,7 @@ const ViewIssues = ({ data }) => {
                       </div>
                     ),
                     // ),
-                    ManMinutes: (
+                    "M.ManMinutes": (
                       <div className="d-flex align-items-center justify-content-between">
                         {!ele?.isManHour && <div>{ele?.ManHour}</div>}
 
@@ -5596,16 +5559,6 @@ const ViewIssues = ({ data }) => {
                               respclass="width100px"
                               onChange={handleChange}
                             />
-                            {/* <Input
-                              type="number"
-                              className="form-control ml-4"
-                              id="ManHours"
-                              name="ManHours"
-                              lable="Enter ManMinutes"
-                              value={formData?.ManHours}
-                              respclass="width100px"
-                              onChange={handleChange}
-                            /> */}
                             <button
                               className="btn btn-sm btn-info ml-5"
                               onClick={handleResolve}

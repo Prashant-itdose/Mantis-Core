@@ -193,8 +193,9 @@ const CoordinatorDashboard = () => {
         searchType: String("Search"),
       })
       .then((res) => {
-        setBirthDayData(res?.data?.dt);
-        setAnniverssary(res?.data?.dtAnniversary);
+        setBirthDayData(res?.data?.data);
+        // setBirthDayData(res?.data?.dt);
+        setAnniverssary(res?.data?.data);
       })
       .catch((err) => {
         console.log(err);
@@ -205,7 +206,7 @@ const CoordinatorDashboard = () => {
     axiosInstances
       .post(apiUrls.DevDashboard_Summary, {
         Title: String("Heads"),
-        DeveloperID: Number(memberID || "0"),
+        DeveloperID: String(memberID || "0"),
       })
       .then((res) => {
         setCountData(res.data.data.dtSummary[0]);
@@ -267,8 +268,8 @@ const CoordinatorDashboard = () => {
     //   .post(apiUrls?.CoorDashboard_Quotation_Month, form, { headers })
     const payload = {
       dtFrom: String(lotus || ""),
-      DeveloperID: String(developerId || ""),
-      SearchType: String(searchType === "" ? "0" : searchType),
+      DeveloperID: Number(developerId || ""),
+      SearchType: Number(searchType === "" ? "0" : searchType),
     };
 
     axiosInstances

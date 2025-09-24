@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import Heading from "../components/UI/Heading";
 import ReactSelect from "../components/formComponent/ReactSelect";
 import { apiUrls } from "../networkServices/apiEndpoints";
-import axios from "axios";
-import { headers } from "../utils/apitools";
-import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
+
 import Input from "../components/formComponent/Input";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -179,32 +177,7 @@ const SalesLead = () => {
   };
   const handleSearch = (code) => {
     setLoading(true);
-    // const form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("Country", formData?.Country),
-    //   form.append("City", formData?.City),
-    //   form.append("OrganizationName", formData?.OrganizationName),
-    //   form.append("State", formData?.State),
-    //   form.append("IsUpcomingCentre", formData?.Centre),
-    //   form.append("SoftwareVertical", formData?.SoftwareVertical),
-    //   form.append("SPOC", formData?.ContactPersonName),
-    //   form.append("SPOC_Mobile", formData?.ContactPersonMobile),
-    //   form.append("Website", formData?.Website),
-    //   form.append("ReferralSource", formData?.ReferralSource),
-    //   form.append("ReferProjectID", formData?.ProjectID),
-    //   form.append("ReferEmployeeID", formData?.AssignedTo);
-    // form.append("FromDate", moment(formData?.FromDate).format("YYYY-MM-DD"));
-    // form.append("ToDate", moment(formData?.ToDate).format("YYYY-MM-DD"));
-    // form.append("DateType", formData?.DateType);
-    // form.append("SoftwareVersionID", formData?.ProductVersion);
-    // form.append("RowColor", code ? code : ""),
-    // axios
-    //   .post(apiUrls?.SalesLeadSearch, form, { headers })
-
+ 
     const payload = {
       Country: String(formData?.Country),
       City: String(formData?.City),
@@ -404,17 +377,7 @@ const SalesLead = () => {
             value={formData?.OrganizationName}
             respclass="col-xl-2 col-md-4 col-sm-4 col-12"
           />
-          {/* <Input
-            type="text"
-            className="form-control"
-            id="SoftwareVersion"
-            name="SoftwareVersion"
-            lable="Software Version"
-            placeholder=" "
-            onChange={handleSelectChange}
-            value={formData?.SoftwareVersion}
-            respclass="col-xl-2 col-md-4 col-sm-4 col-12"
-          /> */}
+        
 
           <Input
             type="text"

@@ -320,10 +320,6 @@ const ProjectMaster = () => {
         });
   };
   const getReporter = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Reporter_Select, form, { headers })
     axiosInstances
       .post(apiUrls?.Reporter_Select, {})
       .then((res) => {
@@ -339,31 +335,19 @@ const ProjectMaster = () => {
   };
 
   const getProduct = (value) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      axios
-        .post(apiUrls?.GetProductVersion, form, {
-          headers,
-        })
-        .then((res) => {
-          const states = res?.data.data.map((item) => {
-            return { label: item?.NAME, value: item?.id };
-          });
-          setProductVersion(states);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls?.GetProductVersion, {})
+      .then((res) => {
+        const states = res?.data.data.map((item) => {
+          return { label: item?.NAME, value: item?.id };
         });
+        setProductVersion(states);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getCountry = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.GetCountry, form, { headers })
     axiosInstances
       .post(apiUrls?.GetCountry, {})
       .then((res) => {
@@ -377,10 +361,6 @@ const ProjectMaster = () => {
       });
   };
   const getState = (value) => {
-    // let form = new FormData();
-    // form.append("CountryID", value),
-    //   axios
-    //     .post(apiUrls?.GetState, form, { headers })
     axiosInstances
       .post(apiUrls?.GetState, { CountryID: String(value) })
       .then((res) => {
@@ -394,11 +374,6 @@ const ProjectMaster = () => {
       });
   };
   const getDistrict = (country, state) => {
-    // let form = new FormData();
-    // form.append("CountryID", formData?.Country ? formData?.Country : country),
-    //   form.append("StateID", state),
-    //   axios
-    //     .post(apiUrls?.GetDistrict, form, { headers })
     axiosInstances
       .post(apiUrls?.GetDistrict, {
         CountryID: String(formData?.Country ? formData?.Country : country),
@@ -415,14 +390,6 @@ const ProjectMaster = () => {
       });
   };
   const getCity = (country, state, district) => {
-    // let form = new FormData();
-    // form.append("CountryID", formData?.Country ? formData?.Country : country),
-    //   form.append("StateID", formData?.State ? formData?.State : state),
-    //   form.append("DistrictID", district),
-    //   axios
-    //     .post(apiUrls?.GetCity, form, {
-    //       headers,
-    //     })
     axiosInstances
       .post(apiUrls?.GetCity, {
         CountryID: String(formData?.Country ? formData?.Country : country),
@@ -440,15 +407,7 @@ const ProjectMaster = () => {
       });
   };
   const getProjectPriority = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("Title", "ProjectPriority"),
-    //   axios
-    //     .post(apiUrls?.Reason_Select, form, { headers })
+
     axiosInstances
       .post(apiUrls?.Reason_Select, { Title: "ProjectPriority" })
       .then((res) => {
@@ -462,15 +421,7 @@ const ProjectMaster = () => {
       });
   };
   const getProjectStatus = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("Title", "ProjectStatus"),
-    //   axios
-    //     .post(apiUrls?.Reason_Select, form, { headers })
+
     axiosInstances
       .post(apiUrls?.Reason_Select, { Title: "ProjectStatus" })
       .then((res) => {
@@ -484,15 +435,7 @@ const ProjectMaster = () => {
       });
   };
   const getProject = () => {
-    // let form = new FormData();
-
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   axios
-    //     .post(apiUrls?.ProjectSelect, form, { headers })
+  
     axiosInstances
       .post(apiUrls?.ProjectSelect, {
         ProjectID: 0,
@@ -512,15 +455,7 @@ const ProjectMaster = () => {
       });
   };
   const getProjectOrganizationType = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("Title", "ProjectOrganizationType"),
-    //   axios
-    //     .post(apiUrls?.Reason_Select, form, { headers })
+   
     axiosInstances
       .post(apiUrls?.Reason_Select, { Title: "ProjectOrganizationType" })
       .then((res) => {
@@ -534,22 +469,9 @@ const ProjectMaster = () => {
       });
   };
   const [fetchDetails, setFetchDetails] = useState([]);
-console.log("fetchDetails",fetchDetails)
+  
   const fetchProjectdetails = (value) => {
-    console.log("fetchProjectdetails", value);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ProjectID", state?.data || value),
-    //   axios
-    //     .post(apiUrls?.getViewProject, form, { headers })
+
     axiosInstances
       .post(apiUrls?.getViewProject, {
         Title: "",
@@ -692,91 +614,7 @@ console.log("fetchDetails",fetchDetails)
           ? moment(date).format("YYYY-MM-DD")
           : "2001-01-01";
       };
-      // const formDataJson = JSON.stringify([
-      //   {
-      //     User_ID: formData?.User_ID,
-      //     ProjectName: formData?.ProjectName,
-      //     DisplayName: formData?.ProjectDisplayName,
-      //     ProjectID: "0",
-      //     PriorityID: formData?.ProjectPriority || "0",
-      //     Priority: getlabel(formData?.ProjectPriority, projectPriority),
-      //     CurrentStatusID: formData?.ProjectStatus,
-      //     CurrentStatus: getlabel(formData?.ProjectStatus, projectStatus),
-      //     OrganizationTypeID: formData?.ProjectOrganizationType || "0",
-      //     OrganizationType: getlabel(
-      //       formData?.ProjectOrganizationType,
-      //       projectOrganizationType
-      //     ),
-      //     Address: formData?.Address,
-      //     PinCode: formData?.PinCode,
-      //     CountryID: formData?.Country || "0",
-      //     Country: getlabel(formData?.Country, country),
-      //     StateID: formData?.State || "0",
-      //     State: getlabel(formData?.State, states),
-      //     DistrictID: formData?.District || "0",
-      //     District: getlabel(formData?.District, district),
-      //     CityId: formData?.City || "0",
-      //     City: getlabel(formData?.City, city),
-      //     PoCashAmt: formData?.PoCashAmount || "0",
-      //     PoChequeAmt: formData?.POChequeAmount || "0",
-      //     GstPercentID: "",
-      //     GstPercent: formData?.TaxPercent,
-      //     PoGstAmt: formData?.Tax || "0",
-      //     PoAmt: formData?.NetAmount || "0",
-      //     PODate: formatDate(formData?.PoDate),
-      //     Startdate: formatDate(formData?.StartDate),
-      //     LiveDate: formatDate(formData?.LiveDate),
-      //     OnsiteSupportDate: formatDate(formData?.OnlineSupportDate),
-      //     ExistingApplication: formData?.ExistingApplication,
-      //     AMC: getlabel(formData?.AmcType, acctype),
-      //     AMCID: formData?.AmcType || "0",
-      //     AMC_StartDate: formatDate(formData?.AMC_Start_Date),
-      //     AMCStartmonth: formData?.AMC_Start_Month || "0",
-      //     AMCAmount: formData?.AMC_Installment || "0",
-      //     AmcPer: formData?.AMCPercent || "0",
-      //     MachineChargesUNI: formData?.MachineUni || "0",
-      //     MachineChargesBI: formData?.MachineBi || "0",
-      //     MaindaysCharges: formData?.ManDays || "0",
-      //     OnsiteCharges: formData?.Visit || "0",
-      //     SPOC_Name: formData?.SPOCName,
-      //     SPOC_Mobile: formData?.SPOCMobile,
-      //     SPOC_EmailID: formData?.SPOCEmail,
-      //     OwnerDesignation: formData?.OwnerDesignation,
-      //     SPOCDesignation: formData?.SPOCDesignation,
-      //     ItPersonDesignation: formData?.ItPersonDesignation,
-      //     Owner_Name: formData?.AuthorityName,
-      //     Owner_Mobile: formData?.AuthorityMobile,
-      //     Owner_Email: formData?.AuthorityEmail,
-      //     ItPersonName: formData?.ITPersonName,
-      //     ItPersonMobile: formData?.ITPersonMobile,
-      //     ItPersonEmail: formData?.ITPersonEmail,
-      //     VerticalID: formData?.VerticalID || "0",
-      //     Vertical: getlabel(formData?.VerticalID, vertical),
-      //     TeamID: formData?.TeamID || "0",
-      //     Team: getlabel(formData?.TeamID, team),
-      //     WingID: formData?.WingID || "0",
-      //     Wing: getlabel(formData?.WingID, wing),
-      //     Level1Employee_1: formData?.Level1Employee1 || "0",
-      //     Level1Employee_2: formData?.Level1Employee2 || "0",
-      //     Level2Employee_1: formData?.Level2Employee1 || "0",
-      //     Level2Employee_2: formData?.Level2Employee2 || "0",
-      //     Level3Employee_1: formData?.Level3Employee1 || "0",
-      //     Level3Employee_2: formData?.Level3Employee2 || "0",
-      //     Engineer1: formData?.Engineer1 || "0",
-      //     Engineer2: formData?.Engineer2 || "0",
-      //     ProductID: formData?.ProductVersion || "0",
-      //     Product: getlabel(formData?.ProductVersion, productversion),
-      //     Feedback: formData?.FeedbackStatus,
-      //     TCAAgreement: formData?.AgreementStatus,
-      //     OwnerFollowup: formData?.OwnerFollowup === 1 ? "Owner" : "",
-      //     SPOCFollowup: formData?.SPOCFollowup === 1 ? "SPOC" : "",
-      //     ITPersonFollowup: formData?.ITPersonFollowup === 1 ? "ItPerson" : "",
-      //     Website: formData?.Website,
-      //     enabled: formData?.IsActive,
-      //     IsMailSent: formData?.IsMailSent,
-      //     IsAutoDeliveryDate: formData?.IsAutoDeliveryDate,
-      //   },
-      // ]);
+     
       const payload = {
         ActionType: "InsertProject",
         ProjectID: Number(formData?.ProjectID) || 0,
@@ -870,21 +708,7 @@ console.log("fetchDetails",fetchDetails)
 
       setLoading(true);
       try {
-        // let form = new FormData();
-        // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        //   form.append(
-        //     "RoleID",
-        //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-        //   ),
-        //   form.append(
-        //     "LoginName",
-        //     useCryptoLocalStorage("user_Data", "get", "realname")
-        //   ),
-        //   form.append("ActionType", "InsertProject"),
-        //   // form.append("Feedback", formData?.status),
-        //   form.append("ProjectData", formDataJson),
-        //   axios
-        //     .post(apiUrls?.ProjectMasterUpdate, form, { headers })
+ 
 
         axiosInstances
           .post(apiUrls?.ProjectMasterUpdate, payload)
@@ -1035,111 +859,10 @@ console.log("fetchDetails",fetchDetails)
         ProjectMachineProperty: formData?.ProjectMachineProperty || [],
         ProjectShiftDetails: formData?.ProjectShiftDetails || [],
       };
-      // const formDataJson = JSON.stringify([
-      //   {
-      //     User_ID: formData?.User_ID,
-      //     // ProjectName: getlabel(formData?.ProjectID, project),
-      //     ProjectName: formData?.ProjectName,
-      //     DisplayName: formData?.ProjectDisplayName,
-      //     ProjectID: formData?.ProjectID,
-      //     PriorityID: formData?.ProjectPriority || "",
-      //     Priority: getlabel(formData?.ProjectPriority, projectPriority),
-      //     CurrentStatusID: formData?.ProjectStatus,
-      //     CurrentStatus: getlabel(formData?.ProjectStatus, projectStatus),
-      //     OrganizationTypeID: formData?.ProjectOrganizationType,
-      //     OrganizationType: getlabel(
-      //       formData?.ProjectOrganizationType,
-      //       projectOrganizationType
-      //     ),
-      //     Address: formData?.Address,
-      //     PinCode: formData?.PinCode,
-      //     CountryID: formData?.Country || "0",
-      //     Country: getlabel(formData?.Country, country),
-      //     StateID: formData?.State || "0",
-      //     State: getlabel(formData?.State, states),
-      //     DistrictID: formData?.District || "0",
-      //     District: getlabel(formData?.District, district),
-      //     CityId: formData?.City || "0",
-      //     City: getlabel(formData?.City, city),
-      //     PoCashAmt: formData?.PoCashAmount || "0",
-      //     PoChequeAmt: formData?.POChequeAmount || "0",
-      //     GstPercentID: "",
-      //     GstPercent: formData?.TaxPercent,
-      //     PoGstAmt: formData?.Tax,
-      //     PoAmt: formData?.NetAmount || "0",
-      //     PODate: moment(formData?.PoDate).format("YYYY-MM-DD"),
-      //     Startdate: moment(formData?.StartDate).format("YYYY-MM-DD"),
-      //     LiveDate: moment(formData?.LiveDate).format("YYYY-MM-DD"),
-      //     OnsiteSupportDate: moment(formData?.OnlineSupportDate).format(
-      //       "YYYY-MM-DD"
-      //     ),
-      //     ExistingApplication: formData?.ExistingApplication,
-      //     AMC: getlabel(formData?.AmcType, acctype),
-      //     AMCID: formData?.AmcType || "0",
-      //     AMC_StartDate: moment(formData?.AMC_Start_Date).format("YYYY-MM-DD"),
-      //     AMCStartmonth: formData?.AMC_Start_Month || "0",
-      //     AMCAmount: formData?.AMC_Installment || "0",
-      //     AmcPer: formData?.AMCPercent || "0",
-      //     MachineChargesUNI: formData?.MachineUni || "0",
-      //     MachineChargesBI: formData?.MachineBi || "0",
-      //     MaindaysCharges: formData?.ManDays || "0",
-      //     OnsiteCharges: formData?.Visit || "0",
-      //     SPOC_Name: formData?.SPOCName,
-      //     SPOC_Mobile: formData?.SPOCMobile,
-      //     SPOC_EmailID: formData?.SPOCEmail,
-      //     OwnerDesignation: formData?.OwnerDesignation,
-      //     SPOCDesignation: formData?.SPOCDesignation,
-      //     ItPersonDesignation: formData?.ItPersonDesignation,
-      //     Owner_Name: formData?.AuthorityName,
-      //     Owner_Mobile: formData?.AuthorityMobile,
-      //     Owner_Email: formData?.AuthorityEmail,
-      //     ItPersonName: formData?.ITPersonName,
-      //     ItPersonMobile: formData?.ITPersonMobile,
-      //     ItPersonEmail: formData?.ITPersonEmail,
-      //     VerticalID: formData?.VerticalID || "0",
-      //     Vertical: getlabel(formData?.VerticalID, vertical),
-      //     TeamID: formData?.TeamID || "0",
-      //     Team: getlabel(formData?.TeamID, team),
-      //     WingID: formData?.WingID || "0",
-      //     Wing: getlabel(formData?.WingID, wing),
-      //     Level1Employee_1: formData?.Level1Employee1 || "0",
-      //     Level1Employee_2: formData?.Level1Employee2 || "0",
-      //     Level2Employee_1: formData?.Level2Employee1 || "0",
-      //     Level2Employee_2: formData?.Level2Employee2 || "0",
-      //     Level3Employee_1: formData?.Level3Employee1 || "0",
-      //     Level3Employee_2: formData?.Level3Employee2 || "0",
-      //     Engineer1: formData?.Engineer1 || "0",
-      //     Engineer2: formData?.Engineer2 || "0",
-      //     ProductID: formData?.ProductVersion || "0",
-      //     Product: getlabel(formData?.ProductVersion, productversion),
-      //     Feedback: formData?.FeedbackStatus,
-      //     TCAAgreement: formData?.AgreementStatus,
-      //     OwnerFollowup: formData?.OwnerFollowup === 1 ? "Owner" : "",
-      //     SPOCFollowup: formData?.SPOCFollowup === 1 ? "SPOC" : "",
-      //     ITPersonFollowup: formData?.ITPersonFollowup === 1 ? "ItPerson" : "",
-      //     Website: formData?.Website,
-      //     enabled: formData?.IsActive,
-      //     IsMailSent: formData?.IsMailSent,
-      //     IsAutoDeliveryDate: formData?.IsAutoDeliveryDate,
-      //   },
-      // ]);
+     
 
       setLoading(true);
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "RoleID",
-      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-      //   ),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("ActionType", "UpdateProject"),
-      //   form.append("ProjectID", formData?.ProjectID),
-      //   form.append("ProjectData", formDataJson),
-      //   axios
-      //     .post(apiUrls?.ProjectMasterUpdate, form, { headers })
+   
       axiosInstances
         .post(apiUrls?.ProjectMasterUpdate, payload)
         .then((res) => {
@@ -1172,7 +895,7 @@ console.log("fetchDetails",fetchDetails)
     getProject();
     getAMCTYPE();
   }, []);
-  // console.log("state?.edit", state?.edit);
+  
 
   useEffect(() => {
     if (state?.edit) {

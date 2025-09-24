@@ -35,12 +35,6 @@ const CoordinatoeTotalPending = () => {
   );
 
   const handleFirstDashboardCount = (developerId, searchType) => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append("DeveloperID", developerId);
-    // form.append("SearchType", searchType == "" ? "0" : searchType);
-    // axios
-    //   .post(apiUrls?.CoorDashboard_Total_Pending, form, { headers })
        axiosInstances
       .post(apiUrls.CoorDashboard_Total_Pending, {
         CoordinatorID: Number(useCryptoLocalStorage("user_Data", "get", "ID")),

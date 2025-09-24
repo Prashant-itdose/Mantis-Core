@@ -32,11 +32,7 @@ const ProjectMasterProjectModal = ({ data }) => {
     showData: {},
   });
   const getCategory = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname") ),
-    // axios
-    //   .post(apiUrls?.Category_Select, form, { headers })
+    
     axiosInstances
       .post(apiUrls?.Category_Select, {
         RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
@@ -53,14 +49,6 @@ const ProjectMasterProjectModal = ({ data }) => {
       });
   };
   const getProject = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      // axios
-      //   .post(apiUrls?.ProjectSelect, form, { headers })
       axiosInstances
         .post(apiUrls?.ProjectSelect, {
           ProjectID: 0,
@@ -87,22 +75,7 @@ const ProjectMasterProjectModal = ({ data }) => {
     });
   };
   const CategoryAdd = () => {
-    let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ProjectID", ele?.Id || ele?.ProjectID),
-    //   form.append("CategoryName", formData?.Category),
-    //   form.append("ActionType", "AddCategory"),
-
-    // axios
-    //   .post(apiUrls?.ProjectMasterUpdate, form, { headers })
+ 
     const payload = {
       ProjectID: Number(ele?.Id || ele?.ProjectID),
       ProjectName: String(formData?.Category),
@@ -124,54 +97,8 @@ const ProjectMasterProjectModal = ({ data }) => {
         console.log(err);
       });
   };
-  const CategoryRemove = (ele) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "RoleID",
-        useCryptoLocalStorage("user_Data", "get", "RoleID")
-      ),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("ProjectID", ele?.Id || ele?.project_id),
-      form.append("CategoryName", ele?.NAME),
-      form.append("Category", ele?.ID),
-      form.append("ActionType", "DeleteCategoryMapping"),
-      axios
-        .post(apiUrls?.ProjectMasterUpdate, form, { headers })
-        .then((res) => {
-          if (res?.data?.status === true) {
-            toast.success(res?.data?.message);
-            handleSearch();
-            setLoading(false);
-          } else {
-            toast.error(res?.data?.message);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-  };
-  const CategoryCopyMapping = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ProjectID", ele?.Id || ele?.ProjectID),
-    //   form.append("TargetProjectID", formData?.Project),
-    //   form.append("ActionType", "CopyCategoryMapping"),
-    // axios
-    //   .post(apiUrls?.ProjectMasterUpdate, form, { headers })
 
+  const CategoryCopyMapping = () => {
     axiosInstances
       .post(apiUrls?.ProjectMasterUpdate, {
         ProjectID: Number(ele?.Id || ele?.ProjectID),
@@ -193,19 +120,6 @@ const ProjectMasterProjectModal = ({ data }) => {
       });
   };
   const handleSearch = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID"));
-    // form.append(
-    //   "LoginName",
-    //   useCryptoLocalStorage("user_Data", "get", "realname")
-    // );
-    // form.append("ProjectID", ele?.Id || ele?.ProjectID);
-    // form.append("Title", "Category");
-    // axios
-    //   .post(apiUrls?.getViewProject, form, {
-    //     headers,
-    //   })
     axiosInstances
       .post(apiUrls?.getViewProject, {
         ProjectID: Number(ele?.Id || ele?.ProjectID),
@@ -299,26 +213,10 @@ const ProjectMasterProjectModal = ({ data }) => {
       setLoading(false);
       return;
     }
-    // const form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ProjectID", ele?.Id || ele?.project_id),
-    //   form.append("CategoryName", selectedIds.join(",")),
-    //   form.append("ActionType", "DeleteCategoryMapping"),
-    // axios
-    //   .post(apiUrls?.ProjectMasterUpdate, form, { headers })
-
     const payload = {
-      ProjectID: Number(ele?.Id || ele?.project_id), // number
-      ProjectName: String(selectedIds.join(",")), // string
-      ActionType: "DeleteCategoryMapping", // string
+      ProjectID: Number(ele?.Id || ele?.project_id),
+      ProjectName: String(selectedIds.join(",")), 
+      ActionType: "DeleteCategoryMapping", 
     };
 
     axiosInstances

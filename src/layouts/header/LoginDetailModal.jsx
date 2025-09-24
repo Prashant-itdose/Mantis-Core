@@ -4,9 +4,6 @@ import { useCryptoLocalStorage } from "../../utils/hooks/useCryptoLocalStorage";
 import DatePicker from "../../components/formComponent/DatePicker";
 import { useTranslation } from "react-i18next";
 import { apiUrls } from "../../networkServices/apiEndpoints";
-import { headers } from "../../utils/apitools";
-import axios from "axios";
-import moment from "moment";
 import { toast } from "react-toastify";
 import Loading from "../../components/loader/Loading";
 import Heading from "../../components/UI/Heading";
@@ -40,18 +37,6 @@ const LoginDetailModal = () => {
     setFormData({ ...formData, [name]: value });
   };
   const getAssignTo = () => {
-    // let form = new FormData();
-    // form.append(
-    //   "CrmEmployeeID",
-    //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-    // ),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   axios
-
-    //     .post(apiUrls?.EmployeeBind, form, { headers })
     axiosInstances
       .post(apiUrls.EmployeeBind, {
         CrmEmployeeID: Number(
@@ -78,19 +63,6 @@ const LoginDetailModal = () => {
   };
 
   const handleEmployeeAverage = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append(
-    //     "CrmEmpID",
-    //     useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-    //   ),
-    //   form.append("Date", moment(formData?.FromDate).format("YYYY/MM/DD")),
-    //   axios
-    //     .post(apiUrls?.GetEmployeeTransactions, form, { headers })
     axiosInstances
       .post(apiUrls.GetEmployeeTransactions, {
         CrmEmpID: Number(
@@ -115,16 +87,6 @@ const LoginDetailModal = () => {
   };
   const handleSearch = () => {
     setLoading(true);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("CrmEmpID", formData?.AssignedTo ? formData.AssignedTo : "0"),
-    //   form.append("Date", moment(formData?.FromDate).format("YYYY/MM/DD")),
-    //   axios
-    //     .post(apiUrls?.GetEmployeeTransactions, form, { headers })
     axiosInstances
       .post(apiUrls.GetEmployeeTransactions, {
         CrmEmpID: Number(
@@ -150,19 +112,6 @@ const LoginDetailModal = () => {
   };
   const handleEmployee = () => {
     setLoading(true);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append(
-    //     "CrmEmpID",
-    //     useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-    //   ),
-    //   form.append("Date", moment(formData?.FromDate).format("YYYY/MM/DD")),
-    //   axios
-    //     .post(apiUrls?.GetEmployeeTransactions, form, { headers })
     axiosInstances
       .post(apiUrls.GetEmployeeTransactions, {
         CrmEmpID: Number(

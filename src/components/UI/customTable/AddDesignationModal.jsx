@@ -26,15 +26,7 @@ const AddDesignationModal = () => {
     });
   };
   const getCreateDesignation = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("DesignationName", formData?.Designation),
-    //   axios
-    //     .post(apiUrls?.CreateDesignation, form, { headers })
+  
     axiosInstances
       .post(apiUrls.CreateDesignation, {
         DesignationName: String(formData?.Designation),
@@ -49,15 +41,7 @@ const AddDesignationModal = () => {
   };
 
   const getViewDesignation = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("DesignationName", formData?.Designation),
-    //   axios
-    //     .post(apiUrls?.ViewDesignation, form, { headers })
+
     axiosInstances
       .post(apiUrls.ViewDesignation, {})
       .then((res) => {

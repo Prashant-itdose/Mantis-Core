@@ -40,20 +40,7 @@ const RemoveAmountSubmissionModal = ({ visible, setVisible, ele }) => {
     if (formData?.CancelReason == "") {
       toast.error("Please Enter Cancel Reason.");
     } else {
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("OnAccount_Req_ID", visible?.showData?.EncryptID),
-      //   form.append("CancelReason", getlabel(formData?.CancelReason, reason)),
-      //   form.append("CancelReasonID", formData?.CancelReason),
-      //   form.append("OtherCancelReason", formData?.OtherReason),
-      // axios
-      //   .post(apiUrls?.AmountSubmission_ByAccounts_IsCancel, form, {
-      //     headers,
-      //   })
+      
       const payload = {
         OnAccount_Req_ID: String(visible?.showData?.EncryptID || ""),
         CancelReason: String(getlabel(formData?.CancelReason, reason) || ""),
@@ -74,12 +61,7 @@ const RemoveAmountSubmissionModal = ({ visible, setVisible, ele }) => {
   };
 
   const handleSearchReason = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    // axios
-    //   .post(apiUrls?.AmountSub_CancelReason_Select, form, {
-    //     headers,
-    //   })
+  
     axiosInstances
       .post(apiUrls?.AmountSub_CancelReason_Select, {})
       .then((res) => {

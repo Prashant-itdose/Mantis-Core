@@ -527,16 +527,16 @@ const FeedbackList = () => {
       <div className="card" ref={componentRef}>
         <Heading
           isBreadcrumb={true}
-          secondTitle={
-            <>
-              <button
-                onClick={handleFullPageScreenshot}
-                className="btn btn-sm btn-primary ml-5"
-              >
-                Capture Screenshot
-              </button>
-            </>
-          }
+          // secondTitle={
+          //   <>
+          //     <button
+          //       onClick={handleFullPageScreenshot}
+          //       className="btn btn-sm btn-primary ml-5"
+          //     >
+          //       Capture Screenshot
+          //     </button>
+          //   </>
+          // }
         />
         <div className="row p-2">
           <MultiSelectComp

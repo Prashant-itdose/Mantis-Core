@@ -87,7 +87,7 @@ const ChangeSubmitDateofTicket = () => {
             className="custom-calendar"
             id="DeliveryDate"
             name="DeliveryDate"
-            lable="Delivery Date"
+            lable="Submit Date"
             placeholder={VITE_DATE_FORMAT}
             respclass="col-xl-2 col-md-4 col-sm-4 col-12"
             value={formData?.DeliveryDate}

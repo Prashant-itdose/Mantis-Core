@@ -78,19 +78,19 @@ const TaxInvoiceView = ({ data }) => {
   const getVertical = () => {
     axiosInstances
       .post(apiUrls.Vertical_Select, {})
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Vertical_Select, form, { headers })
-        .then((res) => {
-          const verticals = res?.data.data.map((item) => {
-            return { name: item?.Vertical, code: item?.VerticalID };
-          });
-          setVertical(verticals);
-        })
-        .catch((err) => {
-          console.log(err);
+      // let form = new FormData();
+      // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   axios
+      //     .post(apiUrls?.Vertical_Select, form, { headers })
+      .then((res) => {
+        const verticals = res?.data.data.map((item) => {
+          return { name: item?.Vertical, code: item?.VerticalID };
         });
+        setVertical(verticals);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   function capitalizeFirstLetter(sentence) {
@@ -103,39 +103,38 @@ const TaxInvoiceView = ({ data }) => {
   const getTeam = () => {
     axiosInstances
       .post(apiUrls.Team_Select, {})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Team_Select, form, { headers })
-        .then((res) => {
-          const teams = res?.data.data.map((item) => {
-            return { name: item?.Team, code: item?.TeamID };
-          });
-          setTeam(teams);
-        })
-        .catch((err) => {
-          console.log(err);
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   axios
+      //     .post(apiUrls?.Team_Select, form, { headers })
+      .then((res) => {
+        const teams = res?.data.data.map((item) => {
+          return { name: item?.Team, code: item?.TeamID };
         });
+        setTeam(teams);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getWing = () => {
     axiosInstances
       .post(apiUrls.Wing_Select, {})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Wing_Select, form, { headers })
-        .then((res) => {
-          const wings = res?.data.data.map((item) => {
-            return { name: item?.Wing, code: item?.WingID };
-          });
-          setWing(wings);
-        })
-        .catch((err) => {
-          console.log(err);
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   axios
+      //     .post(apiUrls?.Wing_Select, form, { headers })
+      .then((res) => {
+        const wings = res?.data.data.map((item) => {
+          return { name: item?.Wing, code: item?.WingID };
         });
+        setWing(wings);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const handleSaveFilter = () => {
-
     localStorage.setItem("formData", JSON.stringify(formData));
     const savedData = localStorage.getItem("formData");
     if (savedData) {
@@ -144,45 +143,45 @@ const TaxInvoiceView = ({ data }) => {
 
     axiosInstances
       .post(apiUrls.SaveFilterDataSubmission, {
-  "Type": "TaxInvoiceRequest",
-  "FilterData": JSON.stringify(savedData)
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("Type", "TaxInvoiceRequest"),
-    //   form.append("FilterData", savedData),
-    //   axios
-    //     .post(apiUrls?.SaveFilterDataSubmission, form, { headers })
-        .then((res) => {
-          toast.success(res?.data?.message);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        Type: "TaxInvoiceRequest",
+        FilterData: JSON.stringify(savedData),
+      })
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append("Type", "TaxInvoiceRequest"),
+      //   form.append("FilterData", savedData),
+      //   axios
+      //     .post(apiUrls?.SaveFilterDataSubmission, form, { headers })
+      .then((res) => {
+        toast.success(res?.data?.message);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const handleSearchFilter = () => {
     axiosInstances
       .post(apiUrls.SearchFilterDataSubmission, {
-  "Type": "TaxInvoiceRequest"
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("Type", "TaxInvoiceRequest"),
-    //   // form.append("FilterData", savedData),
-    //   axios
-    //     .post(apiUrls?.SearchFilterDataSubmission, form, { headers })
-        .then((res) => {
-          console.log("Response data:", res?.data?.data);
-          // toast.success(res?.data?.message);
-          if (res?.data) {
-            console.log("Response data:", res?.data);
-          } else {
-            console.error("No data found in the response.");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        Type: "TaxInvoiceRequest",
+      })
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append("Type", "TaxInvoiceRequest"),
+      //   // form.append("FilterData", savedData),
+      //   axios
+      //     .post(apiUrls?.SearchFilterDataSubmission, form, { headers })
+      .then((res) => {
+        console.log("Response data:", res?.data?.data);
+        // toast.success(res?.data?.message);
+        if (res?.data) {
+          console.log("Response data:", res?.data);
+        } else {
+          console.error("No data found in the response.");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     // console.log("save data", formData);
   };
@@ -215,113 +214,83 @@ const TaxInvoiceView = ({ data }) => {
   const getPOC1 = () => {
     axiosInstances
       .post(apiUrls.POC_1_Select, {})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.POC_1_Select, form, { headers })
-        .then((res) => {
-          const poc1s = res?.data.data.map((item) => {
-            return { name: item?.POC_1_Name, code: item?.POC_1_ID };
-          });
-          setPoc1(poc1s);
-        })
-        .catch((err) => {
-          console.log(err);
+
+      .then((res) => {
+        const poc1s = res?.data.data.map((item) => {
+          return { name: item?.POC_1_Name, code: item?.POC_1_ID };
         });
+        setPoc1(poc1s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
-  // const handleChange = (e) => {
-  //   const { name, value, type, checked } = e?.target;
-  //   setFormData({
-  //     ...formData,
-  //     [name]: type === "checkbox" ? (checked ? "1" : "0") : value,
-  //   });
-  // };
 
   const getPOC2 = () => {
     axiosInstances
       .post(apiUrls.POC_2_Select, {})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.POC_2_Select, form, { headers })
-        .then((res) => {
-          const poc2s = res?.data.data.map((item) => {
-            return { name: item?.POC_2_Name, code: item?.POC_2_ID };
-          });
-          setPoc2(poc2s);
-        })
-        .catch((err) => {
-          console.log(err);
+
+      .then((res) => {
+        const poc2s = res?.data.data.map((item) => {
+          return { name: item?.POC_2_Name, code: item?.POC_2_ID };
         });
+        setPoc2(poc2s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getPOC3 = () => {
     axiosInstances
       .post(apiUrls.POC_3_Select, {})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.POC_3_Select, form, { headers })
-        .then((res) => {
-          const poc3s = res?.data.data.map((item) => {
-            return { name: item?.POC_3_Name, code: item?.POC_3_ID };
-          });
-          setPoc3(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
+
+      .then((res) => {
+        const poc3s = res?.data.data.map((item) => {
+          return { name: item?.POC_3_Name, code: item?.POC_3_ID };
         });
+        setPoc3(poc3s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getProject = () => {
     axiosInstances
       .post(apiUrls.ProjectSelect, {
-  "ProjectID": 0,
-  "IsMaster": "0",
-  "VerticalID": 0,
-  "TeamID": 0,
-  "WingID": 0
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   axios
-    //     .post(apiUrls?.ProjectSelect, form, { headers })
-        .then((res) => {
-          const poc3s = res?.data.data.map((item) => {
-            return { name: item?.Project, code: item?.ProjectId };
-          });
-          setProject(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
+        ProjectID: 0,
+        IsMaster: "0",
+        VerticalID: 0,
+        TeamID: 0,
+        WingID: 0,
+      })
+
+      .then((res) => {
+        const poc3s = res?.data.data.map((item) => {
+          return { name: item?.Project, code: item?.ProjectId };
         });
+        setProject(poc3s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getCity = () => {
     axiosInstances
       .post(apiUrls.GetCity, {
-  "CountryID": "14",
-  "StateID": "0",
-  "DistrictID": "0"
-})
-    // let form = new FormData();
-    // form.append("CountryID", "14"),
-    //   form.append("StateID", ""),
-    //   form.append("DistrictID", ""),
-    //   axios
-    //     .post(apiUrls?.GetCity, form, {
-    //       headers,
-    //     })
-        .then((res) => {
-          const states = res?.data.data.map((item) => {
-            return { label: item?.City, value: item?.ID };
-          });
-          setCity(states);
-        })
-        .catch((err) => {
-          console.log(err);
+        CountryID: "14",
+        StateID: "0",
+        DistrictID: "0",
+      })
+     
+      .then((res) => {
+        const states = res?.data.data.map((item) => {
+          return { label: item?.City, value: item?.ID };
         });
+        setCity(states);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const handleDeliveryChange = (name, e) => {
     const { value } = e;
@@ -455,87 +424,65 @@ const TaxInvoiceView = ({ data }) => {
     } else {
       setLoading(true);
       const payload = {
-  DateType: String(formData?.DateType || ""),
-  FromDate: formData?.FromDate ? String(formatDate(formData.FromDate)) : "",
-  ToDate: formData?.ToDate ? String(formatDate(formData.ToDate)) : "",
-  Status: String(formData?.Status || ""),
-  SearchType: "OnScreen", // fixed value
-  PageSize: formData?.PageSize ? Number(formData.PageSize) : 0,
-  PageNo: page ?? currentPage - 1,
+        DateType: String(formData?.DateType || ""),
+        FromDate: formData?.FromDate
+          ? String(formatDate(formData.FromDate))
+          : "",
+        ToDate: formData?.ToDate ? String(formatDate(formData.ToDate)) : "",
+        Status: String(formData?.Status || ""),
+        SearchType: "OnScreen", // fixed value
+        PageSize: formData?.PageSize ? Number(formData.PageSize) : 0,
+        PageNo: page ?? currentPage - 1,
 
-  ProjectID: formData?.ProjectID ? String(formData.ProjectID) : "",
-  VerticalID: formData?.VerticalID ? String(formData.VerticalID) : "",
-  TeamID: formData?.TeamID ? String(formData.TeamID) : "",
-  WingID: formData?.WingID ? String(formData.WingID) : "",
-  POC1: formData?.POC1 ? String(formData.POC1) : "",
-  POC2: formData?.POC2 ? String(formData.POC2) : "",
-  POC3: formData?.POC3 ? String(formData.POC3) : "",
-};
+        ProjectID: formData?.ProjectID ? String(formData.ProjectID) : "",
+        VerticalID: formData?.VerticalID ? String(formData.VerticalID) : "",
+        TeamID: formData?.TeamID ? String(formData.TeamID) : "",
+        WingID: formData?.WingID ? String(formData.WingID) : "",
+        POC1: formData?.POC1 ? String(formData.POC1) : "",
+        POC2: formData?.POC2 ? String(formData.POC2) : "",
+        POC3: formData?.POC3 ? String(formData.POC3) : "",
+      };
 
       axiosInstances
-      .post(apiUrls.TaxInvoice_Search, payload)
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("ProjectID", formData?.ProjectID),
-      //   form.append("VerticalID", formData?.VerticalID),
-      //   form.append("TeamID", formData?.TeamID),
-      //   form.append("WingID", formData?.WingID),
-      //   form.append("POC1", formData?.POC1),
-      //   form.append("POC2", formData?.POC2),
-      //   form.append("POC3", formData?.POC3),
-      //   form.append("Status", formData?.Status),
-      //   form.append("DateType", formData?.DateType),
-      //   form.append("FromDate", formatDate(formData?.FromDate)),
-      //   form.append("ToDate", formatDate(formData?.ToDate)),
-      //   form.append("SearchType", "OnScreen"),
-      //   form.append("rowColor", code ? code : ""),
-      //   form.append("PageSize", formData?.PageSize),
-      //   form.append("PageNo", page ?? currentPage - 1),
-      //   axios
-      //     .post(apiUrls?.TaxInvoice_Search, form, {
-      //       headers,
-      //     })
-          .then((res) => {
-            if (res?.data?.success == true) {
-              // toast.success(res?.data?.message);
-              const data = res?.data?.data;
-              const updatedData = data?.map((ele, index) => {
-                return {
-                  ...ele,
-                  index: index,
-                  IsActive: "0",
+        .post(apiUrls.TaxInvoice_Search, payload)
+   
+        .then((res) => {
+          if (res?.data?.success == true) {
+            // toast.success(res?.data?.message);
+            const data = res?.data?.data;
+            const updatedData = data?.map((ele, index) => {
+              return {
+                ...ele,
+                index: index,
+                IsActive: "0",
 
-                  ApprovedDropDown: "",
-                  ApprovedResolve: false,
-                  ApprovedDropDownValue: "",
+                ApprovedDropDown: "",
+                ApprovedResolve: false,
+                ApprovedDropDownValue: "",
 
-                  AcceptedDropDown: "",
-                  AcceptedResolve: false,
-                  AcceptedDropDownValue: "",
+                AcceptedDropDown: "",
+                AcceptedResolve: false,
+                AcceptedDropDownValue: "",
 
-                  UplaodDropdown: "",
-                  UplaodResolve: false,
-                  UplaodValue: "",
+                UplaodDropdown: "",
+                UplaodResolve: false,
+                UplaodValue: "",
 
-                  EmailDropdown: "",
-                  EmailResolve: false,
-                  EmailValue: "",
-                };
-              });
-              setTableData(updatedData);
-              setLoading(false);
-            } else {
-              toast.error(res?.data?.message);
-              setLoading(false);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+                EmailDropdown: "",
+                EmailResolve: false,
+                EmailValue: "",
+              };
+            });
+            setTableData(updatedData);
+            setLoading(false);
+          } else {
+            toast.error(res?.data?.message);
+            setLoading(false);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -1097,8 +1044,8 @@ const TaxInvoiceView = ({ data }) => {
               //   ),s
 
               "Entry Date": ele?.dtEntry,
-              Email:
-              //  ele?.TaxInvoiceNo !== "" && (
+              Email: (
+                //  ele?.TaxInvoiceNo !== "" && (
 
                 <img
                   src={gmaillogo}
@@ -1112,7 +1059,8 @@ const TaxInvoiceView = ({ data }) => {
                   }}
                   title="Click to Gmail."
                   style={{ marginLeft: "12px" }}
-                ></img>,
+                ></img>
+              ),
               // ),
 
               // Edit: (

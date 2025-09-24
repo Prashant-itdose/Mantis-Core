@@ -47,16 +47,7 @@ const GmailSalesModal = ({ visible, setVisible }) => {
     }
   }, [projectEmail]);
   const handleQuotation_Email_Log = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("DocumentType", "PI"),
-    //   form.append("DocumentID", visible?.showData?.EncryptID),
-    //   axios
-    //     .post(apiUrls?.Quotation_Email_Log, form, { headers })
+  
     axiosInstances
       .post(apiUrls.Quotation_Email_Log, {
         DocumentID: String(visible?.showData?.EncryptID),
@@ -76,18 +67,7 @@ const GmailSalesModal = ({ visible, setVisible }) => {
       toast.error("Please Enter EmailCC.");
     } else {
       setLoading(true);
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("DocumentType", "PI"),
-      //   form.append("DocumentID", visible?.showData?.EncryptID),
-      //   form.append("EmailTo", formData?.EmailTo),
-      //   form.append("EmailCC", formData?.EmailCC),
-      //   axios
-      //     .post(apiUrls?.Quotation_Email, form, { headers })
+    
       axiosInstances
         .post(apiUrls.Quotation_Email, {
           DocumentID: String(visible?.showData?.EncryptID),
@@ -118,15 +98,7 @@ const GmailSalesModal = ({ visible, setVisible }) => {
     }
   };
   const getProjectEmail = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ProjectID", visible?.showData?.ProjectID),
-    //   axios
-    //     .post(apiUrls?.ProjectSelect, form, { headers })
+   
     axiosInstances
       .post(apiUrls.ProjectSelect, {
         ProjectID: Number(visible?.showData?.ProjectID),

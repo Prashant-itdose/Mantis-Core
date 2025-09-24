@@ -185,38 +185,39 @@ const MorningWish = () => {
     //   form.append("FileFormat_Base64", formData?.FileExtension),
     //   axios
     //     .post(apiUrls?.MorningWishSave, form, {
-    axiosInstances  
+    axiosInstances
       .post(apiUrls.MorningWishSave, {
-          Day: formData?.SelectDate,
-          Content: formData.Description ? removeHtmlTags(formData.Description) : "",
-          Image_Base64: formData?.Document_Base64,
-          FileFormat_Base64: formData?.FileExtension,
- 
+        Day: formData?.SelectDate,
+        Content: formData.Description
+          ? removeHtmlTags(formData.Description)
+          : "",
+        Image_Base64: formData?.Document_Base64,
+        FileFormat_Base64: formData?.FileExtension,
       })
-        .then((res) => {
-          if (res?.data?.status === true) {
-            toast.success(res?.data?.message);
-            setLoading(false);
-            setFormData({
-              ...formData,
-              SelectDate: "",
-              Description: "",
-              DocumentType: "",
-              SelectFile: "",
-              Document_Base64: "",
-              FileExtension: "",
-              WishID: "",
-            });
-            setRowHandler({});
-            navigate("/MorningWishSearch");
-          } else {
-            toast.error(res?.data?.message);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      .then((res) => {
+        if (res?.data?.status === true) {
+          toast.success(res?.data?.message);
+          setLoading(false);
+          setFormData({
+            ...formData,
+            SelectDate: "",
+            Description: "",
+            DocumentType: "",
+            SelectFile: "",
+            Document_Base64: "",
+            FileExtension: "",
+            WishID: "",
+          });
+          setRowHandler({});
+          navigate("/MorningWishSearch");
+        } else {
+          toast.error(res?.data?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const handleUpdate = () => {
     if (formData?.SelectDate == "") {
@@ -234,26 +235,35 @@ const MorningWish = () => {
     //   return;
     // }
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("Day", formData?.SelectDate),
-      form.append(
-        "Content",
-        formData.Description ? removeHtmlTags(formData.Description) : ""
-      ),
-      form.append("Image_Base64", formData?.Document_Base64),
-      form.append("FileFormat_Base64", formData?.FileExtension),
-      form.append("WishID", formData?.WishID),
-      axios
-        .post(apiUrls?.UpdateMorningWish, form, {
-          headers,
-        })
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   form.append("Day", formData?.SelectDate),
+    //   form.append(
+    //     "Content",
+    //     formData.Description ? removeHtmlTags(formData.Description) : ""
+    //   ),
+    //   form.append("Image_Base64", formData?.Document_Base64),
+    //   form.append("FileFormat_Base64", formData?.FileExtension),
+    //   form.append("WishID", formData?.WishID),
+    //   axios
+    //     .post(apiUrls?.UpdateMorningWish, form, {
+    //       headers,
+    //     })
+      axiosInstances
+      .post(apiUrls.UpdateMorningWish, {
+        Day: formData?.SelectDate,
+        Content: formData.Description
+          ? removeHtmlTags(formData.Description)
+          : "",
+        Image_Base64: formData?.Document_Base64,
+        FileFormat_Base64: formData?.FileExtension,
+      })
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.message);
             setLoading(false);
             setFormData({
@@ -275,45 +285,36 @@ const MorningWish = () => {
         })
         .catch((err) => {
           console.log(err);
-        })   .finally(() => {
-      setLoading(false); // ✅ always stop loader
-    });
+        })
+        .finally(() => {
+          setLoading(false); // ✅ always stop loader
+        });
   };
 
   const EditMorningWish = (id) => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("WishID", id),
-    //   axios
-    //     .post(apiUrls?.EditMorningWish, form, {
-    //       headers,
-    //     })
     axiosInstances
       .post(apiUrls.EditMorningWish, {
         WishID: id,
       })
-        .then((res) => {
-          const datas = res?.data?.data[0];
-          setFormData({
-            ...formData,
-            SelectDate: datas?.Day,
-            Description: datas?.Content,
-            DocumentType: "",
-            SelectFile: "",
-            Document_Base64: "",
-            FileExtension: "",
-            WishID: datas?.ID,
-            ImageCheck: datas?.DocumentUrl,
-          });
-          setEditMode(true);
-        })
-        .catch((err) => {
-          console.log(err);
+      .then((res) => {
+        const datas = res?.data?.data;
+        console.log("dataas", datas);
+        setFormData({
+          ...formData,
+          SelectDate: datas?.Day,
+          Description: datas?.Content,
+          DocumentType: "",
+          SelectFile: "",
+          Document_Base64: "",
+          FileExtension: "",
+          WishID: datas?.ID,
+          ImageCheck: datas?.DocumentUrl,
         });
+        setEditMode(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {

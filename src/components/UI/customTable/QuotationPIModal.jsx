@@ -11,12 +11,7 @@ import { axiosInstances } from "../../../networkServices/axiosInstance";
 const QuotationPIModal = (visible) => {
   const [tableData, setTableData] = useState([]);
   const PI_Load_QuotationID = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-    //   form.append("QuotationID", visible?.visible?.showData?.EncryptID),
-    //   axios
-    //     .post(apiUrls?.PI_Load_QuotationID, form, { headers })
+
     axiosInstances
       .post(apiUrls.PI_Load_QuotationID, {
         QuotationID: String(visible?.visible?.showData?.EncryptID),

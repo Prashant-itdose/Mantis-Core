@@ -269,43 +269,17 @@ const ReportIssue = () => {
 
   const getPriority = () => {
     axiosInstances
-      .post(apiUrls.Priority_Select, {
-       
-      })
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Priority_Select, form, { headers })
-        .then((res) => {
-          const assigntos = res?.data.data.map((item) => {
-            return { label: item?.NAME, value: item?.ID };
-          });
-          setPriority(assigntos);
-        })
-        .catch((err) => {
-          console.log(err);
+      .post(apiUrls.Priority_Select, {})
+      .then((res) => {
+        const assigntos = res?.data.data.map((item) => {
+          return { label: item?.NAME, value: item?.ID };
         });
+        setPriority(assigntos);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
-
-  // const secretKey = "your-secret-key";
-
-  // const getPriority = () => {
-  //   const id = useCryptoLocalStorage("user_Data", "get", "ID");
-  //   const encryptedID = CryptoJS.AES.encrypt(id, secretKey).toString();
-  //   let form = new FormData();
-  //   form.append("ID", encryptedID);
-  //   axios
-  //     .post(apiUrls?.Priority_Select, form, { headers })
-  //     .then((res) => {
-  //       const assigntos = res?.data.data.map((item) => {
-  //         return { label: item?.NAME, value: item?.ID };
-  //       });
-  //       setPriority(assigntos);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
 
   function getlabel(id, dropdownData) {
     const ele = dropdownData?.filter((item) => item?.value === id);
@@ -339,80 +313,23 @@ const ReportIssue = () => {
         FileExtension: formData?.FileExtension,
       },
     ]);
-    console.log("picDocsJson", picsDocsJson);
     setIsSubmitting(true);
 
     try {
-      // axiosInstances.post(apiUrls.NewTicket, {
-      //   ID: useCryptoLocalStorage("user_Data", "get", "ID"),
-      //   LoginName: useCryptoLocalStorage("user_Data", "get", "realname"),
-      //   ProjectID: formData.ProjectID || "",
-      //   CategoryID: formData.Category.value || "",
-      //   AssignTo: formData.AssignedTo || "",
-      //   PriorityID: formData.ProjectID || "",
-      //   Summary: formData.Summary || "",
-      //   ReporterMobileNo: formData.ReportedMobile,
-      //   ReporterName: formData.ReportedName,
-      //   Description: formData.Description || "",
-      //   ModuleID: formData.ModuleName || "",
-      //   ModuleName: getlabel(formData?.ModuleName, moduleName) || "",
-      //   PagesID: formData.PageName || "",
-      //   PagesName: getlabel(formData?.PageName, pageName) || "",
-      //   ImageDetails: picsDocsJson,
-      // });
-      // const form = new FormData();
-      // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-      // form.append(
-      //   "LoginName",
-      //   useCryptoLocalStorage("user_Data", "get", "realname")
-      // );
-      // form.append(
-      //   "RoleID",
-      //   useCryptoLocalStorage("user_Data", "get", "RoleID")
-      // );
-      // form.append("ProjectID", formData.ProjectID || "");
-      // form.append("CategoryID", formData.Category.value || "");
-      // form.append("AssignTo", formData.AssignedTo || "");
-      // form.append("Summary", formData.Summary || "");
-      // form.append("ReporterMobileNo", formData.ReportedMobile);
-      // form.append("ReporterName", formData.ReportedName);
-      // form.append("OtherReferenceNo", "");
-      // form.append(
-      //   "ModuleName",
-      //   getlabel(formData?.ModuleName, moduleName) || ""
-      // );
-      // form.append("ModuleID", formData.ModuleName || "");
-      // form.append("PagesName", getlabel(formData?.PageName, pageName) || "");
-      // form.append("PagesID", formData.PageName || "");
-      // form.append("Description", formData.Description || "");
-      // // form.append(
-      // //   "Description",
-      // //   formData.Description ? removeHtmlTags(formData.Description) : ""
-      // // );
-      // form.append("PriorityID", formData.Priority || "");
-      // form.append("ImageDetails", picsDocsJson);
 
       const response = await axiosInstances.post(apiUrls.NewTicket, {
-        ID: Number(useCryptoLocalStorage("user_Data", "get", "ID") || 0),
-        LoginName: String(
-          useCryptoLocalStorage("user_Data", "get", "realname") || ""
-        ),
         ProjectID: Number(formData.ProjectID || 0),
         CategoryID: Number(formData.Category?.value || 0),
-        AssignTo: String(formData.AssignedTo || ""),
-        PriorityID: String(formData.ProjectID || ""),
+        AssignTo: String(formData.AssignedTo || "0"),
+        PriorityID: String(formData.ProjectID || "0"),
         Summary: String(formData.Summary || ""),
         ReporterMobileNo: String(formData.ReportedMobile || ""),
         ReporterName: String(formData.ReportedName || ""),
         Description: String(formData.Description || ""),
-        ModuleID: String(formData.ModuleName || ""),
+        ModuleID: String(formData.ModuleName || "0"),
         ModuleName: String(getlabel(formData?.ModuleName, moduleName) || ""),
-        PagesID: String(formData.PageName || ""),
+        PagesID: String(formData.PageName || "0"),
         PagesName: String(getlabel(formData?.PageName, pageName) || ""),
-        // ImageDetails: picsDocsJson?.map((item) => ({
-        //   FileExtension: "string",
-        //   Document_Base64: "string",
-        // })),
         ImageDetails: [
           {
             FileExtension: String(formData?.FileExtension || ""),

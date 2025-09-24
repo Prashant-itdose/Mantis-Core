@@ -49,36 +49,6 @@ const ProjectFlagModal = ({ data, handleViewProject }) => {
   };
 
   const getNotfication = (updatedFormData) => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID"));
-    // form.append(
-    //   "LoginName",
-    //   useCryptoLocalStorage("user_Data", "get", "realname")
-    // );
-    // form.append("ProjectID", data?.Id || data?.ProjectID),
-    //   form.append("enabled", updatedFormData?.IsActive);
-    // form.append("IsAutoDeliveryDate", updatedFormData?.IsAutoDeliveryDate);
-    // form.append("IsMailSent", updatedFormData?.IsMailSent);
-    // form.append(
-    //   "AllowAutobackupNotification",
-    //   updatedFormData?.AutobackupNotification
-    // );
-    // form.append(
-    //   "ClientFeedbackDisplay",
-    //   updatedFormData?.ClientFeedbackDisplay
-    // );
-    // form.append(
-    //   "IsWeeklyMailSend",
-    //   updatedFormData?.IsWeeklyMailSend
-    // );
-    // form.append(
-    //   "IsClientCredentialMailSend",
-    //   updatedFormData?.IsClientCredentialMailSend
-    // );
-
-    // axios
-    //   .post(apiUrls?.UpdateFlagProject, form, { headers })
 
     const payload = {
       ProjectID: data?.Id || data?.ProjectID || 0,
@@ -109,16 +79,7 @@ const ProjectFlagModal = ({ data, handleViewProject }) => {
   };
 
   const getFlagData = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // // form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID"));
-    // form.append(
-    //   "LoginName",
-    //   useCryptoLocalStorage("user_Data", "get", "realname")
-    // );
-    // form.append("ProjectID", data?.Id || data?.ProjectID),
-    //   axios
-    //     .post(apiUrls?.GetFlagProject, form, { headers })
+
     axiosInstances
       .post(apiUrls?.GetFlagProject, { ProjectID: data?.Id || data?.ProjectID })
       .then((res) => {

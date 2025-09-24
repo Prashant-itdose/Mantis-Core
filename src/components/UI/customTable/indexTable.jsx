@@ -54,12 +54,6 @@ function Tables({
     }
   }, [tbody, handleLanguageStatus]);
 
-  // i18next.on("languageChanged", (lng) => {
-  //   console.log("Asdasd",lag)
-  //   setHandleLanguageStatus(!handleLanguageStatus)
-  // });
-
-  // Handle Sort Functionality
 
   const handleSortTable = (index, type) => {
     let typeName = Object?.keys(bodyData[0])[index];

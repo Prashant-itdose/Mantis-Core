@@ -171,7 +171,7 @@ const Dashboard = () => {
   const handleHeightOfBirthDaycardApi = () => {
     axiosInstances
       .post(apiUrls.Birthday_Anniversary_Interface_Search, {
-        searchType: String("Search"),
+        SearchType: String("Search"),
       })
       .then((res) => {
         setBirthDayData(res?.data?.data);
@@ -282,7 +282,7 @@ const Dashboard = () => {
     axiosInstances
       .post(apiUrls.Circular_News, {
         // IsFlash: String("0"),
-        RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
+        // RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
       })
       .then((res) => {
         const data = res?.data?.data;
@@ -320,36 +320,24 @@ const Dashboard = () => {
     //   return;
     // }
     setLoading(true);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ToEmployeeID", item1),
-    //   form.append("ToEmployeeName", item2),
-    //   form.append("ToEMailID", String(item3).toLowerCase()),
-    //   form.append("WishesType", item4),
-    //   form.append(
-    //     "Subject",
-    //     `Greeting from ${useCryptoLocalStorage("user_Data", "get", "realname")}`
-    //   ),
-    //   form.append("SearchType", "WishesInsert"),
-    //   form.append("dtBirthday", item5),
-    //   form.append(
-    //     "Message",
-    //     item4 == "Birthday" ? "Happy Birthday!" : "Happy Work Anniversary!"
-    //   ),
-    //   axios
-    //     .post(apiUrls?.Birthday_Anniversary_Interface_Search, form, {
-    //       headers,
-    //     })
+
     axiosInstances
       .post(apiUrls.Birthday_Anniversary_Interface_Search, {
-        searchType: String("WishesInsert"),
+        SearchType: String("WishesInsert"),
+        ToEmployeeID: String(item1),
+        ToEmployeeName: String(item2),
+        ToEMailID: String(item3).toLowerCase(),
+        WishesType: String(item4),
+        Subject: String(
+          `Greeting from ${useCryptoLocalStorage("user_Data", "get", "realname")}`
+        ),
+        Message: String(
+          item4 == "Birthday" ? "Happy Birthday!" : "Happy Work Anniversary!"
+        ),
+        dtBirthday: String(item5),
       })
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           setIsClicked(true);
           handleHeightOfBirthDaycardApi();
@@ -372,7 +360,7 @@ const Dashboard = () => {
     //   axios
     //     .post(apiUrls?.Circular_Read, form, { headers })
     axiosInstances
-      .post(apiUrls.GetTeamMember, {
+      .post(apiUrls.Circular_Read, {
         ID: Number(useCryptoLocalStorage("user_Data", "get", "ID")),
         CircularUserID: Number(eleid),
       })

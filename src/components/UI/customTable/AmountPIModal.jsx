@@ -19,16 +19,7 @@ const AmountPIModal = (visible) => {
     if(formData?.TaxInvoiceNo ==""){
       toast.error("Please Enter Tax Invoice No.")
     }else{
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-      //   form.append("TaxInvoiceID", visible ?.visible?.showData?.EncryptID),
-      //   form.append("TaxInvoiceNo", visible ?.visible?.showData?.TaxInvoiceNo),
-      //   form.append("Document_Base64", formData?.Document_Base64),
-      //   form.append("Document_FormatType", formData?.FileExtension),
-      // axios
-      //   .post(apiUrls?.TaxInvoice_Upload, form, { headers })
-
+  
       const payload = {
         TaxInvoiceID: String(visible?.visible?.showData?.EncryptID || ""),
         TaxInvoiceNo: String(visible?.visible?.showData?.TaxInvoiceNo || ""),

@@ -8,21 +8,12 @@ import Tables from "../components/UI/customTable";
 import { axiosInstances } from "../networkServices/axiosInstance";
 
 const ShortBreakLogModal = ({ visible }) => {
-  //   console.log("visisble", visible);
+ 
   const [selectedImageUrl, setSelectedImageUrl] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tableData, setTableData] = useState([]);
   const handleSearch = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("AttType", "ShortAtt"),
-    //   form.append("AttSummaryID", visible?.showData?.shortSummaryLogId),
-    //   axios
-    //     .post(apiUrls?.ForceFullyShortBreakAttendanceSearch, form, { headers })
+
     axiosInstances
       .post(apiUrls.ForceFullyShortBreakAttendanceSearch, {
         AttType: String("ShortAtt"),

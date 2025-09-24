@@ -124,120 +124,110 @@ const Summary = () => {
 
   const getPOC1 = () => {
     axiosInstances
-      .post(apiUrls.POC_1_Select, {
-      })
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.POC_1_Select, form, { headers })
-        .then((res) => {
-          const poc1s = res?.data.data.map((item) => {
-            return { name: item?.POC_1_Name, code: item?.POC_1_ID };
-          });
-          setPoc1(poc1s);
-        })
-        .catch((err) => {
-          console.log(err);
+      .post(apiUrls.POC_1_Select, {})
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   axios
+      //     .post(apiUrls?.POC_1_Select, form, { headers })
+      .then((res) => {
+        const poc1s = res?.data.data.map((item) => {
+          return { name: item?.POC_1_Name, code: item?.POC_1_ID };
         });
+        setPoc1(poc1s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const getPOC2 = () => {
     axiosInstances
-      .post(apiUrls.POC_2_Select, {
-        
-      })
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.POC_2_Select, form, { headers })
-        .then((res) => {
-          const poc2s = res?.data.data.map((item) => {
-            return { name: item?.POC_2_Name, code: item?.POC_2_ID };
-          });
-          setPoc2(poc2s);
-        })
-        .catch((err) => {
-          console.log(err);
+      .post(apiUrls.POC_2_Select, {})
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   axios
+      //     .post(apiUrls?.POC_2_Select, form, { headers })
+      .then((res) => {
+        const poc2s = res?.data.data.map((item) => {
+          return { name: item?.POC_2_Name, code: item?.POC_2_ID };
         });
+        setPoc2(poc2s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const getPOC3 = () => {
     axiosInstances
-      .post(apiUrls.POC_3_Select, {
-        
-      })
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.POC_3_Select, form, { headers })
-        .then((res) => {
-          const poc3s = res?.data.data.map((item) => {
-            return { name: item?.POC_3_Name, code: item?.POC_3_ID };
-          });
-          setPoc3(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
+      .post(apiUrls.POC_3_Select, {})
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   axios
+      //     .post(apiUrls?.POC_3_Select, form, { headers })
+      .then((res) => {
+        const poc3s = res?.data.data.map((item) => {
+          return { name: item?.POC_3_Name, code: item?.POC_3_ID };
         });
+        setPoc3(poc3s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const getVertical = () => {
     axiosInstances
-      .post(apiUrls.Vertical_Select, {
-        
-      })
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Vertical_Select, form, { headers })
-        .then((res) => {
-          const verticals = res?.data.data.map((item) => {
-            return { name: item?.Vertical, code: item?.VerticalID };
-          });
-          setVertical(verticals);
-        })
-        .catch((err) => {
-          console.log(err);
+      .post(apiUrls.Vertical_Select, {})
+      // let form = new FormData();
+      // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   axios
+      //     .post(apiUrls?.Vertical_Select, form, { headers })
+      .then((res) => {
+        const verticals = res?.data.data.map((item) => {
+          return { name: item?.Vertical, code: item?.VerticalID };
         });
+        setVertical(verticals);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const getTeam = () => {
     axiosInstances
-      .post(apiUrls.Team_Select, { 
-      })
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Team_Select, form, { headers })
-        .then((res) => {
-          const teams = res?.data.data.map((item) => {
-            return { name: item?.Team, code: item?.TeamID };
-          });
-          setTeam(teams);
-        })
-        .catch((err) => {
-          console.log(err);
+      .post(apiUrls.Team_Select, {})
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   axios
+      //     .post(apiUrls?.Team_Select, form, { headers })
+      .then((res) => {
+        const teams = res?.data.data.map((item) => {
+          return { name: item?.Team, code: item?.TeamID };
         });
+        setTeam(teams);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const getWing = () => {
     axiosInstances
-      .post(apiUrls.Wing_Select, {
-        
-      })
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Wing_Select, form, { headers })
-        .then((res) => {
-          const wings = res?.data.data.map((item) => {
-            return { name: item?.Wing, code: item?.WingID };
-          });
-          setWing(wings);
-        })
-        .catch((err) => {
-          console.log(err);
+      .post(apiUrls.Wing_Select, {})
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   axios
+      //     .post(apiUrls?.Wing_Select, form, { headers })
+      .then((res) => {
+        const wings = res?.data.data.map((item) => {
+          return { name: item?.Wing, code: item?.WingID };
         });
+        setWing(wings);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const getProject = () => {
@@ -306,22 +296,28 @@ const Summary = () => {
         DeveloperID: useCryptoLocalStorage("user_Data", "get", "ID"),
       })
       .then((res) => {
+        console.log("check Response", res?.data?.status);
         const data = res?.data;
-        setByProject(data?.dtProject);
-        setbyStatus(data?.dtStatus);
-        setbyCategory(data?.dtCategory);
-        setdeveloperStatus(data?.dtAssignTo);
-        setlongestOpen(data?.dtLongestOpen);
-        setreporterStatus(data?.dtReporter);
-        setageingSheet(data?.dtAgeing);
-        setReporterByResolution(data?.dtReporterResolution);
-        setDeveloperByResolution(data?.dtAssignToResolution);
-        setbyPriority(data?.dtPriority);
-        setModule1(data?.dtModule4);
-        setModule2(data?.dtModule3);
-        setModule3(data?.dtModule2);
-        setModule4(data?.dtModule1);
-        setLoading(false);
+        if (res?.data?.status === true) {
+          setByProject(data?.dtProject);
+          setbyStatus(data?.dtStatus);
+          setbyCategory(data?.dtCategory);
+          setdeveloperStatus(data?.dtAssignTo);
+          setlongestOpen(data?.dtLongestOpen);
+          setreporterStatus(data?.dtReporter);
+          setageingSheet(data?.dtAgeing);
+          setReporterByResolution(data?.dtReporterResolution);
+          setDeveloperByResolution(data?.dtAssignToResolution);
+          setbyPriority(data?.dtPriority);
+          setModule1(data?.dtModule4);
+          setModule2(data?.dtModule3);
+          setModule3(data?.dtModule2);
+          setModule4(data?.dtModule1);
+          setLoading(false);
+        } else {
+          toast.error(res.data.message);
+          setLoading(false);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -1765,9 +1761,9 @@ const Summary = () => {
                                 onClick={() => ExportToPDF(byPriority)}
                               ></img>
                               <span style={{ fontWeight: "bold" }}>
-                                {t("Total Record")} : &nbsp;{" "}
+                                {t("Total Record")} : &nbsp;
                                 {byPriority[0]?.TotalRecord}
-                              </span>{" "}
+                              </span>
                             </>
                           </div>
                         }

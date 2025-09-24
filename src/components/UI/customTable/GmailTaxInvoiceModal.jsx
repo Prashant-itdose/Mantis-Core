@@ -29,16 +29,7 @@ const GmailTaxInvoiceModal = (visible) => {
   };
 
   const handleQuotation_Email_Log = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    // form.append("DocumentType", "TaxInvoice"),
-    // form.append("TaxId", visible?.visible?.showData?.ID),
-    // // axios
-    //   .post(apiUrls?.TaxInvoiceLog, form, { headers })
+    
     axiosInstances
       .post(apiUrls?.TaxInvoiceLog, {
         TaxId: String(visible?.visible?.showData?.ID),

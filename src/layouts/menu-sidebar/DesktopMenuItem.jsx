@@ -173,15 +173,13 @@ const DesktopMenuItem = ({ filteredData }) => {
         [name]: value,
       });
     }
-
-    // console.log("value", value);
   };
 
   const getAssignTo = () => {
     axiosInstances
       .post(apiUrls.GetTeamMember, {
-        ActionType: String("child"),
-        EmployeeId: Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),
+        ActionType: String("Child"),
+        // EmployeeId: Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),
       })
       .then((res) => {
         const assigntos = res?.data.data.map((item) => {

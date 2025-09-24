@@ -2,20 +2,17 @@ import React, { useEffect, useRef, useState } from "react";
 import Heading from "../components/UI/Heading";
 import { toast } from "react-toastify";
 import { apiUrls } from "../networkServices/apiEndpoints";
-import { headers } from "../utils/apitools";
 import { useTranslation } from "react-i18next";
 import DatePicker from "../components/formComponent/DatePicker";
 import ReactSelect from "../components/formComponent/ReactSelect";
 import NoRecordFound from "../components/formComponent/NoRecordFound";
 import * as XLSX from "xlsx";
 import * as FileSaver from "file-saver";
-import axios from "axios";
 import Loading from "../components/loader/Loading";
 import Input from "../components/formComponent/Input";
 import MultiSelectComp from "../components/formComponent/MultiSelectComp";
 import { PageSize } from "../utils/constant";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
-import ViewClientTicketTable from "./ViewClientTicketTable";
 import ViewIssueDocTable from "../components/UI/customTable/ViewIssueDocTable";
 import ViewIssueNotesModal from "../components/UI/customTable/ViewIssueNotesModal";
 import ViewIssueDocModal from "../components/UI/customTable/ViewIssueDocModal";
@@ -43,16 +40,6 @@ const ViewTicketClient = () => {
   const location = useLocation();
   const [showSelect, setShowSelect] = useState(null);
   const roleStatus = useCryptoLocalStorage("user_Data", "get", "RoleID");
-  const ShowClientDeliveryDate = useCryptoLocalStorage(
-    "user_Data",
-    "get",
-    "ShowClientDeliveryDate"
-  );
-  const ShowClientManHour = useCryptoLocalStorage(
-    "user_Data",
-    "get",
-    "ShowClientManHour"
-  );
   const [formData, setFormData] = useState({
     PageNo: "",
     PageSize: 50,
@@ -129,7 +116,7 @@ const ViewTicketClient = () => {
     SearhType: "0",
     ReOpen: "",
     ResolveDate: "",
-    OnlyDelay:""
+    OnlyDelay: "",
   });
   const AllowAssign = useCryptoLocalStorage(
     "user_Data",
@@ -163,11 +150,6 @@ const ViewTicketClient = () => {
         FilterData: String(savedData),
         Type: String(""),
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append("_FiterData", savedData),
-      //   axios
-      //     .post(apiUrls?.SaveFilterData, form, { headers })
       .then((res) => {
         toast.success(res?.data?.message);
         handleGetFilter();
@@ -182,14 +164,12 @@ const ViewTicketClient = () => {
       .post(apiUrls.SearchFilterData, {
         Type: String(""),
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-      // axios
-      //   .post(apiUrls?.SearchFilterData, form, { headers })
       .then((res) => {
+  
         if (res?.data) {
           let data = res?.data;
-          setFormData((val) => ({
+
+         setFormData((val) => ({
             ...val,
             VerticalID: res?.data?.VerticalID,
             TeamID: data?.TeamID || "",
@@ -253,7 +233,7 @@ const ViewTicketClient = () => {
       ManHourDropdown: "",
       ClientManHourDropdown: "",
       OnlyReOpen: "",
-      OnlyDelay:"",
+      OnlyDelay: "",
       SubmitDateBefore: new Date(),
       SubmitDateAfter: new Date(),
       SubmitDateCurrent: new Date(),
@@ -334,10 +314,6 @@ const ViewTicketClient = () => {
   const getPriority = () => {
     axiosInstances
       .post(apiUrls.Priority_Select, {})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.Priority_Select, form, { headers })
       .then((res) => {
         const assigntos = res?.data.data.map((item) => {
           return { label: item?.NAME, value: item?.ID };
@@ -353,10 +329,6 @@ const ViewTicketClient = () => {
       .post(apiUrls.AssignTo_Select, {
         ProjectID: 0,
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.AssignTo_Select, form, { headers })
       .then((res) => {
         const assigntos = res?.data.data.map((item) => {
           return { name: item?.Name, code: item?.ID };
@@ -376,18 +348,10 @@ const ViewTicketClient = () => {
         TeamID: 0,
         WingID: 0,
       })
-      // const form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-      // form.append(
-      //   "LoginName",
-      //   useCryptoLocalStorage("user_Data", "get", "realname")
-      // );
-
-      // axios
-      //   .post(apiUrls?.ProjectSelect, form, { headers })
       .then((res) => {
-        const datas = res?.data?.data || [];
-        const poc3s = datas.map((item) => ({
+        const datas = res?.data?.data;
+        console.log("daysta", datas);
+        const poc3s = datas?.map((item) => ({
           name: item?.Project,
           code: item?.ProjectId,
         }));
@@ -446,206 +410,137 @@ const ViewTicketClient = () => {
         OnlyDelay: Number(formData?.OnlyDelay) || 0,
         Ticket: formData?.Ticket ? String(formData?.Ticket) : "",
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "RoleID",
-      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-      //   ),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("PageSize", formData?.PageSize),
-      //   form.append("Ticket", formData?.Ticket ?? ""),
-      //   form.append("IsExcel", formData?.SearhType),
-      //   form.append("PriorityId", formData?.Priority),
-      //   form.append("ProjectID", formData?.ProjectID),
-      //   form.append("AssignToID", formData?.AssignedTo),
-      //   form.append("CategoryID", formData?.Category),
-      //   form.append("HideStatusId", formData?.HideStatus),
-      //   form.append("StatusId", formData?.Status),
-      //   form.append("SubmittedDateStatus", formData?.SubmitDate),
-      //   form.append(
-      //     "DateFromSubmitted",
-      //     formatDate(formData?.SubmitDateBefore)
-      //       ? formatDate(formData?.SubmitDateBefore)
-      //       : ""
-      //   );
-      // form.append(
-      //   "DateToSubmitted",
-      //   formatDate(formData?.SubmitDateAfter)
-      //     ? formatDate(formData?.SubmitDateAfter)
-      //     : ""
-      // ),
-      //   form.append("ClientDeliveryDateStatus", formData?.ClientDeliveryDate),
-      //   form.append(
-      //     "ClientDeliveryFromDate",
-      //     formatDate(formData?.ClientDeliveryDateBefore)
-      //   ),
-      //   form.append(
-      //     "ClientDeliverytodate",
-      //     formatDate(formData?.ClientDeliveryDateAfter)
-      //       ? formatDate(formData?.ClientDeliveryDateAfter)
-      //       : ""
-      //   ),
-      //   form.append("LastUpdateDateStatus", formData?.UpadteDate),
-      //   form.append(
-      //     "LastUpdatedFromDate",
-      //     formatDate(formData?.UpadteDateBefore)
-      //       ? formatDate(formData?.UpadteDateBefore)
-      //       : ""
-      //   ),
-      //   form.append("ClosedDateStatus", formData?.CloseDate),
-      //   form.append(
-      //     "ClosedFromDate",
-      //     formatDate(formData?.CloseDateBefore)
-      //       ? formatDate(formData?.CloseDateBefore)
-      //       : ""
-      //   ),
-      //   form.append(
-      //     "Closedtodate",
-      //     formatDate(formData?.CloseDateAfter)
-      //       ? formatDate(formData?.CloseDateAfter)
-      //       : ""
-      //   ),
-      //   form.append(
-      //     "LastUpdatedToDate",
-      //     formatDate(formData?.UpadteDateAfter)
-      //       ? formatDate(formData?.UpadteDateAfter)
-      //       : ""
-      //   ),
-      //   form.append("rowColor", code ? code : ""),
-      //   form.append("OnlyReOpen", formData?.OnlyReOpen),
-      //   form.append("PageNo", page ?? currentPage - 1);
-      // setLoading(true);
-      // axios
-      //   .post(apiUrls?.ViewIssueSearchClient, form, { headers })
       .then((res) => {
         const data = res?.data?.data;
 
-        if (formData?.SearhType == 0) {
-          if (data?.length == 0) {
-            setShownodata(true);
-          }
+        if (res?.data?.success === true) {
+          if (formData?.SearhType == 0) {
+            if (data?.length == 0) {
+              setShownodata(true);
+            }
 
-          const updatedData = data?.map((ele, index) => ({
-            ...ele,
-            IsActive: false,
-            MoveDropDown: "",
-            MoveResolve: false,
-            MoveDropDownValue: "",
-            AssignDropDown: "",
-            AssignResolve: false,
-            AssignDropDownValue: "",
-            UpdateStatusDropdown: "",
-            UpdateStatusResolve: false,
-            UpdateStatusValue: "",
-            ReOpenValue: "",
-            UpdateCategoryDropdown: "",
-            UpdateCategoryResolve: false,
-            UpdateCategoryValue: "",
-            UpdatedeliverydateDropdown: "",
-            UpdatedeliverydateResolve: false,
-            UpdatedeliverydateValue: "",
-            CloseDropdown: "",
-            CloseResolve: "",
-            index: index,
-            isDate: false,
-            isClientDate: false,
-            isManHour: false,
-            isClientManHour: false,
-            isCategory: false,
-            isAssignTo: false,
-            isStatus: false,
-            isProject: false,
-            isSummary: false,
-          }));
+            const updatedData = data?.map((ele, index) => ({
+              ...ele,
+              IsActive: false,
+              MoveDropDown: "",
+              MoveResolve: false,
+              MoveDropDownValue: "",
+              AssignDropDown: "",
+              AssignResolve: false,
+              AssignDropDownValue: "",
+              UpdateStatusDropdown: "",
+              UpdateStatusResolve: false,
+              UpdateStatusValue: "",
+              ReOpenValue: "",
+              UpdateCategoryDropdown: "",
+              UpdateCategoryResolve: false,
+              UpdateCategoryValue: "",
+              UpdatedeliverydateDropdown: "",
+              UpdatedeliverydateResolve: false,
+              UpdatedeliverydateValue: "",
+              CloseDropdown: "",
+              CloseResolve: "",
+              index: index,
+              isDate: false,
+              isClientDate: false,
+              isManHour: false,
+              isClientManHour: false,
+              isCategory: false,
+              isAssignTo: false,
+              isStatus: false,
+              isProject: false,
+              isSummary: false,
+            }));
 
-          setTableData(updatedData);
-          setFilteredData(updatedData);
-          //  tdRefs.current[0] = updatedData?.[0]?.index;
-          //   setSelectedRowIndex(updatedData?.[0]?.index);
-          // setSelectedRowIndex(index);
-        } else if (formData?.SearhType == 1) {
-          if (!data || data.length === 0) {
-            console.error("No data available for download.");
-            alert("No data available for download.");
-            return;
+            setTableData(updatedData);
+            setFilteredData(updatedData);
+            //  tdRefs.current[0] = updatedData?.[0]?.index;
+            //   setSelectedRowIndex(updatedData?.[0]?.index);
+            // setSelectedRowIndex(index);
+          } else if (formData?.SearhType == 1) {
+            if (!data || data.length === 0) {
+              console.error("No data available for download.");
+              alert("No data available for download.");
+              return;
+            }
+
+            setLoading(false);
+            const username =
+              useCryptoLocalStorage("user_Data", "get", "realname") || "User";
+            const now = new Date();
+            const currentDate = now.toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            });
+            const currentTime = now.toLocaleTimeString("en-GB", {
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+            });
+            const titleRow = [[`${username} - ${currentDate} ${currentTime}`]];
+            const ws = XLSX.utils.json_to_sheet(data, { origin: "A2" });
+            XLSX.utils.sheet_add_aoa(ws, titleRow, { origin: "A1" });
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Data");
+            const excelBuffer = XLSX.write(wb, {
+              bookType: "xlsx",
+              type: "array",
+            });
+            const fileData = new Blob([excelBuffer], {
+              type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
+            });
+
+            FileSaver.saveAs(
+              fileData,
+              `${username}_${currentDate}_${currentTime}.xlsx`
+            );
+          } else if (formData?.SearhType == 2) {
+            if (!data || data.length === 0) {
+              console.error("No data available for download.");
+              alert("No data available for download.");
+              return;
+            }
+            setLoading(false);
+
+            const username =
+              useCryptoLocalStorage("user_Data", "get", "realname") || "User";
+            const now = new Date();
+            const currentDate = now.toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            });
+            const currentTime = now.toLocaleTimeString("en-GB", {
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+            });
+            const titleRow = [[`${username} - ${currentDate} ${currentTime}`]];
+            const ws = XLSX.utils.json_to_sheet(data, { origin: "A2" });
+            XLSX.utils.sheet_add_aoa(ws, titleRow, { origin: "A1" });
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Data");
+            const excelBuffer = XLSX.write(wb, {
+              bookType: "xlsx",
+              type: "array",
+            });
+            const fileData = new Blob([excelBuffer], {
+              type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
+            });
+
+            FileSaver.saveAs(
+              fileData,
+              `${username}_${currentDate}_${currentTime}.xlsx`
+            );
           }
 
           setLoading(false);
-          const username =
-            useCryptoLocalStorage("user_Data", "get", "realname") || "User";
-          const now = new Date();
-          const currentDate = now.toLocaleDateString("en-GB", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          });
-          const currentTime = now.toLocaleTimeString("en-GB", {
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-          });
-          const titleRow = [[`${username} - ${currentDate} ${currentTime}`]];
-          const ws = XLSX.utils.json_to_sheet(data, { origin: "A2" });
-          XLSX.utils.sheet_add_aoa(ws, titleRow, { origin: "A1" });
-          const wb = XLSX.utils.book_new();
-          XLSX.utils.book_append_sheet(wb, ws, "Data");
-          const excelBuffer = XLSX.write(wb, {
-            bookType: "xlsx",
-            type: "array",
-          });
-          const fileData = new Blob([excelBuffer], {
-            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
-          });
-
-          FileSaver.saveAs(
-            fileData,
-            `${username}_${currentDate}_${currentTime}.xlsx`
-          );
-        } else if (formData?.SearhType == 2) {
-          if (!data || data.length === 0) {
-            console.error("No data available for download.");
-            alert("No data available for download.");
-            return;
-          }
+        } else {
+          toast.error(res.data.message);
+          setTableData([]);
           setLoading(false);
-
-          const username =
-            useCryptoLocalStorage("user_Data", "get", "realname") || "User";
-          const now = new Date();
-          const currentDate = now.toLocaleDateString("en-GB", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          });
-          const currentTime = now.toLocaleTimeString("en-GB", {
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-          });
-          const titleRow = [[`${username} - ${currentDate} ${currentTime}`]];
-          const ws = XLSX.utils.json_to_sheet(data, { origin: "A2" });
-          XLSX.utils.sheet_add_aoa(ws, titleRow, { origin: "A1" });
-          const wb = XLSX.utils.book_new();
-          XLSX.utils.book_append_sheet(wb, ws, "Data");
-          const excelBuffer = XLSX.write(wb, {
-            bookType: "xlsx",
-            type: "array",
-          });
-          const fileData = new Blob([excelBuffer], {
-            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
-          });
-
-          FileSaver.saveAs(
-            fileData,
-            `${username}_${currentDate}_${currentTime}.xlsx`
-          );
         }
-
-        setLoading(false);
       })
       .catch((err) => {
         toast.error(
@@ -729,14 +624,6 @@ const ViewTicketClient = () => {
         RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
         ProjectID: 0,
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "RoleID",
-      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-      //   ),
-      //   axios
-      //     .post(apiUrls?.Category_Select, form, { headers })
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return { name: item?.NAME, code: item?.NAME };
@@ -750,10 +637,6 @@ const ViewTicketClient = () => {
   const getStatus = () => {
     axiosInstances
       .post(apiUrls.Status_Select, {})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.Status_Select, form, { headers })
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return {
@@ -797,11 +680,6 @@ const ViewTicketClient = () => {
       .post(apiUrls.Reason_Select, {
         Title: "ReOpenReason",
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append("Title", "ReOpenReason"),
-      //   axios
-      //     .post(apiUrls?.Reason_Select, form, { headers })
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return { label: item?.NAME, value: item?.ID };
@@ -839,16 +717,6 @@ const ViewTicketClient = () => {
         TicketIDs: String(item?.TicketID),
         ActionText: "Close",
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("TicketIDs", item?.TicketID),
-      //   form.append("ActionText", "Close");
-      // axios
-      //   .post(apiUrls?.ApplyActionClient, form, { headers })
       .then((res) => {
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);
@@ -949,15 +817,6 @@ const ViewTicketClient = () => {
       .post(apiUrls.DeleteTicket, {
         TicketIDs: Number(ticketIDs),
       })
-      // let form = new FormData();
-      // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("TicketIDs", ticketIDs),
-      //   axios
-      //     .post(apiUrls?.DeleteTicket, form, { headers })
       .then((res) => {
         toast.success(res?.data?.message);
         handleViewSearch();
@@ -985,18 +844,6 @@ const ViewTicketClient = () => {
         ReOpenReasonID: String(data?.value),
         ReOpenReason: String(data?.label),
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("TicketIDs", tableData[index]?.TicketID),
-      //   form.append("ReOpenReason", data?.label),
-      //   form.append("ReOpenReasonID", data?.value),
-      //   form.append("ActionText", "ReOpen"),
-      //   axios
-      //     .post(apiUrls?.ApplyAction, form, { headers })
       .then((res) => {
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);
@@ -1029,17 +876,6 @@ const ViewTicketClient = () => {
         ReOpenReasonID: String(""),
         ReOpenReason: String(""),
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("TicketIDs", details?.TicketID),
-      //   form.append("ActionText", "ResolveDate"),
-      //   form.append("ActionId", new Date().toISOString().split("T")[0]),
-      //   axios
-      //     .post(apiUrls?.ApplyAction, form, { headers })
       .then((res) => {
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);
@@ -1073,7 +909,7 @@ const ViewTicketClient = () => {
     getProject();
     getAssignTo();
     getReopen();
-    handleGetFilter();
+    // handleGetFilter();
   }, []);
   return (
     <>
@@ -1405,21 +1241,56 @@ const ViewTicketClient = () => {
                     {t("ManuallyClosed")}
                   </span>
                 </div>
-
-                {/* <button
-                  className={`fa ${rowHandler.show ? "fa-arrow-up" : "fa-arrow-down"}`}
-                  onClick={() => {
-                    handlerow("show");
-                  }}
+                <div
+                  className="d-flex "
                   style={{
-                    cursor: "pointer",
-                    border: "none",
-                    color: "black",
-                    borderRadius: "2px",
-                    background: "none",
-                    marginLeft: "30px",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
                   }}
-                ></button> */}
+                >
+                  <div
+                    style={{
+                      backgroundColor: "#fff000",
+                      cursor: "pointer",
+                      height: "11px",
+                      width: "18px",
+                      borderRadius: "50%",
+                      marginLeft: "4px",
+                    }}
+                    onClick={() => handleViewSearch("60", "0")}
+                  ></div>
+                  <span
+                    className="legend-label"
+                    style={{ width: "100%", textAlign: "left" }}
+                  >
+                    {t("Hold")}
+                  </span>
+                </div>
+                <div
+                  className="d-flex "
+                  style={{
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      backgroundColor: "#fff494",
+                      cursor: "pointer",
+                      height: "12px",
+                      width: "15px",
+                      borderRadius: "50%",
+                      marginLeft: "4px",
+                    }}
+                    onClick={() => handleViewSearch("40", "0")}
+                  ></div>
+                  <span
+                    className="legend-label"
+                    style={{ width: "100%", textAlign: "left" }}
+                  >
+                    {t("Confirmed")}
+                  </span>
+                </div>
               </div>
             </div>
           }
@@ -1434,7 +1305,7 @@ const ViewTicketClient = () => {
             handleChange={handleMultiSelectChange}
             value={formData?.ProjectID?.map((code) => ({
               code,
-              name: project.find((item) => item.code === code)?.name,
+              name: project?.find((item) => item?.code === code)?.name,
             }))}
           />
           {AllowAssign == 1 && (
@@ -1821,7 +1692,7 @@ const ViewTicketClient = () => {
               </div>
             </div>
           </div>
-            <div className="d-flex">
+          <div className="d-flex">
             <div className="search-col" style={{ marginLeft: "8px" }}>
               <div style={{ display: "flex", alignItems: "center" }}>
                 <label className="switch" style={{ marginTop: "7px" }}>
@@ -1905,8 +1776,16 @@ const ViewTicketClient = () => {
                           respclass="col-xl-12 col-md-4 col-sm-6 col-12"
                         />
                       </div>
-                      <span style={{ fontWeight: "bold" }}>
-                        {t("Total Record")} : &nbsp; {tableData[0]?.TotalRecord}
+                      <span style={{ fontWeight: "bold", marginLeft: "7px" }}>
+                        {t("Total ManMinutes")} :&nbsp;
+                        {tableData?.reduce(
+                          (acc, curr) =>
+                            acc + (Number(curr?.ManHoursClient) || 0),
+                          0
+                        )}
+                      </span>
+                      <span style={{ fontWeight: "bold", marginLeft: "7px" }}>
+                        {t("Total Record")} :&nbsp;{tableData[0]?.TotalRecord}
                       </span>
                     </div>
                   }

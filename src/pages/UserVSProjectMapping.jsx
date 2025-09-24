@@ -64,7 +64,9 @@ const UserVSProjectMapping = () => {
     //   axios
     //     .post(apiUrls?.UserVsProject_Select, form, { headers })
     axiosInstances
-      .post(apiUrls.UserVsProject_Select)
+      .post(apiUrls.UserVsProject_Select,{
+        
+      })
         .then((res) => {
           const dadadata = res?.data?.data;
           setTableData(dadadata);

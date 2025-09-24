@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ReactSelect from "../components/formComponent/ReactSelect";
-import axios, { formToJSON } from "axios";
-import { headers } from "../utils/apitools";
+
 import Input from "../components/formComponent/Input";
 import Tables from "../components/UI/customTable";
 import { salesbookingTHEAD } from "../components/modalComponent/Utils/HealperThead";
@@ -22,7 +21,7 @@ import {
   PANCARD_VALIDATION_REGX,
 } from "../utils/constant";
 import Modal from "../components/modalComponent/Modal";
-import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
+
 import { axiosInstances } from "../networkServices/axiosInstance";
 const SalesBooking = ({ data }) => {
   const [billingcompany, setBillingCompany] = useState([]);
@@ -152,27 +151,17 @@ const SalesBooking = ({ data }) => {
   };
 
   const getCompanyBill = (proj) => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("BillingCompanyID", proj),
-    // form.append("IsActive", "1"),
-    // axios
-    //   .post(apiUrls?.BillingCompanyDetail_Select_ID, form, { headers })
+  
     axiosInstances
       .post(apiUrls?.BillingCompanyDetail_Select_ID, { BillingCompanyID: proj })
       .then((res) => {
-        // console.log("billingcompanydetail",res?.data?.data[0])
+      
         setFormData((val) => ({
           ...val,
           BillingAddress: res?.data?.data[0]?.BillingAddress,
           BillingState: res?.data?.data[0]?.StateID,
           BillingGST: res?.data?.data[0]?.GSTNo,
           BillingPanCard: res?.data?.data[0]?.PanCardNo,
-
-          // ShippingAddress: res?.data?.data[0]?.BillingAddress,
-          // ShippingState: res?.data?.data[0]?.StateID,
-          // ShippingGST: res?.data?.data[0]?.GSTNo,
-          // ShippingPanCard: res?.data?.data[0]?.PanCardNo,
         }));
       })
       .catch((err) => {
@@ -184,20 +173,12 @@ const SalesBooking = ({ data }) => {
       .post(apiUrls.BillingCompanyDetail_Select_ID, {
         BillingCompanyID: Number(proj),
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append("BillingCompanyID", proj),
-      //   // form.append("IsActive", "1"),
-      //   axios
-      //     .post(apiUrls?.BillingCompanyDetail_Select_ID, form, { headers })
+      
       .then((res) => {
-        // console.log("billingcompanydetail",res?.data?.data[0])
+       
         setFormData((val) => ({
           ...val,
-          // BillingAddress: res?.data?.data[0]?.BillingAddress,
-          // BillingState: res?.data?.data[0]?.StateID,
-          // BillingGST: res?.data?.data[0]?.GSTNo,
-          // BillingPanCard: res?.data?.data[0]?.PanCardNo,
+     
 
           ShippingAddress: res?.data?.data[0]?.BillingAddress,
           ShippingState: res?.data?.data[0]?.StateID,
@@ -309,7 +290,7 @@ const SalesBooking = ({ data }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { state } = location;
-  console.log("stateeeeee", state);
+  
 
   const [value, setValue] = useState("");
   const [loading, setLoading] = useState(false);
@@ -676,62 +657,7 @@ const SalesBooking = ({ data }) => {
 
     axiosInstances
       .post(apiUrls.Payment_Installment_Update, OnGoingPayload)
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "RoleID",
-      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-      //   ),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("ProjectID", formData?.Project),
-      //   form.append("ProjectName", getlabel(formData?.Project, project)),
-      //   form.append(
-      //     "BillingCompanyName",
-      //     getlabel(formData?.BillingCompany, billingcompany || "")
-      //   ),
-      //   form.append("BillingCompanyAddress", formData?.BillingAddress || ""),
-      //   form.append("BillingState", formData?.BillingState || ""),
-      //   form.append("GSTNo", formData?.BillingGST || ""),
-      //   form.append("PoNo", formData?.PoNumber || ""),
-      //   form.append("PanCardNo", formData?.BillingPanCard || ""),
-      //   form.append("ShippingCompanyID", formData?.ShippingCompany || ""),
-      //   form.append(
-      //     "ShippingCompanyName",
-      //     getlabel(formData?.ShippingCompany, shippingcompany || "")
-      //   ),
-      //   form.append(
-      //     "ExpiryDate",
-      //     moment(formData?.ExpiryDate).format("DD-MM-YYYY")
-      //   ),
-      //   form.append("ShippingCompanyAddress", formData?.ShippingAddress || ""),
-      //   form.append("ShippingGSTNo", formData?.ShippingGST || ""),
-      //   form.append("ShippingPanCardNo", formData?.ShippingPanCard || ""),
-      //   form.append("ShippingState", formData?.ShippingState || ""),
-      //   form.append("dtSales", moment(formData?.SalesDate).format("DD-MM-YYYY")),
-      //   form.append("PoNumber", formData?.PoNumber),
-      //   // form.append("GrossAmount", GrossAmount),
-      //   form.append("GrossAmount", formData?.TotalAmount),
-      //   form.append("DiscountAmount", payload[0]?.DiscountAmount || ""),
-      //   // form.append("DiscountAmount", ""),
-      //   form.append("TaxAmount", Tax || ""),
-      //   // form.append("TaxAmount", ""),
-      //   form.append("Tax_Per", 18),
-      //   form.append("CGST_Amount", formData?.CgstAmount),
-      //   form.append("SGST_Amount", formData?.SgstAmount),
-      //   form.append("IGST_Amount", ""),
-      //   form.append("CGST_Per", ""),
-      //   form.append("SGST_Per", ""),
-      //   form.append("IGST_Per", ""),
-      //   form.append("Payment_Installment_ID", formData?.Payment_Installment_ID),
-      //   form.append("RoundOff", formData?.RoundOff),
-      //   form.append("Document_Base64", ""),
-      //   form.append("Document_FormatType", ""),
-      //   form.append("ItemData", JSON.stringify(payload));
-      // axios
-      //   .post(apiUrls?.Payment_Installment_Update, form, { headers })
+      
       .then((res) => {
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);

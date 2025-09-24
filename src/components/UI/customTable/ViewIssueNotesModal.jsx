@@ -1,18 +1,14 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { apiUrls } from "../../../networkServices/apiEndpoints";
-import { headers } from "../../../utils/apitools";
 import Input from "../../formComponent/Input";
 import { toast } from "react-toastify";
 import Tables from ".";
 import Heading from "../Heading";
 import NoRecordFound from "../../formComponent/NoRecordFound";
 import Loading from "../../loader/Loading";
-import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorage";
 import { axiosInstances } from "../../../networkServices/axiosInstance";
 
 const ViewIssueNotesModal = ({ visible, setVisible, handleViewSearch }) => {
-  const { VITE_DATE_FORMAT } = import.meta.env;
   const searchHandleChange = (e) => {
     const { name, value } = e?.target;
     setFormData({ ...formData, [name]: value });
@@ -28,16 +24,9 @@ const ViewIssueNotesModal = ({ visible, setVisible, handleViewSearch }) => {
   });
   const handleSearchNote = () => {
     axiosInstances
-      .post(apiUrls.ViewNote,{
-  "TicketID": visible?.showData?.TicketID
-})
-//     let form = new FormData();
-//     form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-//       form.append("TicketID", visible?.showData?.TicketID);
-//     axios
-//       .post(apiUrls?.ViewNote, form, {
-//         headers,
-//       })
+      .post(apiUrls.ViewNote, {
+        TicketID: Number(visible?.showData?.TicketID),
+      })
       .then((res) => {
         const data = res?.data?.data;
         setTableData(data);
@@ -58,32 +47,20 @@ const ViewIssueNotesModal = ({ visible, setVisible, handleViewSearch }) => {
     setLoading(true);
     axiosInstances
       .post(apiUrls.InsertNoteLog, {
-  "TicketID": visible?.showData?.TicketID,
-  "NoteText": formData?.TicketNote
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("TicketID", visible?.showData?.TicketID);
-    // form.append("NoteText", formData?.TicketNote);
-    // axios
-    //   .post(apiUrls?.InsertNoteLog, form, {
-    //     headers,
-    //   })
+        TicketID: Number(visible?.showData?.TicketID),
+        NoteText: String(formData?.TicketNote),
+      })
       .then((res) => {
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);
-          // handleSearchNote();
+          handleSearchNote();
           setLoading(false);
           setFormData({
             ...formData,
             TicketNote: "",
           });
           setVisible(false);
-          // handleViewSearch();
+          handleViewSearch();
         } else {
           toast.error(res?.data?.message);
           setLoading(false);

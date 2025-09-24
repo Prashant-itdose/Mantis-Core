@@ -58,18 +58,7 @@ const SaveQueryMasterModal = () => {
     return ele.length > 0 ? ele[0].label : "";
   }
   const handleSave = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-    //   form.append("Query", formData?.QueryName),
-    //   form.append("ProductID", formData?.Product),
-    //   form.append("ProductName", getlabel(formData?.Product, product)),
-    //   form.append("ModuleID", formData?.Module),
-    //   form.append("ModuleName", getlabel(formData?.Module, modules)),
-    //   form.append("Document_Base64", formData?.Document_Base64),
-    //   form.append("Document_FormatType", formData?.FileExtension),
-    //   axios
-    //     .post(apiUrls?.Query_Insert, form, { headers })
+  
       const payload = {
     Query: formData?.QueryName || "",
     ProductID: Number(formData?.Product) || 0,
