@@ -165,11 +165,10 @@ const ViewTicketClient = () => {
         Type: String(""),
       })
       .then((res) => {
-  
         if (res?.data) {
           let data = res?.data;
 
-         setFormData((val) => ({
+          setFormData((val) => ({
             ...val,
             VerticalID: res?.data?.VerticalID,
             TeamID: data?.TeamID || "",
@@ -577,12 +576,7 @@ const ViewTicketClient = () => {
     t("Status"),
     t("Submit Date"),
     t("Resolve Date"),
-    // t("Close"),
-
     t("Action"),
-
-    // { name: t("Close"), width: "4%" },
-    // { name: t("ReOpen"), width: "4%" },
     t("DeliveryDate"),
     t("ManMinutes"),
     t("ModuleName"),
@@ -617,7 +611,7 @@ const ViewTicketClient = () => {
 
     setCurrentPage(1);
   };
-
+  let baseRow = {};
   const getCategory = () => {
     axiosInstances
       .post(apiUrls.Category_Select, {
@@ -1776,16 +1770,17 @@ const ViewTicketClient = () => {
                           respclass="col-xl-12 col-md-4 col-sm-6 col-12"
                         />
                       </div>
-                      <span style={{ fontWeight: "bold", marginLeft: "7px" }}>
-                        {t("Total ManMinutes")} :&nbsp;
+
+                      <span style={{ fontWeight: "bold", marginLeft: "10px" }}>
+                        {t("Total ManMinutes")} : &nbsp;{" "}
                         {tableData?.reduce(
                           (acc, curr) =>
                             acc + (Number(curr?.ManHoursClient) || 0),
                           0
                         )}
                       </span>
-                      <span style={{ fontWeight: "bold", marginLeft: "7px" }}>
-                        {t("Total Record")} :&nbsp;{tableData[0]?.TotalRecord}
+                      <span style={{ fontWeight: "bold", marginLeft: "10px" }}>
+                        {t("Total Record")} : &nbsp; {tableData[0]?.TotalRecord}
                       </span>
                     </div>
                   }
@@ -1808,84 +1803,86 @@ const ViewTicketClient = () => {
                 <div className="">
                   <Tables
                     style={{ width: "100%", height: "100%" }}
-                    thead={THEAD}
-                    // ref={(el) => (tdRefs.current[index] = el)}
-                    tbody={currentData?.map((ele, index) => ({
-                      "S.No.":
-                        (currentPage - 1) * formData?.PageSize + index + 1,
-                      Notes:
-                        ele?.NoteCount === 0 ? (
-                          <i
-                            className="fa fa-file"
-                            onClick={() => {
-                              setVisible({
-                                noteVisible: true,
-                                showData: ele,
-                                ele,
-                              });
-                            }}
-                            style={{
-                              cursor: "pointer",
-                              color: "black",
-                              marginLeft: "10px",
-                            }}
-                          ></i>
-                        ) : (
-                          <i
-                            className="fa fa-file"
-                            onClick={() => {
-                              setVisible({
-                                noteVisible: true,
-                                showData: ele,
-                                ele,
-                              });
-                            }}
-                            style={{
-                              cursor: "pointer",
-                              color: "green",
-                              marginLeft: "10px",
-                            }}
-                          ></i>
-                        ),
-                      Attach:
-                        ele?.AttachmentCount === 0 ? (
-                          <i
-                            className="fa fa-upload"
-                            onClick={() => {
-                              setVisible({
-                                docVisible: true,
-                                showData: ele,
-                                ele,
-                              });
-                            }}
-                            style={{
-                              cursor: "pointer",
-                              color: "black",
-                              marginLeft: "10px",
-                            }}
-                            title="Upload Document."
-                          ></i>
-                        ) : (
-                          <i
-                            className="fa fa-upload"
-                            onClick={() => {
-                              setVisible({
-                                docViewVisible: true,
-                                showData: ele,
-                                ele,
-                              });
-                            }}
-                            style={{
-                              cursor: "pointer",
-                              color: "green",
-                              marginLeft: "10px",
-                            }}
-                            title="View Documents"
-                          ></i>
-                        ),
-
-                      Select: (
-                        <>
+                    thead={
+                      formData?.ProjectID == "167"
+                        ? THEAD
+                        : THEAD.filter((head) => head !== "Assign To")
+                    }
+                    tbody={currentData?.map((ele, index) => {
+                      baseRow = {
+                        "S.No.":
+                          (currentPage - 1) * formData?.PageSize + index + 1,
+                        Notes:
+                          ele?.NoteCount === 0 ? (
+                            <i
+                              className="fa fa-file"
+                              onClick={() =>
+                                setVisible({
+                                  noteVisible: true,
+                                  showData: ele,
+                                  ele,
+                                })
+                              }
+                              style={{
+                                cursor: "pointer",
+                                color: "black",
+                                marginLeft: "10px",
+                              }}
+                            />
+                          ) : (
+                            <i
+                              className="fa fa-file"
+                              onClick={() =>
+                                setVisible({
+                                  noteVisible: true,
+                                  showData: ele,
+                                  ele,
+                                })
+                              }
+                              style={{
+                                cursor: "pointer",
+                                color: "green",
+                                marginLeft: "10px",
+                              }}
+                            />
+                          ),
+                        Attach:
+                          ele?.AttachmentCount === 0 ? (
+                            <i
+                              className="fa fa-upload"
+                              onClick={() =>
+                                setVisible({
+                                  docVisible: true,
+                                  showData: ele,
+                                  ele,
+                                })
+                              }
+                              style={{
+                                cursor: "pointer",
+                                color: "black",
+                                marginLeft: "10px",
+                              }}
+                              title="Upload Document."
+                            />
+                          ) : (
+                            <i
+                              className="fa fa-upload"
+                              onClick={() =>
+                                setVisible({
+                                  docViewVisible: true,
+                                  showData: ele,
+                                  ele,
+                                })
+                              }
+                              style={{
+                                cursor: "pointer",
+                                color: "green",
+                                marginLeft: "10px",
+                              }}
+                              title="View Documents"
+                            />
+                          ),
+                        Select: (
                           <Input
                             disabled={ele?.Status == "closed"}
                             type="checkbox"
@@ -1895,249 +1892,138 @@ const ViewTicketClient = () => {
                               handleDeliveryChangeCheckbox(e, index)
                             }
                           />
-                        </>
-                      ),
-                      "Ticket ID": (
-                        <div
-                          style={{
-                            padding: "0px",
-                            background: ele?.IsReOpen == 1 && "#c6fcff",
-                            border: "none",
-                            textAlign: "center",
-                            height: "25px",
-                          }}
-                        >
-                          {ele?.Status == "closed" ? (
-                            ele?.TicketID
-                          ) : (
-                            <Link
-                              onClick={() => {
-                                setVisible({
-                                  showVisible: true,
-                                  showData: ele,
-                                });
-                              }}
-                              title="Click to Show"
-                            >
-                              {ele?.TicketID}
-                            </Link>
-                          )}
-                        </div>
-                      ),
-
-                      "Project Name": (
-                        <Tooltip label={ele?.ProjectName}>
-                          <span
-                            id={`projectName-${index}`}
-                            targrt={`projectName-${index}`}
-                            style={{ textAlign: "center" }}
-                          >
-                            {shortenNamesummary(ele?.ProjectName)}
-                          </span>
-                        </Tooltip>
-                      ),
-
-                      "Category Name": ele?.Category,
-                      "Reporter Name": (
-                        <Tooltip label={ele?.ReporterName}>
-                          <span
-                            id={`projectName-${index}`}
-                            targrt={`projectName-${index}`}
-                            style={{ textAlign: "center" }}
-                          >
-                            {shortenNamesummary(ele?.ReporterName)}
-                          </span>
-                        </Tooltip>
-                      ),
-                      "Assign To": ele?.AssignTo,
-                      "Reported By Name": ele?.ReportedByName,
-                      "Machine Reference No.": ele?.OtherReferenceNo,
-                      Summary: (
-                        <div style={{ width: "178px" }}>
-                          <span
+                        ),
+                        "Ticket ID": (
+                          <div
                             style={{
-                              whiteSpace: "normal",
-                              cursor: "pointer",
+                              padding: "0px",
+                              background: ele?.IsReOpen == 1 && "#c6fcff",
+                              border: "none",
+                              textAlign: "center",
+                              height: "25px",
                             }}
-                            id={`summary-${index}`}
-                            targrt={`summary-${index}`}
-                            title={ele?.summary}
                           >
-                            {ele?.summary}
-                          </span>
-                        </div>
-                      ),
-                      Status: ele?.Status,
-                      "Submit Date": ele?.TicketRaisedDate,
-                      "Resolve Date": ele?.ResolvedDate,
-                      // Close:
-                      //   ele?.Status == "closed" ? (
-                      //     ""
-                      //   ) : (
-                      //     <button
-                      //       className="btn btn-xs btn-danger"
-                      //       style={{
-                      //         color: "white",
-                      //         backgroundColor: "red",
-                      //         borderColor: "red !important",
-                      //         border: "none",
-                      //       }}
-                      //       disabled={ele?.Status === "closed"}
-                      //       onClick={() => handleResolveElementClose(ele)}
-                      //     >
-                      //       Close
-                      //     </button>
-                      //   ),
-
-                      // Action: (
-                      //   <>
-                      //     {ele?.DClosedStatus == 1 ? (
-                      //       <>
-                      //         <button
-                      //           className="btn btn-xs btn-danger ml-2 mb-1"
-                      //           style={{
-                      //             color: "white",
-                      //             backgroundColor: "green",
-                      //             border: "none",
-                      //           }}
-                      //           onClick={() => handleClick(index)}
-                      //         >
-                      //           ReOpen
-                      //         </button>
-                      //       </>
-                      //     ) : (
-                      //       ""
-                      //     )}
-                      //     {showSelect === index && (
-                      //       <div
-                      //         style={{
-                      //           width: "100%",
-                      //           marginLeft: "3px",
-                      //           marginTop: "5px",
-                      //         }}
-                      //       >
-                      //         <ReactSelect
-                      //           name="ReOpenValue"
-                      //           id="ReOpenValue"
-                      //           placeholderName="Reason"
-                      //           dynamicOptions={reopen}
-                      //           value={ele?.ReOpenValue}
-                      //           handleChange={(name, value) => {
-                      //             handleAgainChange(name, value, index);
-                      //           }}
-                      //           respclass="width110px"
-                      //         />
-                      //       </div>
-                      //     )}
-                      //   </>
-                      // ),
-                      Action: (
-                        <>
-                          <ReactSelect
-                            style={{ width: "100%", marginLeft: "10px" }}
-                            height={"6px"}
-                            name="TableStatus"
-                            id="TableStatus"
-                            respclass="width110px"
-                            placeholderName="Select"
-                            dynamicOptions={dynamicOptionStatus}
-                            value={ele?.TableStatus}
-                            handleChange={(name, value) => {
-                              const ind =
-                                (currentPage - 1) * formData?.PageSize + index;
-                              handleDeliveryChangeValue(
-                                name,
-                                value?.value,
-                                ind,
-                                index,
-                                ele
-                              );
-                            }}
-                          />
-
-                          {ele?.TableStatus == "ReOpen" && (
-                            <>
-                              {ele?.DClosedStatus == 1 ? (
-                                <ReactSelect
-                                  style={{ width: "100%", marginLeft: "3px" }}
-                                  height={"6px"}
-                                  name="ReOpenValue"
-                                  respclass="width110px"
-                                  id="ReOpenValue"
-                                  placeholderName="Reason"
-                                  dynamicOptions={reopen}
-                                  value={ele?.ReOpenValue}
-                                  handleChange={(name, value) => {
-                                    handleAgainChange(name, value, index);
-                                  }}
-                                />
-                              ) : (
-                                <span
-                                  style={{
-                                    color: "Orange",
-                                    marginLeft: "5px",
-                                  }}
-                                >
-                                  Please Close Ticket<br></br>or &nbsp;Reopen
-                                  Date Over.
-                                </span>
-                              )}
-                            </>
-                          )}
-                          {/* {ele?.TableStatus == "Close" && (
-                    <>
-                      <button
-                        className="btn btn-xs btn-danger ml-2"
-                        style={{
-                          color: "white",
-                          backgroundColor: "red",
-                          borderColor: "red !important",
-                          border: "none",
-                        }}
-                        disabled={ele?.Status === "closed"}
-                        onClick={() => handleResolveElementClose(ele)}
-                      >
-                        Close
-                      </button>
-                    </>
-                  )} */}
-                          {/* {ele?.TableStatus == "Resolve" && (
-                    <>
-                      <div className="mt-2">
-                        {" "}
-                        <DatePicker
-                          placeholder={VITE_DATE_FORMAT}
-                          className="custom-calendar"
-                          id="ResolveDate"
-                          name="ResolveDate"
-                          lable={"Resolve Date"}
-                          value={formData?.ResolveDate}
-                          handleChange={(e) => {
-                            const { name, value } = e.target;
-                            searchHandleChangeTable(name, value, index, ele);
-                          }}
-                        />
-                      </div> */}
-                          {/* <button
-                              className="btn btn-sm btn-success ml-1 mb-1 mt-1"
+                            {ele?.Status == "closed" ? (
+                              ele?.TicketID
+                            ) : (
+                              <Link
+                                onClick={() =>
+                                  setVisible({
+                                    showVisible: true,
+                                    showData: ele,
+                                  })
+                                }
+                                title="Click to Show"
+                              >
+                                {ele?.TicketID}
+                              </Link>
+                            )}
+                          </div>
+                        ),
+                        "Project Name": (
+                          <Tooltip label={ele?.ProjectName}>
+                            <span style={{ textAlign: "center" }}>
+                              {shortenNamesummary(ele?.ProjectName)}
+                            </span>
+                          </Tooltip>
+                        ),
+                        "Category Name": ele?.Category,
+                        "Reporter Name": (
+                          <Tooltip label={ele?.ReporterName}>
+                            <span style={{ textAlign: "center" }}>
+                              {shortenNamesummary(ele?.ReporterName)}
+                            </span>
+                          </Tooltip>
+                        ),
+                        "Assign To":
+                          formData?.ProjectID == "167" ? ele?.AssignTo : null,
+                        "Reported By Name": ele?.ReportedByName,
+                        "Machine Reference No.": ele?.OtherReferenceNo,
+                        Summary: (
+                          <div style={{ width: "178px" }}>
+                            <span
                               style={{
-                                marginRight: "1px",
-                                marginLeft: "1px",
+                                whiteSpace: "normal",
+                                cursor: "pointer",
                               }}
-                              onClick={() => handleResolveElement(ele)}
+                              title={ele?.summary}
                             >
-                              Resolve
-                            </button> */}
-                          {/* </> */}
-                          {/* )} */}
-                        </>
-                      ),
-                      DeliveryDate: ele?.DeliveryDateClient,
-                      ManMinutes: ele?.ManHoursClient,
-                      ModuleName: ele?.ModuleName,
-                      PageName: ele?.PagesName,
-                      colorcode: ele?.rowColor,
-                    }))}
+                              {ele?.summary}
+                            </span>
+                          </div>
+                        ),
+                        Status: ele?.Status,
+                        "Submit Date": ele?.TicketRaisedDate,
+                        "Resolve Date": ele?.ResolvedDate,
+                        Action: (
+                          <>
+                            <ReactSelect
+                              style={{ width: "100%", marginLeft: "10px" }}
+                              height={"6px"}
+                              name="TableStatus"
+                              id="TableStatus"
+                              respclass="width110px"
+                              placeholderName="Select"
+                              dynamicOptions={dynamicOptionStatus}
+                              value={ele?.TableStatus}
+                              handleChange={(name, value) => {
+                                const ind =
+                                  (currentPage - 1) * formData?.PageSize +
+                                  index;
+                                handleDeliveryChangeValue(
+                                  name,
+                                  value?.value,
+                                  ind,
+                                  index,
+                                  ele
+                                );
+                              }}
+                            />
+                            {ele?.TableStatus == "ReOpen" && (
+                              <>
+                                {ele?.DClosedStatus == 1 ? (
+                                  <ReactSelect
+                                    style={{ width: "100%", marginLeft: "3px" }}
+                                    height={"6px"}
+                                    name="ReOpenValue"
+                                    respclass="width110px"
+                                    id="ReOpenValue"
+                                    placeholderName="Reason"
+                                    dynamicOptions={reopen}
+                                    value={ele?.ReOpenValue}
+                                    handleChange={(name, value) => {
+                                      handleAgainChange(name, value, index);
+                                    }}
+                                  />
+                                ) : (
+                                  <span
+                                    style={{
+                                      color: "Orange",
+                                      marginLeft: "5px",
+                                    }}
+                                  >
+                                    Please Close Ticket
+                                    <br />
+                                    or &nbsp;Reopen Date Over.
+                                  </span>
+                                )}
+                              </>
+                            )}
+                          </>
+                        ),
+                        DeliveryDate: ele?.DeliveryDateClient,
+                        ManMinutes: ele?.ManHoursClient,
+                        ModuleName: ele?.ModuleName,
+                        PageName: ele?.PagesName,
+                        colorcode: ele?.rowColor,
+                      };
+
+                      // ✅ only add "Assign To" if ProjectID = 167
+                      if (formData?.ProjectID != "167") {
+                        delete baseRow["Assign To"];
+                      }
+                      return baseRow;
+                    })}
                     tableHeight={"tableHeight"}
                   />
                 </div>

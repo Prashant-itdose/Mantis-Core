@@ -107,10 +107,10 @@ export const MENU = {
           breadcrumb: "Tickets / DeveloperCalendar",
         },
         {
-          name: "TicketView",
+          name: "Employee Task Tracker",
           icon: "fas fa-regular fa-user",
           path: "/TicketView",
-          breadcrumb: "Tickets / TicketView",
+          breadcrumb: "Tickets / Employee Task Tracker",
         },
       ],
     },

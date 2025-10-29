@@ -2,17 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Heading from "../components/UI/Heading";
 import Input from "../components/formComponent/Input";
-import { useFormik } from "formik";
 import { MOBILE_NUMBER_VALIDATION_REGX } from "../utils/constant";
-import { ReceiptDetailnew } from "../networkServices/opdserviceAPI";
-import moment from "moment";
 import ReactSelect from "../components/formComponent/ReactSelect";
-import TextEditor from "../components/formComponent/TextEditor";
-import MultiSelectComp from "../components/formComponent/MultiSelectComp";
-import axios from "axios";
-import { headers } from "../utils/apitools";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import NewTicketModal from "../components/UI/customTable/NetTicketModal";
 import Modal from "../components/modalComponent/Modal";
 import {
@@ -20,42 +12,44 @@ import {
   inputBoxValidation,
 } from "../utils/utils";
 import { apiUrls } from "../networkServices/apiEndpoints";
-import { values } from "lodash";
 import { Tabfunctionality } from "../utils/helpers";
-import TextAreaInput from "../components/formComponent/TextAreaInput";
-import ModuleNameModal from "../components/UI/customTable/ModuleNameModal";
 import PageNameModal from "../components/UI/customTable/PageNameModal";
 import Tables from "../components/UI/customTable";
 import { useSelector } from "react-redux";
-import BrowseButton from "../components/formComponent/BrowseButton";
 import BrowseInput from "../components/formComponent/BrowseInput";
 
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import { axiosInstances } from "../networkServices/axiosInstance";
-const ReportIssue = () => {
+const ReportIssue = ({ visibleTicket }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errors, setErros] = useState({});
-  const { VITE_DATE_FORMAT } = import.meta.env;
-
   const [t] = useTranslation();
-  const navigate = useNavigate();
   const [ticketid, setticketid] = useState("");
-  // console.log(ticketid);
-  const { clientId } = useSelector((state) => state?.loadingSlice);
+
   const [tableData, setTableData] = useState([]);
   const [formData, setFormData] = useState({
-    ProjectID: "",
-    Category: "",
+    ProjectID: visibleTicket?.showData?.ProjectID
+      ? visibleTicket?.showData?.ProjectID
+      : "",
+    Category: visibleTicket?.showData?.CategoryID
+      ? visibleTicket?.showData?.CategoryID
+      : "",
     AssignedTo: "",
-    Priority: "",
+    Incharge: "",
+    Priority: visibleTicket?.showData?.Priority
+      ? visibleTicket?.showData?.Priority
+      : "",
     ReportedName: "",
     ReportedMobile: "",
-    Description: "",
-    Summary: "",
+    Description: visibleTicket?.showData?.description
+      ? visibleTicket?.showData?.description
+      : "",
+    Summary: visibleTicket?.showData?.summary
+      ? visibleTicket?.showData?.summary
+      : "",
     IsActive: "",
     ModuleName: "",
     PageName: "",
-
+    ProductVersion: "",
     OwnerName: "",
     OwnerMobile: "",
     OwnerEmail: "",
@@ -75,46 +69,45 @@ const ReportIssue = () => {
   const [assignto, setAssignedto] = useState([]);
   const [priority, setPriority] = useState([]);
   const [moduleName, setModuleName] = useState([]);
+  const [incharge, setIncharge] = useState([]);
+  const [productversion, setProductVersion] = useState([]);
   const [pageName, setPageName] = useState([]);
   const [displayModulePage, setDisplayModulePage] = useState([]);
 
-  const [rowHandler, setRowHandler] = useState({
-    SummaryShow: false,
-    DateSubmittedShow: false,
-    TextEditorShow: false,
-  });
-
-  const handleDeliveryButton2 = () => {
-    setRowHandler({
-      ...rowHandler,
-      TextEditorShow: !rowHandler?.TextEditorShow,
-    });
-  };
-
   const handleDeliveryChange = (name, e) => {
-    const { value } = e;
-    if (name == "ProjectID") {
+    if (name === "ProjectID") {
       setFormData({
         ...formData,
-        [name]: value,
+        [name]: e.value, // Project ka value
         Category: "",
         ModuleName: "",
         PageName: "",
+        Incharge: "",
+        ProductVersion: "",
       });
-      getAssignTo(value);
-      getCategory(value);
-      getModule(value);
-      getPage(value);
-      getGetProjectInfo(value);
+      getAssignTo(e.value);
+      getCategory(e.value);
+      // getModule(e.value);
+      getPage(e.value);
+      getGetProjectInfo(e.value);
+      getProductModule(e.value);
     } else if (name === "Category") {
       setFormData({
         ...formData,
         [name]: e,
       });
+    } else if (name === "ModuleName") {
+      setFormData({
+        ...formData,
+        [name]: e.value,
+        Incharge: "",
+      });
+
+      getIncharge(e.value);
     } else {
       setFormData({
         ...formData,
-        [name]: value,
+        [name]: e?.value || e,
       });
     }
   };
@@ -166,7 +159,6 @@ const ReportIssue = () => {
           }));
           getAssignTo(singleProject);
           getCategory(singleProject);
-          getModule(singleProject);
           getPage(singleProject);
           getGetProjectInfo(singleProject);
         }
@@ -201,17 +193,63 @@ const ReportIssue = () => {
         console.log(err);
       });
   };
-  const getModule = (proj) => {
+  const getIncharge = (value) => {
     axiosInstances
-      .post(apiUrls.Module_Select, {
-        RoleID: useCryptoLocalStorage("user_Data", "get", "RoleID"),
-        ProjectID: proj,
-        IsActive: 1,
-        IsMaster: 1,
+      .post(apiUrls.Reporter_Select_Module_Wise, {
+        ID: value || "",
+      })
+      .then((res) => {
+        const options = res?.data?.data?.map((item) => ({
+          value: item.ID,
+          label: item.NAME,
+        }));
+        setIncharge(options);
+        setFormData((val) => ({
+          ...val,
+          Incharge: res.data.data[0]?.ID,
+        }));
+      })
+      .catch((err) => console.log(err));
+  };
+  const getProductModule = (value) => {
+    axiosInstances
+      .post(apiUrls.Product_Select_Project_Wise, {
+        ID: value || "",
+      })
+      .then((res) => {
+        const options = res?.data?.data?.map((item) => ({
+          value: item.ID,
+          label: item.NAME,
+        }));
+        setProductVersion(options);
+        setFormData((val) => ({
+          ...val,
+          ProductVersion: res.data.data[0]?.ID,
+        }));
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    getProductModule(formData?.ProjectID);
+  }, [formData?.ProjectID]);
+
+  useEffect(() => {
+    getModule(formData?.ProductVersion);
+  }, [formData?.ProductVersion]);
+
+  const getModule = () => {
+    axiosInstances
+      .post(apiUrls.Module_Select_Product_Wise, {
+        ID: formData?.ProductVersion,
       })
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
-          return { label: item?.ModuleName, value: item?.ModuleID };
+          return {
+            label: item?.NAME,
+            value: item?.ID,
+            inchargeID: item?.InchargeID,
+          };
         });
         setModuleName(poc3s);
       })
@@ -240,9 +278,7 @@ const ReportIssue = () => {
   const handlerefresh = () => {
     getPage(formData?.ProjectID);
   };
-  const handlerefreshModule = () => {
-    getModule(formData?.ProjectID);
-  };
+
   const getAssignTo = (value) => {
     axiosInstances
       .post(apiUrls.AssignTo_Select, {
@@ -303,20 +339,10 @@ const ReportIssue = () => {
       toast.error("Please Enter Summary.");
       return;
     }
-    // if (!formData?.Category?.MandatoryModule_Ticket) {
-    //   toast.error("Please Select ModuleName & PageName.");
-    //   return;
-    // }
-    const picsDocsJson = JSON.stringify([
-      {
-        Document_Base64: formData?.Document_Base64,
-        FileExtension: formData?.FileExtension,
-      },
-    ]);
+
     setIsSubmitting(true);
 
     try {
-
       const response = await axiosInstances.post(apiUrls.NewTicket, {
         ProjectID: Number(formData.ProjectID || 0),
         CategoryID: Number(formData.Category?.value || 0),
@@ -327,9 +353,13 @@ const ReportIssue = () => {
         ReporterName: String(formData.ReportedName || ""),
         Description: String(formData.Description || ""),
         ModuleID: String(formData.ModuleName || "0"),
+        ProductVersion: String(formData.ProductVersion),
         ModuleName: String(getlabel(formData?.ModuleName, moduleName) || ""),
         PagesID: String(formData.PageName || "0"),
         PagesName: String(getlabel(formData?.PageName, pageName) || ""),
+        ReferenceTicketID: String(visibleTicket?.showData?.TicketID || ""),
+        InchargeID: String(formData.Incharge || ""),
+        InchargeName: getlabel(formData?.Incharge, incharge) || "",
         ImageDetails: [
           {
             FileExtension: String(formData?.FileExtension || ""),
@@ -390,10 +420,7 @@ const ReportIssue = () => {
     t("Email"),
   ];
 
-  const allowedTypes = ["ITPerson", "Spoc", "Owner"];
-  const allowedLevelTypes = ["Level-I", "Level-II", "Level-III"];
   const [levelData, setLevelData] = useState([]);
-  console.log("leveldATA", levelData);
 
   const getGetProjectInfo = (id) => {
     axiosInstances
@@ -401,10 +428,7 @@ const ReportIssue = () => {
         ProjectID: id,
       })
       .then((res) => {
-        // console.log("datatata", res?.data?.data?.[0]);
         let newData = [];
-        // let newlevelData = []
-        // "ItPerson", "SPOC_", "Owner_"
         ["ItPerson", "SPOC", "Owner"].forEach((type) => {
           let obj = {
             type: type,
@@ -417,16 +441,6 @@ const ReportIssue = () => {
 
         let itArr = [];
 
-        // for (let i = 1; i <= 3; i++) {
-        //   let obj = {
-        //     type: `Level${i}`,
-        //     name: res?.data?.data?.[0]?.[`POC1${i}Name`] || "",
-        //     mobile: res?.data?.data?.[0]?.[`POC2${i}Mobile`] || "",
-        //     email: res?.data?.data?.[0]?.[`POC3${i}Email`] || "",
-
-        //   };
-        //   itArr.push(obj);
-        // }
         ["Level1", "Level2", "Level3"].forEach((type) => {
           let obj = {
             type: type,
@@ -436,7 +450,6 @@ const ReportIssue = () => {
           };
           itArr.push(obj);
         });
-        console.log("itArr::", itArr);
 
         setTableData(newData);
         setLevelData(itArr);
@@ -492,7 +505,7 @@ const ReportIssue = () => {
           setVisible={setVisible}
           Header={t("Create New Module")}
         >
-          <ModuleNameModal
+          <ModuleMaster
             visible={visible}
             id={ticketid}
             setVisible={setVisible}
@@ -514,9 +527,24 @@ const ReportIssue = () => {
           />
         </Modal>
       )}
+      {visibleTicket?.subTicketVisible === true ? (
+        <div className="card">
+          <div className="row p-2">
+            <span style={{ fontWeight: "bold", marginLeft: "10px" }}>
+              Reference Ticket ID : {visibleTicket?.showData?.TicketID}
+            </span>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
       <div className="card patient_registration border">
-        <Heading title={t("New Ticket")} isBreadcrumb={true} />
-        <div className="row g-4 m-2">
+        {visibleTicket?.subTicketVisible === true ? (
+          ""
+        ) : (
+          <Heading title={t("New Ticket")} isBreadcrumb={true} />
+        )}
+        <div className="row p-2">
           <ReactSelect
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
             name="ProjectID"
@@ -527,7 +555,33 @@ const ReportIssue = () => {
             requiredClassName={"required-fields"}
             searchable={true}
           />
+          <ReactSelect
+            respclass="col-xl-2 col-md-4 col-sm-4 col-12"
+            name="ProductVersion"
+            placeholderName="Product Version"
+            dynamicOptions={productversion}
+            handleChange={handleDeliveryChange}
+            value={formData.ProductVersion}
+            isDisabled={!!formData?.ProductVersion}
+          />
+          <ReactSelect
+            respclass="col-xl-2 col-md-3 col-sm-6 col-12"
+            name="ModuleName"
+            placeholderName={t("Module Name")}
+            dynamicOptions={moduleName}
+            value={formData?.ModuleName}
+            handleChange={handleDeliveryChange}
+          />
 
+          <ReactSelect
+            name="Incharge"
+            respclass="col-xl-2 col-md-4 col-sm-4 col-12"
+            placeholderName="Incharge"
+            dynamicOptions={incharge}
+            value={formData.Incharge ? formData?.Incharge : ""}
+            handleChange={handleDeliveryChange}
+            isDisabled={!!formData?.Incharge}
+          />
           <ReactSelect
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
             name="Category"
@@ -538,80 +592,35 @@ const ReportIssue = () => {
             requiredClassName={"required-fields"}
             searchable={true}
           />
-          {clientId !== 7 && (
-            <>
-              {formData?.Category?.ShowModule_Ticket === 1 && (
-                <div className="col-xl-4 col-md-4 col-sm-6 col-12 d-flex">
-                  <ReactSelect
-                    respclass="col-xl-5 col-md-4 col-sm-6 col-12 mr-1"
-                    name="ModuleName"
-                    placeholderName={t("ModuleName")}
-                    dynamicOptions={moduleName}
-                    value={formData?.ModuleName}
-                    handleChange={handleDeliveryChange}
-                    // requiredClassName={`${formData?.Category?.MandatoryModule_Ticket === 1 && "required-fields"}`}
-                  />
+          <div className="col-2 d-flex">
+            <ReactSelect
+              respclass="width100px"
+              name="PageName"
+              placeholderName={t("PageName")}
+              dynamicOptions={pageName}
+              value={formData?.PageName}
+              handleChange={handleDeliveryChange}
+            />
 
-                  {/* {AllowAddModule == "1" && (
-                    <>
-                      <i
-                        className="fa fa-retweet mr-1 mt-2"
-                        onClick={handlerefreshModule}
-                        title={t("Click to Refresh Module.")}
-                        style={{ cursor: "pointer" }}
-                      ></i>
+            {AllowAddPages == "1" && (
+              <>
+                <i
+                  className="fa fa-plus-circle mt-2 ml-1"
+                  onClick={() => {
+                    setVisible({
+                      showPageVisible: true,
+                      showData: formData,
+                    });
+                  }}
+                  title="Click to Create New Page"
+                  style={{ cursor: "pointer" }}
+                ></i>
+              </>
+            )}
+          </div>
 
-                      <i
-                        className="fa fa-plus-circle fa-sm new_record_pluse mt-2 mr-2 ml-1"
-                        onClick={() => {
-                          setVisible({
-                            showModuleVisible: true,
-                            showData: formData,
-                          });
-                        }}
-                        title="Click to Create New Module"
-                        style={{ cursor: "pointer" }}
-                      ></i>
-                    </>
-                  )} */}
-
-                  <ReactSelect
-                    respclass="col-xl-5 col-md-4 col-sm-6 col-12"
-                    name="PageName"
-                    placeholderName={t("PageName")}
-                    dynamicOptions={pageName}
-                    value={formData?.PageName}
-                    handleChange={handleDeliveryChange}
-                    // requiredClassName={`${formData?.Category?.MandatoryModule_Ticket === 1 && "required-fields"}`}
-                  />
-
-                  {AllowAddPages == "1" && (
-                    <>
-                      {/* <i
-                        className="fa fa-retweet mr-1 mt-2"
-                        onClick={handlerefresh}
-                        title={t("Click to Refresh PageName.")}
-                        style={{ cursor: "pointer" }}
-                      ></i> */}
-                      <i
-                        className="fa fa-plus-circle fa-sm new_record_pluse mt-2"
-                        onClick={() => {
-                          setVisible({
-                            showPageVisible: true,
-                            showData: formData,
-                          });
-                        }}
-                        title="Click to Create New Page"
-                        style={{ cursor: "pointer" }}
-                      ></i>
-                    </>
-                  )}
-                </div>
-              )}
-            </>
-          )}
           <ReactSelect
-            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+            respclass="col-xl-2 col-md-4 col-sm-6 col-12 mt-1"
             name="AssignedTo"
             placeholderName={t("AssignedTo")}
             dynamicOptions={assignto}
@@ -620,7 +629,7 @@ const ReportIssue = () => {
             searchable={true}
           />
           <ReactSelect
-            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+            respclass="col-xl-2 col-md-4 col-sm-6 col-12 mt-1"
             name="Priority"
             placeholderName={t("Priority")}
             dynamicOptions={priority}
@@ -645,11 +654,10 @@ const ReportIssue = () => {
             }}
             value={formData?.ReportedName}
             respclass="col-xl-2 col-md-4 col-sm-4 col-12"
-            error={errors?.ReportedName ? errors?.ReportedName : ""}
             tabIndex={"1"}
             onKeyDown={Tabfunctionality}
           />
-          <div className="col-2 d-flex">
+          <div className="col-3 d-flex">
             <Input
               type="text"
               className="form-control mt-2"
@@ -658,7 +666,6 @@ const ReportIssue = () => {
               lable={t("Reported By Mobile")}
               placeholder=""
               onChange={(e) => {
-                // Prevent non-numeric input
                 const value = e.target.value;
                 if (MOBILE_NUMBER_VALIDATION_REGX.test(value)) {
                   inputBoxValidation(
@@ -669,7 +676,6 @@ const ReportIssue = () => {
                 }
               }}
               value={formData?.ReportedMobile}
-              error={errors?.ReportedMobile ? errors?.ReportedMobile : ""}
               tabIndex={"1"}
               onKeyDown={Tabfunctionality}
             />
@@ -677,26 +683,7 @@ const ReportIssue = () => {
               {handleIndicator(formData?.ReportedMobile)}
             </span>
           </div>
-          {/* <div className="col-1" style={{ display: "flex" }}>
-            <div style={{ width: "40%", marginRight: "3px" }}>
-              <button
-                className="btn btn-sm mt-2"
-                onClick={handleDeliveryButton2}
-                title="Click to Open Description."
-              >
-                {t("Description")}
-              </button>
-            </div>
-          </div> */}
 
-          {/* {rowHandler?.TextEditorShow && (
-            <div className="col-12">
-              <TextEditor
-                value={formData?.Description}
-                onChange={handleChange1}
-              />
-            </div>
-          )} */}
           <Input
             type="text"
             respclass="col-md-12 col-12 col-sm-12"
@@ -720,17 +707,7 @@ const ReportIssue = () => {
             value={formData?.Summary}
             onChange={handleChange}
           />
-          {/* <Input
-            type="text"
-            respclass="col-md-12 col-12 col-sm-12"
-            className="form-control mt-2"
-            placeholder=" "
-            lable="Description"
-            id="Description"
-            name="Description"
-            value={formData?.Description}
-            onChange={handleChange}
-          /> */}
+
           <div style={{ marginLeft: "5px", marginTop: "5px" }}>
             <BrowseInput handleImageChange={handleImageChange} />
           </div>
@@ -757,23 +734,28 @@ const ReportIssue = () => {
             </div>
           </div>
           <div className="col-2 mt-2">
-            <button
-              className="btn btn-sm btn-success"
-              onClick={getReportNote}
-              disabled={isSubmitting}
-            >
-              {t("Submit")}
-            </button>
-            {/* <button className="btn btn-sm btn-success ml-2"  onClick={() => {
-                          setVisible({ showVisible: true,  });
-                        }} >
-              Preview
-            </button> */}
+            {visibleTicket?.subTicketVisible === true ? (
+              <button
+                className="btn btn-sm btn-success"
+                onClick={getReportNote}
+                disabled={isSubmitting}
+              >
+                {t("Submit SubTicket")}
+              </button>
+            ) : (
+              <button
+                className="btn btn-sm btn-success"
+                onClick={getReportNote}
+                disabled={isSubmitting}
+              >
+                {t("Submit")}
+              </button>
+            )}
           </div>
           {formData?.ProjectID && (
             <>
               {tableData?.length > 0 && (
-                <div className="row">
+                <div className="row p-1">
                   <div className="col-6">
                     <div className="card mt-2">
                       <Heading title={t("Client Information Details")} />
@@ -809,7 +791,7 @@ const ReportIssue = () => {
                     </div>
                   </div>
                 </div>
-              )}{" "}
+              )}
             </>
           )}
         </div>

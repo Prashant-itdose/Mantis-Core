@@ -47,7 +47,6 @@ const NewProjectModal = ({ setVisible }) => {
     );
   };
 
-
   const handleDeliveryChange = (name, e) => {
     const { value } = e;
     setFormData({
@@ -62,23 +61,6 @@ const NewProjectModal = ({ setVisible }) => {
       return;
     }
     setLoading(true);
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    // form.append("UserName", formData?.UserName),
-    // form.append("VerticalID", formData?.VerticalID),
-    // form.append("TeamID", formData?.TeamID),
-    // form.append("WingID", formData?.WingID),
-    // form.append("VerticalName", getlabel(formData?.VerticalID, vertical)),
-    // form.append("TeamName", getlabel(formData?.TeamID, team)),
-    // form.append("WingName", getlabel(formData?.WingID, wing)),
-    // form.append("ProjectName", formData?.ProjectName),
-    // form.append("Password", formData?.Password),
-    // axios
-    //   .post(apiUrls?.CreateProject, form, { headers })
     const payload = {
       UserName: formData?.UserName ? String(formData.UserName) : "",
       VerticalID: formData?.VerticalID ? Number(formData.VerticalID) : 0,
@@ -132,91 +114,67 @@ const NewProjectModal = ({ setVisible }) => {
     setEditMode(true);
   };
   const getVertical = () => {
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Vertical_Select, form, { headers })
-       axiosInstances
+    axiosInstances
       .post(apiUrls?.Vertical_Select, {})
-        .then((res) => {
-          const verticals = res?.data.data.map((item) => {
-            return { label: item?.Vertical, value: item?.VerticalID };
-          });
-          setVertical(verticals);
-        })
-        .catch((err) => {
-          console.log(err);
+      .then((res) => {
+        const verticals = res?.data.data.map((item) => {
+          return { label: item?.Vertical, value: item?.VerticalID };
         });
+        setVertical(verticals);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getTeam = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Team_Select, form, { headers })
-       axiosInstances
+    axiosInstances
       .post(apiUrls?.Team_Select, {})
-        .then((res) => {
-          const teams = res?.data.data.map((item) => {
-            return { label: item?.Team, value: item?.TeamID };
-          });
-          setTeam(teams);
-        })
-        .catch((err) => {
-          console.log(err);
+      .then((res) => {
+        const teams = res?.data.data.map((item) => {
+          return { label: item?.Team, value: item?.TeamID };
         });
+        setTeam(teams);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   function getlabel(id, dropdownData) {
     const ele = dropdownData.filter((item) => item.value === id);
     return ele.length > 0 ? ele[0].label : undefined;
   }
   const getWing = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Wing_Select, form, { headers })
-       axiosInstances
+    axiosInstances
       .post(apiUrls?.Wing_Select, {})
-        .then((res) => {
-          const wings = res?.data.data.map((item) => {
-            return { label: item?.Wing, value: item?.WingID };
-          });
-          setWing(wings);
-        })
-        .catch((err) => {
-          console.log(err);
+      .then((res) => {
+        const wings = res?.data.data.map((item) => {
+          return { label: item?.Wing, value: item?.WingID };
         });
+        setWing(wings);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const ProjectTHEAD = [{ name: "S.No.", width: "10%" }, "Project Name"];
   const handleSearch = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   axios
-    //     .post(apiUrls?.ViewProject, form, { headers })
     axiosInstances
       .post(apiUrls?.ViewProject, {
         RoleID: useCryptoLocalStorage("user_Data", "get", "RoleID"),
         ProjectID: 0,
         ProjectName: "",
-        VerticalID: 0,
-        TeamID: 0,
-        WingID: 0,
-        POC1: 0,
-        POC2: 0,
-        POC3: 0,
+        VerticalID: "",
+        TeamID: "",
+        WingID: "",
+        POC1: "",
+        POC2: "",
+        POC3: "",
         CategoryID: "",
         DateType: "",
         FromDate: "",
         ToDate: "",
         Status: "",
-        IsExcel: 0,
+        IsExcel: "0",
       })
       .then((res) => {
         setTableData(res?.data?.data);

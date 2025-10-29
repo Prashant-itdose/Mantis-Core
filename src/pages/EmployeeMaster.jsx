@@ -2313,7 +2313,7 @@ const EmployeeMaster = () => {
                 dynamicOptions={[
                   { label: "Kotak", value: "Kotak" },
                   { label: "ICICI", value: "ICICI" },
-                  { label: "Cash", value: "Cash" },
+                  { label: "Delta", value: "Cash" },
                 ]}
                 value={formData?.SalaryAccountBank}
                 handleChange={handleDeliveryChange}

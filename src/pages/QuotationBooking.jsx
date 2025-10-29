@@ -2370,7 +2370,7 @@ const QuotationBooking = ({ data }) => {
                   name="PaymentMode"
                   placeholderName={t("Payment Mode")}
                   dynamicOptions={[
-                    { label: "Cash", value: "Cash" },
+                    { label: "Delta", value: "Cash" },
                     { label: "Online", value: "Online" },
                   ]}
                   handleChange={(name, e) =>

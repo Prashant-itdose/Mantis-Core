@@ -551,7 +551,7 @@ const AmountSubmission = ({ data }) => {
             name="PaymentMode"
             placeholderName={t("Payment Mode")}
             dynamicOptions={[
-              { label: "Cash", value: "Cash" },
+              { label: "Delta", value: "Cash" },
               { label: "NEFT", value: "NEFT" },
               { label: "Cheque", value: "Cheque" },
             ]}
@@ -766,7 +766,7 @@ const AmountSubmission = ({ data }) => {
                         }}
                         // onClick={() => handleSearch("1")}
                       >
-                        {t("Cash")}
+                        {t("Delta")}
                       </span>
                       <div
                         className="legend-circle"

@@ -85,6 +85,8 @@ const ViewIssues = ({ data }) => {
   const [assignto, setAssignedto] = useState([]);
   const [priority, setPriority] = useState([]);
   const [assigntoValue, setAssignedtoValue] = useState([]);
+  const [incharge, setIncharge] = useState([]);
+  const [productversion, setProductVersion] = useState([]);
   const [assigntoValueProjectId, setAssignedtoValueProjectId] = useState([]);
   const [shownodata, setShownodata] = useState(false);
   const { clientId } = useSelector((state) => state?.loadingSlice);
@@ -120,6 +122,7 @@ const ViewIssues = ({ data }) => {
     PageNo: "",
     PageSize: 50,
     SubmitDate: "",
+    Incharge: [],
     DeliveryDate:
       data?.fiveDate || data?.DelayDate || data?.PlannedDate
         ? data?.fiveDate || data?.DelayDate || data?.PlannedDate
@@ -137,7 +140,7 @@ const ViewIssues = ({ data }) => {
     SubmitDateBefore: new Date(),
     SubmitDateAfter: new Date(),
     SubmitDateCurrent: new Date(),
-
+    ProductVersion: "",
     DeliveryDateBefore: new Date(),
     DeliveryDateAfter: new Date(),
     DeliveryDateCurrent: new Date(),
@@ -225,6 +228,7 @@ const ViewIssues = ({ data }) => {
     t("M.ManMinutes"),
     { name: t("Change Action"), width: "9%" },
     t("Module Name"),
+    t("Incharge"),
     // t("Dev.MM"),
     t("Dev.ManMinutes"),
     t("DeliveryDate-"),
@@ -522,15 +526,13 @@ const ViewIssues = ({ data }) => {
     const ticketIDs = filterdata.map((item) => item.TicketID).join(",");
     if (ticketIDs == "") {
       toast.error("Please Select atleast one Ticket.");
-    } 
-    else if (
+    } else if (
       !formData?.RefereCode ||
       isNaN(formData?.RefereCode) ||
       Number(formData?.RefereCode) <= 0
-    ){
-       toast.error("Developer Manminutes cannot be Zero or Empty.");
-    }
-    else {
+    ) {
+      toast.error("Developer Manminutes cannot be Zero or Empty.");
+    } else {
       axiosInstances
         .post(apiUrls.ApplyAction, {
           TicketIDs: String(ticketIDs),
@@ -549,7 +551,7 @@ const ViewIssues = ({ data }) => {
           ReOpenReasonID: "",
           ReOpenReason: "",
         })
-       
+
         .then((res) => {
           toast.success(res?.data?.message);
           setFormData({
@@ -673,25 +675,15 @@ const ViewIssues = ({ data }) => {
     }
   };
 
-  const getModule = () => {
+  const getModule = (value) => {
     axiosInstances
       .post(apiUrls.Module_Select, {
         RoleID: useCryptoLocalStorage("user_Data", "get", "RoleID"),
         ProjectID: 0,
         IsActive: 1,
         IsMaster: 2,
+        InchargeID: value || "",
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "RoleID",
-      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-      //   ),
-      //   form.append("ProjectID", "0"),
-      //   form.append("IsActive", "1"),
-      //   form.append("IsMaster", "2"),
-      //   axios
-      //     .post(apiUrls?.Module_Select, form, { headers })
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return { name: item?.ModuleName, code: item?.ModuleID };
@@ -1251,7 +1243,21 @@ const ViewIssues = ({ data }) => {
         console.log(err);
       });
   };
-
+  const getIncharge = () => {
+    axiosInstances
+      .post(apiUrls.Reporter_Select, {
+        IsIncharge: "1",
+      })
+      .then((res) => {
+        const poc3s = res?.data?.data?.map((item) => {
+          return { name: item?.Name, code: item?.ID };
+        });
+        setIncharge(poc3s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const handleDeliveryChangeAttach = (name, value, index, ele) => {
     tableData?.map((val, ind) => {
       if (index !== ind) {
@@ -1468,6 +1474,7 @@ const ViewIssues = ({ data }) => {
             CloseDate: resultObject?.CloseDate || "",
             UpadteDate: resultObject?.UpadteDate || "",
             ModuleName: resultObject?.ModuleName || "",
+            Incharge: resultObject?.Incharge || "",
             PagesName: resultObject?.PagesName || "",
             Priority: resultObject?.Priority || "",
             HideStatus: resultObject?.HideStatus || "",
@@ -1486,6 +1493,7 @@ const ViewIssues = ({ data }) => {
       ...val,
       PageNo: "",
       PageSize: 50,
+      ProductVersion: "",
       SubmitDate: "",
       DeliveryDate:
         data?.fiveDate || data?.DelayDate || data?.PlannedDate
@@ -1566,6 +1574,7 @@ const ViewIssues = ({ data }) => {
       Ticket: "",
       summary: "",
       ModuleName: [],
+      Incharge: [],
       PagesName: "",
       SearhType: "0",
     }));
@@ -1575,6 +1584,7 @@ const ViewIssues = ({ data }) => {
       ...formData,
       PageNo: "",
       PageSize: 50,
+      ProductVersion: "",
       SubmitDate: "",
       DeliveryDate:
         data?.fiveDate || data?.DelayDate || data?.PlannedDate
@@ -1655,6 +1665,7 @@ const ViewIssues = ({ data }) => {
       Ticket: "",
       summary: "",
       ModuleName: [],
+      Incharge: [],
       PagesName: "",
       SearhType: "0",
     });
@@ -1680,10 +1691,18 @@ const ViewIssues = ({ data }) => {
 
   const handleMultiSelectChange = (name, selectedOptions) => {
     const selectedValues = selectedOptions.map((option) => option.code);
-    setFormData((prev) => ({
-      ...prev,
-      [`${name}`]: selectedValues,
-    }));
+    if (name == "Incharge") {
+      setFormData((prev) => ({
+        ...prev,
+        [`${name}`]: selectedValues,
+      }));
+      getModule(selectedValues);
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [`${name}`]: selectedValues,
+      }));
+    }
   };
   const getVertical = () => {
     axiosInstances
@@ -1951,7 +1970,6 @@ const ViewIssues = ({ data }) => {
       });
   };
   const getApplyActionAssign = (data, index, ele) => {
-  
     axiosInstances
       .post(apiUrls.ApplyAction, {
         TicketIDs: String(tableData[index]?.TicketID),
@@ -1972,11 +1990,11 @@ const ViewIssues = ({ data }) => {
       })
       .then((res) => {
         if (res.data.success === true) {
-            toast.success(res?.data?.message);
-            handleViewSearch();
-          } else {
-            toast.error(res.data.message);
-          }
+          toast.success(res?.data?.message);
+          handleViewSearch();
+        } else {
+          toast.error(res.data.message);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -2081,6 +2099,8 @@ const ViewIssues = ({ data }) => {
         getModule(),
         getPage(),
         getReopen(),
+        getIncharge(),
+        getProduct(),
       ]);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -2130,11 +2150,12 @@ const ViewIssues = ({ data }) => {
       CategoryID: String(CategoryID || ""),
       HideStatusId: String(HideStatusId || ""),
       StatusId: String(StatusID || ""),
+      Incharge: String(formData?.Incharge || ""),
       rowColor: String(code || ""),
-
       SubmittedDateStatus: String(formData?.SubmitDate || ""),
       DateFromSubmitted: String(formatDate(formData?.SubmitDateBefore) || ""),
       DateToSubmitted: String(formatDate(formData?.SubmitDateAfter) || ""),
+      ProductVersion: String(formData?.ProductVersion || ""),
 
       DeliveryDateStatus: String(formData?.DeliveryDate || ""),
       DeliveryFromDate: String(
@@ -2773,6 +2794,21 @@ const ViewIssues = ({ data }) => {
         });
     }
   };
+
+  const getProduct = () => {
+    axiosInstances
+      .post(apiUrls.GetProductVersion, {})
+      .then((res) => {
+        const states = res?.data.data.map((item) => {
+          return { label: item?.NAME, value: item?.id };
+        });
+        setProductVersion(states);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const handleClientManHourTable = (details) => {
     // console.log("details manhour", details);
     axiosInstances
@@ -4278,7 +4314,38 @@ const ViewIssues = ({ data }) => {
                   </div>
                 </div>
               )}
-
+              {clientId === 7 ? (
+                ""
+              ) : (
+                <MultiSelectComp
+                  respclass="col-xl-2 col-md-4 col-sm-6 col-12 mt-1"
+                  name="Incharge"
+                  placeholderName={t("Incharge")}
+                  dynamicOptions={incharge}
+                  value={
+                    Array.isArray(formData?.Incharge)
+                      ? formData?.Incharge?.map((code) => ({
+                          code,
+                          name: incharge?.find((item) => item.code === code)
+                            ?.name,
+                        }))
+                      : []
+                  }
+                  handleChange={handleMultiSelectChange}
+                />
+              )}
+              {clientId === 7 ? (
+                ""
+              ) : (
+                <ReactSelect
+                  respclass="col-xl-2 col-md-4 col-sm-4 col-12 mt-1"
+                  name="ProductVersion"
+                  placeholderName="Product Version"
+                  dynamicOptions={productversion}
+                  handleChange={handleDeliveryChange}
+                  value={formData.ProductVersion}
+                />
+              )}
               {clientId === 7 ? (
                 ""
               ) : (
@@ -4299,6 +4366,7 @@ const ViewIssues = ({ data }) => {
                   handleChange={handleMultiSelectChange}
                 />
               )}
+
               {clientId === 7 ? (
                 ""
               ) : (
@@ -4312,6 +4380,7 @@ const ViewIssues = ({ data }) => {
                   // requiredClassName={"required-fields"}
                 />
               )}
+
               <ReactSelect
                 respclass="col-xl-2 mt-1 col-md-4 col-sm-6 col-12"
                 name="SearhType"
@@ -5363,6 +5432,7 @@ const ViewIssues = ({ data }) => {
                         </>
                       ),
                     "Module Name": ele?.ModuleName,
+                    Incharge: ele?.Incharge,
                     "Dev. ManMinutes": ele?.ReferenceCode,
                     "DeliveryDate-":
                       clientId === 7 ? (

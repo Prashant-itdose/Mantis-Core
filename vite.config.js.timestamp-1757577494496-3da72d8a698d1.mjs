@@ -19,11 +19,11 @@ var vite_config_default = ({ mode }) => {
     },
     server: {
       proxy: {
-        // "/CRMCOREAPI": {
-        //   target: process.env.VITE_APP_REACT_APP_BASE_URL,
-        //   changeOrigin: true,
-        //   secure: false,
-        // },
+        "/CRMCOREAPI": {
+          target: process.env.VITE_APP_REACT_APP_BASE_URL,
+          changeOrigin: true,
+          secure: false,
+        },
         // "/CRMCOREAPI": {
         //   target: process.env.VITE_APP_REACT_APP_BASE_URL,
         //   changeOrigin: true,

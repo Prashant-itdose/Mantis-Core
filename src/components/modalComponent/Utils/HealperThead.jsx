@@ -420,7 +420,7 @@ export const attendanceThead = [
   "Location",
 ];
 export const ViewExpenseThead = [
-  { name: "S.No.", width: "2%" },
+ { name: "S.No.", width: "2%" },
   "Name",
   "TripName",
   "Date",
@@ -429,7 +429,7 @@ export const ViewExpenseThead = [
   "Meals",
   "Local",
   "InterCity",
-  "Phone",
+  // "Phone",
   "Entertainment",
   "Others",
   "Total",

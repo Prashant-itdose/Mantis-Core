@@ -3,13 +3,8 @@ import { useTranslation } from "react-i18next";
 import Heading from "../components/UI/Heading";
 import Input from "../components/formComponent/Input";
 import { MOBILE_NUMBER_VALIDATION_REGX } from "../utils/constant";
-
 import ReactSelect from "../components/formComponent/ReactSelect";
-import TextEditor from "../components/formComponent/TextEditor";
-import axios from "axios";
-import { headers } from "../utils/apitools";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import NewTicketModal from "../components/UI/customTable/NetTicketModal";
 import Modal from "../components/modalComponent/Modal";
 import {
@@ -28,12 +23,8 @@ import { axiosInstances } from "../networkServices/axiosInstance";
 
 const NewTicketClient = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errors, setErros] = useState({});
-
   const [t] = useTranslation();
-  const navigate = useNavigate();
   const [ticketid, setticketid] = useState("");
-  // console.log(ticketid);
   const { clientId } = useSelector((state) => state?.loadingSlice);
   const [tableData, setTableData] = useState([]);
   const [formData, setFormData] = useState({
@@ -48,7 +39,6 @@ const NewTicketClient = () => {
     IsActive: "",
     ModuleName: "",
     PageName: "",
-
     OwnerName: "",
     OwnerMobile: "",
     OwnerEmail: "",
@@ -70,25 +60,16 @@ const NewTicketClient = () => {
   const [priority, setPriority] = useState([]);
   const [moduleName, setModuleName] = useState([]);
   const [pageName, setPageName] = useState([]);
-  const [displayModulePage, setDisplayModulePage] = useState([]);
-
-  const [rowHandler, setRowHandler] = useState({
-    SummaryShow: false,
-    DateSubmittedShow: false,
-    TextEditorShow: false,
-  });
-
-  const handleDeliveryButton2 = () => {
-    setRowHandler({
-      ...rowHandler,
-      TextEditorShow: !rowHandler?.TextEditorShow,
-    });
-  };
 
   const AllowAssign = useCryptoLocalStorage(
     "user_Data",
     "get",
     "AllowTicketAssignTo"
+  );
+  const AllowAddPages = useCryptoLocalStorage(
+    "user_Data",
+    "get",
+    "AllowAddPages"
   );
 
   const handleDeliveryChange = (name, e) => {
@@ -125,13 +106,7 @@ const NewTicketClient = () => {
       [name]: type === "checkbox" ? (checked ? "1" : "0") : value,
     });
   };
-  const handleChange1 = (value) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      Summary: "",
-      Description: value,
-    }));
-  };
+
   const getProject = () => {
     axiosInstances
       .post(apiUrls.ProjectSelect, {
@@ -141,14 +116,6 @@ const NewTicketClient = () => {
         TeamID: 0,
         WingID: 0,
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   axios
-      //     .post(apiUrls?.ProjectSelect, form, { headers })
       .then((res) => {
         const datas = res?.data.data;
         const poc3s = datas.map((item) => {
@@ -172,9 +139,6 @@ const NewTicketClient = () => {
         console.log(err);
       });
   };
-  function removeHtmlTags(text) {
-    return text?.replace(/<[^>]*>?/gm, "");
-  }
 
   const getCategory = (proj) => {
     axiosInstances
@@ -182,21 +146,11 @@ const NewTicketClient = () => {
         RoleID: 0,
         ProjectID: Number(proj),
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append("ProjectID", proj),
-      //   axios
-      //     .post(apiUrls?.Category_Select, form, { headers })
       .then((res) => {
         handleReactSelectDropDownOptions(res?.data.data, "NAME", "ID");
-        // const poc3s = res?.data.data.map((item) => {
-        //   return { label: item?.NAME, value: item?.ID };
-        // });
         setCategory(
           handleReactSelectDropDownOptions(res?.data.data, "NAME", "ID")
         );
-        // setFormData({ ...formData, Category: poc3s[0]?.value,ProjectID:proj });
-        setDisplayModulePage(res?.data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -208,19 +162,8 @@ const NewTicketClient = () => {
         RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
         ProjectID: Number(proj),
         IsActive: 1,
-        IsMaster: 0,
+        IsMaster: 2,
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "RoleID",
-      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-      //   ),
-      //   form.append("ProjectID", proj),
-      //   form.append("IsActive", "1"),
-      //   form.append("IsMaster", "0"),
-      // axios
-      //   .post(apiUrls?.Module_Select, form, { headers })
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return { label: item?.ModuleName, value: item?.ModuleID };
@@ -239,17 +182,6 @@ const NewTicketClient = () => {
         IsActive: 1,
         IsMaster: 0,
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "RoleID",
-      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-      //   ),
-      //   form.append("ProjectID", proj),
-      //   form.append("IsActive", "1"),
-      //   form.append("IsMaster", "0"),
-      //   axios
-      //     .post(apiUrls?.Pages_Select, form, { headers })
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return { label: item?.PagesName, value: item?.ID };
@@ -263,19 +195,11 @@ const NewTicketClient = () => {
   const handlerefresh = () => {
     getPage(formData?.ProjectID);
   };
-  const handlerefreshModule = () => {
-    getModule(formData?.ProjectID);
-  };
   const getAssignTo = (value) => {
     axiosInstances
       .post(apiUrls.AssignTo_Select, {
         ProjectID: Number(value),
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append("ProjectID", value),
-      //   axios
-      //     .post(apiUrls?.AssignTo_Select, form, { headers })
       .then((res) => {
         const assigntos = res?.data.data.map((item) => {
           return { label: item?.Name, value: item?.ID };
@@ -289,8 +213,7 @@ const NewTicketClient = () => {
   const handleIndicator = (state) => {
     return (
       <div className="text" style={{ justifyContent: "space-between" }}>
-        {/* <span className="text-dark">Max </span>{" "} */}({" "}
-        <span className="text-black">{Number(0 + state?.length)}</span>)
+        <span className="text-black">{Number(0 + state?.length)}</span>
       </div>
     );
   };
@@ -298,16 +221,11 @@ const NewTicketClient = () => {
   const getPriority = () => {
     axiosInstances
       .post(apiUrls.Priority_Select, {})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.Priority_Select, form, { headers })
       .then((res) => {
         const assigntos = res?.data.data.map((item) => {
           return { label: item?.NAME, value: item?.ID };
         });
         setPriority(assigntos);
-        // setFormData({ ...formData, Priority: assigntos[0]?.value });
       })
       .catch((err) => {
         console.log(err);
@@ -331,22 +249,11 @@ const NewTicketClient = () => {
       toast.error("Please Enter Summary.");
       return;
     }
-    // if (!formData?.Category?.MandatoryModule_Ticket) {
-    //   toast.error("Please Select ModuleName & PageName.");
-    //   return;
-    // }
-    const picsDocsJson = JSON.stringify([
-      {
-        Document_Base64: formData?.Document_Base64,
-        FileExtension: formData?.FileExtension,
-      },
-    ]);
+
     setIsSubmitting(true);
 
     try {
       const response = await axiosInstances.post(apiUrls.NewTicket, {
-        // ID: Number(useCryptoLocalStorage("user_Data", "get", "ID")),
-        // LoginName: "",
         ProjectID: Number(formData.ProjectID),
         CategoryID: Number(formData.Category.value),
         AssignTo: formData?.AssignedTo ? String(formData?.AssignedTo) : "0",
@@ -366,39 +273,6 @@ const NewTicketClient = () => {
           },
         ],
       });
-      //       const form = new FormData();
-      //       form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-      //       form.append(
-      //         "LoginName",
-      //         useCryptoLocalStorage("user_Data", "get", "realname")
-      //       );
-      //       form.append(
-      //         "RoleID",
-      //         useCryptoLocalStorage("user_Data", "get", "RoleID")
-      //       );
-      //       form.append("ProjectID", formData.ProjectID);
-      //       form.append("CategoryID", formData.Category.value);
-      //       form.append(
-      //         "AssignTo",
-      //         formData?.AssignedTo ? formData?.AssignedTo : "0"
-      //       );
-      //       form.append("Summary", formData.Summary);
-      //       form.append("ReporterMobileNo", formData.ReportedMobile);
-      //       form.append("ReporterName", formData.ReportedName);
-      //       form.append("ModuleName", formData.ModuleName);
-      //       form.append("OtherReferenceNo", formData.OtherReferenceNo);
-      //       form.append("PagesName", formData.PageName);
-      //       form.append(
-      //         "Description",
-      //         formData.Description ? formData.Description : ""
-      //       );
-      //       form.append("PriorityID", formData.Priority);
-      //       form.append("ImageDetails", picsDocsJson);
-
-      //       const response = axiosInstances
-      //       .post(apiUrls.NewTicket,{
-      //   "ProjectID": Number(value)
-      // })
       if (response?.data?.success) {
         toast.success(response?.data?.message);
       } else {
@@ -453,27 +327,14 @@ const NewTicketClient = () => {
     t("Email"),
   ];
 
-  const allowedTypes = ["ITPerson", "Spoc", "Owner"];
-  const allowedLevelTypes = ["Level-I", "Level-II", "Level-III"];
   const [levelData, setLevelData] = useState([]);
   const getGetProjectInfo = (id) => {
     axiosInstances
       .post(apiUrls.GetProjectInfo, {
         ProjectID: Number(id),
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "RoleID",
-      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-      //   ),
-      //   form.append("ProjectID", id),
-      //   axios
-      //     .post(apiUrls?.GetProjectInfo, form, { headers })
       .then((res) => {
         let newData = [];
-        // let newlevelData = []
-        // "ItPerson", "SPOC_", "Owner_"
         ["ItPerson", "SPOC", "Owner"].forEach((type) => {
           let obj = {
             type: type,
@@ -485,16 +346,6 @@ const NewTicketClient = () => {
         });
 
         let itArr = [];
-
-        // for (let i = 1; i <= 3; i++) {
-        //   let obj = {
-        //     type: `Level${i}`,
-        //     name: res?.data?.data?.[0]?.[`POC1${i}Name`] || "",
-        //     mobile: res?.data?.data?.[0]?.[`POC2${i}Mobile`] || "",
-        //     email: res?.data?.data?.[0]?.[`POC3${i}Email`] || "",
-        //   };
-        //   itArr.push(obj);
-        // }
         ["Level1", "Level2", "Level3"].forEach((type) => {
           let obj = {
             type: type,
@@ -504,7 +355,6 @@ const NewTicketClient = () => {
           };
           itArr.push(obj);
         });
-        // console.log("itArr::", itArr);
         setTableData(newData);
         setLevelData(itArr);
       })
@@ -606,31 +456,13 @@ const NewTicketClient = () => {
               {formData?.Category?.ShowModule_Ticket === 1 && (
                 <div className="col-xl-4 col-md-4 col-sm-6 col-12 d-flex">
                   <ReactSelect
-                    respclass="col-xl-5 col-md-4 col-sm-6 col-12"
+                    respclass="col-xl-6 col-md-4 col-sm-6 col-12"
                     name="ModuleName"
                     placeholderName={t("ModuleName")}
                     dynamicOptions={moduleName}
                     value={formData?.ModuleName}
                     handleChange={handleDeliveryChange}
-                    // requiredClassName={`${formData?.Category?.MandatoryModule_Ticket === 1 && "required-fields"}`}
                   />
-                  {/* <i
-                    className="fa fa-retweet mr-1 mt-2"
-                    onClick={handlerefreshModule}
-                    title={t("Click to Refresh Module.")}
-                    style={{ cursor: "pointer" }}
-                  ></i>
-                  <i
-                    className="fa fa-plus-circle fa-sm new_record_pluse mt-2 mr-2 ml-1"
-                    onClick={() => {
-                      setVisible({
-                        showModuleVisible: true,
-                        showData: formData,
-                      });
-                    }}
-                    title="Click to Create New Module"
-                    style={{ cursor: "pointer" }}
-                  ></i> */}
 
                   <ReactSelect
                     respclass="col-xl-5 col-md-4 col-sm-6 col-12"
@@ -639,22 +471,22 @@ const NewTicketClient = () => {
                     dynamicOptions={pageName}
                     value={formData?.PageName}
                     handleChange={handleDeliveryChange}
-                    // requiredClassName={`${formData?.Category?.MandatoryModule_Ticket === 1 && "required-fields"}`}
                   />
-                  <i
-                    className="fa fa-retweet mr-1 mt-2"
-                    onClick={handlerefresh}
-                    title={t("Click to Refresh PageName.")}
-                    style={{ cursor: "pointer" }}
-                  ></i>
-                  <i
-                    className="fa fa-plus-circle fa-sm new_record_pluse mt-2"
-                    onClick={() => {
-                      setVisible({ showPageVisible: true, showData: formData });
-                    }}
-                    title="Click to Create New Page"
-                    style={{ cursor: "pointer" }}
-                  ></i>
+                  {AllowAddPages == "1" && (
+                    <>
+                      <i
+                        className="fa fa-plus-circle mt-2 ml-1"
+                        onClick={() => {
+                          setVisible({
+                            showPageVisible: true,
+                            showData: formData,
+                          });
+                        }}
+                        title="Click to Create New Page"
+                        style={{ cursor: "pointer" }}
+                      ></i>
+                    </>
+                  )}
                 </div>
               )}
             </>
@@ -694,7 +526,6 @@ const NewTicketClient = () => {
             }}
             value={formData?.ReportedName}
             respclass="col-xl-2 col-md-4 col-sm-4 col-12"
-            error={errors?.ReportedName ? errors?.ReportedName : ""}
             tabIndex={"1"}
             onKeyDown={Tabfunctionality}
           />
@@ -707,7 +538,6 @@ const NewTicketClient = () => {
               lable={t("Reported By Mobile")}
               placeholder=""
               onChange={(e) => {
-                // Prevent non-numeric input
                 const value = e.target.value;
                 if (MOBILE_NUMBER_VALIDATION_REGX.test(value)) {
                   inputBoxValidation(
@@ -718,7 +548,6 @@ const NewTicketClient = () => {
                 }
               }}
               value={formData?.ReportedMobile}
-              error={errors?.ReportedMobile ? errors?.ReportedMobile : ""}
               tabIndex={"1"}
               onKeyDown={Tabfunctionality}
             />
@@ -726,27 +555,6 @@ const NewTicketClient = () => {
               {handleIndicator(formData?.ReportedMobile)}
             </span>
           </div>
-          {/* <div className="col-1" style={{ display: "flex" }}>
-            <div style={{ width: "40%", marginRight: "3px" }}>
-              <button
-                className="btn btn-sm mt-2"
-                onClick={handleDeliveryButton2}
-                title="Click to Open Description."
-              >
-                {t("Description")}
-              </button>
-            </div>
-          </div> */}
-
-          {/* {rowHandler?.TextEditorShow && (
-            <div className="col-12">
-              <TextEditor
-                value={formData?.Description}
-                onChange={handleChange1}
-              />
-
-            </div>
-          )} */}
           <Input
             type="text"
             respclass="col-md-12 col-12 col-sm-12"
@@ -813,11 +621,6 @@ const NewTicketClient = () => {
             >
               {t("Submit")}
             </button>
-            {/* <button className="btn btn-sm btn-success ml-2"  onClick={() => {
-                          setVisible({ showVisible: true,  });
-                        }} >
-              Preview
-            </button> */}
           </div>
           {formData?.ProjectID && (
             <>

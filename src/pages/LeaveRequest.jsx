@@ -10,6 +10,8 @@ import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import LeaveRequestModal from "./LeaveRequestModal";
 import Loading from "../components/loader/Loading";
 import { axiosInstances } from "../networkServices/axiosInstance";
+import ReactSelect from "../components/formComponent/ReactSelect";
+import MultiSelectComp from "../components/formComponent/MultiSelectComp";
 const getDaysInMonth = (year, month) => {
   return new Array(new Date(year, month, 0).getDate())
     .fill(null)
@@ -30,17 +32,20 @@ const LeaveRequest = ({ data }) => {
   // console.log("data check", data);
   const CRMID = useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID");
   const LoginUserName = useCryptoLocalStorage("user_Data", "get", "realname");
+  const [employee, setEmployee] = useState([]);
   const [formData, setFormData] = useState({
     Month: new Date(),
     Year: "",
     currentMonth: currentMonth,
     currentYear: currentYear,
+    Employee: [],
   });
   const ReportingManager = useCryptoLocalStorage(
     "user_Data",
     "get",
     "IsReportingManager"
   );
+  const IsEmployee = useCryptoLocalStorage("user_Data", "get", "realname");
   const [CalenderDetails, setCalenderDetails] = useState([]);
   const [daysInMonth, setDaysInMonth] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
@@ -54,6 +59,33 @@ const LeaveRequest = ({ data }) => {
     setDaysInMonth(updatedDays);
     setStartDayOfWeek(startDay);
   }, [selectedMonth, selectedYear]);
+
+  const getReporter = () => {
+    axiosInstances
+      .post(apiUrls.EmployeeEmail, {
+        CrmEmployeeID: Number(
+          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+        ),
+        RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
+      })
+      .then((res) => {
+        const assigntos = res?.data?.data?.map((item) => {
+          return { name: item?.EmployeeName, code: item?.Employee_ID };
+        });
+        setEmployee(assigntos);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleMultiSelectChange = (name, selectedOptions) => {
+    const selectedValues = selectedOptions.map((option) => option.code);
+    setFormData((prev) => ({
+      ...prev,
+      [`${name}`]: selectedValues,
+    }));
+  };
 
   const handleMonthYearChange = (name, e) => {
     const { value } = e.target;
@@ -134,30 +166,109 @@ const LeaveRequest = ({ data }) => {
     return "missing-attendance";
   };
 
+  // const renderDay = (day, index, today, table1Data) => {
+  //   const { date, status } = day;
+  //   const todayMidnight = new Date(today);
+  //   todayMidnight.setHours(0, 0, 0, 0);
+  //   const [month, dayOfMonth] = date.split("/").map(Number);
+  //   const dayDate = new Date(today.getFullYear(), month - 1, dayOfMonth);
+  //   // const isBeforeToday = dayDate < todayMidnight;
+  //   const currentMonth = today.getMonth();
+  //   const targetMonth = month - 1;
+  //   const isBeforeToday = targetMonth < currentMonth;
+
+  //   const formattedDate = dayDate?.toLocaleDateString("en-US", {
+  //     month: "short",
+  //     day: "numeric",
+  //   });
+  //   const dayDetails = table1Data?.find((d) => d?.Day === dayOfMonth);
+
+  //   return (
+  //     <td
+  //       key={index}
+  //       // className={`verticalTable ${isBeforeToday ? "disabled-day" : "active-day"} ${getStatusClass}`}
+  //       className={`verticalTable ${isBeforeToday ? "disabled-day" : "active-day"} ${getStatusClass(dayOfMonth, table1Data)}`}
+  //       onClick={() => {
+  //         if (isBeforeToday) return;
+  //         setVisible({
+  //           showVisible: true,
+  //           data: dayDate,
+  //           CalenderDetails: CalenderDetails,
+  //         });
+  //         setclickeddate(dayDate);
+  //       }}
+  //       style={{
+  //         cursor: isBeforeToday ? "not-allowed" : "pointer",
+  //         pointerEvents: isBeforeToday ? "none" : "auto",
+  //       }}
+  //     >
+  //       <label className="formattedDate">{formattedDate}</label>
+  //       {status && <div className="day-status">{status}</div>}
+  //       {dayDetails && (
+  //         <div
+  //           className="day-details"
+  //           dangerouslySetInnerHTML={{ __html: dayDetails.Holiday }}
+  //         />
+  //       )}
+  //     </td>
+  //   );
+  // };
+
   const renderDay = (day, index, today, table1Data) => {
     const { date, status } = day;
-    const todayMidnight = new Date(today);
-    todayMidnight.setHours(0, 0, 0, 0);
     const [month, dayOfMonth] = date.split("/").map(Number);
     const dayDate = new Date(today.getFullYear(), month - 1, dayOfMonth);
-    // const isBeforeToday = dayDate < todayMidnight;
-    const currentMonth = today.getMonth();
-    const targetMonth = month - 1;
-    const isBeforeToday = targetMonth < currentMonth;
 
     const formattedDate = dayDate?.toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
     });
+
+    const currentMonth = today.getMonth();
+    const currentYear = today.getFullYear();
+    const targetMonth = month - 1;
+    const targetYear = today.getFullYear(); // assuming same year context
+
+    let isDisabled = false;
+
+    if (ReportingManager == 1) {
+      // --- Reporting Manager Logic ---
+      if (
+        targetYear < currentYear ||
+        (targetYear === currentYear && targetMonth < currentMonth)
+      ) {
+        // Previous month logic
+        const daysPassed = today.getDate();
+        isDisabled = daysPassed > 3; // enable only first 2 days of current month
+      } else if (targetYear === currentYear && targetMonth === currentMonth) {
+        // Current month → always active
+        isDisabled = false;
+      } else {
+        // Future months → disabled
+        isDisabled = true;
+      }
+    } else {
+      // --- Normal User Logic ---
+      if (
+        targetYear < currentYear ||
+        (targetYear === currentYear && targetMonth < currentMonth)
+      ) {
+        isDisabled = true; // past months disabled
+      } else if (targetYear === currentYear && targetMonth === currentMonth) {
+        isDisabled = false; // current month active
+      } else {
+        isDisabled = true; // future months disabled
+      }
+    }
+
     const dayDetails = table1Data?.find((d) => d?.Day === dayOfMonth);
 
     return (
       <td
         key={index}
-        // className={`verticalTable ${isBeforeToday ? "disabled-day" : "active-day"} ${getStatusClass}`}
-        className={`verticalTable ${isBeforeToday ? "disabled-day" : "active-day"} ${getStatusClass(dayOfMonth, table1Data)}`}
+        className={`verticalTable ${isDisabled ? "disabled-day" : "active-day"} ${getStatusClass(dayOfMonth, table1Data)}`}
         onClick={() => {
-          if (isBeforeToday) return;
+          if (isDisabled) return;
           setVisible({
             showVisible: true,
             data: dayDate,
@@ -166,8 +277,8 @@ const LeaveRequest = ({ data }) => {
           setclickeddate(dayDate);
         }}
         style={{
-          cursor: isBeforeToday ? "not-allowed" : "pointer",
-          pointerEvents: isBeforeToday ? "none" : "auto",
+          cursor: isDisabled ? "not-allowed" : "pointer",
+          pointerEvents: isDisabled ? "none" : "auto",
         }}
       >
         <label className="formattedDate">{formattedDate}</label>
@@ -181,7 +292,6 @@ const LeaveRequest = ({ data }) => {
       </td>
     );
   };
-
   const renderCalendarRows = () => {
     const weeks = [];
     const today = new Date();
@@ -272,6 +382,7 @@ const LeaveRequest = ({ data }) => {
 
   useEffect(() => {
     handleLeaveRequest_BindCalender();
+    getReporter();
   }, []);
 
   function format2Date(inputDate) {
@@ -335,14 +446,40 @@ const LeaveRequest = ({ data }) => {
         <div className="card">
           <Heading title={"Attendance Calendar"} isBreadcrumb={true} />
           <div className="row g-4 m-2">
-            <div className="col-sm-2 ">
-              <div className="d-flex">
-                <label className="mr-2">Name :</label>
+            {/* <div className="col-sm-2 "> */}
+            {/* <div className="d-flex"> */}
+            {/* <label className="mr-2">Name :</label>
                 <span style={{ textAlign: "right" }}>
                   {data ? data?.Name : LoginUserName}
-                </span>
-              </div>
-            </div>
+                </span> */}
+            {ReportingManager == 1 ? (
+              <MultiSelectComp
+                respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+                name="Employee"
+                placeholderName="Employee"
+                dynamicOptions={employee}
+                handleChange={handleMultiSelectChange}
+                value={formData.Employee.map((code) => ({
+                  code,
+                  name: employee.find((item) => item.code === code)?.name,
+                }))}
+              />
+            ) : (
+              <Input
+                type="text"
+                respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+                className="form-control"
+                placeholder=" "
+                lable="Employee"
+                id="Employee"
+                name="Employee"
+                value={IsEmployee}
+                // onChange={handleChange}
+                disabled={true}
+              />
+            )}
+            {/* </div> */}
+            {/* </div> */}
             <div className="col-sm-4 d-flex">
               <div className="">
                 <label>Leave Month/Year :</label>

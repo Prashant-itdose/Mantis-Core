@@ -1534,7 +1534,7 @@ const SearchAmountSubmission = ({ data }) => {
                           }}
                           onClick={() => handleSearch(undefined, "1")}
                         >
-                          {t("Cash")}
+                          {t("Delta")}
                         </span>
                         <div
                           className="legend-circle"
@@ -1735,7 +1735,7 @@ const SearchAmountSubmission = ({ data }) => {
                           name="PaymentMode"
                           placeholderName="Payment Mode"
                           dynamicOptions={[
-                            { label: "Cash", value: "Cash" },
+                            { label: "Delta", value: "Cash" },
                             { label: "NEFT", value: "NEFT" },
                             { label: "Cheque", value: "Cheque" },
                           ]}

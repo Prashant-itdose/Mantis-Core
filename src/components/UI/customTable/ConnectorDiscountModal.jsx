@@ -102,7 +102,7 @@ const ConnectorDiscountModal = (visible) => {
             name="PaymentMode"
             placeholderName="Payment Mode"
             dynamicOptions={[
-              { label: "Cash", value: "Cash" },
+              { label: "Delta", value: "Cash" },
               { label: "NEFT", value: "NEFT" },
               { label: "Cheque", value: "Cheque" },
               { label: "Draft", value: "Draft" },

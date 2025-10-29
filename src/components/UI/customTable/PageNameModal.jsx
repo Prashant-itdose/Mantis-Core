@@ -55,38 +55,29 @@ const PageNameModal = ({ visible, setVisible, onCloseInnerModal }) => {
     } else {
       setLoading(true);
       axiosInstances
-      .post(apiUrls.CreatePages, {
-  "ProjectID": Number(visible?.showData?.ProjectID),
-  "PagesName": String(formData?.ModuleName)
-})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("ProjectID", visible?.showData?.ProjectID),
-      //   form.append("PagesName", formData?.ModuleName),
-      //   axios
-      //     .post(apiUrls?.CreatePages, form, { headers })
-          .then((res) => {
-            if (res?.data?.success) {
-              toast.success(res?.data?.message);
-              getModuleSearch();
-              setLoading(false);
-              setVisible(false);
-              if (onCloseInnerModal) {
-                onCloseInnerModal();
-              }
-            } else {
-              toast.error(res?.data?.message);
-              setLoading(false);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
+        .post(apiUrls.CreatePages, {
+          ProjectID: Number(visible?.showData?.ProjectID),
+          PagesName: String(formData?.ModuleName),
+        })
+
+        .then((res) => {
+          if (res?.data?.success) {
+            toast.success(res?.data?.message);
+            getModuleSearch();
             setLoading(false);
-          });
+            setVisible(false);
+            if (onCloseInnerModal) {
+              onCloseInnerModal();
+            }
+          } else {
+            toast.error(res?.data?.message);
+            setLoading(false);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
     }
   };
   const handleUpdate = () => {
@@ -125,7 +116,6 @@ const PageNameModal = ({ visible, setVisible, onCloseInnerModal }) => {
         IsMaster: 0,
       })
       .then((res) => {
-        console.log("Response", res?.data?.data);
         setTableData(res?.data?.data);
       })
       .catch((err) => {

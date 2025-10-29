@@ -121,7 +121,7 @@ const ConnectorSettlementModal = (visible) => {
             name="PaymentMode"
             placeholderName={t("Payment Mode")}
             dynamicOptions={[
-              { label: "Cash", value: "Cash" },
+              { label: "Delta", value: "Cash" },
               { label: "NEFT", value: "NEFT" },
               { label: "Cheque", value: "Cheque" },
               { label: "Draft", value: "Draft" },
