@@ -35,12 +35,6 @@ const ManagerPaidRequestStatus = () => {
   );
 
   const handleFirstDashboardCount = (developerId, searchType) => {
-    // let form = new FormData();
-    // form.append("ID",  useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append("DeveloperID", developerId);
-    // form.append("SearchType", searchType == "" ? "0" : searchType);
-    // axios
-    //   .post(apiUrls?.ManagerDashboard_Paid_Request_Status, form, { headers })
     axiosInstances
       .post(apiUrls?.ManagerDashboard_Paid_Request_Status, {
         DeveloperID: String(developerId),
@@ -96,6 +90,9 @@ const ManagerPaidRequestStatus = () => {
       },
       legend: {
         display: false,
+      },
+      datalabels: {
+        display: false, // 👈 disables value labels on bars
       },
     },
     scales: {

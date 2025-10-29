@@ -149,6 +149,9 @@ const AverageTime = () => {
           pointStyle: "circle",
         },
       },
+      datalabels: {
+        display: false, // 👈 disables value labels on bars
+      },
       title: {
         display: false,
       },

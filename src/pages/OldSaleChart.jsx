@@ -94,6 +94,9 @@ const OldSaleChart = () => {
           pointStyle: "circle",
         },
       },
+      datalabels: {
+        display: false, // 👈 disables value labels on bars
+      },
     },
     responsive: true,
     scales: {

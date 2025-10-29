@@ -26,10 +26,6 @@ const ManagerDelayedRecovery = () => {
   const [chartData, setChartData] = useState([]);
 
   const handleFetchSalesData = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-
-    // axios.post(apiUrls?.ManagerDashboard_Delay_Recovery, form, { headers });
     axiosInstances
       .post(apiUrls?.ManagerDashboard_Delay_Recovery, {
         DeveloperID: String(useCryptoLocalStorage("user_Data", "get", "ID")),
@@ -71,6 +67,9 @@ const ManagerDelayedRecovery = () => {
       },
       legend: {
         display: false,
+      },
+      datalabels: {
+        display: false, // 👈 disables value labels on bars
       },
     },
     scales: {

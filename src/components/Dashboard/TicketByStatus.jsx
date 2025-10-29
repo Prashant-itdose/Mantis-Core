@@ -143,6 +143,9 @@ const TicketByStatus = () => {
           pointStyle: "circle", // Set legend symbol to a circle
         },
       },
+      datalabels: {
+        display: false, // 👈 disables value labels on bars
+      },
     },
     responsive: true,
     scales: {

@@ -86,6 +86,9 @@ function ManagerClientRevenue({ selectedDate, memberID }) {
       tooltip: {
         enabled: true,
       },
+      datalabels: {
+        display: false, // 👈 disables value labels on bars
+      },
     },
   };
 

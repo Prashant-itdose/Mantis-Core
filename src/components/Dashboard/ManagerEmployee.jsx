@@ -130,6 +130,9 @@ const ManagerEmployee = () => {
         display: false,
         text: "Manager/Employee",
       },
+      datalabels: {
+        display: false, // 👈 disables value labels on bars
+      },
       legend: {
         display: true, // Display the legend
         labels: {

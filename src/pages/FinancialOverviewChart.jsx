@@ -131,6 +131,9 @@ const FinancialOverviewChart = () => {
           pointStyle: "circle",
         },
       },
+      datalabels: {
+        display: false, // 👈 disables value labels on bars
+      },
       tooltip: {
         callbacks: {
           label: (context) => `${context.dataset.label}: ${context.raw}`,

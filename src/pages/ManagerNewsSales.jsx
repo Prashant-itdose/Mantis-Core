@@ -24,13 +24,6 @@ const ManagerNewsSales = () => {
   const [chartData, setChartData] = useState([]);
 
   const handleFetchSalesData = (developerId, searchType) => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-
-    // form.append("DeveloperID", developerId);
-    // form.append("SearchType", searchType == "" ? "0" : searchType);
-    // axios
-    //   .post(apiUrls?.ManagerDashboard_New_Sales, form, { headers })
     axiosInstances
       .post(apiUrls?.ManagerDashboard_New_Sales, {
         DeveloperID: String(developerId),
@@ -76,6 +69,9 @@ console.log("chartData11",chartData)
       },
       legend: {
         display: false,
+      },
+      datalabels: {
+        display: false, // 👈 disables value labels on bars
       },
     },
     scales: {

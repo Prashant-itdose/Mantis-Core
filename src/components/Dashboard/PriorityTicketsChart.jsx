@@ -101,6 +101,9 @@ const PriorityTicketsChart = () => {
           color: "black", // Set font color
         },
       },
+      datalabels: {
+        display: false, // 👈 disables value labels on bars
+      },
     },
     responsive: true,
   };

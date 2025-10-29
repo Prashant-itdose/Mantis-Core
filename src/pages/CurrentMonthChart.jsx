@@ -192,12 +192,6 @@ const CurrentMonthChart = () => {
   const [chartData, setChartData] = useState([]);
 
   const handleFetchSalesData = (developerId, searchType) => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append("DeveloperID", developerId);
-    // form.append("SearchType", searchType === "" ? "0" : searchType);
-    // axios
-    //   .post(apiUrls?.CoorDashboard_Current_Month_Bifurcation, form, { headers })
     axiosInstances
       .post(apiUrls.CoorDashboard_Current_Month_Bifurcation, {
         CoordinatorID: Number(useCryptoLocalStorage("user_Data", "get", "ID")),
@@ -248,6 +242,9 @@ const CurrentMonthChart = () => {
           usePointStyle: true,
           pointStyle: "circle",
         },
+      },
+      datalabels: {
+        display: false, // 👈 disables value labels on bars
       },
       tooltip: {
         callbacks: {
