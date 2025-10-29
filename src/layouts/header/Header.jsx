@@ -451,7 +451,7 @@ const Header = React.memo(() => {
                 />
                 <br></br>
                 <span style={{ fontSize: "8px", fontWeight: "bold" }}>
-                  {t("Mantis")}
+                  {t("CRM")}
                 </span>
               </div>
             </div>
