@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Heading from "../components/UI/Heading";
 import ReactSelect from "../components/formComponent/ReactSelect";
 import { apiUrls } from "../networkServices/apiEndpoints";
-
 import Input from "../components/formComponent/Input";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -16,7 +15,6 @@ import LeadDeadModal from "./LeadDeadModal";
 import Tables from "../components/UI/customTable";
 import SlideScreen from "./SlideScreen";
 import SeeMoreSlideScreen from "../components/SearchableTable/SeeMoreSlideScreen";
-import AmountSubmissionSeeMoreList from "../networkServices/AmountSubmissionSeeMoreList";
 import moment from "moment";
 import { toast } from "react-toastify";
 import SalesLeadLog from "./SalesLeadLog";
@@ -24,6 +22,7 @@ import LeadApproveDetail from "./LeadApproveDetail";
 import gmaillogo from "../../src/assets/image/Gmail_Logo.png";
 import Tooltip from "./Tooltip";
 import { axiosInstances } from "../networkServices/axiosInstance";
+import Loading from "../components/loader/Loading";
 const SalesLead = () => {
   const [t] = useTranslation();
   const [tableData, setTableData] = useState([]);
@@ -177,7 +176,7 @@ const SalesLead = () => {
   };
   const handleSearch = (code) => {
     setLoading(true);
- 
+
     const payload = {
       Country: String(formData?.Country),
       City: String(formData?.City),
@@ -200,8 +199,8 @@ const SalesLead = () => {
     axiosInstances
       .post(apiUrls?.SearchSalesLeads, payload)
       .then((res) => {
-        const {data,status} = res?.data
-        if (status) {
+        const data = res?.data?.data;
+        if (res.data.success === true) {
           const updatedData = data?.map((ele, index) => {
             return {
               ...ele,
@@ -220,7 +219,7 @@ const SalesLead = () => {
           setTableData(updatedData);
           setLoading(false);
         } else {
-          toast.error(res?.data?.message);
+          toast.error("Data Not Found.");
           setTableData([]);
           setLoading(false);
         }
@@ -377,7 +376,6 @@ const SalesLead = () => {
             value={formData?.OrganizationName}
             respclass="col-xl-2 col-md-4 col-sm-4 col-12"
           />
-        
 
           <Input
             type="text"
@@ -549,12 +547,16 @@ const SalesLead = () => {
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
             handleChange={searchHandleChange}
           />
-          <button
-            className="btn btn-sm btn-primary ml-2"
-            onClick={() => handleSearch("")}
-          >
-            Search
-          </button>
+          {loading ? (
+            <Loading />
+          ) : (
+            <button
+              className="btn btn-sm btn-primary ml-2"
+              onClick={() => handleSearch("")}
+            >
+              Search
+            </button>
+          )}
         </div>
       </div>
 
