@@ -19,6 +19,9 @@ import moment from "moment";
 import BrowseInput from "../../components/formComponent/BrowseInput";
 import { useCryptoLocalStorage } from "../../utils/hooks/useCryptoLocalStorage";
 import { axiosInstances } from "../../networkServices/axiosInstance";
+const currentDate = new Date();
+const currentMonth = currentDate.getMonth() + 1; // Months are 0-indexed, so add 1
+const currentYear = currentDate.getFullYear();
 const ExpenseSubmission = () => {
   const location = useLocation();
   const { state } = location;
@@ -75,6 +78,8 @@ const ExpenseSubmission = () => {
     TripName: "",
     Locality: "",
     OtherTeammate: "",
+    currentMonth: currentMonth,
+    currentYear: currentYear,
   });
   // console.log("update", formData);
   // useEffect(() => {
@@ -969,10 +974,8 @@ const ExpenseSubmission = () => {
     const isPreviousMonth =
       formData.currentMonth === prevMonth &&
       formData.currentYear === prevMonthYear;
-
     // Check if today is within the first 5 days of the month
     const isWithinFirst5Days = today.getDate() <= 5;
-
     // Allow previous month only for first 5 days
     if (isPreviousMonth && isWithinFirst5Days) {
       return true; // enabled
@@ -982,8 +985,6 @@ const ExpenseSubmission = () => {
 
     return isCurrentMonth; // normal current month behavior
   };
-
-   console.log("isCurrentMonthSelected",isCurrentMonthSelected())
   return (
     <>
       <div className="card">
