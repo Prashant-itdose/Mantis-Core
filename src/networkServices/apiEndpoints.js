@@ -500,7 +500,6 @@ export const apiUrls = {
   GetFeaturesStatus: "/CRMCOREAPI/api/Circular/GetFeaturesStatus",
   Reporter_Select_Employee:
     "/CRMCOREAPI/api/MasterBind/Reporter_Select_Employee",
-    
   ClientFeedbackStatsGraph:
     "/CRMCOREAPI/api/ClientFeedbackDashboard/ClientFeedbackStatsGraph",
   ClientFeedbackRatingGraph:
@@ -510,4 +509,14 @@ export const apiUrls = {
     "/CRMCOREAPI/api/ClientFeedbackDashboard/ClientFeedbackAggregates",
   ClientFeedbackList:
     "/CRMCOREAPI/api/ClientFeedbackDashboard/ClientFeedbackList",
+
+  AIClientDetails: "/CRMCOREAPI/api/AI/AIClientDetails",
+  AIClientOpening: "/CRMCOREAPI/api/AI/AIClientOpening",
+  AIClientDashboard: "/CRMCOREAPI/api/AI/AIClientDashboard",
+  AIRateCardMaster: "/CRMCOREAPI/api/AI/AIRateCardMaster",
+  AIClientUpdatePatientAccess: "/CRMCOREAPI/api/AI/AIClientUpdatePatientAccess",
+  AIClientLedger: "/CRMCOREAPI/api/AI/AIClientLedger",
+  AIClientQuestionMaster: "/CRMCOREAPI/api/AI/AIClientQuestionMaster",
+  AIClientQuestionMasterInsert:
+    "/CRMCOREAPI/api/AI/AIClientQuestionMasterInsert",
 };

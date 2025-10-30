@@ -198,6 +198,33 @@ const allRoutes = {
       component: lazy(() => import("@app/pages/ViewIssues.jsx")),
       exact: true,
     },
+     {
+      Guard: Authenticated,
+      layout: Layout,
+      path: "/AIDashboard",
+      component: lazy(
+        () => import("@app/pages/AiReportDashboard/OtpLogin.jsx")
+      ),
+      exact: true,
+    },
+    {
+      Guard: Authenticated,
+      layout: Layout,
+      path: "/ReportViewer",
+      component: lazy(
+        () => import("@app/pages/AiReportDashboard/ChatAI/ReportViewer.jsx")
+      ),
+      exact: true,
+    },
+    {
+      // Guard: Authenticated,
+      // layout: Layout,
+      path: "/ReportChatAI",
+      component: lazy(
+        () => import("@app/pages/AiReportDashboard/ChatAI/ReportChatAI.jsx")
+      ),
+      exact: true,
+    },
     {
       Guard: Authenticated,
       layout: Layout,

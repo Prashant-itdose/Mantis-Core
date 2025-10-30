@@ -315,52 +315,23 @@ const ClientFeedbackFlow = () => {
 
   const handleSearch = () => {
     setLoading(true);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("DateType", formData?.SearchBy),
-    //   form.append("ProjectID", formData?.ProjectID),
-    //   form.append(
-    //     "StartDate",
-    //     moment(formData?.FromDate).isValid()
-    //       ? moment(formData?.FromDate).format("YYYY-MM-DD")
-    //       : ""
-    //   );
-    // form.append(
-    //   "EndDate",
-    //   moment(formData?.ToDate).isValid()
-    //     ? moment(formData?.ToDate).format("YYYY-MM-DD")
-    //     : ""
-    // ),
-    //   form.append(
-    //     "SearchBy",
-    //     formData?.CustomerName ||
-    //       formData?.CustomerPhone ||
-    //       formData?.CustomerEmail
-    //   ),
-    //   form.append("Rating", formData?.RatingType),
-    //   form.append("Category", formData?.Category),
-    //   axios
-    //     .post(apiUrls?.ClientFeedbackAggregates, form, { headers })
     axiosInstances
       .post(apiUrls.ClientFeedbackAggregates, {
-        DateType: formData?.SearchBy,
-        ProjectID: formData?.ProjectID,
+        DateType: String(formData?.SearchBy),
+        ProjectID: String(formData?.ProjectID),
         StartDate: moment(formData?.FromDate).isValid()
           ? moment(formData?.FromDate).format("YYYY-MM-DD")
           : "",
         EndDate: moment(formData?.EndDate).isValid()
           ? moment(formData?.EndDate).format("YYYY-MM-DD")
           : "",
-        SearchBy:
+        SearchBy: String(
           formData?.CustomerName ||
-          formData?.CustomerPhone ||
-          formData?.CustomerEmail,
-        Rating: formData?.RatingType,
-        Category: formData?.Category,
+            formData?.CustomerPhone ||
+            formData?.CustomerEmail
+        ),
+        Rating: String(formData?.RatingType),
+        Category: String(formData?.Category),
       })
       .then((res) => {
         if (res?.data?.success === true) {
@@ -383,54 +354,24 @@ const ClientFeedbackFlow = () => {
   };
   const handleSearchTable = () => {
     setLoading(true);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("DateType", formData?.SearchBy),
-    //   form.append("ProjectID", formData?.ProjectID),
-    //   form.append(
-    //     "StartDate",
-    //     moment(formData?.FromDate).isValid()
-    //       ? moment(formData?.FromDate).format("YYYY-MM-DD")
-    //       : ""
-    //   );
-    // form.append(
-    //   "EndDate",
-    //   moment(formData?.ToDate).isValid()
-    //     ? moment(formData?.ToDate).format("YYYY-MM-DD")
-    //     : ""
-    // ),
-    //   form.append(
-    //     "SearchBy",
-    //     formData?.CustomerName ||
-    //       formData?.CustomerPhone ||
-    //       formData?.CustomerEmail
-    //   ),
-    //   form.append("Rating", formData?.RatingType),
-    //   form.append("Category", formData?.Category),
-    //   form.append("Type", "All"),
-    //   axios
-    //     .post(apiUrls?.ClientFeedbackList, form, { headers })
     axiosInstances
       .post(apiUrls.ClientFeedbackList, {
-        DateType: formData?.SearchBy,
-        ProjectID: formData?.ProjectID,
+        DateType: String(formData?.SearchBy),
+        ProjectID: String(formData?.ProjectID),
         StartDate: moment(formData?.FromDate).isValid()
           ? moment(formData?.FromDate).format("YYYY-MM-DD")
           : "",
         EndDate: moment(formData?.EndDate).isValid()
           ? moment(formData?.EndDate).format("YYYY-MM-DD")
           : "",
-        SearchBy:
+        SearchBy: String(
           formData?.CustomerName ||
-          formData?.CustomerPhone ||
-          formData?.CustomerEmail,
-        Rating: formData?.RatingType,
-        Category: formData?.Category,
-        Type: "All",
+            formData?.CustomerPhone ||
+            formData?.CustomerEmail
+        ),
+        Rating: String(formData?.RatingType),
+        Category: String(formData?.Category),
+        Type: String("All"),
       })
       .then((res) => {
         if (res?.data?.success === true) {
@@ -451,21 +392,22 @@ const ClientFeedbackFlow = () => {
     setLoading(true);
     axiosInstances
       .post(apiUrls.ClientFeedbackList, {
-        DateType: formData?.SearchBy,
-        ProjectID: formData?.ProjectID,
+        DateType: String(formData?.SearchBy),
+        ProjectID: String(formData?.ProjectID),
         StartDate: moment(formData?.FromDate).isValid()
           ? moment(formData?.FromDate).format("YYYY-MM-DD")
           : "",
         EndDate: moment(formData?.EndDate).isValid()
           ? moment(formData?.EndDate).format("YYYY-MM-DD")
           : "",
-        SearchBy:
+        SearchBy: String(
           formData?.CustomerName ||
-          formData?.CustomerPhone ||
-          formData?.CustomerEmail,
-        Rating: formData?.RatingType,
-        Category: formData?.Category,
-        Type: "All",
+            formData?.CustomerPhone ||
+            formData?.CustomerEmail
+        ),
+        Rating: String(formData?.RatingType),
+        Category: String(formData?.Category),
+        Type: String("ReceviedFeedback"),
       })
       .then((res) => {
         if (res?.data?.success === true) {
@@ -486,21 +428,22 @@ const ClientFeedbackFlow = () => {
     setLoading(true);
     axiosInstances
       .post(apiUrls.ClientFeedbackList, {
-        DateType: formData?.SearchBy,
-        ProjectID: formData?.ProjectID,
+        DateType: String(formData?.SearchBy),
+        ProjectID: String(formData?.ProjectID),
         StartDate: moment(formData?.FromDate).isValid()
           ? moment(formData?.FromDate).format("YYYY-MM-DD")
           : "",
         EndDate: moment(formData?.EndDate).isValid()
           ? moment(formData?.EndDate).format("YYYY-MM-DD")
           : "",
-        SearchBy:
+        SearchBy: String(
           formData?.CustomerName ||
-          formData?.CustomerPhone ||
-          formData?.CustomerEmail,
-        Rating: formData?.RatingType,
-        Category: formData?.Category,
-        Type: "All",
+            formData?.CustomerPhone ||
+            formData?.CustomerEmail
+        ),
+        Rating: String(formData?.RatingType),
+        Category: String(formData?.Category),
+        Type: String("NotReceviedFeedback"),
       })
       .then((res) => {
         if (res?.data?.success === true) {
@@ -521,21 +464,22 @@ const ClientFeedbackFlow = () => {
     setLoading(true);
     axiosInstances
       .post(apiUrls.ClientFeedbackList, {
-        DateType: formData?.SearchBy,
-        ProjectID: formData?.ProjectID,
+        DateType: String(formData?.SearchBy),
+        ProjectID: String(formData?.ProjectID),
         StartDate: moment(formData?.FromDate).isValid()
           ? moment(formData?.FromDate).format("YYYY-MM-DD")
           : "",
         EndDate: moment(formData?.EndDate).isValid()
           ? moment(formData?.EndDate).format("YYYY-MM-DD")
           : "",
-        SearchBy:
+        SearchBy: String(
           formData?.CustomerName ||
-          formData?.CustomerPhone ||
-          formData?.CustomerEmail,
-        Rating: formData?.RatingType,
-        Category: formData?.Category,
-        Type: "All",
+            formData?.CustomerPhone ||
+            formData?.CustomerEmail
+        ),
+        Rating: String(formData?.RatingType),
+        Category: String(formData?.Category),
+        Type: String("LowCommentFeedback"),
       })
       .then((res) => {
         if (res?.data?.success === true) {
@@ -598,7 +542,7 @@ const ClientFeedbackFlow = () => {
     //   .post(apiUrls?.ClientFeedbackRatingGraph, form, { headers })
     axiosInstances
       .post(apiUrls.ClientFeedbackRatingGraph, {
-        ProjectID: value,
+        ProjectID: String(value),
       })
       .then((res) => {
         if (res.data.success === true) {
@@ -622,7 +566,6 @@ const ClientFeedbackFlow = () => {
     handleSearch();
     getProjectA();
   }, []);
-  console.log("check formdata", formData?.ProjectIDA);
 
   const [visible, setVisible] = useState({
     showVisible: false,

@@ -183,7 +183,6 @@ const Dashboard = () => {
       });
   };
   const { memberID } = useSelector((state) => state?.loadingSlice);
-  console.log(" asif", memberID);
 
   const handleFirstDashboardCount = () => {
     axiosInstances
@@ -236,15 +235,7 @@ const Dashboard = () => {
   const [filterdata, setFilterData] = useState([]);
 
   const handleMultiChart = (value, memberID) => {
-    console.log("valuevalue ", memberID);
     const datefrom = moment(value).format("YYYY-MM-DD");
-    console.log("valuevalue ", datefrom);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("dtFrom", datefrom),
-    //   form.append("DeveloperID", memberID || 0),
-    //   axios
-    //     .post(apiUrls?.DevDashboard_Welcome_Status_Count, form, { headers })
     axiosInstances
       .post(apiUrls.DevDashboard_Welcome_Status_Count, {
         DeveloperID: String(memberID || "0"),
@@ -353,12 +344,6 @@ const Dashboard = () => {
       });
   };
   const handleCircularRead = (eleid) => {
-    // console.log("gata",ele)
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("CircularUserID", eleid),
-    //   axios
-    //     .post(apiUrls?.Circular_Read, form, { headers })
     axiosInstances
       .post(apiUrls.Circular_Read, {
         ID: Number(useCryptoLocalStorage("user_Data", "get", "ID")),

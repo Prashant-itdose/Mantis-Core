@@ -70,7 +70,7 @@ const LeaveRequest = ({ data }) => {
       })
       .then((res) => {
         const assigntos = res?.data?.data?.map((item) => {
-          return { name: item?.EmployeeName, code: item?.Employee_ID };
+          return { label: item?.EmployeeName, value: item?.Employee_ID };
         });
         setEmployee(assigntos);
       })
@@ -79,12 +79,11 @@ const LeaveRequest = ({ data }) => {
       });
   };
 
-  const handleMultiSelectChange = (name, selectedOptions) => {
-    const selectedValues = selectedOptions.map((option) => option.code);
-    setFormData((prev) => ({
-      ...prev,
-      [`${name}`]: selectedValues,
-    }));
+  const handleDeliveryChange = (name, e) => {
+    setFormData({
+      ...formData,
+      [name]: e?.value,
+    });
   };
 
   const handleMonthYearChange = (name, e) => {
@@ -453,16 +452,13 @@ const LeaveRequest = ({ data }) => {
                   {data ? data?.Name : LoginUserName}
                 </span> */}
             {ReportingManager == 1 ? (
-              <MultiSelectComp
+              <ReactSelect
                 respclass="col-xl-2 col-md-4 col-sm-6 col-12"
                 name="Employee"
                 placeholderName="Employee"
                 dynamicOptions={employee}
-                handleChange={handleMultiSelectChange}
-                value={formData.Employee.map((code) => ({
-                  code,
-                  name: employee.find((item) => item.code === code)?.name,
-                }))}
+                handleChange={handleDeliveryChange}
+                value={formData.Employee}
               />
             ) : (
               <Input

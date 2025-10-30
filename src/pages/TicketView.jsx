@@ -511,10 +511,6 @@ const KanbanBoard = () => {
   };
 
   const getAssignTo = () => {
-    // let form = new FormData();
-    // form.append("ID", userId);
-    // axios
-    //   .post(apiUrls?.AssignTo_Select, form, { headers })
     axiosInstances
       .post(apiUrls.AssignTo_Select, {
         ID: userId,
@@ -540,17 +536,6 @@ const KanbanBoard = () => {
 
   const handleSearchList = () => {
     setLoading(true);
-    // const form = new FormData();
-    // form.append("ID", userId);
-    // form.append("LoginName", IsEmployee);
-    // form.append(
-    //   "AssignToID",
-    //   formData?.AssignedTo ? formData.AssignedTo.join(",") : "0"
-    // );
-
-    // axios
-    //   .post(apiUrls?.GetKanbanViewList, form, { headers })
-
     axiosInstances
       .post(apiUrls.GetKanbanViewList, {
         AssignToID: formData?.AssignedTo ? formData.AssignedTo.join(",") : "0",
@@ -589,13 +574,6 @@ const KanbanBoard = () => {
 
   const handleSearchEmployee = () => {
     setLoading(true);
-    // const form = new FormData();
-    // form.append("ID", userId);
-    // form.append("LoginName", IsEmployee);
-    // form.append("AssignToID", userId);
-
-    // axios
-    //   .post(apiUrls?.GetKanbanViewList, form, { headers })
     axiosInstances
       .post(apiUrls.GetKanbanViewList, {
         AssignToID: userId,
