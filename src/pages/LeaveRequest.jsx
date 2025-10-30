@@ -360,7 +360,6 @@ const LeaveRequest = ({ data }) => {
         Month: Number(details ? details?.month : currentMonth),
       })
       .then((res) => {
-        console.log("data data ", res.data.data);
         setCalenderDetails(res?.data?.data);
 
         setLoading(false);
