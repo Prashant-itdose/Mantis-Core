@@ -474,6 +474,7 @@ const ViewExpense = () => {
 
     return isCurrentMonth; // normal current month behavior
   };
+
   return (
     <>
       {visible?.ShowApprove && (

@@ -13,19 +13,18 @@ import client from "../..//assets/image/client.png";
 import other from "../../assets/image/other.png";
 import Tables from "../../components/UI/customTable";
 import { apiUrls } from "../../networkServices/apiEndpoints";
-import { headers } from "../../utils/apitools";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { Link, useLocation } from "react-router-dom";
 import moment from "moment";
 import BrowseInput from "../../components/formComponent/BrowseInput";
 import { useCryptoLocalStorage } from "../../utils/hooks/useCryptoLocalStorage";
 import { axiosInstances } from "../../networkServices/axiosInstance";
+const currentDate = new Date();
+const currentMonth = currentDate.getMonth() + 1; // Months are 0-indexed, so add 1
+const currentYear = currentDate.getFullYear();
 const ExpenseSubmission = () => {
   const location = useLocation();
   const { state } = location;
-
-  console.log("state?.edit ", state);
 
   const { VITE_DATE_FORMAT } = import.meta.env;
   const [states, setState] = useState([]);
@@ -79,6 +78,8 @@ const ExpenseSubmission = () => {
     TripName: "",
     Locality: "",
     OtherTeammate: "",
+    currentMonth: currentMonth,
+    currentYear: currentYear,
   });
   // console.log("update", formData);
   // useEffect(() => {
@@ -410,47 +411,12 @@ const ExpenseSubmission = () => {
     };
     axiosInstances
       .post(apiUrls.ManageExpense_Insert, payload)
-      // let form = new FormData();
-      // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-      // form.append(
-      //   "EmpID",
-      //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      // );
-      // form.append(
-      //   "LoginName",
-      //   useCryptoLocalStorage("user_Data", "get", "realname")
-      // );
-      // form.append("GeneralDetails", GeneralDetailsJson);
-      // form.append("LocalTravelExp", JSON.stringify(LocalTravelpayload));
-      // form.append("InterCityTravelExp", JSON.stringify(InterCityTravelpayload));
-      // form.append("ActionType", "Insert");
-      // form.append("Document_Base64", formData?.Document_Base64);
-      // form.append("Document_FormatType", formData?.FileExtension);
-      // axios
-      //   .post(apiUrls?.ManageExpense_Insert, form, { headers })
       .then((res) => {
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           setLoading(false);
           setFormData((prev) => ({
             ...prev,
-            // ExpenseType: "",
-            // HotelAmount: "",
-            // HotelName: "",
-            // HotelDescription: "",
-            // BreakfastAmount: "",
-            // LunchAmount: "",
-            // DinnerAmount: "",
-            // MealDescription: "",
-            // PhoneAmount: "",
-            // PhoneDescription: "",
-            // EntertainmentAmount: "",
-            // EntertainmentDescription: "",
-            // OtherAmount: "",
-            // OtherDescription: "",
-            // SelectFile: "",
-            // Document_Base64: "",
-            // FileExtension: "",
             ExpenseType: "",
             EmployeeName: "",
             VerticalID: [],
@@ -531,39 +497,6 @@ const ExpenseSubmission = () => {
         console.log(err);
       });
   };
-
-  const isCurrentMonthSelected = () => {
-    const today = new Date();
-    const currentMonth = today.getMonth() + 1; // months are 0-based
-    const currentYear = today.getFullYear();
-
-    // Previous month and year logic
-    const prevMonth = currentMonth === 1 ? 12 : currentMonth - 1;
-    const prevMonthYear = currentMonth === 1 ? currentYear - 1 : currentYear;
-
-    const isCurrentMonth =
-      formData.currentMonth === currentMonth &&
-      formData.currentYear === currentYear;
-
-    const isPreviousMonth =
-      formData.currentMonth === prevMonth &&
-      formData.currentYear === prevMonthYear;
-
-    // Check if today is within the first 5 days of the month
-    const isWithinFirst5Days = today.getDate() <= 5;
-
-    // Allow previous month only for first 5 days
-    if (isPreviousMonth && isWithinFirst5Days) {
-      return true; // enabled
-    } else if (isPreviousMonth && !isWithinFirst5Days) {
-      return false; // disabled
-    }
-
-    return isCurrentMonth; // normal current month behavior
-  };
-
-
-  console.log("asif check", isCurrentMonthSelected());
 
   const handleUpdate = () => {
     if (!formData?.FromDate) {
@@ -1025,6 +958,33 @@ const ExpenseSubmission = () => {
     }
   }, [formData?.FromDate]);
 
+  const isCurrentMonthSelected = () => {
+    const today = new Date();
+    const currentMonth = today.getMonth() + 1; // months are 0-based
+    const currentYear = today.getFullYear();
+
+    // Previous month and year logic
+    const prevMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+    const prevMonthYear = currentMonth === 1 ? currentYear - 1 : currentYear;
+
+    const isCurrentMonth =
+      formData.currentMonth === currentMonth &&
+      formData.currentYear === currentYear;
+
+    const isPreviousMonth =
+      formData.currentMonth === prevMonth &&
+      formData.currentYear === prevMonthYear;
+    // Check if today is within the first 5 days of the month
+    const isWithinFirst5Days = today.getDate() <= 5;
+    // Allow previous month only for first 5 days
+    if (isPreviousMonth && isWithinFirst5Days) {
+      return true; // enabled
+    } else if (isPreviousMonth && !isWithinFirst5Days) {
+      return false; // disabled
+    }
+
+    return isCurrentMonth; // normal current month behavior
+  };
   return (
     <>
       <div className="card">
