@@ -138,99 +138,101 @@ const ViewExpense = () => {
   const getReporter = () => {
     axiosInstances
       .post(apiUrls.GetReportingTo_Employee, {})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.GetReportingTo_Employee, form, { headers })
-        .then((res) => {
-          const reporters = res?.data.data.map((item) => {
-            return { label: item?.NAME, value: item?.Employee_ID };
-          });
-          setReporter(reporters);
-        })
-        .catch((err) => {
-          console.log(err);
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   axios
+      //     .post(apiUrls?.GetReportingTo_Employee, form, { headers })
+      .then((res) => {
+        const reporters = res?.data.data.map((item) => {
+          return { label: item?.NAME, value: item?.Employee_ID };
         });
+        setReporter(reporters);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const getEmployee = () => {
     axiosInstances
       .post(apiUrls.EmployeeBind, {
-  "CrmEmployeeID": Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),
-  "RoleID": Number(useCryptoLocalStorage("user_Data", "get", "RoleID"))
-})
-    // let form = new FormData();
-    // form.append(
-    //   "CrmEmployeeID",
-    //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-    // ),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   axios
-    //     .post(apiUrls?.EmployeeBind, form, { headers })
-        .then((res) => {
-          const wings = res?.data?.data?.map((item) => {
-            return { label: item?.EmployeeName, value: item?.Employee_ID };
-          });
-          setEmployee(wings);
-        })
-        .catch((err) => {
-          console.log(err);
+        CrmEmployeeID: Number(
+          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+        ),
+        RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
+      })
+      // let form = new FormData();
+      // form.append(
+      //   "CrmEmployeeID",
+      //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+      // ),
+      //   form.append(
+      //     "RoleID",
+      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+      //   ),
+      //   axios
+      //     .post(apiUrls?.EmployeeBind, form, { headers })
+      .then((res) => {
+        const wings = res?.data?.data?.map((item) => {
+          return { label: item?.EmployeeName, value: item?.Employee_ID };
         });
+        setEmployee(wings);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const getVertical = () => {
     axiosInstances
       .post(apiUrls.Vertical_Select, {})
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Vertical_Select, form, { headers })
-        .then((res) => {
-          const verticals = res?.data.data.map((item) => {
-            return { name: item?.Vertical, code: item?.VerticalID };
-          });
-          setVertical(verticals);
-        })
-        .catch((err) => {
-          console.log(err);
+      // let form = new FormData();
+      // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   axios
+      //     .post(apiUrls?.Vertical_Select, form, { headers })
+      .then((res) => {
+        const verticals = res?.data.data.map((item) => {
+          return { name: item?.Vertical, code: item?.VerticalID };
         });
+        setVertical(verticals);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getTeam = () => {
     axiosInstances
       .post(apiUrls.Team_Select, {})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Team_Select, form, { headers })
-        .then((res) => {
-          const teams = res?.data.data.map((item) => {
-            return { name: item?.Team, code: item?.TeamID };
-          });
-          setTeam(teams);
-        })
-        .catch((err) => {
-          console.log(err);
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   axios
+      //     .post(apiUrls?.Team_Select, form, { headers })
+      .then((res) => {
+        const teams = res?.data.data.map((item) => {
+          return { name: item?.Team, code: item?.TeamID };
         });
+        setTeam(teams);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getWing = () => {
     axiosInstances
       .post(apiUrls.Wing_Select, {})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Wing_Select, form, { headers })
-        .then((res) => {
-          const wings = res?.data.data.map((item) => {
-            return { name: item?.Wing, code: item?.WingID };
-          });
-          setWing(wings);
-        })
-        .catch((err) => {
-          console.log(err);
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   axios
+      //     .post(apiUrls?.Wing_Select, form, { headers })
+      .then((res) => {
+        const wings = res?.data.data.map((item) => {
+          return { name: item?.Wing, code: item?.WingID };
         });
+        setWing(wings);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleMultiSelectChange = (name, selectedOptions) => {
@@ -268,50 +270,52 @@ const ViewExpense = () => {
     } else {
       setLoading(true);
       axiosInstances
-      .post(apiUrls.ViewExpenseList, {
-  "ExpenseEmployeeID":formData?.Employee ?  Number(formData.Employee)  : 0,
-  "Month": Number(formData?.currentMonth),
-  "Year": Number(formData?.currentYear),
-  "Status": String(0),
-  "TripName": String(""),
-  "ExpenseType": String(formData?.ExpenseType),
-  "VerticalID": Number(formData?.VerticalID),
-  "TeamID": Number(formData?.TeamID),
-  "WingID": Number(formData?.WingID),
-  "CrmEmployeeID": Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),
-  "IsAccountant": Number(0),
-  "StatusType": Number(0)
-})
-      // let form = new FormData();
-      // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-      // form.append(
-      //   "LoginName",
-      //   useCryptoLocalStorage("user_Data", "get", "realname")
-      // );
-      // form.append(
-      //   "CrmEmployeeID",
-      //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      // );
-      // form.append(
-      //   "ExpenseEmployeeID",
-      //   formData?.Employee ? formData.Employee : "0"
-      //   // IsManager == 1
-      //   //   ? "0"
-      //   //   : formData?.Employee
-      //   //     ? formData.Employee
-      //   //     : useCryptoLocalStorage("user_Data", "get", "ID")
-      // );
-      // form.append("Month", formData?.currentMonth),
-      //   form.append("Year", formData?.currentYear),
-      //   form.append("Status", "0");
-      // form.append("TripName", "");
-      // form.append("ExpenseType", formData?.ExpenseType);
-      // form.append("VerticalID", formData?.VerticalID);
-      // form.append("TeamID", formData?.TeamID);
-      // form.append("WingID", formData?.WingID);
+        .post(apiUrls.ViewExpenseList, {
+          ExpenseEmployeeID: formData?.Employee ? Number(formData.Employee) : 0,
+          Month: Number(formData?.currentMonth),
+          Year: Number(formData?.currentYear),
+          Status: String(0),
+          TripName: String(""),
+          ExpenseType: String(formData?.ExpenseType),
+          VerticalID: Number(formData?.VerticalID),
+          TeamID: Number(formData?.TeamID),
+          WingID: Number(formData?.WingID),
+          CrmEmployeeID: Number(
+            useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+          ),
+          IsAccountant: Number(0),
+          StatusType: Number(0),
+        })
+        // let form = new FormData();
+        // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
+        // form.append(
+        //   "LoginName",
+        //   useCryptoLocalStorage("user_Data", "get", "realname")
+        // );
+        // form.append(
+        //   "CrmEmployeeID",
+        //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+        // );
+        // form.append(
+        //   "ExpenseEmployeeID",
+        //   formData?.Employee ? formData.Employee : "0"
+        //   // IsManager == 1
+        //   //   ? "0"
+        //   //   : formData?.Employee
+        //   //     ? formData.Employee
+        //   //     : useCryptoLocalStorage("user_Data", "get", "ID")
+        // );
+        // form.append("Month", formData?.currentMonth),
+        //   form.append("Year", formData?.currentYear),
+        //   form.append("Status", "0");
+        // form.append("TripName", "");
+        // form.append("ExpenseType", formData?.ExpenseType);
+        // form.append("VerticalID", formData?.VerticalID);
+        // form.append("TeamID", formData?.TeamID);
+        // form.append("WingID", formData?.WingID);
 
-      // axios
-      //   .post(apiUrls?.ViewExpenseList, form, { headers })
+        // axios
+        //   .post(apiUrls?.ViewExpenseList, form, { headers })
         .then((res) => {
           if (res?.data?.success === true) {
             setTableData(res?.data?.data);
@@ -335,45 +339,49 @@ const ViewExpense = () => {
     } else {
       setLoading(true);
       axiosInstances
-      .post(apiUrls.ViewExpenseList, {
-  "ExpenseEmployeeID":Number(formData?.Employee ?  Number(formData.Employee)  : 0),
-  "Month": Number(formData?.currentMonth),
-  "Year": Number(formData?.currentYear),
-  "Status": String(0),
-  "TripName": String(""),
-  "ExpenseType": String(formData?.ExpenseType),
-  "VerticalID": Number(formData?.VerticalID),
-  "TeamID": Number(formData?.TeamID),
-  "WingID": Number(formData?.WingID),
-  "CrmEmployeeID": Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),
-  "IsAccountant": Number(0),
-  "StatusType": Number(0)
-})
-      // let form = new FormData();
-      // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-      // form.append(
-      //   "CrmEmployeeID",
-      //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      // );
-      // form.append(
-      //   "LoginName",
-      //   useCryptoLocalStorage("user_Data", "get", "realname")
-      // );
-      // form.append(
-      //   "ExpenseEmployeeID",
-      //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      // );
-      // form.append("Month", formData?.currentMonth),
-      //   form.append("Year", formData?.currentYear),
-      //   form.append("Status", "0");
-      // form.append("TripName", "");
-      // form.append("ExpenseType", formData?.ExpenseType);
-      // form.append("VerticalID", formData?.VerticalID);
-      // form.append("TeamID", formData?.TeamID);
-      // form.append("WingID", formData?.WingID);
+        .post(apiUrls.ViewExpenseList, {
+          ExpenseEmployeeID: Number(
+            formData?.Employee ? Number(formData.Employee) : 0
+          ),
+          Month: Number(formData?.currentMonth),
+          Year: Number(formData?.currentYear),
+          Status: String(0),
+          TripName: String(""),
+          ExpenseType: String(formData?.ExpenseType),
+          VerticalID: Number(formData?.VerticalID),
+          TeamID: Number(formData?.TeamID),
+          WingID: Number(formData?.WingID),
+          CrmEmployeeID: Number(
+            useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+          ),
+          IsAccountant: Number(0),
+          StatusType: Number(0),
+        })
+        // let form = new FormData();
+        // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
+        // form.append(
+        //   "CrmEmployeeID",
+        //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+        // );
+        // form.append(
+        //   "LoginName",
+        //   useCryptoLocalStorage("user_Data", "get", "realname")
+        // );
+        // form.append(
+        //   "ExpenseEmployeeID",
+        //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+        // );
+        // form.append("Month", formData?.currentMonth),
+        //   form.append("Year", formData?.currentYear),
+        //   form.append("Status", "0");
+        // form.append("TripName", "");
+        // form.append("ExpenseType", formData?.ExpenseType);
+        // form.append("VerticalID", formData?.VerticalID);
+        // form.append("TeamID", formData?.TeamID);
+        // form.append("WingID", formData?.WingID);
 
-      // axios
-      //   .post(apiUrls?.ViewExpenseList, form, { headers })
+        // axios
+        //   .post(apiUrls?.ViewExpenseList, form, { headers })
         .then((res) => {
           if (res?.data?.status === true) {
             setTableData(res?.data?.data);
@@ -416,7 +424,7 @@ const ViewExpense = () => {
     getEmployee();
   }, []);
 
-   const isCurrentMonthSelected = () => {
+  const isCurrentMonthSelected = () => {
     const today = new Date();
     const currentMonth = today.getMonth() + 1; // months are 0-based
     const currentYear = today.getFullYear();
@@ -778,7 +786,7 @@ const ViewExpense = () => {
         <div className="card mt-3">
           <Heading
             title={<span style={{ fontWeight: "bold" }}>Search Details</span>}
-             secondTitle={
+            secondTitle={
               <div className="d-flex">
                 <div className="d-flex flex-wrap align-items-center">
                   <div
@@ -836,7 +844,7 @@ const ViewExpense = () => {
                         justifyContent: "center",
                         color: "white",
                         fontWeight: "bold",
-                        marginLeft:"5px"
+                        marginLeft: "5px",
                       }}
                     >
                       A
@@ -872,7 +880,7 @@ const ViewExpense = () => {
                         justifyContent: "center",
                         color: "white",
                         fontWeight: "bold",
-                          marginLeft:"5px"
+                        marginLeft: "5px",
                       }}
                     >
                       R
@@ -908,7 +916,7 @@ const ViewExpense = () => {
                         justifyContent: "center",
                         color: "white",
                         fontWeight: "bold",
-                          marginLeft:"5px"
+                        marginLeft: "5px",
                       }}
                     >
                       S
@@ -943,7 +951,7 @@ const ViewExpense = () => {
                         justifyContent: "center",
                         color: "white",
                         fontWeight: "bold",
-                          marginLeft:"5px"
+                        marginLeft: "5px",
                       }}
                     >
                       D
@@ -1483,7 +1491,9 @@ const ViewExpense = () => {
                       "user_Data",
                       "get",
                       "CrmEmployeeID"
-                    ) || ele?.is_approved === 1 ? null : (
+                    ) ||
+                  ele?.is_approved === 1 ||
+                  ele?.Status === "Active" ? null : (
                     <span
                       style={{
                         color: "white",

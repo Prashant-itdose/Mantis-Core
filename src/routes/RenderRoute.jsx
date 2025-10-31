@@ -180,6 +180,17 @@ const allRoutes = {
     {
       Guard: Authenticated,
       layout: Layout,
+      path: "/AmcCalculator",
+      component: lazy(
+        () => import("@app/pages/AmcCalculator/AmcCalculator.jsx")
+      ),
+      exact: true,
+    },
+
+    // C:\Users\ADMIN\Desktop\mantis-new\Mantis-Core\src\pages\AmcCalculator\AmcCalculator.jsx
+    {
+      Guard: Authenticated,
+      layout: Layout,
       path: "/ImplementationStepMaster",
       component: lazy(() => import("@app/pages/ImplementationStepMaster.jsx")),
       exact: true,
@@ -198,7 +209,7 @@ const allRoutes = {
       component: lazy(() => import("@app/pages/ViewIssues.jsx")),
       exact: true,
     },
-     {
+    {
       Guard: Authenticated,
       layout: Layout,
       path: "/AIDashboard",
@@ -232,7 +243,7 @@ const allRoutes = {
       component: lazy(() => import("@app/pages/AttendanceReport.jsx")),
       exact: true,
     },
-   
+
     {
       Guard: Authenticated,
       layout: Layout,
