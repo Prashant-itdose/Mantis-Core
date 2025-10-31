@@ -2178,7 +2178,6 @@ const ExpenseSubmission = () => {
           )}
         </div>
       </div>
-      
     </>
   );
 };

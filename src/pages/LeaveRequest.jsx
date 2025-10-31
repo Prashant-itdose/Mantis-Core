@@ -244,7 +244,8 @@ const LeaveRequest = ({ data }) => {
         isDisabled = false;
       } else {
         // Future months → disabled
-        isDisabled = true;
+        // isDisabled = true;
+        isDisabled = false; // future months enabled
       }
     } else {
       // --- Normal User Logic ---
@@ -256,7 +257,8 @@ const LeaveRequest = ({ data }) => {
       } else if (targetYear === currentYear && targetMonth === currentMonth) {
         isDisabled = false; // current month active
       } else {
-        isDisabled = true; // future months disabled
+        // isDisabled = true; // future months disabled
+        isDisabled = false; // future months enabled
       }
     }
 
