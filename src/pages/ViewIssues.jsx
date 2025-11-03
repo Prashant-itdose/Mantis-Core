@@ -33,6 +33,8 @@ import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import ViewIssueCloseModal from "./ViewIssueCloseModal";
 import ReactSelectIcon from "../components/formComponent/ReactSelectIcon";
 import { axiosInstances } from "../networkServices/axiosInstance";
+import ReportIssue from "./ReportIssue";
+import SubTicketMappping from "./SubTicketMappping";
 const ViewIssues = ({ data }) => {
   const { VITE_DATE_FORMAT } = import.meta.env;
   const [t] = useTranslation();
@@ -1275,6 +1277,8 @@ const ViewIssues = ({ data }) => {
         notesVisible: true,
         attachVisible: false,
         historyVisible: false,
+        subTicketVisible: false,
+        SubTicketMappingVisisble: false,
         showData: data[index],
       });
     } else if (value === "Attach") {
@@ -1284,6 +1288,8 @@ const ViewIssues = ({ data }) => {
         notesVisible: false,
         attachVisible: true,
         historyVisible: false,
+        subTicketVisible: false,
+        SubTicketMappingVisisble: false,
         showData: data[index],
       });
     } else if (value === "History") {
@@ -1293,6 +1299,30 @@ const ViewIssues = ({ data }) => {
         notesVisible: false,
         attachVisible: false,
         historyVisible: true,
+        subTicketVisible: false,
+        SubTicketMappingVisisble: false,
+        showData: data[index],
+      });
+    } else if (value === "SubTicket") {
+      data[index]["SubTicketResolve"] = true;
+      setTableData(data);
+      setVisible({
+        notesVisible: false,
+        attachVisible: false,
+        historyVisible: false,
+        subTicketVisible: true,
+        SubTicketMappingVisisble: false,
+        showData: data[index],
+      });
+    } else if (value === "SubTicketMapping") {
+      data[index]["SubTicketMappingResolve"] = true;
+      setTableData(data);
+      setVisible({
+        notesVisible: false,
+        attachVisible: false,
+        historyVisible: false,
+        subTicketVisible: false,
+        SubTicketMappingVisisble: true,
         showData: data[index],
       });
     } else {
@@ -1301,6 +1331,8 @@ const ViewIssues = ({ data }) => {
         notesVisible: false,
         attachVisible: false,
         historyVisible: false,
+        subTicketVisible: false,
+        SubTicketMappingVisisble: false,
         showData: {},
       });
     }
@@ -2392,6 +2424,8 @@ const ViewIssues = ({ data }) => {
               HistoryResolve: "",
               AttachResolve: "",
               NotesResolve: "",
+              SubTicketResolve: "",
+              SubTicketMappingResolve: "",
             }));
 
             setTableData(updatedData);
@@ -2560,6 +2594,8 @@ const ViewIssues = ({ data }) => {
     attachVisible: false,
     notesVisible: false,
     historyVisible: false,
+    subTicketVisible: false,
+    SubTicketMappingVisisble: false,
     showData: {},
   });
 
@@ -2575,7 +2611,18 @@ const ViewIssues = ({ data }) => {
       });
     }
   }, [location.state?.data]);
-
+  useEffect(() => {
+    if (
+      Array.isArray(location.state?.data) &&
+      location.state?.data.length > 0 &&
+      location.state?.data[0]?.Id > 0
+    ) {
+      setVisible({
+        ticketVisible: true,
+        showData: { ...location.state?.data[0], subTicketflag: true },
+      });
+    }
+  }, [location.state?.data]);
   // const handleIconClickdate = (value, index) => {
   //   let data = [...tableData];
   //   data[index]["isDate"] = !data[index]["isDate"];
@@ -2928,7 +2975,40 @@ const ViewIssues = ({ data }) => {
           />
         </Modal>
       )}
-
+      {visible?.subTicketVisible && (
+        <Modal
+          modalWidth={"1200px"}
+          visible={visible}
+          setVisible={setVisible}
+          Header={t("Sub Ticket")}
+          tableData={currentData}
+          setTableData={setTableData}
+        >
+          <ReportIssue
+            visibleTicket={visible}
+            setVisible={setVisible}
+            tableDataTicket={currentData}
+            setTableData={setTableData}
+          />
+        </Modal>
+      )}
+      {visible?.SubTicketMappingVisisble && (
+        <Modal
+          modalWidth={"700px"}
+          visible={visible}
+          setVisible={setVisible}
+          Header={t("Sub Ticket Mapping")}
+          tableData={currentData}
+          setTableData={setTableData}
+        >
+          <SubTicketMappping
+            visibleTicket={visible}
+            setVisible={setVisible}
+            tableDataTicket={currentData}
+            setTableData={setTableData}
+          />
+        </Modal>
+      )}
       {visible?.attachVisible && (
         <Modal
           modalWidth={"800px"}
@@ -4621,6 +4701,11 @@ const ViewIssues = ({ data }) => {
                             { label: "Notes", value: "Notes" },
                             { label: "File", value: "Attach" },
                             { label: "History", value: "History" },
+                            { label: "Sub Ticket", value: "SubTicket" },
+                            {
+                              label: "Sub Ticket Mapping",
+                              value: "SubTicketMapping",
+                            },
                           ]}
                           value={ele?.TableAttach}
                           handleChange={(name, value) => {
@@ -4664,14 +4749,55 @@ const ViewIssues = ({ data }) => {
                         {ele?.Status == "closed" ? (
                           ele?.TicketID
                         ) : (
-                          <Link
-                            onClick={() => {
-                              setVisible({ showVisible: true, showData: ele });
-                            }}
-                            title="Click to Show"
-                          >
-                            {ele?.TicketID}
-                          </Link>
+                          <>
+                            <Link
+                              // onClick={() => {
+                              //   setVisible({
+                              //     ticketVisible: true,
+                              //     showData: ele,
+                              //   });
+                              // }}
+                              // title="Click to Show SubTicket"
+                              className="mt-2"
+                            >
+                              <span
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  color: "#c75685",
+                                  marginBottom: "6px",
+                                }}
+                              >
+                                {ele?.ReferenceTicketID
+                                  ? ele?.ReferenceTicketID
+                                  : ""}
+                                {ele?.ReferenceTicketID > 0 ? (
+                                  <i className="fa fa-star ml-1"></i>
+                                ) : (
+                                  ""
+                                )}
+                              </span>
+                            </Link>
+
+                            <Link
+                              onClick={() => {
+                                setVisible({
+                                  showVisible: true,
+                                  showData: ele,
+                                });
+                              }}
+                              title="Click to Show"
+                            >
+                              <span
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                }}
+                              >
+                                {ele?.TicketID}{" "}
+                              </span>
+                            </Link>
+                          </>
                         )}
                       </div>
                     ),

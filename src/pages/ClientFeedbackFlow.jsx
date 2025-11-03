@@ -38,6 +38,7 @@ const ClientFeedbackFlow = () => {
   const [loading, setLoading] = useState(false);
   const [tableData, setTableData] = useState([]);
   const [tableReceiveFeedback, setTableReceivedFeedback] = useState([]);
+  const [tableGoodFeedback3Month, settableGoodFeedback3Month] = useState([]);
   const [tableImogi, setTableImogi] = useState([]);
   const [tablereceived, setTableReceived] = useState([]);
   const [tableNotreceived, setTableNotReceived] = useState([]);
@@ -188,6 +189,7 @@ const ClientFeedbackFlow = () => {
     overview: true,
     analysis: false,
     allfeedback: false,
+    GoodFeedback3Month: false,
   });
 
   const handleOverview = () => {
@@ -195,6 +197,7 @@ const ClientFeedbackFlow = () => {
       overview: !prev.overview,
       analysis: false,
       allfeedback: false,
+      GoodFeedback3Month: false,
     }));
     setTableImogi([]);
     setTableReceivedFeedback([]);
@@ -205,6 +208,7 @@ const ClientFeedbackFlow = () => {
       overview: false,
       analysis: !prev.analysis,
       allfeedback: false,
+      GoodFeedback3Month: false,
     }));
     setTableImogi([]);
     setTableReceivedFeedback([]);
@@ -215,8 +219,55 @@ const ClientFeedbackFlow = () => {
       overview: false,
       analysis: false,
       allfeedback: !prev.allfeedback,
+      GoodFeedback3Month: false,
     }));
     handleSearchTable();
+  };
+
+  const handleGoodFeedback3Month = () => {
+    setRowHandler((prev) => ({
+      overview: false,
+      analysis: false,
+      allfeedback: false,
+      GoodFeedback3Month: !prev.GoodFeedback3Month,
+    }));
+    handleGoodFeedback3MonthTable();
+  };
+  const handleGoodFeedback3MonthTable = () => {
+    setLoading(true);
+    axiosInstances
+      .post(apiUrls.ClientFeedbackList, {
+        DateType: String(formData?.SearchBy),
+        ProjectID: String(formData?.ProjectID),
+        StartDate: moment(formData?.FromDate).isValid()
+          ? moment(formData?.FromDate).format("YYYY-MM-DD")
+          : "",
+        EndDate: moment(formData?.EndDate).isValid()
+          ? moment(formData?.EndDate).format("YYYY-MM-DD")
+          : "",
+        SearchBy: String(
+          formData?.CustomerName ||
+            formData?.CustomerPhone ||
+            formData?.CustomerEmail
+        ),
+        Rating: String(formData?.RatingType),
+        Category: String(formData?.Category),
+        Type: String("GoodFeedback3Month"),
+      })
+      .then((res) => {
+        if (res?.data?.success === true) {
+          settableGoodFeedback3Month(res.data.data);
+          setLoading(false);
+        } else {
+          toast.error(res.data.message);
+          settableGoodFeedback3Month([]);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
   const mpnthTHEAD = [
     "S.No.",
@@ -282,6 +333,7 @@ const ClientFeedbackFlow = () => {
     setTableReceived([]);
     setTableImogi([]);
     setTableNotReceived([]);
+    settableGoodFeedback3Month([]);
   };
   const handleReceivedFeedback = () => {
     handleReceivedTable();
@@ -289,6 +341,7 @@ const ClientFeedbackFlow = () => {
     // setTableReceived([]);
     setTableImogi([]);
     setTableNotReceived([]);
+    settableGoodFeedback3Month([]);
   };
   const handleNotReceivedFeedback = () => {
     handleNotReceivedTable();
@@ -296,12 +349,14 @@ const ClientFeedbackFlow = () => {
     setTableReceived([]);
     setTableImogi([]);
     // setTableNotReceived([]);
+    settableGoodFeedback3Month([]);
   };
   const handleImogiClick = () => {
     handleSearchTableImogi();
     setTableReceivedFeedback([]);
     setTableReceived([]);
     setTableNotReceived([]);
+    settableGoodFeedback3Month([]);
     // setTableImogi([])
   };
 
@@ -578,7 +633,7 @@ const ClientFeedbackFlow = () => {
           modalWidth={"600px"}
           visible={visible}
           setVisible={setVisible}
-          Header="Response Message"
+          Header="AMC Percent"
         >
           <ClientFeddbackMsgModal visible={visible} setVisible={setVisible} />
         </Modal>
@@ -619,6 +674,18 @@ const ClientFeedbackFlow = () => {
               }}
             >
               All Feedback
+            </Button>
+            <Button
+              className="ml-2"
+              onClick={handleGoodFeedback3Month}
+              style={{
+                backgroundColor:
+                  rowHandler?.GoodFeedback3Month === true ? "#4cd07d" : "",
+                color: "white",
+                border: "#4cd07d",
+              }}
+            >
+              Good Feedback (3 Months)
             </Button>
           </div>
         </div>
@@ -1572,6 +1639,111 @@ const ClientFeedbackFlow = () => {
                         ></i>
                       }
                     </td> */}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+      {rowHandler?.GoodFeedback3Month && (
+        <>
+          <div className="card mt-1">
+            <div className="row m-2">
+              <div className="col">
+                <span className="keyFeedbackTopics mr-1">
+                  Good Feedback 3 Month
+                </span>
+              </div>
+              <span className="keyFeedbackTopics ml-auto">
+                Total Record : {tableGoodFeedback3Month?.length}
+              </span>
+            </div>
+          </div>
+
+          <div className="mt-0 p-0 bg-light rounded shadow-sm">
+            <table className="table table-hover table-bordered">
+              <thead className="custom-thead">
+                <tr>
+                  <th>Customer</th>
+                  <th>Rating</th>
+                  <th>Comment</th>
+                  <th>Sentiment</th>
+                  <th>FeedbackDate</th>
+                  <th>AMC Discount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tableGoodFeedback3Month.map((row, index) => (
+                  <tr key={index}>
+                    <td>
+                      {" "}
+                      <div>
+                        <FaUser className="ml-2" />{" "}
+                        <strong style={{ color: "#3D5DA9" }}>
+                          {row.OwnerName}
+                        </strong>{" "}
+                        {/* <span>🏅</span> */}
+                      </div>
+                      <div>
+                        <FaBuilding className="ml-2" /> {row.ProjectName}
+                      </div>
+                      <div>
+                        <FaPhone className="ml-2" /> {row.MobileNo}
+                      </div>
+                      <div>
+                        <FaHashtag className="ml-2" /> {row.Content}
+                      </div>
+                    </td>
+                    <td>{renderStars(row.FeedbackRate)}</td>
+                    <td>
+                      {/* {row.FeedbackComment} */}
+                      <Tooltip label={row?.FeedbackComment}>
+                        <span
+                          id={`Content-${index}`}
+                          targrt={`Content-${index}`}
+                          style={{ textAlign: "center" }}
+                        >
+                          {shortenName(row?.FeedbackComment)}
+                        </span>
+                      </Tooltip>
+                    </td>
+                    <td>
+                      {
+                        <span
+                          className="badge"
+                          style={{
+                            backgroundColor: classMap[row.FeedbackRate],
+                          }}
+                        >
+                          {getFeedbackDisplay(row.FeedbackRate)}
+                        </span>
+                      }
+                    </td>
+
+                    <td>
+                      {" "}
+                      {new Date(row.FeedbackDate).toISOString().split("T")[0]}
+                    </td>
+                    <td>
+                      {
+                        <i
+                          className="fa fa-percent"
+                          style={{
+                            fontSize: "20px !important",
+                            marginLeft: "10px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => {
+                            setVisible({
+                              showVisible: true,
+                              showData: row,
+                              row,
+                            });
+                          }}
+                        ></i>
+                      }
+                    </td>
                   </tr>
                 ))}
               </tbody>

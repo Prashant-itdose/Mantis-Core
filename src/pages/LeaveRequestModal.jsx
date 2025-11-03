@@ -15,7 +15,7 @@ const LeaveRequestModal = ({
   data,
   handleLeaveRequest_BindCalender,
 }) => {
-  console.log("visisble vidible", visible, data);
+
 
   const [loading, setLoading] = useState(false);
   const leaveData = visible?.CalenderDetails?.Table1?.find(
@@ -330,8 +330,8 @@ const LeaveRequestModal = ({
   });
   return (
     <>
-      <div className="card">
-        <div className="row g-4 m-2 d-flex">
+      <div className="">
+        <div className="row m-2 d-flex">
           <div className="col-sm-6">
             <ReactSelect
               name="LeaveType"

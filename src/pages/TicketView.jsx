@@ -232,6 +232,10 @@ const TaskContent = ({ task, columnId }) => {
         <strong>TicketID:</strong>
         {task.originalData?.TicketID}
       </div>
+         <div className="task-summary">
+        <strong>Total ManMinutes:</strong>
+        {/* {task.originalData?.TicketID}  */}
+      </div>
     </div>
   );
 };
