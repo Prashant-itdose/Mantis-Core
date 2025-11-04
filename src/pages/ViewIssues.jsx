@@ -133,6 +133,8 @@ const ViewIssues = ({ data }) => {
     ClientManHour: "",
     AssignedDate: "",
     ResolveDate: "",
+    DelayedTicketType: "",
+    DelayedTicket: "",
     CloseDate: "",
     UpadteDate: "",
     ManHourDropdown: "",
@@ -4531,7 +4533,57 @@ const ViewIssues = ({ data }) => {
                     </span>
                   </div>
                 </div>
-
+                <div className="search-col" style={{ marginLeft: "8px" }}>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <label className="switch" style={{ marginTop: "7px" }}>
+                      <input
+                        type="checkbox"
+                        name="DelayedTicket"
+                        checked={formData?.DelayedTicket ? 1 : 0}
+                        onChange={handleCheckBox}
+                      />
+                      <span className="slider"></span>
+                    </label>
+                    <span
+                      style={{
+                        marginLeft: "3px",
+                        marginRight: "5px",
+                        fontSize: "12px",
+                      }}
+                    >
+                      {t("DelayedTicket")}
+                    </span>
+                  </div>
+                </div>
+                {formData?.DelayedTicket == "1" ? (
+                  <ReactSelect
+                    respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+                    name="DelayedTicketType"
+                    placeholderName={t("Delayed Type")}
+                    dynamicOptions={[
+                      {
+                        label: "Select",
+                        value: "0",
+                      },
+                      {
+                        label: "1 Day Delay",
+                        value: "1",
+                      },
+                      {
+                        label: "1 Week Delay",
+                        value: "2",
+                      },
+                      {
+                        label: "1 Month Delay",
+                        value: "3",
+                      },
+                    ]}
+                    value={formData?.DelayedTicketType}
+                    handleChange={handleDeliveryChange}
+                  />
+                ) : (
+                  ""
+                )}
                 <button
                   className="btn btn-sm btn-success ml-3"
                   onClick={() => handleViewSearch(undefined, "0")}

@@ -174,7 +174,6 @@ const SearchSalesBooking = ({ data }) => {
   };
 
   const SearchAmountSubmissionFilter = () => {
-  
     axiosInstances
       .post(apiUrls?.GetFilterTableReprintData, {
         CrmEmpID: String(
@@ -196,7 +195,6 @@ const SearchSalesBooking = ({ data }) => {
       });
   };
   const SearchAmountSubmissionTableFilter = () => {
-  
     axiosInstances
       .post(apiUrls?.GetFilterTableReprintData, {
         CrmEmpID: String(
@@ -408,7 +406,7 @@ const SearchSalesBooking = ({ data }) => {
   }
   const handleSearch = (page, project, DateType = formData?.DateType) => {
     setLoading(true);
-    
+
     const payload = {
       ProjectID:
         project?.length > 0 && project !== "0"
@@ -426,7 +424,7 @@ const SearchSalesBooking = ({ data }) => {
       Status: formData?.Status ? String(formData?.Status) : "",
 
       DateType: String(formData?.DateType),
-      FromDate: formatDate(formData?.FromDate), 
+      FromDate: formatDate(formData?.FromDate),
       ToDate: formatDate(formData?.ToDate),
 
       SearchType: "OnScreen", // always string
@@ -467,7 +465,7 @@ const SearchSalesBooking = ({ data }) => {
   };
   const handleExcel = (page) => {
     setLoading(true);
-  
+
     const payload = {
       ProjectID: formData?.ProjectID ? Number(formData?.ProjectID) : 0,
       VerticalID: formData?.VerticalID ? Number(formData?.VerticalID) : 0,
@@ -678,8 +676,6 @@ const SearchSalesBooking = ({ data }) => {
     });
   };
 
-
-
   const TaxInvoiceStatus = ""; // Replace with actual value
   const TaxInvoiceNo = "";
   const renderButton = (TaxInvoiceStatus, TaxInvoiceNo) => {
@@ -814,6 +810,13 @@ const SearchSalesBooking = ({ data }) => {
                   />
                 </span>
               </div>
+            </div>
+          }
+          secondTitle={
+            <div style={{ fontWeight: "bold" }}>
+              <Link to="/SalesBooking" className="ml-3">
+                Back to SalesBooking
+              </Link>
             </div>
           }
         />
@@ -1037,11 +1040,7 @@ const SearchSalesBooking = ({ data }) => {
               onClick={() => ExportToPDF(tableData)}
             ></img>
           )} */}
-          <div>
-            <Link to="/SalesBooking" className="ml-3">
-              Back to SalesBooking
-            </Link>
-          </div>
+        
         </div>
       </div>
 
