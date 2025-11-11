@@ -5,10 +5,12 @@ import { toast } from "react-toastify";
 import Loading from "../components/loader/Loading";
 import { axiosInstances } from "../networkServices/axiosInstance";
 
-const SubTicketMappping = () => {
+const SubTicketMappping = ({ visible, handleViewSearch, setVisible }) => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    CurrentTicket: "",
+    CurrentTicket: visible?.showData?.TicketID
+      ? visible?.showData?.TicketID
+      : "",
     MappingTicket: "",
   });
 
@@ -20,7 +22,7 @@ const SubTicketMappping = () => {
     });
   };
 
-  const handleMapping = (value) => {
+  const handleMapping = () => {
     if (!formData.CurrentTicket) {
       toast.error("Please Enter Current Ticket.");
       return;
@@ -31,11 +33,16 @@ const SubTicketMappping = () => {
     }
     setLoading(true);
     axiosInstances
-      .post(apiUrls.ProjectSelect, {})
+      .post(apiUrls.MappingSubTicket, {
+        CurrentTicketID: formData.CurrentTicket,
+        MappingTicketID: formData.MappingTicket,
+      })
       .then((res) => {
         if (res.data.success === true) {
           toast.success(res.data.message);
           setLoading(false);
+          setVisible(false);
+          handleViewSearch();
         } else {
           toast.error(res.data.message);
           setLoading(false);
@@ -43,8 +50,21 @@ const SubTicketMappping = () => {
       })
       .catch((err) => console.log(err));
   };
+
   return (
     <>
+      <div className="card p-2">
+        <div style={{ fontWeight: "bold" }}>
+          <span>TicketID : {visible?.showData?.TicketID}</span>
+          <span className="ml-3">
+            Project Name : {visible?.showData?.ProjectName}
+          </span>
+          <span className="ml-3">AssignTo : {visible?.showData?.AssignTo}</span>
+          <span className="ml-3">
+            Reporter Name : {visible?.showData?.ReporterName}
+          </span>
+        </div>
+      </div>
       <div className="card">
         <div className="row p-2">
           <Input
@@ -70,7 +90,12 @@ const SubTicketMappping = () => {
           {loading ? (
             <Loading />
           ) : (
-            <button className="btn btn-sm btn-success ml-3">Mapping</button>
+            <button
+              className="btn btn-sm btn-success ml-3"
+              onClick={handleMapping}
+            >
+              Mapping
+            </button>
           )}
         </div>
       </div>

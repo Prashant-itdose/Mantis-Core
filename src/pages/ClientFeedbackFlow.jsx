@@ -55,6 +55,8 @@ const ClientFeedbackFlow = () => {
     ProjectID: [],
     ProjectIDA: "",
     CustomerSearchBy: "",
+    VerticalID:[],
+    POC3:[]
   });
 
   const [project, setProject] = useState([]);
@@ -236,7 +238,7 @@ const ClientFeedbackFlow = () => {
   const handleGoodFeedback3MonthTable = () => {
     setLoading(true);
     axiosInstances
-      .post(apiUrls.ClientFeedbackList, {
+      .post(apiUrls.ThreeMonthClientGoodFeedbackList, {
         DateType: String(formData?.SearchBy),
         ProjectID: String(formData?.ProjectID),
         StartDate: moment(formData?.FromDate).isValid()
@@ -374,6 +376,8 @@ const ClientFeedbackFlow = () => {
       .post(apiUrls.ClientFeedbackAggregates, {
         DateType: String(formData?.SearchBy),
         ProjectID: String(formData?.ProjectID),
+        VerticalID: String(formData?.VerticalID),
+        POC3: String(formData?.POC3),
         StartDate: moment(formData?.FromDate).isValid()
           ? moment(formData?.FromDate).format("YYYY-MM-DD")
           : "",

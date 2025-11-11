@@ -511,6 +511,8 @@ export const apiUrls = {
     "/CRMCOREAPI/api/ClientFeedbackDashboard/ClientFeedbackList",
 
   AIClientDetails: "/CRMCOREAPI/api/AI/AIClientDetails",
+  ThreeMonthClientGoodFeedbackList:
+    "/CRMCOREAPI/api/ClientFeedbackDashboard/ThreeMonthClientGoodFeedbackList",
   AIClientOpening: "/CRMCOREAPI/api/AI/AIClientOpening",
   AIClientDashboard: "/CRMCOREAPI/api/AI/AIClientDashboard",
   AIRateCardMaster: "/CRMCOREAPI/api/AI/AIRateCardMaster",
@@ -519,4 +521,8 @@ export const apiUrls = {
   AIClientQuestionMaster: "/CRMCOREAPI/api/AI/AIClientQuestionMaster",
   AIClientQuestionMasterInsert:
     "/CRMCOREAPI/api/AI/AIClientQuestionMasterInsert",
+  WeaklyMonthlyDeveloperFreeManMinute:
+    "/CRMCOREAPI/api/MantisSummary/WeaklyMonthlyDeveloperFreeManMinute",
+  ResolutionPointWeekwise:
+    "/CRMCOREAPI/api/MantisSummary/ResolutionPointWeekwise",
 };

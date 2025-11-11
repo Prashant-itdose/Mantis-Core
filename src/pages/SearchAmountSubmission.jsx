@@ -28,6 +28,7 @@ import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import SearchLotusFilter from "./SearchLotusFilter";
 import { axiosInstances } from "../networkServices/axiosInstance";
 const SearchAmountSubmission = ({ data }) => {
+
   const [t] = useTranslation();
   const AmountCancel = useCryptoLocalStorage(
     "user_Data",
@@ -36,10 +37,10 @@ const SearchAmountSubmission = ({ data }) => {
   );
   // console.log("amoiunt", AmountCancel);
 
-  useEffect(() => {
-    if (data) {
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (data) {
+  //   }
+  // }, []);
 
   const { VITE_DATE_FORMAT } = import.meta.env;
   const [vertical, setVertical] = useState([]);
@@ -75,6 +76,8 @@ const SearchAmountSubmission = ({ data }) => {
     BankName: "",
     RecoveryTeam: "",
   });
+
+  console.log("formdata,kamal",formData)
   const handleMultiSelectChange = (name, selectedOptions) => {
     const selectedValues = selectedOptions.map((option) => option.code);
     setFormData((prev) => ({

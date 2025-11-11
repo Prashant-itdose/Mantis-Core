@@ -133,7 +133,7 @@ const ViewIssues = ({ data }) => {
     ClientManHour: "",
     AssignedDate: "",
     ResolveDate: "",
-    DelayedTicketType: "",
+    DelayedTicketType: "0",
     DelayedTicket: "",
     CloseDate: "",
     UpadteDate: "",
@@ -209,6 +209,7 @@ const ViewIssues = ({ data }) => {
     ModuleName: [],
     PagesName: "",
     SearhType: "0",
+    NotToDo: "",
   });
 
   const viewissuesTHEAD = [
@@ -501,6 +502,10 @@ const ViewIssues = ({ data }) => {
       label: "RemoveDeliveryDate",
       value: "RemoveDeliveryDate",
     },
+    {
+      label: "NotToDo",
+      value: "NotToDo",
+    },
   ];
 
   const dynamicOptionStatus = [
@@ -514,6 +519,10 @@ const ViewIssues = ({ data }) => {
     {
       label: "ReOpen",
       value: "ReOpen",
+    },
+    {
+      label: "NotToDo",
+      value: "NotToDo",
     },
   ];
   const filteredOptions =
@@ -733,8 +742,6 @@ const ViewIssues = ({ data }) => {
     if (ticketIDs == "") {
       toast.error("Please Select atleast one Ticket.");
     } else {
-      // const filterdata = tableData?.filter((item) => item.IsActive == true);
-      // const ticketIDs = filterdata.map((item) => item.TicketID).join(",");
       axiosInstances
         .post(apiUrls.ApplyAction, {
           TicketIDs: String(ticketIDs),
@@ -753,18 +760,6 @@ const ViewIssues = ({ data }) => {
           ReOpenReasonID: "",
           ReOpenReason: "",
         })
-        // let form = new FormData();
-        // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        //   form.append(
-        //     "LoginName",
-        //     useCryptoLocalStorage("user_Data", "get", "realname")
-        //   ),
-        //   form.append("TicketIDs", ticketIDs),
-        //   form.append("ActionText", "Hold"),
-        //   form.append("ActionId", formData?.Hold),
-        //   // form.append("HoldReason", formData?.Hold),
-        //   axios
-        //     .post(apiUrls?.ApplyAction, form, { headers })
         .then((res) => {
           toast.success(res?.data?.message);
           setFormData({
@@ -778,7 +773,75 @@ const ViewIssues = ({ data }) => {
         });
     }
   };
+  const handleNotToDoTable = () => {
+    const filterdata = tableData?.filter((item) => item.IsActive == true);
+    const ticketIDs = filterdata.map((item) => item.TicketID).join(",");
+    if (ticketIDs == "") {
+      toast.error("Please Select atleast one Ticket.");
+    } else {
+      axiosInstances
+        .post(apiUrls.ApplyAction, {
+          TicketIDs: String(ticketIDs),
+          ActionText: "NotToDo",
+          ActionId: String(formData?.NotToDo),
+          RCA: "",
+          ReferenceCode: "",
+          ManHour: "",
+          Summary: "",
+          ModuleID: "",
+          ModuleName: "",
+          PagesID: "",
+          PagesName: "",
+          ManHoursClient: "",
+          DeliveryDateClient: "",
+          ReOpenReasonID: "",
+          ReOpenReason: "",
+        })
+        .then((res) => {
+          toast.success(res?.data?.message);
+          setFormData({
+            ...formData,
+            NotToDo: "",
+          });
+          handleViewSearch();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
 
+  const handleNotToDo = (item) => {
+    axiosInstances
+      .post(apiUrls.ApplyAction, {
+        TicketIDs: String(item?.TicketID),
+        ActionText: "NotToDo",
+        ActionId: String(formData?.NotToDo),
+        RCA: "",
+        ReferenceCode: "",
+        ManHour: "",
+        Summary: "",
+        ModuleID: "",
+        ModuleName: "",
+        PagesID: "",
+        PagesName: "",
+        ManHoursClient: "",
+        DeliveryDateClient: "",
+        ReOpenReasonID: "",
+        ReOpenReason: "",
+      })
+      .then((res) => {
+        toast.success(res?.data?.message);
+        setFormData({
+          ...formData,
+          NotToDo: "",
+        });
+        handleViewSearch();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const handleResolveElement = (item) => {
     if (formData?.RefereRCA == "") {
       toast.error("Please Enter Summary.");
@@ -822,7 +885,19 @@ const ViewIssues = ({ data }) => {
         });
     }
   };
+  const handleDelayCheckBox = (e) => {
+    const { name, checked, type } = e.target;
+    const checkBoxValue = checked ? 1 : 0;
 
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checkBoxValue : e.target.value,
+      DelayedTicketType:
+        name === "DelayedTicket" && checkBoxValue === 0
+          ? ""
+          : prev.DelayedTicketType,
+    }));
+  };
   // const handleManHour = (item) => {
   //   let form = new FormData();
   //   form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
@@ -2178,6 +2253,8 @@ const ViewIssues = ({ data }) => {
       POC1: String(formData?.POC1 || ""),
       POC2: String(formData?.POC2 || ""),
       POC3: String(formData?.POC3 || ""),
+      DelayedTicketType: String(formData?.DelayedTicketType || ""),
+      DelayedTicket: String(formData?.DelayedTicket || ""),
       ReporterId: String(Reporter || ""),
       AssignToID: String(AssignedTo || ""),
       PriorityId: String(Priority || ""),
@@ -3470,7 +3547,31 @@ const ViewIssues = ({ data }) => {
                     {t("ManuallyClosed")}
                   </span>
                 </div>
-
+                <div
+                  className="d-flex "
+                  style={{
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      backgroundColor: "#f70539",
+                      cursor: "pointer",
+                      height: "10px",
+                      width: "12px",
+                      borderRadius: "50%",
+                      marginLeft: "4px",
+                    }}
+                    onClick={() => handleViewSearch("91", "0")}
+                  ></div>
+                  <span
+                    className="legend-label"
+                    style={{ width: "100%", textAlign: "left" }}
+                  >
+                    {t("NotToDo")}
+                  </span>
+                </div>
                 <button
                   className={`fa ${rowHandler.show ? "fa-arrow-up" : "fa-arrow-down"}`}
                   onClick={() => {
@@ -4540,7 +4641,7 @@ const ViewIssues = ({ data }) => {
                         type="checkbox"
                         name="DelayedTicket"
                         checked={formData?.DelayedTicket ? 1 : 0}
-                        onChange={handleCheckBox}
+                        onChange={handleDelayCheckBox}
                       />
                       <span className="slider"></span>
                     </label>
@@ -5460,6 +5561,31 @@ const ViewIssues = ({ data }) => {
                             }}
                           >
                             <div style={{}} className="">
+                              {ele?.TableStatus == "NotToDo" && (
+                                <>
+                                  <Input
+                                    type="text"
+                                    className="form-control mt-1"
+                                    id="NotToDo"
+                                    name="NotToDo"
+                                    lable="Enter NotToDo Reason"
+                                    value={ele?.NotToDo}
+                                    respclass="width110px"
+                                    style={{ width: "50%" }}
+                                    onChange={handleChange}
+                                  />
+                                  <button
+                                    className="btn btn-sm btn-success ml-1 mb-1 mt-1"
+                                    style={{
+                                      marginRight: "1px",
+                                      marginLeft: "1px",
+                                    }}
+                                    onClick={() => handleNotToDo(ele)}
+                                  >
+                                    Save
+                                  </button>
+                                </>
+                              )}
                               {ele?.TableStatus == "Hold" && (
                                 <>
                                   <Input
@@ -5777,6 +5903,35 @@ const ViewIssues = ({ data }) => {
                               handleDeliveryChangeValueStatus(name, value)
                             }
                           />
+                        </>
+                      )}
+                      {formData?.TableStatus?.value == "NotToDo" && (
+                        <>
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-evenly",
+                            }}
+                          >
+                            <Input
+                              type="text"
+                              id="NotToDo"
+                              name="NotToDo"
+                              className="form-control ml-2"
+                              lable="Enter NotToDo Reason"
+                              value={formData?.NotToDo}
+                              respclass="width100px"
+                              style={{ width: "100%", marginLeft: "2px" }}
+                              onChange={handleChange}
+                            />
+
+                            <button
+                              className="btn btn-sm btn-info ml-4"
+                              onClick={handleNotToDoTable}
+                            >
+                              Save
+                            </button>
+                          </div>
                         </>
                       )}
                       {formData?.TableStatus?.value == "Resolve" && (
