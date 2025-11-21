@@ -774,7 +774,13 @@ const allRoutes = {
       component: lazy(() => import("@app/pages/UploadDocument.jsx")),
       exact: true,
     },
-
+   {
+      Guard: Authenticated,
+      layout: Layout,
+      path: "/AdvanceRequestSettlement",
+      component: lazy(() => import("@app/pages/CRM/AdvanceRequestSettlement.jsx")),
+      exact: true,
+    },
     {
       Guard: Guest,
       path: "/login",

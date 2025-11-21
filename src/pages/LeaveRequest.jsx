@@ -238,7 +238,7 @@ const LeaveRequest = ({ data }) => {
       ) {
         // Previous month logic
         const daysPassed = today.getDate();
-        isDisabled = daysPassed > 3; // enable only first 2 days of current month
+        isDisabled = daysPassed > 2; // enable only first 2 days of current month
       } else if (targetYear === currentYear && targetMonth === currentMonth) {
         // Current month → always active
         isDisabled = false;

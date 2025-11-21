@@ -28,15 +28,7 @@ const LeadDeadModal = (showData) => {
       return;
     }
     setLoading(true);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("LeadID", showData?.visible?.showData?.ID),
-    //   form.append("DeadReason", formData?.Reason),
-    //   axios.post(apiUrls?.DeadSalesLead, form, { headers });
+  
     axiosInstances
       .post(apiUrls?.DeadSalesLead, {
         LeadID: Number(showData?.visible?.showData?.ID),

@@ -35,11 +35,6 @@ const ManagerTotalPendingChart = () => {
   );
 
   const handleFirstDashboardCount = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-
-    // axios
-    //   .post(apiUrls?.ManagerDashboard_Total_Pending, form, { headers })
     axiosInstances
       .post(apiUrls?.ManagerDashboard_Total_Pending, {
         DeveloperID: String(useCryptoLocalStorage("user_Data", "get", "ID")),

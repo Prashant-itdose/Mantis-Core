@@ -606,39 +606,18 @@ const ClientViewIssueModal = ({
     getPage();
     handleSearchNote();
     handleSearchHistory();
-    // if (visible?.showData?.flag) {
-    //   handleIssueSearch(visible?.showData?.Id);
-    // } else {
-    //   handleIssueSearch(visible?.showData?.TicketID);
-    // }
+  
     handleIssueSearch(visible?.showData?.TicketID);
   }, []);
   return (
     <>
-      {/* {updatevisible?.updateShow && (
-        <Modal
-          visible={updatevisible}
-          setVisible={setUpdateVisible}
-          Header="Updating Issue Information"
-        >
-          <UpdateViewIssueTableModal
-            visible={updatevisible}
-            setVisible={setUpdateVisible}
-          />
-        </Modal>
-      )} */}
+     
       <div className="card">
         <Heading
           title={"Ticket Details"}
           secondTitle={
             <div className="col-sm-12 col-xs-12">
-              {/* <button
-              style={{background:"white" ,color:"black" ,border:"none"}}
-                className="previous  btn-success mx-2"
-                disabled={tableData[0]?.currentIndex === 0 ? true : false}
-              >
-                ‹
-              </button> */}
+            
               {visible.showData.flag == true ? (
                 <></>
               ) : (

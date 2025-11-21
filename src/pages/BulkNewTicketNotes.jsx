@@ -45,40 +45,8 @@ const BulkNewTicketNotes = () => {
     }
   };
 
-  const searchHandleChange = (e) => {
-    const { name, value } = e?.target;
-    setFormData({ ...formData, [name]: value });
-  };
+ 
 
-  // const handleAddNote = () => {
-  //   let form = new FormData();
-  //   form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-  //     form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID")),
-  //     axios
-  //       .post(apiUrls?.Category_Select, form, { headers })
-  //       .then((res) => {
-  //         if (res?.data?.status === true) {
-  //           toast.success(res?.data?.message);
-  //         } else {
-  //           toast.error(res?.data?.message);
-  //         }
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  // };
-  const transformData = (data) => {
-    const headers = data[0]; // First array is the header
-    const rows = data.slice(1); // Remaining arrays are the data rows
-
-    return rows.map((row) => {
-      let obj = {};
-      row.forEach((value, index) => {
-        obj[headers[index]] = value;
-      });
-      return obj;
-    });
-  };
 
   const fetchemptyexcel = () => {
     // Define the columns for your Excel sheet

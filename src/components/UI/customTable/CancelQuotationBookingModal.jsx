@@ -41,20 +41,7 @@ const CancelQuotationBookingModal = ({ visible, setVisible, handleSearch }) => {
       toast.error("Please Select CancelReason.");
     } else {
       setLoading(true);
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("QuotationID", visible?.showData?.EncryptID),
-      //   form.append("CancelReason", getlabel(formData?.CancelReason, reason)),
-      //   form.append("CancelReasonID", formData?.CancelReason),
-      //   form.append("OtherCancelReason", formData?.OtherReason),
-      //   axios
-      //     .post(apiUrls?.Quotation_IsCancel, form, {
-      //       headers,
-      //     })
+   
       axiosInstances
         .post(apiUrls.Quotation_IsCancel, {
           QuotationID: Number(visible?.showData?.EncryptID),
@@ -81,12 +68,7 @@ const CancelQuotationBookingModal = ({ visible, setVisible, handleSearch }) => {
   };
 
   const handleSearchReason = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Quotation_CancelReason_Select, form, {
-    //       headers,
-    //     })
+   
     axiosInstances
       .post(apiUrls.Quotation_CancelReason_Select, {})
       .then((res) => {

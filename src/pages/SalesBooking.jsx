@@ -64,6 +64,7 @@ const SalesBooking = ({ data }) => {
     ShippingGST: "",
     Sales: "",
     ShippingPanCard: "",
+    LiveDate: "",
   });
   const getState = (value) => {
     // let form = new FormData();
@@ -116,7 +117,7 @@ const SalesBooking = ({ data }) => {
   };
   const getCompany = (proj) => {
     console.log("check project", proj);
- 
+
     axiosInstances
       .post(apiUrls?.BillingCompany_Select, {
         ProjectID: Number(proj || formData?.Project),
@@ -151,11 +152,9 @@ const SalesBooking = ({ data }) => {
   };
 
   const getCompanyBill = (proj) => {
-  
     axiosInstances
       .post(apiUrls?.BillingCompanyDetail_Select_ID, { BillingCompanyID: proj })
       .then((res) => {
-      
         setFormData((val) => ({
           ...val,
           BillingAddress: res?.data?.data[0]?.BillingAddress,
@@ -173,12 +172,10 @@ const SalesBooking = ({ data }) => {
       .post(apiUrls.BillingCompanyDetail_Select_ID, {
         BillingCompanyID: Number(proj),
       })
-      
+
       .then((res) => {
-       
         setFormData((val) => ({
           ...val,
-     
 
           ShippingAddress: res?.data?.data[0]?.BillingAddress,
           ShippingState: res?.data?.data[0]?.StateID,
@@ -290,7 +287,6 @@ const SalesBooking = ({ data }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { state } = location;
-  
 
   const [value, setValue] = useState("");
   const [loading, setLoading] = useState(false);
@@ -522,7 +518,7 @@ const SalesBooking = ({ data }) => {
   useEffect(() => {
     getProject();
     // SalesBooking_Load_SalesID();
-     getCompany(formData?.Project);
+    getCompany(formData?.Project);
   }, []);
 
   const handleGetItemSearch = (value) => {
@@ -555,12 +551,20 @@ const SalesBooking = ({ data }) => {
     // })
     let payload = [];
     tableData?.map((val, index) => {
-      console.log("valllll", val);
+      // console.log("valllll", val);
       payload.push({
         Installment_No: String(index),
         Remark: String(val?.Remark),
         IsPaid: Number(val?.isPaid ? "1" : "0"),
-        ExpectedDate: val?.ExpectedDate,
+        ExpectedDate: val?.ExpectedDate
+          ? moment(val?.ExpectedDate).format("YYYY-MM-DD")
+          : "1970-01-01",
+        LiveDate: val?.LiveDate
+          ? moment(val?.LiveDate).format("YYYY-MM-DD")
+          : "1970-01-01",
+        EndDate: val?.EndDate
+          ? moment(val?.EndDate).format("YYYY-MM-DD")
+          : "1970-01-01",
         ItemID: Number(val?.ItemID),
         // ItemID: Number(val?.service?.value),
         ItemName: String(val?.ItemName),
@@ -600,8 +604,8 @@ const SalesBooking = ({ data }) => {
 
     setLoading(true);
     setIsSubmitting(true);
-     const OnGoingPayload = {
-      Payment_Installment_ID:String(formData?.Payment_Installment_ID),
+    const OnGoingPayload = {
+      Payment_Installment_ID: String(formData?.Payment_Installment_ID),
       ProjectID: formData?.Project ? Number(formData.Project) : 0,
       ProjectName: String(getlabel(formData?.Project, project) || ""),
       BillingCompanyID: String(
@@ -657,7 +661,7 @@ const SalesBooking = ({ data }) => {
 
     axiosInstances
       .post(apiUrls.Payment_Installment_Update, OnGoingPayload)
-      
+
       .then((res) => {
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);
@@ -690,7 +694,15 @@ const SalesBooking = ({ data }) => {
         Installment_No: String(index),
         Remark: String(val?.Remark),
         IsPaid: Number(val?.isPaid ? "1" : "0"),
-        ExpectedDate: moment(val?.ExpectedDate).format("YYYY-MM-DD"),
+        ExpectedDate: val?.ExpectedDate
+          ? moment(val?.ExpectedDate).format("YYYY-MM-DD")
+          : "1970-01-01",
+        LiveDate: val?.LiveDate
+          ? moment(val?.LiveDate).format("YYYY-MM-DD")
+          : "1970-01-01",
+        EndDate: val?.EndDate
+          ? moment(val?.EndDate).format("YYYY-MM-DD")
+          : "1970-01-01",
         ItemID: Number(val?.service?.value),
         ItemName: String(val?.service?.label),
         SAC: String(""),
@@ -821,6 +833,7 @@ const SalesBooking = ({ data }) => {
           //   ShippingState: "",
           //   ShippingGST: "",
           //   Sales: "",
+          //LiveDate:"",
           //   ShippingPanCard: "",
           // });
         } else {
@@ -844,6 +857,11 @@ const SalesBooking = ({ data }) => {
       updatedTableData[index][name] = value;
       setTableData(updatedTableData);
     } else if (name == "EndDate") {
+      const updatedTableData = [...tableData];
+      updatedTableData[index][name] = value;
+      setTableData(updatedTableData);
+      setTableData(updatedTableData);
+    } else if (name == "LiveDate") {
       const updatedTableData = [...tableData];
       updatedTableData[index][name] = value;
       setTableData(updatedTableData);
@@ -959,13 +977,25 @@ const SalesBooking = ({ data }) => {
           Project: res?.data?.data?.data[0]?.ProjectID,
           Items: res?.data?.data?.dataDetail[0]?.ItemID,
           ItemName: res?.data?.data?.dataDetail[0]?.ItemName,
-          ExpectedDate: res?.data?.data?.dataDetail[0]?.ExpectedDate,
-          EndDate: res?.data?.data?.dataDetail[0]?.EndDate,
+          // ExpectedDate: res?.data?.data?.dataDetail[0]?.ExpectedDate,
+          // EndDate: res?.data?.data?.dataDetail[0]?.EndDate,
           TaxAmount: res?.data?.data?.dataDetail[0]?.TaxAmount,
           DiscountAmount: res?.data?.data?.dataDetail[0]?.DiscountAmount,
           Payment_Installment_ID: res?.data?.data?.data[0]?.ID,
           PoNumber: res?.data?.data?.data[0]?.PoNo,
           SalesDate: new Date(res?.data?.data?.data[0]?.dtSales),
+          ExpectedDate:
+            res?.data?.dataDetail[0]?.ExpectedDate == "01-Jan-1970"
+              ? ""
+              : res?.data?.dataDetail[0]?.ExpectedDate,
+          LiveDate:
+            res?.data?.dataDetail[0]?.LiveDate == "01-Jan-1970"
+              ? ""
+              : res?.data?.dataDetail[0]?.LiveDate,
+          EndDate:
+            res?.data?.dataDetail[0]?.EndDate == "01-Jan-1970"
+              ? ""
+              : res?.data?.dataDetail[0]?.EndDate,
           // ExpiryDate: res?.data?.data?.data[0]?.dtExpiry,
           ExpiryDate: new Date(res?.data?.data?.data[0]?.dtExpiry),
           BillingCompany: res?.data?.data?.data[0]?.BillingCompanyID,
@@ -980,7 +1010,11 @@ const SalesBooking = ({ data }) => {
         const updatedData = res?.data?.data?.dataDetail.map((ele) => ({
           ...ele,
           label: ele?.service?.label || "",
-          ExpectedDate: ele?.ExpectedDate,
+          // ExpectedDate: ele?.ExpectedDate,
+          ExpectedDate:
+            ele?.ExpectedDate == "01-Jan-1970" ? "" : ele?.ExpectedDate,
+          LiveDate: ele?.LiveDate == "01-Jan-1970" ? "" : ele?.LiveDate,
+          EndDate: ele?.EndDate == "01-Jan-1970" ? "" : ele?.EndDate,
           TaxPercent: ele?.TaxPrecentage,
           Discount: ele?.DiscountAmount,
           DiscountPercent: ele?.DiscountPercent,
@@ -1051,6 +1085,13 @@ const SalesBooking = ({ data }) => {
         <Heading
           title={<span style={{ fontWeight: "bold" }}>Sales Register</span>}
           isBreadcrumb={data ? false : true}
+          secondTitle={
+            <div style={{ fontWeight: "bold" }}>
+              <Link to="/SearchSalesBooking" className="ml-3">
+                Back to List
+              </Link>
+            </div>
+          }
         />
         <div className="row g-4 m-2">
           {/* {console.log("formDATAA?.Project", formData?.Project)}
@@ -1122,11 +1163,6 @@ const SalesBooking = ({ data }) => {
             requiredClassName={"required-fields"}
           />
 
-          <div style={{ fontWeight: "bold" }}>
-            <Link to="/SearchSalesBooking" className="ml-3">
-              Back to List
-            </Link>
-          </div>
           {state?.edit ? (
             <div className="col-xl-8 col-md-4 col-sm-6 col-12">
               <span style={{ fontWeight: "bold" }}>CreatedBy</span>:&nbsp;
@@ -1571,12 +1607,70 @@ const SalesBooking = ({ data }) => {
                       selected={
                         ele?.ExpectedDate ? new Date(ele?.ExpectedDate) : null
                       }
-                      respclass="width100px"
+                      respclass="width80px"
                       handleChange={(e) => searchHandleChange(e, index)}
                     />
                   </div>
                 </>
               ),
+              "Live Date": (formData.Items.label ==
+                "Innopath  India New Centre License" ||
+                formData.Items.label ==
+                  "Innopath India Enterprises New Centre License" ||
+                formData.Items.label ==
+                  "Hospedia India New Centre License") && (
+                <>
+                  <div className="mt-2">
+                    <DatePicker
+                      className="custom-calendar"
+                      id="LiveDate"
+                      name="LiveDate"
+                      lable="Live Date"
+                      placeholder={VITE_DATE_FORMAT}
+                      // value={new Date(ele?.LiveDate)}
+                      selected={ele?.LiveDate ? new Date(ele?.LiveDate) : null}
+                      respclass="width80px"
+                      handleChange={(e) => searchHandleChange(e, index)}
+                    />
+                  </div>
+                </>
+              ),
+              "Live Date":
+                state?.edit === true ? (
+                  <div className="mt-2">
+                    <DatePicker
+                      className="custom-calendar"
+                      id="LiveDate"
+                      name="LiveDate"
+                      lable="Live Date"
+                      placeholder={VITE_DATE_FORMAT}
+                      value={new Date(ele?.LiveDate)}
+                      // selected={ele?.LiveDate ? new Date(ele?.LiveDate) : null}
+                      respclass="width80px"
+                      handleChange={(e) => searchHandleChange(e, index)}
+                    />
+                  </div>
+                ) : (
+                  (formData.Items.value === 329 ||
+                    formData.Items.value === 344 ||
+                    formData.Items.value === 351) && (
+                    <>
+                      <div className="mt-2">
+                        <DatePicker
+                          className="custom-calendar"
+                          id="LiveDate"
+                          name="LiveDate"
+                          lable="Live Date"
+                          placeholder={VITE_DATE_FORMAT}
+                          value={new Date(ele?.LiveDate)}
+                          // selected={ele?.LiveDate ? new Date(ele?.LiveDate) : null}
+                          respclass="width80px"
+                          handleChange={(e) => searchHandleChange(e, index)}
+                        />
+                      </div>
+                    </>
+                  )
+                ),
               "End Date": (ele?.service?.label === "AMC" ||
                 ele?.service?.label === "Saas") && (
                 <>
@@ -1588,10 +1682,8 @@ const SalesBooking = ({ data }) => {
                       lable="End Date"
                       placeholder={VITE_DATE_FORMAT}
                       // value={new Date(ele?.EndDate)}
-                      selected={
-                        ele?.ExpectedDate ? new Date(ele?.ExpectedDate) : null
-                      }
-                      respclass="width100px"
+                      selected={ele?.EndDate ? new Date(ele?.EndDate) : null}
+                      respclass="width80px"
                       handleChange={(e) => searchHandleChange(e, index)}
                     />
                   </div>

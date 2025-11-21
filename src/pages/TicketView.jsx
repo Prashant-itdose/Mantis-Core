@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import "./KanBan.css";
 import Heading from "../components/UI/Heading";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import { headers } from "../utils/apitools";
@@ -18,11 +17,12 @@ import { axiosInstances } from "../networkServices/axiosInstance";
 // Function to transform API response to kanban data structure
 const transformApiDataToKanban = (apiData) => {
   const tasks = {};
-  const columnOrder = ["todo", "thisweek", "inprogress", "done"];
+  const columnOrder = ["todo", "planned-delayed", "inprogress", "done"];
 
   // Initialize empty arrays if they don't exist
   const allTickets = apiData.allTickets || [];
   const currentWeekTickets = apiData.currentWeekTickets || [];
+  const currentWeekTicketsDelayed = apiData.currentWeekTicketsDelayed || [];
   const inProgressTickets = apiData.InProgress || [];
   const doneTickets = apiData.IsResolved || [];
 
@@ -48,6 +48,18 @@ const transformApiDataToKanban = (apiData) => {
         id: taskId,
         content: ticket.summary,
         color: "pink",
+        avatar: getRandomAvatar(),
+        originalData: ticket,
+      };
+    }
+  });
+  currentWeekTicketsDelayed.forEach((ticket) => {
+    const taskId = `task-${ticket.TicketID}`;
+    if (!tasks[taskId]) {
+      tasks[taskId] = {
+        id: taskId,
+        content: ticket.summary,
+        color: "purple",
         avatar: getRandomAvatar(),
         originalData: ticket,
       };
@@ -87,14 +99,19 @@ const transformApiDataToKanban = (apiData) => {
     todo: {
       id: "todo",
       title: "Assigned",
-      // title: "To-do",
       taskIds: allTickets.map((ticket) => `task-${ticket.TicketID}`),
     },
-    thisweek: {
-      id: "thisweek",
-      // title: "This week",
+    planned: {
+      id: "planned",
       title: "Planned",
       taskIds: currentWeekTickets.map((ticket) => `task-${ticket.TicketID}`),
+    },
+    delayed: {
+      id: "delayed",
+      title: "Delayed",
+      taskIds: currentWeekTicketsDelayed.map(
+        (ticket) => `task-${ticket.TicketID}`
+      ),
     },
     inprogress: {
       id: "inprogress",
@@ -118,7 +135,6 @@ const transformApiDataToKanban = (apiData) => {
 // Helper functions
 const getRandomAvatar = () => {
   const avatars = ["👨‍💻"];
-  // const avatars = ["👨‍💼", "👩‍💻", "👨‍🎨", "👩‍🔬", "👩‍💼", "👨‍💻", "👨‍🔧"];
   return avatars[Math.floor(Math.random() * avatars.length)];
 };
 
@@ -127,8 +143,8 @@ const formatDate = (dateString) => {
   try {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // months are 0-indexed
-    const year = String(date.getFullYear()).slice(-2); // last 2 digits
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = String(date.getFullYear()).slice(-2);
     return `${day}/${month}/${year}`;
   } catch (error) {
     return "";
@@ -172,7 +188,6 @@ const AvatarTooltip = ({ task, isVisible, columnId }) => {
             </div>
           </>
         )}
-        {/* Additional info for done column */}
         {columnId === "done" && (
           <>
             <div className="tooltip-row">
@@ -199,7 +214,6 @@ const AvatarTooltip = ({ task, isVisible, columnId }) => {
 const TaskAvatar = ({ task, columnId }) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
-  // Enable tooltip for inprogress and done columns
   const showTooltipForColumn = columnId === "inprogress" || columnId === "done";
 
   return (
@@ -225,12 +239,243 @@ const TaskContent = ({ task, columnId }) => {
   return (
     <div className="task-content">
       <div className="task-summary">
+        <strong>Developer Name:</strong>
+        {task.originalData.DeveloperName}
+      </div>
+      <div className="task-summary">
         <strong>Summary:</strong>
         {task.content}
       </div>
       <div className="task-summary">
         <strong>TicketID:</strong>
         {task.originalData?.TicketID}
+      </div>
+      <div className="task-summary">
+        <strong>Delivery Date:</strong>
+        {task.originalData?.DeliveryDate}
+      </div>
+      <div className="task-summary">
+        <strong>ManMinutes:</strong>
+        {task.originalData?.MManHours}
+      </div>
+    </div>
+  );
+};
+
+// PlannedDelayedColumn Component - Combined vertical layout
+// PlannedDelayedColumn Component - Combined vertical layout
+const PlannedDelayedColumn = ({
+  plannedColumn,
+  delayedColumn,
+  data,
+  tableData,
+  isDragAllowed,
+  isDraggingDisabled,
+  isDropDisabled,
+  onEyeIconClick,
+}) => {
+  const groupTasksBySection = (taskIds, columnId) => {
+    if (columnId !== "done") {
+      return { "": taskIds };
+    }
+
+    const sections = {};
+    taskIds.forEach((taskId) => {
+      const task = data.tasks[taskId];
+      const section = task.section || "";
+      if (!sections[section]) {
+        sections[section] = [];
+      }
+      sections[section].push(taskId);
+    });
+
+    return sections;
+  };
+
+  const plannedSections = groupTasksBySection(
+    plannedColumn.taskIds,
+    plannedColumn.id
+  );
+  const delayedSections = groupTasksBySection(
+    delayedColumn.taskIds,
+    delayedColumn.id
+  );
+
+  // Safe access to total man minutes
+  const totalManMinutes =
+    tableData?.currentWeekTickets?.[0]?.TotalManHours || "0";
+
+  return (
+    <div className="column planned-delayed-column">
+      <div className="planned-delayed-container">
+        {/* Planned Section */}
+        <div className="planned-section">
+          <div className="column-header">
+            <h3 className="column-title">
+              {plannedColumn.title}
+              <span className="task-count">
+                {" "}
+                ({plannedColumn.taskIds.length})
+              </span>
+            </h3>
+            <h3 className="">
+              <span style={{ fontWeight: "600", color: "black" }}>
+                Total Planned ManMinutes :
+              </span>
+              &nbsp;
+              <span style={{ fontWeight: "bolder", color: "grey" }}>
+                {totalManMinutes}
+              </span>
+            </h3>
+          </div>
+
+          <Droppable
+            droppableId={plannedColumn.id}
+            isDropDisabled={isDropDisabled(plannedColumn.id)}
+          >
+            {(provided, snapshot) => (
+              <div
+                className={`task-list ${snapshot.isDraggingOver ? "dragging-over" : ""}`}
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {Object.entries(plannedSections).map(
+                  ([sectionName, taskIds]) => (
+                    <div key={sectionName} className="section">
+                      {sectionName && (
+                        <div className="section-header">{sectionName}</div>
+                      )}
+                      {taskIds.map((taskId, index) => {
+                        const task = data.tasks[taskId];
+                        if (!task) return null;
+
+                        return (
+                          <Draggable
+                            key={task.id}
+                            draggableId={task.id}
+                            index={plannedColumn.taskIds.indexOf(taskId)}
+                            isDragDisabled={isDraggingDisabled(
+                              plannedColumn.id
+                            )}
+                          >
+                            {(provided, snapshot) => (
+                              <div
+                                className={`task-card ${task.color} ${snapshot.isDragging ? "dragging" : ""} ${isDraggingDisabled(plannedColumn.id) ? "drag-disabled" : ""}`}
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                              >
+                                <TaskContent
+                                  task={task}
+                                  columnId={plannedColumn.id}
+                                />
+                                <TaskAvatar
+                                  task={task}
+                                  columnId={plannedColumn.id}
+                                />
+                                <i
+                                  className="fa fa-eye ml-2 mt-1"
+                                  onClick={() => onEyeIconClick(task)}
+                                  style={{
+                                    marginLeft: "10px",
+                                    color: "black",
+                                    cursor: "pointer",
+                                  }}
+                                  title="Click to Ticket Details."
+                                ></i>
+                              </div>
+                            )}
+                          </Draggable>
+                        );
+                      })}
+                    </div>
+                  )
+                )}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </div>
+
+        {/* Delayed Section */}
+        <div className="delayed-section">
+          <div className="column-header">
+            <h3 className="column-title">
+              {delayedColumn.title}
+              <span className="task-count">
+                {" "}
+                ({delayedColumn.taskIds.length})
+              </span>
+            </h3>
+          </div>
+
+          <Droppable
+            droppableId={delayedColumn.id}
+            isDropDisabled={isDropDisabled(delayedColumn.id)}
+          >
+            {(provided, snapshot) => (
+              <div
+                className={`task-list ${snapshot.isDraggingOver ? "dragging-over" : ""}`}
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {Object.entries(delayedSections).map(
+                  ([sectionName, taskIds]) => (
+                    <div key={sectionName} className="section">
+                      {sectionName && (
+                        <div className="section-header">{sectionName}</div>
+                      )}
+                      {taskIds.map((taskId, index) => {
+                        const task = data.tasks[taskId];
+                        if (!task) return null;
+
+                        return (
+                          <Draggable
+                            key={task.id}
+                            draggableId={task.id}
+                            index={delayedColumn.taskIds.indexOf(taskId)}
+                            isDragDisabled={isDraggingDisabled(
+                              delayedColumn.id
+                            )}
+                          >
+                            {(provided, snapshot) => (
+                              <div
+                                className={`task-card ${task.color} ${snapshot.isDragging ? "dragging" : ""} ${isDraggingDisabled(delayedColumn.id) ? "drag-disabled" : ""}`}
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                              >
+                                <TaskContent
+                                  task={task}
+                                  columnId={delayedColumn.id}
+                                />
+                                <TaskAvatar
+                                  task={task}
+                                  columnId={delayedColumn.id}
+                                />
+                                <i
+                                  className="fa fa-eye ml-2 mt-1"
+                                  onClick={() => onEyeIconClick(task)}
+                                  style={{
+                                    marginLeft: "10px",
+                                    color: "black",
+                                    cursor: "pointer",
+                                  }}
+                                  title="Click to Ticket Details."
+                                ></i>
+                              </div>
+                            )}
+                          </Draggable>
+                        );
+                      })}
+                    </div>
+                  )
+                )}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </div>
       </div>
     </div>
   );
@@ -241,16 +486,18 @@ const KanbanBoard = () => {
     tasks: {},
     columns: {
       todo: { id: "todo", title: "Assigned", taskIds: [] },
-      thisweek: { id: "thisweek", title: "Planned", taskIds: [] },
+      planned: { id: "planned", title: "Planned", taskIds: [] },
+      delayed: { id: "delayed", title: "Delayed", taskIds: [] },
       inprogress: { id: "inprogress", title: "In progress", taskIds: [] },
       done: { id: "done", title: "Done", taskIds: [] },
     },
-    columnOrder: ["todo", "thisweek", "inprogress", "done"],
+    columnOrder: ["todo", "planned-delayed", "inprogress", "done"],
   });
 
   const [t] = useTranslation();
   const [loading, setLoading] = useState(false);
   const [tableData, setTableData] = useState([]);
+
   const [assignto, setAssignedto] = useState([]);
   const [formData, setFormData] = useState({
     AssignedTo: [Number(useCryptoLocalStorage("user_Data", "get", "ID"))]
@@ -265,22 +512,19 @@ const KanbanBoard = () => {
 
   // Function to check if drag and drop is allowed between columns
   const isDragAllowed = (sourceColumnId, destinationColumnId) => {
-    // ToDo: No drag and drop allowed (cannot be moved to any column)
     if (sourceColumnId === "todo") {
       return false;
     }
 
-    // ThisWeek: Can only be moved to InProgress
-    if (sourceColumnId === "thisweek") {
+    // Allow both planned and delayed to be dragged to inprogress
+    if (sourceColumnId === "planned" || sourceColumnId === "delayed") {
       return destinationColumnId === "inprogress";
     }
 
-    // InProgress: Can only be moved to Done
     if (sourceColumnId === "inprogress") {
       return destinationColumnId === "done";
     }
 
-    // Done: No drag and drop allowed (cannot be moved back)
     if (sourceColumnId === "done") {
       return false;
     }
@@ -295,7 +539,6 @@ const KanbanBoard = () => {
 
   // Function to check if a column can accept drops
   const isDropDisabled = (columnId) => {
-    // Only "inprogress" and "done" can accept drops
     return columnId !== "inprogress" && columnId !== "done";
   };
 
@@ -308,18 +551,6 @@ const KanbanBoard = () => {
 
     const originalTicket = ticketData.originalData;
 
-    // let form = new FormData();
-    // form.append("ID", userId);
-    // form.append("LoginName", IsEmployee);
-    // form.append("TicketID", originalTicket.TicketID || "");
-    // form.append("EmployeeID", originalTicket?.EmployeeID || "");
-    // form.append("Action", "START");
-    // form.append("Status", "0");
-    // form.append("timeValue", new Date().toTimeString().split(" ")[0]);
-    // form.append("Date", new Date().toISOString().split("T")[0]);
-
-    // axios
-    //   .post(apiUrls?.CreateManhourEntry, form, { headers })
     axiosInstances
       .post(apiUrls.CreateManhourEntry, {
         TicketID: originalTicket.TicketID || "",
@@ -353,18 +584,6 @@ const KanbanBoard = () => {
 
     const originalTicket = ticketData.originalData;
 
-    // let form = new FormData();
-    // form.append("ID", userId);
-    // form.append("LoginName", IsEmployee);
-    // form.append("TicketID", originalTicket.TicketID || "");
-    // form.append("EmployeeID", originalTicket?.EmployeeID || "");
-    // form.append("Action", "STOP");
-    // form.append("Status", "1");
-    // form.append("timeValue", new Date().toTimeString().split(" ")[0]);
-    // form.append("Date", new Date().toISOString().split("T")[0]);
-
-    // axios
-    //   .post(apiUrls?.CreateManhourEntry, form, { headers })
     axiosInstances
       .post(apiUrls.CreateManhourEntry, {
         TicketID: originalTicket.TicketID || "",
@@ -392,18 +611,15 @@ const KanbanBoard = () => {
   const onDragEnd = (result) => {
     const { destination, source, draggableId } = result;
 
-    // If there's no destination, do nothing
     if (!destination) {
       return;
     }
 
-    // Check if drag is allowed between these columns
     if (!isDragAllowed(source.droppableId, destination.droppableId)) {
       toast.error("This move is not allowed");
       return;
     }
 
-    // If dropped in the same position, do nothing
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
@@ -414,21 +630,16 @@ const KanbanBoard = () => {
     const start = data.columns[source.droppableId];
     const finish = data.columns[destination.droppableId];
 
-    // Check if moving from "thisweek" to "inprogress"
     const isMovingToInProgress =
-      source.droppableId === "thisweek" &&
+      (source.droppableId === "planned" || source.droppableId === "delayed") &&
       destination.droppableId === "inprogress";
 
-    // Check if moving from "inprogress" to "done"
     const isMovingToDone =
       source.droppableId === "inprogress" && destination.droppableId === "done";
 
-    // Get the task being moved
     const movedTask = data.tasks[draggableId];
 
-    // Start moving within the same column (only allowed for columns that can be reordered)
     if (start.id === finish.id) {
-      // Only allow reordering within same column for columns that are not restricted
       if (start.id === "todo" || start.id === "done") {
         toast.error("Reordering within this column is not allowed");
         return;
@@ -455,7 +666,6 @@ const KanbanBoard = () => {
       return;
     }
 
-    // Moving from one column to another
     const startTaskIds = Array.from(start.taskIds);
     startTaskIds.splice(source.index, 1);
     const newStart = {
@@ -481,12 +691,10 @@ const KanbanBoard = () => {
 
     setData(newState);
 
-    // If moving from "thisweek" to "inprogress", trigger manhour START API call
     if (isMovingToInProgress && movedTask) {
       handleCreateManhourEntry(movedTask);
     }
 
-    // If moving from "inprogress" to "done", trigger manhour STOP API call
     if (isMovingToDone && movedTask) {
       handleCreateDone(movedTask);
     }
@@ -508,6 +716,15 @@ const KanbanBoard = () => {
     });
 
     return sections;
+  };
+
+  // Function to handle eye icon click
+  const handleEyeIconClick = (task) => {
+    setVisible({
+      showVisible: true,
+      showData: task,
+      task,
+    });
   };
 
   const getAssignTo = () => {
@@ -548,12 +765,12 @@ const KanbanBoard = () => {
         } else {
           toast.error("No Record Found.");
           setTableData([]);
-          // Reset to empty state if no data
           setData({
             tasks: {},
             columns: {
               todo: { id: "todo", title: "Assigned", taskIds: [] },
-              thisweek: { id: "thisweek", title: "Planned", taskIds: [] },
+              planned: { id: "planned", title: "Planned", taskIds: [] },
+              delayed: { id: "delayed", title: "Delayed", taskIds: [] },
               inprogress: {
                 id: "inprogress",
                 title: "In progress",
@@ -561,7 +778,7 @@ const KanbanBoard = () => {
               },
               done: { id: "done", title: "Done", taskIds: [] },
             },
-            columnOrder: ["todo", "thisweek", "inprogress", "done"],
+            columnOrder: ["todo", "planned-delayed", "inprogress", "done"],
           });
         }
         setLoading(false);
@@ -586,12 +803,12 @@ const KanbanBoard = () => {
         } else {
           toast.error("No Record Found.");
           setTableData([]);
-          // Reset to empty state if no data
           setData({
             tasks: {},
             columns: {
               todo: { id: "todo", title: "Assigned", taskIds: [] },
-              thisweek: { id: "thisweek", title: "Planned", taskIds: [] },
+              planned: { id: "planned", title: "Planned", taskIds: [] },
+              delayed: { id: "delayed", title: "Delayed", taskIds: [] },
               inprogress: {
                 id: "inprogress",
                 title: "In progress",
@@ -599,7 +816,7 @@ const KanbanBoard = () => {
               },
               done: { id: "done", title: "Done", taskIds: [] },
             },
-            columnOrder: ["todo", "thisweek", "inprogress", "done"],
+            columnOrder: ["todo", "planned-delayed", "inprogress", "done"],
           });
         }
         setLoading(false);
@@ -623,11 +840,12 @@ const KanbanBoard = () => {
     showVisible: false,
     showData: {},
   });
+
   return (
     <>
       {visible?.showVisible && (
         <Modal
-          modalWidth={"800px"}
+          modalWidth={"1000px"}
           visible={visible}
           setVisible={setVisible}
           Header={t("Ticket Details")}
@@ -699,6 +917,22 @@ const KanbanBoard = () => {
         <DragDropContext onDragEnd={onDragEnd}>
           <div className="kanban-board">
             {data.columnOrder.map((columnId) => {
+              if (columnId === "planned-delayed") {
+                return (
+                  <PlannedDelayedColumn
+                    key="planned-delayed"
+                    plannedColumn={data.columns.planned}
+                    delayedColumn={data.columns.delayed}
+                    data={data}
+                    tableData={tableData}
+                    isDragAllowed={isDragAllowed}
+                    isDraggingDisabled={isDraggingDisabled}
+                    isDropDisabled={isDropDisabled}
+                    onEyeIconClick={handleEyeIconClick} // Pass the eye icon click handler
+                  />
+                );
+              }
+
               const column = data.columns[columnId];
               const sections = groupTasksBySection(column.taskIds, columnId);
 
@@ -762,20 +996,15 @@ const KanbanBoard = () => {
                                           task={task}
                                           columnId={columnId}
                                         />
-                                        {/* Pass columnId to TaskAvatar to conditionally show tooltip */}
                                         <TaskAvatar
                                           task={task}
                                           columnId={columnId}
                                         />
                                         <i
                                           className="fa fa-eye ml-2 mt-1"
-                                          onClick={() => {
-                                            setVisible({
-                                              showVisible: true,
-                                              showData: task,
-                                              task,
-                                            });
-                                          }}
+                                          onClick={() =>
+                                            handleEyeIconClick(task)
+                                          }
                                           style={{
                                             marginLeft: "10px",
                                             color: "black",

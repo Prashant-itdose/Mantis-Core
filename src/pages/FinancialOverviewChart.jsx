@@ -33,16 +33,7 @@ const FinancialOverviewChart = () => {
   const [xAxisKeys, setXAxisKeys] = useState(["financial_year_start", "today"]);
 
   const fetchSalesData = (developerId, searchType) => {
-    // let form = new FormData();
-    // form.append("ID",  useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append("DeveloperID", developerId);
-    // form.append("SearchType", searchType === "" ? "0" : searchType);
-
-    // axios
-    //   .post(apiUrls?.CoorDashboard_Financial_Recovery_Quotation, form, {
-    //     headers,
-    //   })
-       axiosInstances
+    axiosInstances
       .post(apiUrls.CoorDashboard_Financial_Recovery_Quotation, {
         CoordinatorID: Number(useCryptoLocalStorage("user_Data", "get", "ID")),
         DeveloperID: Number(developerId),
@@ -75,7 +66,6 @@ const FinancialOverviewChart = () => {
     fetchSalesData(memberID, developerSearchType);
   }, [memberID, developerSearchType]);
 
-  
   //   const transformData = (data, key) => {
   //     const labels = data.map((item) => item[key]);
 

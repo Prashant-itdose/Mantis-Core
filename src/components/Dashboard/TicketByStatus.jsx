@@ -31,11 +31,7 @@ const TicketByStatus = () => {
   const [countData, setCountData] = useState([]);
 
   const handleFirstDashboardCount = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    // form.append("DeveloperID", memberID || 0),
-    //   axios
-    //     .post(apiUrls?.DevDashboard_Welcome_PriorityID, form, { headers })
+  
     axiosInstances
       .post(apiUrls.DevDashboard_Welcome_PriorityID, {
         DeveloperID: String(memberID || "0"),

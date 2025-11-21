@@ -340,14 +340,7 @@ const AMCSalesBooking = () => {
     };
     axiosInstances
       .post(apiUrls.ProjectSelect, payload)
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   axios
-      //     .post(apiUrls?.ProjectSelect, form, { headers })
+
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return { label: item?.Project, value: item?.ProjectId };

@@ -450,7 +450,7 @@ export const apiUrls = {
   ResendEmployeeFeedbackWhatsapp:
     "/CRMCOREAPI/api/EmployeeFeedback/ResendEmployeeFeedbackWhatsapp",
   ResendEmployeeFeedbackMail:
-    "CRMAPI/api/EmployeeFeedback/ResendEmployeeFeedbackMail",
+    "CRMCOREAPI/api/EmployeeFeedback/ResendEmployeeFeedbackMail",
   EmployeeFeedbackAvg: "/CRMCOREAPI/api/EmployeeFeedback/EmployeeFeedbackAvg",
   GetWorkingHours: "/CRMCOREAPI/api/CRMAttendance/GetWorkingHours",
   GetEmployeeTransactions:
@@ -511,6 +511,8 @@ export const apiUrls = {
     "/CRMCOREAPI/api/ClientFeedbackDashboard/ClientFeedbackList",
 
   AIClientDetails: "/CRMCOREAPI/api/AI/AIClientDetails",
+  ThreeMonthClientGoodFeedbackList:
+    "/CRMCOREAPI/api/ClientFeedbackDashboard/ThreeMonthClientGoodFeedbackList",
   AIClientOpening: "/CRMCOREAPI/api/AI/AIClientOpening",
   AIClientDashboard: "/CRMCOREAPI/api/AI/AIClientDashboard",
   AIRateCardMaster: "/CRMCOREAPI/api/AI/AIRateCardMaster",
@@ -519,4 +521,23 @@ export const apiUrls = {
   AIClientQuestionMaster: "/CRMCOREAPI/api/AI/AIClientQuestionMaster",
   AIClientQuestionMasterInsert:
     "/CRMCOREAPI/api/AI/AIClientQuestionMasterInsert",
+  WeaklyMonthlyDeveloperFreeManMinute:
+    "/CRMCOREAPI/api/MantisSummary/WeaklyMonthlyDeveloperFreeManMinute",
+  ResolutionPointWeekwise:
+    "/CRMCOREAPI/api/MantisSummary/ResolutionPointWeekwise",
+  GetConvertedSalesLeadsAlert:
+    "/CRMCOREAPI/api/ProjectMaster/GetConvertedSalesLeadsAlert",
+  FestivalWishSave: "/CRMCOREAPI/api/MorningWish/FestivalWishSave",
+  FestivalWishUpdate: "/CRMCOREAPI/api/MorningWish/FestivalWishUpdate",
+  EditFestivalWish: "/CRMCOREAPI/api/MorningWish/EditFestivalWish",
+  RemoveFestivalWish: "/CRMCOREAPI/api/MorningWish/RemoveFestivalWish",
+  FestivalWishSearch: "/CRMCOREAPI/api/MorningWish/FestivalWishSearch",
+  ProjectRateListSave:
+    "/CRMCOREAPI/api/AccountsPaymentInstallment/ProjectRateListSave",
+  SearchProjectRateList:
+    "/CRMCOREAPI/api/AccountsPaymentInstallment/SearchProjectRateList",
+  EditProjectRateList:
+    "/CRMCOREAPI/api/AccountsPaymentInstallment/EditProjectRateList",
+  ProjectRateListUpdate:
+    "/CRMCOREAPI/api/AccountsPaymentInstallment/ProjectRateListUpdate",
 };

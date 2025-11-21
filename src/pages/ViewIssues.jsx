@@ -4,8 +4,6 @@ import Heading from "../components/UI/Heading";
 import ReactSelect from "../components/formComponent/ReactSelect";
 import DatePicker from "../components/formComponent/DatePicker";
 import MultiSelectComp from "../components/formComponent/MultiSelectComp";
-import axios from "axios";
-import { headers } from "../utils/apitools";
 import Tables from "../components/UI/customTable";
 import { toast } from "react-toastify";
 import Loading from "../components/loader/Loading";
@@ -22,8 +20,6 @@ import { PageSize } from "../utils/constant";
 import NoRecordFound from "../components/formComponent/NoRecordFound";
 import { useSelector } from "react-redux";
 import Tooltip from "./Tooltip";
-import { useFetchApi } from "../utils/hooks/useFetch";
-import { notify } from "../utils/utils";
 import ViewIssueDocModal from "../components/UI/customTable/ViewIssueDocModal";
 import ViewIssueDocTable from "../components/UI/customTable/ViewIssueDocTable";
 import ViewIssueNotesModal from "../components/UI/customTable/ViewIssueNotesModal";
@@ -33,6 +29,8 @@ import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import ViewIssueCloseModal from "./ViewIssueCloseModal";
 import ReactSelectIcon from "../components/formComponent/ReactSelectIcon";
 import { axiosInstances } from "../networkServices/axiosInstance";
+import ReportIssue from "./ReportIssue";
+import SubTicketMappping from "./SubTicketMappping";
 const ViewIssues = ({ data }) => {
   const { VITE_DATE_FORMAT } = import.meta.env;
   const [t] = useTranslation();
@@ -131,6 +129,8 @@ const ViewIssues = ({ data }) => {
     ClientManHour: "",
     AssignedDate: "",
     ResolveDate: "",
+    DelayedTicketType: "0",
+    DelayedTicket: "",
     CloseDate: "",
     UpadteDate: "",
     ManHourDropdown: "",
@@ -205,6 +205,7 @@ const ViewIssues = ({ data }) => {
     ModuleName: [],
     PagesName: "",
     SearhType: "0",
+    NotToDo: "",
   });
 
   const viewissuesTHEAD = [
@@ -497,6 +498,10 @@ const ViewIssues = ({ data }) => {
       label: "RemoveDeliveryDate",
       value: "RemoveDeliveryDate",
     },
+    {
+      label: "NotToDo",
+      value: "NotToDo",
+    },
   ];
 
   const dynamicOptionStatus = [
@@ -510,6 +515,10 @@ const ViewIssues = ({ data }) => {
     {
       label: "ReOpen",
       value: "ReOpen",
+    },
+    {
+      label: "NotToDo",
+      value: "NotToDo",
     },
   ];
   const filteredOptions =
@@ -594,19 +603,7 @@ const ViewIssues = ({ data }) => {
           ReOpenReasonID: "",
           ReOpenReason: "",
         })
-        //       let form = new FormData();
-        //       form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        //         form.append(
-        //           "LoginName",
-        //           useCryptoLocalStorage("user_Data", "get", "realname")
-        //         ),
-        //         form.append("TicketIDs", ticketIDs),
-        //         form.append("ActionText", "Close"),
-        //         form.append("ReferenceCode", formData?.RefereCode),
-        //         form.append("RCA", formData?.RefereRCA),
-        //         form.append("ManHour", formData?.ManHours),
-        //         axios
-        //           .post(apiUrls?.ApplyAction, form, { headers })
+      
         .then((res) => {
           toast.success(res?.data?.message);
           setFormData({
@@ -729,8 +726,6 @@ const ViewIssues = ({ data }) => {
     if (ticketIDs == "") {
       toast.error("Please Select atleast one Ticket.");
     } else {
-      // const filterdata = tableData?.filter((item) => item.IsActive == true);
-      // const ticketIDs = filterdata.map((item) => item.TicketID).join(",");
       axiosInstances
         .post(apiUrls.ApplyAction, {
           TicketIDs: String(ticketIDs),
@@ -749,18 +744,6 @@ const ViewIssues = ({ data }) => {
           ReOpenReasonID: "",
           ReOpenReason: "",
         })
-        // let form = new FormData();
-        // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        //   form.append(
-        //     "LoginName",
-        //     useCryptoLocalStorage("user_Data", "get", "realname")
-        //   ),
-        //   form.append("TicketIDs", ticketIDs),
-        //   form.append("ActionText", "Hold"),
-        //   form.append("ActionId", formData?.Hold),
-        //   // form.append("HoldReason", formData?.Hold),
-        //   axios
-        //     .post(apiUrls?.ApplyAction, form, { headers })
         .then((res) => {
           toast.success(res?.data?.message);
           setFormData({
@@ -774,7 +757,75 @@ const ViewIssues = ({ data }) => {
         });
     }
   };
+  const handleNotToDoTable = () => {
+    const filterdata = tableData?.filter((item) => item.IsActive == true);
+    const ticketIDs = filterdata.map((item) => item.TicketID).join(",");
+    if (ticketIDs == "") {
+      toast.error("Please Select atleast one Ticket.");
+    } else {
+      axiosInstances
+        .post(apiUrls.ApplyAction, {
+          TicketIDs: String(ticketIDs),
+          ActionText: "NotToDo",
+          ActionId: String(formData?.NotToDo),
+          RCA: "",
+          ReferenceCode: "",
+          ManHour: "",
+          Summary: "",
+          ModuleID: "",
+          ModuleName: "",
+          PagesID: "",
+          PagesName: "",
+          ManHoursClient: "",
+          DeliveryDateClient: "",
+          ReOpenReasonID: "",
+          ReOpenReason: "",
+        })
+        .then((res) => {
+          toast.success(res?.data?.message);
+          setFormData({
+            ...formData,
+            NotToDo: "",
+          });
+          handleViewSearch();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
 
+  const handleNotToDo = (item) => {
+    axiosInstances
+      .post(apiUrls.ApplyAction, {
+        TicketIDs: String(item?.TicketID),
+        ActionText: "NotToDo",
+        ActionId: String(formData?.NotToDo),
+        RCA: "",
+        ReferenceCode: "",
+        ManHour: "",
+        Summary: "",
+        ModuleID: "",
+        ModuleName: "",
+        PagesID: "",
+        PagesName: "",
+        ManHoursClient: "",
+        DeliveryDateClient: "",
+        ReOpenReasonID: "",
+        ReOpenReason: "",
+      })
+      .then((res) => {
+        toast.success(res?.data?.message);
+        setFormData({
+          ...formData,
+          NotToDo: "",
+        });
+        handleViewSearch();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const handleResolveElement = (item) => {
     if (formData?.RefereRCA == "") {
       toast.error("Please Enter Summary.");
@@ -818,28 +869,20 @@ const ViewIssues = ({ data }) => {
         });
     }
   };
+  const handleDelayCheckBox = (e) => {
+    const { name, checked, type } = e.target;
+    const checkBoxValue = checked ? 1 : 0;
 
-  // const handleManHour = (item) => {
-  //   let form = new FormData();
-  //   form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-  //     form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-  //     form.append("TicketIDs", item?.TicketID),
-  //     form.append("ActionText", "ManHours"),
-  //     form.append("ActionId", formData?.ManHours),
-  //     axios
-  //       .post(apiUrls?.ApplyAction, form, { headers })
-  //       .then((res) => {
-  //         toast.success(res?.data?.message);
-  //         setFormData({
-  //           ...formData,
-  //           ManHours: "",
-  //         });
-  //         handleViewSearch();
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  // };
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checkBoxValue : e.target.value,
+      DelayedTicketType:
+        name === "DelayedTicket" && checkBoxValue === 0
+          ? ""
+          : prev.DelayedTicketType,
+    }));
+  };
+
   const handleHold = (item) => {
     axiosInstances
       .post(apiUrls.ApplyAction, {
@@ -859,18 +902,7 @@ const ViewIssues = ({ data }) => {
         ReOpenReasonID: "",
         ReOpenReason: "",
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("TicketIDs", item?.TicketID),
-      //   form.append("ActionText", "Hold"),
-      //   form.append("ActionId", formData?.Hold),
-      //   // form.append("HoldReason", formData?.Hold),
-      //   axios
-      //     .post(apiUrls?.ApplyAction, form, { headers })
+     
       .then((res) => {
         toast.success(res?.data?.message);
         setFormData({
@@ -909,19 +941,7 @@ const ViewIssues = ({ data }) => {
           ReOpenReasonID: "",
           ReOpenReason: "",
         })
-        // let form = new FormData();
-        // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        //   form.append(
-        //     "LoginName",
-        //     useCryptoLocalStorage("user_Data", "get", "realname")
-        //   ),
-        //   form.append("TicketIDs", item?.TicketID),
-        //   form.append("ActionText", "Close"),
-        //   form.append("ReferenceCode", ""),
-        //   form.append("RCA", formData?.RefereRCA),
-        //   form.append("ManHour", formData?.ManHours),
-        //   axios
-        //     .post(apiUrls?.ApplyAction, form, { headers })
+     
         .then((res) => {
           if (res?.data?.status === true) {
             toast.success(res?.data?.message);
@@ -1015,17 +1035,7 @@ const ViewIssues = ({ data }) => {
           ReOpenReasonID: "",
           ReOpenReason: "",
         })
-        // let form = new FormData();
-        // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        //   form.append(
-        //     "LoginName",
-        //     useCryptoLocalStorage("user_Data", "get", "realname")
-        //   ),
-        //   form.append("TicketIDs", ticketIDs),
-        //   form.append("ActionText", "DeliveryDate"),
-        //   form.append("ActionId", ""),
-        //   axios
-        //     .post(apiUrls?.ApplyAction, form, { headers })
+      
         .then((res) => {
           toast.success(res?.data?.message);
           setFormData({
@@ -1061,17 +1071,7 @@ const ViewIssues = ({ data }) => {
           ReOpenReasonID: "",
           ReOpenReason: "",
         })
-        // let form = new FormData();
-        // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        //   form.append(
-        //     "LoginName",
-        //     useCryptoLocalStorage("user_Data", "get", "realname")
-        //   ),
-        //   form.append("TicketIDs", ids),
-        //   form.append("ActionText", data?.label),
-        //   form.append("ActionId", data?.value),
-        //   axios
-        //     .post(apiUrls?.ApplyAction, form, { headers })
+      
         .then((res) => {
           toast.success(res?.data?.message);
           handleViewSearch();
@@ -1275,6 +1275,8 @@ const ViewIssues = ({ data }) => {
         notesVisible: true,
         attachVisible: false,
         historyVisible: false,
+        subTicketVisible: false,
+        SubTicketMappingVisisble: false,
         showData: data[index],
       });
     } else if (value === "Attach") {
@@ -1284,6 +1286,8 @@ const ViewIssues = ({ data }) => {
         notesVisible: false,
         attachVisible: true,
         historyVisible: false,
+        subTicketVisible: false,
+        SubTicketMappingVisisble: false,
         showData: data[index],
       });
     } else if (value === "History") {
@@ -1293,6 +1297,30 @@ const ViewIssues = ({ data }) => {
         notesVisible: false,
         attachVisible: false,
         historyVisible: true,
+        subTicketVisible: false,
+        SubTicketMappingVisisble: false,
+        showData: data[index],
+      });
+    } else if (value === "SubTicket") {
+      data[index]["SubTicketResolve"] = true;
+      setTableData(data);
+      setVisible({
+        notesVisible: false,
+        attachVisible: false,
+        historyVisible: false,
+        subTicketVisible: true,
+        SubTicketMappingVisisble: false,
+        showData: data[index],
+      });
+    } else if (value === "SubTicketMapping") {
+      data[index]["SubTicketMappingResolve"] = true;
+      setTableData(data);
+      setVisible({
+        notesVisible: false,
+        attachVisible: false,
+        historyVisible: false,
+        subTicketVisible: false,
+        SubTicketMappingVisisble: true,
         showData: data[index],
       });
     } else {
@@ -1301,6 +1329,8 @@ const ViewIssues = ({ data }) => {
         notesVisible: false,
         attachVisible: false,
         historyVisible: false,
+        subTicketVisible: false,
+        SubTicketMappingVisisble: false,
         showData: {},
       });
     }
@@ -2144,6 +2174,8 @@ const ViewIssues = ({ data }) => {
       POC1: String(formData?.POC1 || ""),
       POC2: String(formData?.POC2 || ""),
       POC3: String(formData?.POC3 || ""),
+      DelayedTicketType: String(formData?.DelayedTicketType || ""),
+      DelayedTicket: String(formData?.DelayedTicket || ""),
       ReporterId: String(Reporter || ""),
       AssignToID: String(AssignedTo || ""),
       PriorityId: String(Priority || ""),
@@ -2392,6 +2424,8 @@ const ViewIssues = ({ data }) => {
               HistoryResolve: "",
               AttachResolve: "",
               NotesResolve: "",
+              SubTicketResolve: "",
+              SubTicketMappingResolve: "",
             }));
 
             setTableData(updatedData);
@@ -2560,6 +2594,8 @@ const ViewIssues = ({ data }) => {
     attachVisible: false,
     notesVisible: false,
     historyVisible: false,
+    subTicketVisible: false,
+    SubTicketMappingVisisble: false,
     showData: {},
   });
 
@@ -2575,7 +2611,18 @@ const ViewIssues = ({ data }) => {
       });
     }
   }, [location.state?.data]);
-
+  useEffect(() => {
+    if (
+      Array.isArray(location.state?.data) &&
+      location.state?.data.length > 0 &&
+      location.state?.data[0]?.Id > 0
+    ) {
+      setVisible({
+        ticketVisible: true,
+        showData: { ...location.state?.data[0], subTicketflag: true },
+      });
+    }
+  }, [location.state?.data]);
   // const handleIconClickdate = (value, index) => {
   //   let data = [...tableData];
   //   data[index]["isDate"] = !data[index]["isDate"];
@@ -2928,7 +2975,40 @@ const ViewIssues = ({ data }) => {
           />
         </Modal>
       )}
-
+      {visible?.subTicketVisible && (
+        <Modal
+          modalWidth={"1200px"}
+          visible={visible}
+          setVisible={setVisible}
+          Header={t("Sub Ticket")}
+          tableData={currentData}
+          setTableData={setTableData}
+        >
+          <ReportIssue
+            visibleTicket={visible}
+            setVisible={setVisible}
+            tableDataTicket={currentData}
+            setTableData={setTableData}
+          />
+        </Modal>
+      )}
+      {visible?.SubTicketMappingVisisble && (
+        <Modal
+          modalWidth={"700px"}
+          visible={visible}
+          setVisible={setVisible}
+          Header={t("Sub Ticket Mapping")}
+          tableData={currentData}
+          setTableData={setTableData}
+        >
+          <SubTicketMappping
+            visibleTicket={visible}
+            setVisible={setVisible}
+            tableDataTicket={currentData}
+            setTableData={setTableData}
+          />
+        </Modal>
+      )}
       {visible?.attachVisible && (
         <Modal
           modalWidth={"800px"}
@@ -3388,7 +3468,31 @@ const ViewIssues = ({ data }) => {
                     {t("ManuallyClosed")}
                   </span>
                 </div>
-
+                <div
+                  className="d-flex "
+                  style={{
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      backgroundColor: "#f70539",
+                      cursor: "pointer",
+                      height: "10px",
+                      width: "12px",
+                      borderRadius: "50%",
+                      marginLeft: "4px",
+                    }}
+                    onClick={() => handleViewSearch("91", "0")}
+                  ></div>
+                  <span
+                    className="legend-label"
+                    style={{ width: "100%", textAlign: "left" }}
+                  >
+                    {t("NotToDo")}
+                  </span>
+                </div>
                 <button
                   className={`fa ${rowHandler.show ? "fa-arrow-up" : "fa-arrow-down"}`}
                   onClick={() => {
@@ -4405,7 +4509,7 @@ const ViewIssues = ({ data }) => {
                 requiredClassName={"required-fields"}
               />
 
-              <div className="col-xl-8 col-md-5 col-sm-6 col-12 mt-1 d-flex">
+              {/* <div className="col-xl-8 col-md-5 col-sm-6 col-12 mt-1 d-flex"> */}
                 {/* <div className="d-flex"> */}
                 <div className="search-col" style={{ marginLeft: "8px" }}>
                   <div style={{ display: "flex", alignItems: "center" }}>
@@ -4451,7 +4555,57 @@ const ViewIssues = ({ data }) => {
                     </span>
                   </div>
                 </div>
-
+                <div className="search-col" style={{ marginLeft: "8px" }}>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <label className="switch" style={{ marginTop: "7px" }}>
+                      <input
+                        type="checkbox"
+                        name="DelayedTicket"
+                        checked={formData?.DelayedTicket ? 1 : 0}
+                        onChange={handleDelayCheckBox}
+                      />
+                      <span className="slider"></span>
+                    </label>
+                    <span
+                      style={{
+                        marginLeft: "3px",
+                        marginRight: "5px",
+                        fontSize: "12px",
+                      }}
+                    >
+                      {t("DelayedTicket")}
+                    </span>
+                  </div>
+                </div>
+                {formData?.DelayedTicket == "1" ? (
+                  <ReactSelect
+                    respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+                    name="DelayedTicketType"
+                    placeholderName={t("Delayed Type")}
+                    dynamicOptions={[
+                      {
+                        label: "Select",
+                        value: "0",
+                      },
+                      {
+                        label: "1 Day Delay",
+                        value: "1",
+                      },
+                      {
+                        label: "1 Week Delay",
+                        value: "2",
+                      },
+                      {
+                        label: "1 Month Delay",
+                        value: "3",
+                      },
+                    ]}
+                    value={formData?.DelayedTicketType}
+                    handleChange={handleDeliveryChange}
+                  />
+                ) : (
+                  ""
+                )}
                 <button
                   className="btn btn-sm btn-success ml-3"
                   onClick={() => handleViewSearch(undefined, "0")}
@@ -4479,7 +4633,7 @@ const ViewIssues = ({ data }) => {
                 >
                   {t("Search Filter")}
                 </button>
-              </div>
+              {/* </div> */}
               {/* </div> */}
             </div>
           </>
@@ -4621,6 +4775,11 @@ const ViewIssues = ({ data }) => {
                             { label: "Notes", value: "Notes" },
                             { label: "File", value: "Attach" },
                             { label: "History", value: "History" },
+                            { label: "Sub Ticket", value: "SubTicket" },
+                            {
+                              label: "Sub Ticket Mapping",
+                              value: "SubTicketMapping",
+                            },
                           ]}
                           value={ele?.TableAttach}
                           handleChange={(name, value) => {
@@ -4664,14 +4823,55 @@ const ViewIssues = ({ data }) => {
                         {ele?.Status == "closed" ? (
                           ele?.TicketID
                         ) : (
-                          <Link
-                            onClick={() => {
-                              setVisible({ showVisible: true, showData: ele });
-                            }}
-                            title="Click to Show"
-                          >
-                            {ele?.TicketID}
-                          </Link>
+                          <>
+                            <Link
+                              // onClick={() => {
+                              //   setVisible({
+                              //     ticketVisible: true,
+                              //     showData: ele,
+                              //   });
+                              // }}
+                              // title="Click to Show SubTicket"
+                              className="mt-2"
+                            >
+                              <span
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  color: "#c75685",
+                                  marginBottom: "6px",
+                                }}
+                              >
+                                {ele?.ReferenceTicketID
+                                  ? ele?.ReferenceTicketID
+                                  : ""}
+                                {ele?.ReferenceTicketID > 0 ? (
+                                  <i className="fa fa-star ml-1"></i>
+                                ) : (
+                                  ""
+                                )}
+                              </span>
+                            </Link>
+
+                            <Link
+                              onClick={() => {
+                                setVisible({
+                                  showVisible: true,
+                                  showData: ele,
+                                });
+                              }}
+                              title="Click to Show"
+                            >
+                              <span
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                }}
+                              >
+                                {ele?.TicketID}{" "}
+                              </span>
+                            </Link>
+                          </>
                         )}
                       </div>
                     ),
@@ -5282,6 +5482,31 @@ const ViewIssues = ({ data }) => {
                             }}
                           >
                             <div style={{}} className="">
+                              {ele?.TableStatus == "NotToDo" && (
+                                <>
+                                  <Input
+                                    type="text"
+                                    className="form-control mt-1"
+                                    id="NotToDo"
+                                    name="NotToDo"
+                                    lable="Enter NotToDo Reason"
+                                    value={ele?.NotToDo}
+                                    respclass="width110px"
+                                    style={{ width: "50%" }}
+                                    onChange={handleChange}
+                                  />
+                                  <button
+                                    className="btn btn-sm btn-success ml-1 mb-1 mt-1"
+                                    style={{
+                                      marginRight: "1px",
+                                      marginLeft: "1px",
+                                    }}
+                                    onClick={() => handleNotToDo(ele)}
+                                  >
+                                    Save
+                                  </button>
+                                </>
+                              )}
                               {ele?.TableStatus == "Hold" && (
                                 <>
                                   <Input
@@ -5599,6 +5824,35 @@ const ViewIssues = ({ data }) => {
                               handleDeliveryChangeValueStatus(name, value)
                             }
                           />
+                        </>
+                      )}
+                      {formData?.TableStatus?.value == "NotToDo" && (
+                        <>
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-evenly",
+                            }}
+                          >
+                            <Input
+                              type="text"
+                              id="NotToDo"
+                              name="NotToDo"
+                              className="form-control ml-2"
+                              lable="Enter NotToDo Reason"
+                              value={formData?.NotToDo}
+                              respclass="width100px"
+                              style={{ width: "100%", marginLeft: "2px" }}
+                              onChange={handleChange}
+                            />
+
+                            <button
+                              className="btn btn-sm btn-info ml-4"
+                              onClick={handleNotToDoTable}
+                            >
+                              Save
+                            </button>
+                          </div>
                         </>
                       )}
                       {formData?.TableStatus?.value == "Resolve" && (

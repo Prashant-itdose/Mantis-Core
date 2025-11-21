@@ -95,11 +95,6 @@ const BulkReportIssue = () => {
   };
 
   const getProject = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-    //   axios
-    //     .post(apiUrls?.ProjectSelect, form, { headers })
     axiosInstances
       .post(apiUrls.ProjectSelect, {
         ProjectID: Number(0),
@@ -316,15 +311,15 @@ const BulkReportIssue = () => {
     setIsSubmitting(true);
     axiosInstances
       .post(apiUrls.BulkNewTicket, {
-  "ReporterID": "0",
-  "TicketData": transformPayload
-})
-    // const form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID"));
-    // form.append("TicketData", JSON.stringify(transformPayload));
-    // axios
-    //   .post(apiUrls?.BulkNewTicket, form, { headers })
+        ReporterID: "0",
+        TicketData: transformPayload,
+      })
+      // const form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
+      // form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID"));
+      // form.append("TicketData", JSON.stringify(transformPayload));
+      // axios
+      //   .post(apiUrls?.BulkNewTicket, form, { headers })
       .then((res) => {
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);

@@ -127,14 +127,7 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
         IsActive: 1,
         IsMaster: 0,
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID")),
-      //   form.append("ProjectID", visible?.showData?.ProjectID),
-      //   form.append("IsActive", "1"),
-      //   form.append("IsMaster", "0"),
-      //   axios
-      //     .post(apiUrls?.Module_Select, form, { headers })
+
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return { label: item?.ModuleName, value: item?.ModuleID };
@@ -154,14 +147,7 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
         IsActive: 1,
         IsMaster: 0,
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID")),
-      //   form.append("ProjectID", visible?.showData?.ProjectID),
-      //   form.append("IsActive", "1"),
-      //   form.append("IsMaster", "0"),
-      //   axios
-      //     .post(apiUrls?.Pages_Select, form, { headers })
+
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return { label: item?.PagesName, value: item?.ID };
@@ -201,9 +187,6 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // if (name == "ReferenceCode") {
-    //   if (value.length == 40) return;
-    // }
     setFormDataUpdate({ ...formDataUpdate, [name]: value });
   };
 
@@ -213,13 +196,7 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
       .post(apiUrls.ViewNote, {
         TicketID: visible?.showData?.TicketID,
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append("TicketID", visible?.showData?.TicketID);
-      // axios
-      //   .post(apiUrls?.ViewNote, form, {
-      //     headers,
-      //   })
+
       .then((res) => {
         const data = res?.data?.data;
         const updateddata = data?.map((ele, index) => {
@@ -247,13 +224,7 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
       .post(apiUrls.ViewHistory, {
         TicketID: visible?.showData?.TicketID,
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append("TicketID", visible?.showData?.TicketID);
-      // axios
-      //   .post(apiUrls?.ViewHistory, form, {
-      //     headers,
-      //   })
+
       .then((res) => {
         setTableData1(res?.data?.data);
         setLoading(false);
@@ -273,16 +244,8 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
       .post(apiUrls.ViewTicket, {
         TicketID: ticket,
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-      // form.append("TicketID", ticket);
 
-      // axios
-      //   .post(apiUrls?.ViewTicket, form, {
-      //     headers,
-      //   })
       .then((res) => {
-        // console.log(" lotus", res);
         setFormData({
           TicketID: res?.data.data[0].Id,
           Project: res?.data.data[0].ProjectName,
@@ -411,59 +374,9 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
           ReOpenReasonID: Number(formDataUpdate?.ReOpen ?? 0),
           ReOpenReason: String(getlabel(formDataUpdate?.ReOpen, reopen) || ""),
         })
-        // let form = new FormData();
-        // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        //   form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID")),
-        //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname"));
-        // form.append("TicketID", formDataUpdate?.TicketID);
-        // form.append("CategoryID", formDataUpdate?.Category);
-        // form.append("AssignToID", formDataUpdate?.AssignedTo);
-        // form.append("PriorityID", formDataUpdate?.Priority);
-        // form.append("Status", formDataUpdate?.Status);
-        // // form.append(
-        // //   "DeliveryDate",
-        // //   formDataUpdate?.DeliveryDate != ""
-        // //     ? new Date(formDataUpdate?.DeliveryDate)?.toISOString()?.split("T")[0]
-        // //     : ""
-        // // );
-        // form.append(
-        //   "DeliveryDate",
-        //   formatDate(formDataUpdate?.DeliveryDate)
-        //     ? formatDate(formDataUpdate?.DeliveryDate)
-        //     : ""
-        // );
-        // form.append("Manhour", formDataUpdate?.ManHour || "0");
-        // form.append("ManhoursClient", formDataUpdate?.ClientManHour || "0");
-        // form.append(
-        //   "DeliveryDateClient",
-        //   formatDate(formDataUpdate?.ClientDeliveryDate) || ""
-        // );
-        // form.append("Summary", formDataUpdate?.Summary ||"");
-        // form.append("Note", formDataUpdate?.Note ? formDataUpdate?.Note : "");
-        // form.append("Description", removeHtmlTags(formDataUpdate?.Description) ||"");
-        // form.append("ReportedByName", formDataUpdate?.ReportedByName ||"");
-        // form.append("ReportedByMobileNo", formDataUpdate?.ReportedByMobile ||"");
-        // form.append("ReferenceCode", formDataUpdate?.ReferenceCode);
-        // form.append("HoldReason", formDataUpdate?.HoldReason);
-        // form.append(
-        //   "ModuleName",
-        //   getlabel(formDataUpdate?.ModuleName, moduleName) ||""
-        // );
-        // form.append("ModuleID", formDataUpdate.ModuleName || "0");
-        // form.append("PagesName", getlabel(formDataUpdate?.PageName, pageName) ||"");
-        // form.append("PagesID", formDataUpdate.PageName ||"0");
-        // form.append("IsReOpen", "1");
-        // form.append(
-        //   "ReOpenReason",
-        //   getlabel(formDataUpdate?.ReOpen, reopen) || ""
-        // );
-        // form.append("ReOpenID", formDataUpdate?.ReOpen || "0");
-        // axios
-        //   .post(apiUrls?.UpdateTicket, form, {
-        //     headers,
-        //   })
+
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.message);
             setLoading(false);
             handleIssueSearch();
@@ -474,11 +387,6 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
           }
         })
         .catch((err) => {
-          // toast.error(
-          //   err?.response?.data?.message
-          //     ? err?.response?.data?.message
-          //     : "Error Occured"
-          // );
           const errorMessage = err?.response?.data?.message ?? "Error Occurred";
 
           // Display the error message in the toast notification
@@ -496,22 +404,9 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
         TicketID: formDataUpdate?.TicketID,
       })
 
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-      // form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname"));
-      // form.append("TicketID", formDataUpdate?.TicketID);
-      // form.append("NoteID", id); // Assuming NoteID is part of the note object
-
-      // axios
-      //   .post(apiUrls?.DeleteNote, form, {
-      //     headers,
-      //   })
       .then((res) => {
         toast.success(res?.data?.message);
 
-        // Optionally, remove the note from the tableData2 state after successful deletion
-        // const updatedTableData = tableData2.filter((item) => item.id !== id);
-        // setTableData2(updatedTableData);
         handleSearchNote();
       })
       .catch((err) => {
@@ -535,16 +430,7 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
         TicketID: formDataUpdate?.TicketID,
         NoteText: ele?.note,
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-      //   form.append("TicketID", formDataUpdate?.TicketID);
-      // form.append("NoteID", ele?.NoteId);
-      // form.append("NoteText", ele?.note);
-      // axios
-      //   .post(apiUrls?.UpdateNote, form, {
-      //     headers,
-      //   })
+
       .then((res) => {
         toast.success(res?.data?.message);
       })
@@ -554,7 +440,6 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
             ? err?.response?.data?.message
             : "Error Occured"
         );
-        // setLoading(false);
       });
   };
   const [rowHandler, setRowHandler] = useState({
@@ -578,10 +463,7 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
   const getStatus = () => {
     axiosInstances
       .post(apiUrls.Status_Select, {})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.Status_Select, form, { headers })
+
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return { label: item?.STATUS, value: item?.id };
@@ -601,12 +483,7 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
         TeamID: 0,
         WingID: 0,
       })
-      // let form = new FormData();
 
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-      //   axios
-      //     .post(apiUrls?.ProjectSelect, form, { headers })
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return { label: item?.Project, value: item?.ProjectId };
@@ -621,10 +498,7 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
   const getPriority = () => {
     axiosInstances
       .post(apiUrls.Priority_Select, {})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.Priority_Select, form, { headers })
+
       .then((res) => {
         const assigntos = res?.data.data.map((item) => {
           return { label: item?.NAME, value: item?.ID };
@@ -641,11 +515,7 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
         RoleID: 0,
         ProjectID: proj,
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append("ProjectID", proj),
-      //   axios
-      //     .post(apiUrls?.Category_Select, form, { headers })
+
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return { label: item?.NAME, value: item?.ID };
@@ -661,10 +531,7 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
       .post(apiUrls.AssignTo_Select, {
         ProjectID: 0,
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.AssignTo_Select, form, { headers })
+
       .then((res) => {
         const assigntos = res?.data.data.map((item) => {
           return { label: item?.NAME, value: item?.ID };
@@ -697,12 +564,7 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
       .post(apiUrls.Reason_Select, {
         Title: "ReOpenReason",
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append("Title", "ReOpenReason"),
-      //   // form.append("DeveloperID", memberID || 0),
-      //   axios
-      //     .post(apiUrls?.Reason_Select, form, { headers })
+
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return { label: item?.NAME, value: item?.ID };
@@ -718,30 +580,11 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
   }, []);
   return (
     <>
-      {/* {updatevisible?.updateShow && (
-        <Modal
-          visible={updatevisible}
-          setVisible={setUpdateVisible}
-          Header="Updating Issue Information"
-        >
-          <UpdateViewIssueTableModal
-            visible={updatevisible}
-            setVisible={setUpdateVisible}
-          />
-        </Modal>
-      )} */}
       <div className="card">
         <Heading
           title={"Ticket Details"}
           secondTitle={
             <div className="col-sm-12 col-xs-12">
-              {/* <button
-              style={{background:"white" ,color:"black" ,border:"none"}}
-                className="previous  btn-success mx-2"
-                disabled={tableData[0]?.currentIndex === 0 ? true : false}
-              >
-                ‹
-              </button> */}
               {visible.showData.flag == true ? (
                 <></>
               ) : (
@@ -768,17 +611,6 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
                   ></i>
                 </>
               )}
-
-              {/* <button
-                className="next btn-success mx-2"
-                disabled={
-                  tableData[0]?.currentIndex === tableData.length - 1
-                    ? true
-                    : false
-                }
-              >
-                ›
-              </button> */}
             </div>
           }
         />
@@ -867,18 +699,7 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
             onChange={handleChange}
             disabled={edit == true || edit == false}
           />
-          {/* <Input
-            type="text"
-            className="form-control mt-2"
-            id="Reporter"
-            name="Reporter"
-            lable="Reporter"
-            value={formData?.Reporter}
-            placeholder=" "
-            respclass="col-md-2 col-12 col-sm-12"
-            onChange={handleChange}
-            disabled={edit == false}
-          /> */}
+
           {edit == false ? (
             <Input
               type="text"
@@ -967,40 +788,6 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
                   handleChange={handleDeliveryChange}
                 />
               )}
-              {/* {
-              formDataUpdate?.Status === 80 &&
-                <ReactSelect
-                  respclass="col-md-2 col-12 col-sm-12 mt-2"
-                  height={"6px"}
-                  name="ReOpen"
-                  id="ReOpen"
-                  placeholderName="Reopen"
-                  dynamicOptions={reopen}
-                  value={formDataUpdate?.ReOpen}
-                  handleChange={handleDeliveryChange}
-                />
-              } */}
-
-              {/* {(formDataUpdate?.Status === 80 ||
-                formDataUpdate?.Status === 70 ||
-                formDataUpdate?.Status === 90) && (
-                <Input
-                  type="text"
-                  className="form-control"
-                  name="Reason"
-                  lable={
-                    formDataUpdate?.Status === 80
-                      ? t("Resolved Reason")
-                      : formDataUpdate?.Status === 70
-                        ? t("DoneOnUAT Reason")
-                        : t("Closed Reason")
-                  }
-                  placeholderName=""
-                  respclass="col-md-2 col-12 col-sm-12"
-                  value={formDataUpdate?.Reason}
-                  onChange={handleChange}
-                />
-              )} */}
             </>
           )}
 
@@ -1156,10 +943,8 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
               lable="Note"
               value={formData?.Note}
               placeholder="Note "
-              //  respclass="col-md-4 col-12 col-sm-12"
               onChange={handleChange}
               disabled={edit == false}
-              // style={{ width: "32%", marginLeft: "7.5px" }}
             ></textarea>
           ) : (
             <textarea
@@ -1170,13 +955,9 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
               lable="Note"
               value={formDataUpdate?.Note}
               placeholder="Note "
-              //  respclass="col-md-4 col-12 col-sm-12"
               onChange={handleChange}
-              // disabled={edit == false}
-              // style={{ width: "32%", marginLeft: "7.5px" }}
             ></textarea>
           )}
-          {console.log("RoleiD", RoleID)}
 
           {RoleID == 7 && (
             <>
@@ -1458,20 +1239,9 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
                 </>
               ),
               NoteId: ele?.NoteId,
-              //  (
-              //   <Input
-              //     value={ele?.NoteId}
-              //     className="form-control"
-              //     disabled={true}
-              //   />
-              // ),
+
               Notes:
                 ele?.IsUpdate === false ? (
-                  // <Input
-                  //   value={ele?.note}
-                  //   className="form-control"
-                  //   disabled={ele?.IsUpdate == false}
-                  // />
                   <textarea
                     type="text"
                     className="summaryheightTicket"
@@ -1487,16 +1257,6 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
                     }}
                   ></textarea>
                 ) : (
-                  // <Input
-                  //   name="Note"
-                  //   className="form-control"
-                  //   value={ele?.note}
-                  //   onChange={(e) => {
-                  //     const updatedData = [...tableData2];
-                  //     updatedData[index]["note"] = e?.target.value;
-                  //     setTableData2(updatedData);
-                  //   }}
-                  // />
                   <textarea
                     type="text"
                     className="summaryheightTicket"
@@ -1522,21 +1282,8 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
                   </span>
                 </Tooltip>
               ),
-              //  (
-              //   <Input
-              //     value={ele?.RealName}
-              //     className="form-control"
-              //     disabled={true}
-              //   />
-              // ),
+
               DateSubmitted: ele?.dtEntry,
-              //  (
-              //   <Input
-              //     value={ele?.dtEntry}
-              //     disabled={true}
-              //     className="form-control"
-              //   />
-              // ),
             }))}
             tableHeight={"tableHeight"}
           />
@@ -1545,8 +1292,6 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
             There are no notes attached to this issue.
           </span>
         )}{" "}
-        {/* </>
-        )} */}
       </div>
 
       <div className="card patient_registration_card mt-3">

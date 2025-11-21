@@ -48,17 +48,6 @@ const AddVerticalModal = (ele) => {
   };
 
   const handleADD = () => {
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("UserID", ele?.visible?.showData?.id),
-    //   form.append("Status", "Add"),
-    //   form.append("VerticalID", formData?.Vertical),
-    //   axios
-    //     .post(apiUrls?.UserVsVerticalMapping, form, { headers })
     axiosInstances
       .post(apiUrls?.UserVsVerticalMapping, {
         EmployeeId: Number(ele?.visible?.showData?.id),
@@ -78,18 +67,6 @@ const AddVerticalModal = (ele) => {
       });
   };
   const handleRemove = (item) => {
-    // console.log("item", item);
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("UserID", ele?.visible?.showData?.id),
-    //   form.append("Status", "Remove"),
-    //   form.append("VerticalID", item?.VerticalID),
-    //   axios
-    //     .post(apiUrls?.UserVsVerticalMapping, form, { headers })
     axiosInstances
       .post(apiUrls?.UserVsVerticalMapping, {
         EmployeeId: Number(ele?.visible?.showData?.id),

@@ -86,22 +86,6 @@ const ClientDashboard = () => {
   };
 
   const handleDetail = ({ month, year }) => {
-    // const form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append(
-    //   "LoginName",
-    //   useCryptoLocalStorage("user_Data", "get", "realname")
-    // );
-    // form.append(
-    //   "MantisID",
-    //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-    // );
-    // form.append("Month", month);
-    // form.append("Year", year);
-    // form.append("SearchType", "3");
-
-    // axios
-    //   .post(apiUrls.ClientFeedbackDashboard, form, { headers })
     axiosInstances
       .post(apiUrls.ClientFeedbackDashboard, {
         MantisID: Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),

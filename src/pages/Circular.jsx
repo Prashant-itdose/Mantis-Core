@@ -57,28 +57,19 @@ const Circular = () => {
     }
   };
   const bindRole = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("RoleName", ""),
-      // axios
-      //   .post(apiUrls?.SearchRole, form, { headers })
-      axiosInstances
+    axiosInstances
       .post(apiUrls.SearchRole, {
-         RoleName:""
+        RoleName: "",
       })
-        .then((res) => {
-          const poc3s = res?.data.data.map((item) => {
-            return { label: item?.RoleName, value: item?.ID };
-          });
-          setRoleMaster(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
+      .then((res) => {
+        const poc3s = res?.data.data.map((item) => {
+          return { label: item?.RoleName, value: item?.ID };
         });
+        setRoleMaster(poc3s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleSelectChange = (e) => {
@@ -100,42 +91,21 @@ const Circular = () => {
     const { name, value } = e?.target;
     setFormData({ ...formData, [name]: value });
   };
-  const getCircular = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("Type", "From"),
-      axios
-        .post(apiUrls?.Circular_UserList, form, { headers })
-        .then((res) => {
-          const poc3s = res?.data.data.map((item) => {
-            return { label: item?.RealName, value: item?.Id };
-          });
-          setCircular(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-  };
-  const getCircularTo = (value) => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("RoleID", value || "0"),
-    //   form.append("Type", "To"),
-    //   axios
-    //     .post(apiUrls?.Circular_UserList, form, { headers })
+
+  const getCircularTo = () => {
     axiosInstances
       .post(apiUrls.Circular_UserList, {
         Type: String("To"),
       })
-        .then((res) => {
-          const poc3s = res?.data.data.map((item) => {
-            return { name: item?.RealName, code: item?.Id };
-          });
-          setCircularTo(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
+      .then((res) => {
+        const poc3s = res?.data.data.map((item) => {
+          return { name: item?.RealName, code: item?.Id };
         });
+        setCircularTo(poc3s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const [rowHandler, setRowHandler] = useState({
     SummaryShow: false,
@@ -158,58 +128,59 @@ const Circular = () => {
     let day = date.getDate().toString().padStart(2, "0");
     return `${year}/${month}/${day}`;
   }
-const saveCircular = () => {
-  if (formData?.Subject === "") {
-    toast.error("Please Enter Subject.");
-  } else if (formData?.Description === "") {
-    toast.error("Please Enter Message.");
-  } else {
-    setLoading(true);
+  const saveCircular = () => {
+    if (formData?.Subject === "") {
+      toast.error("Please Enter Subject.");
+    } else if (formData?.Description === "") {
+      toast.error("Please Enter Message.");
+    } else {
+      setLoading(true);
 
-    const payload = {
-      RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")) || 0,
-      Message: formData?.Description,
-      Subject: formData?.Subject,
-      DtFrom: formatDate(formData?.FromDate),
-      DtTo: formatDate(formData?.ToDate),
-      ToRoleIDs: "", // change if you later allow multiple role IDs
-      ToIDs: Array.isArray(formData?.CircularTo)
-        ? formData?.CircularTo.join(",")
-        : formData?.CircularTo || "",
-      DocumentNo: formData?.DocumentNo || "",
-      AttachmentData: "", // set base64 file data if needed later
-    };
+      const payload = {
+        RoleID:
+          Number(useCryptoLocalStorage("user_Data", "get", "RoleID")) || 0,
+        Message: formData?.Description,
+        Subject: formData?.Subject,
+        DtFrom: formatDate(formData?.FromDate),
+        DtTo: formatDate(formData?.ToDate),
+        ToRoleIDs: "", // change if you later allow multiple role IDs
+        ToIDs: Array.isArray(formData?.CircularTo)
+          ? formData?.CircularTo.join(",")
+          : formData?.CircularTo || "",
+        DocumentNo: formData?.DocumentNo || "",
+        AttachmentData: "", // set base64 file data if needed later
+      };
 
-    // axiosInstances
-    //   .post(apiUrls?.SaveCircular, payload, { headers })
-    axiosInstances
-      .post(apiUrls.SaveCircular, {
-        ...payload,
-      })
-      .then((res) => {
-        toast.success(res?.data?.message || "Circular saved successfully!");
+      // axiosInstances
+      //   .post(apiUrls?.SaveCircular, payload, { headers })
+      axiosInstances
+        .post(apiUrls.SaveCircular, {
+          ...payload,
+        })
+        .then((res) => {
+          toast.success(res?.data?.message || "Circular saved successfully!");
 
-        setFormData({
-        RoleMaster: formData?.RoleMaster, // keep default RoleID from localStorage
-          CircularTo: [],         // empty list after save
-          Subject: "",
-          DocumentNo: "",
-          FromDate: new Date(),
-          ToDate: new Date(),
-          FromTime: new Date(today.setHours(0, 0, 0, 0)),
-          ToTime: new Date(today.setHours(23, 59, 59, 999)),
-          Description: "",
+          setFormData({
+            RoleMaster: formData?.RoleMaster, // keep default RoleID from localStorage
+            CircularTo: [], // empty list after save
+            Subject: "",
+            DocumentNo: "",
+            FromDate: new Date(),
+            ToDate: new Date(),
+            FromTime: new Date(today.setHours(0, 0, 0, 0)),
+            ToTime: new Date(today.setHours(23, 59, 59, 999)),
+            Description: "",
+          });
+
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error("SaveCircular Error:", err);
+          toast.error("Something went wrong while saving Circular!");
+          setLoading(false);
         });
-
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("SaveCircular Error:", err);
-        toast.error("Something went wrong while saving Circular!");
-        setLoading(false);
-      });
-  }
-};
+    }
+  };
 
   useEffect(() => {
     getCircularTo();

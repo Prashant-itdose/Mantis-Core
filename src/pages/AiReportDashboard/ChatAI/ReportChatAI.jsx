@@ -28,10 +28,7 @@ function ReportChatAI() {
     ?.split("&")[0]
     ?.split("#")
     ?.filter(Boolean);
-  console.log(
-    "testIdtestIdtestIdtestIdtestIdtestIdtestIdtestIdtestIdtestIdtestId",
-    testId
-  );
+ 
 
   const [messages, setMessages] = useState([
     { role: "system", content: "How can I help you ?" },
@@ -40,13 +37,7 @@ function ReportChatAI() {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
-  // const suggestions = [
-  //   "What do my results mean overall?",
-  //   "Are there any abnormal or critical values?",
-  //   "Do I need to see a doctor right away?",
-  //   "Could this be linked to a condition I already have?",
-  // ];
-
+ 
   const getAPIURL = async (clientCode) => {
     const apiResp = await AIReportsAIClientDetails(clientCode);
     if (apiResp?.success) {
@@ -55,11 +46,8 @@ function ReportChatAI() {
     return apiResp?.data[0];
   };
 
-  // console.log("requestURLrequestURL",window.location.href?.split("requestURL=")[1],apiURL)
-
   const getSuggation = async (clientCode) => {
-    // const apiResp = await axios.post(`${apiURL}LabReport/AIClientQuestionMaster?clientCode=${reportDetails?.clientcode}`)
-    // console.log("asdasd",apiResp)
+   
     const apiResp = await AIClientQuestionMaster(clientCode);
     if (apiResp?.success) {
       setSuggestions([

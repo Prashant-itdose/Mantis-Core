@@ -87,7 +87,7 @@ const FeedbackList = () => {
       link.click();
     });
   };
-  ////////////////////////////
+
   const handleDeliveryChange = (name, e) => {
     const { value } = e;
     setFormData({
@@ -98,10 +98,7 @@ const FeedbackList = () => {
   const getVertical = () => {
     axiosInstances
       .post(apiUrls.Vertical_Select, {})
-      // let form = new FormData();
-      // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.Vertical_Select, form, { headers })
+
       .then((res) => {
         const verticals = res?.data.data.map((item) => {
           return { name: item?.Vertical, code: item?.VerticalID };
@@ -115,10 +112,7 @@ const FeedbackList = () => {
   const getTeam = () => {
     axiosInstances
       .post(apiUrls.Team_Select, {})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.Team_Select, form, { headers })
+
       .then((res) => {
         const teams = res?.data.data.map((item) => {
           return { name: item?.Team, code: item?.TeamID };
@@ -132,10 +126,7 @@ const FeedbackList = () => {
   const getWing = () => {
     axiosInstances
       .post(apiUrls.Wing_Select, {})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.Wing_Select, form, { headers })
+
       .then((res) => {
         const wings = res?.data.data.map((item) => {
           return { name: item?.Wing, code: item?.WingID };
@@ -149,10 +140,7 @@ const FeedbackList = () => {
   const getPOC1 = () => {
     axiosInstances
       .post(apiUrls.POC_1_Select, {})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.POC_1_Select, form, { headers })
+
       .then((res) => {
         const poc1s = res?.data.data.map((item) => {
           return { name: item?.POC_1_Name, code: item?.POC_1_ID };
@@ -166,10 +154,7 @@ const FeedbackList = () => {
   const getPOC2 = () => {
     axiosInstances
       .post(apiUrls.POC_2_Select, {})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   <axios>
-      //     .post(apiUrls?.POC_2_Select, form, { headers })
+
       .then((res) => {
         const poc2s = res?.data.data.map((item) => {
           return { name: item?.POC_2_Name, code: item?.POC_2_ID };
@@ -186,10 +171,7 @@ const FeedbackList = () => {
   const getPOC3 = () => {
     axiosInstances
       .post(apiUrls.POC_3_Select, {})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.POC_3_Select, form, { headers })
+
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return { name: item?.POC_3_Name, code: item?.POC_3_ID };
@@ -209,14 +191,7 @@ const FeedbackList = () => {
         TeamID: 0,
         WingID: 0,
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   axios
-      //     .post(apiUrls?.ProjectSelect, form, { headers })
+
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return { name: item?.Project, code: item?.ProjectId };
@@ -275,10 +250,10 @@ const FeedbackList = () => {
     axiosInstances
       .post(apiUrls.ClientFeedbackSearch, {
         RoleID: useCryptoLocalStorage("user_Data", "get", "RoleID") || 0,
-        ProjectID:String(formData?.ProjectID) ,
-        VerticalID: String(formData?.VerticalID) ,
-        TeamID: String(formData?.TeamID) ,
-        WingID: String(formData?.WingID) ,
+        ProjectID: String(formData?.ProjectID),
+        VerticalID: String(formData?.VerticalID),
+        TeamID: String(formData?.TeamID),
+        WingID: String(formData?.WingID),
         POC1: String(formData?.POC1),
         POC2: String(formData?.POC2),
         POC3: String(formData?.POC3),
@@ -287,32 +262,9 @@ const FeedbackList = () => {
         RowColor: code ? Number(code) : 0,
         RatingType: Number(formData?.SearchType),
       })
-      // const form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "RoleID",
-      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-      //   ),
-      //   form.append("EmployeeID", "0");
-      // form.append(
-      //   "LoginName",
-      //   useCryptoLocalStorage("user_Data", "get", "realname")
-      // ),
-      //   form.append("ProjectID", formData?.ProjectID),
-      //   form.append("VerticalID", formData?.VerticalID),
-      //   form.append("TeamID", formData?.TeamID),
-      //   form.append("WingID", formData?.WingID),
-      //   form.append("POC1", formData?.POC1),
-      //   form.append("POC2", formData?.POC2),
-      //   form.append("POC3", formData?.POC3),
-      //   form.append("Month", formData?.currentMonth),
-      //   form.append("Year", formData?.currentYear),
-      //   form.append("rowColor", code ? code : "0"),
-      //   form.append("RatingType", formData?.SearchType),
-      //   axios
-      //     .post(apiUrls?.ClientFeedbackSearch, form, { headers })
+
       .then((res) => {
-        if (res?.data?.success) {
+        if (res?.data?.success === true) {
           setTableData(res?.data?.data);
           setLoading(false);
         } else {
@@ -343,35 +295,9 @@ const FeedbackList = () => {
         RowColor: code ? String(code) : "0",
         RatingType: String(formData?.SearchType),
       })
-      // const form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "RoleID",
-      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-      //   ),
-      //   form.append(
-      //     "EmployeeID",
-      //     useCryptoLocalStorage("user_Data", "get", "ID")
-      //   );
-      // form.append(
-      //   "LoginName",
-      //   useCryptoLocalStorage("user_Data", "get", "realname")
-      // ),
-      //   form.append("ProjectID", formData?.ProjectID),
-      //   form.append("VerticalID", formData?.VerticalID),
-      //   form.append("TeamID", formData?.TeamID),
-      //   form.append("WingID", formData?.WingID),
-      //   form.append("POC1", formData?.POC1),
-      //   form.append("POC2", formData?.POC2),
-      //   form.append("POC3", formData?.POC3),
-      //   form.append("Month", formData?.currentMonth),
-      //   form.append("Year", formData?.currentYear),
-      //   form.append("RatingType", formData?.SearchType),
-      //   form.append("rowColor", code ? code : "0"),
-      //   axios
-      //     .post(apiUrls?.ClientFeedbackSearch, form, { headers })
+
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           setTableData(res?.data?.data);
           setLoading(false);
         } else {
@@ -525,19 +451,7 @@ const FeedbackList = () => {
         </Modal>
       )}
       <div className="card" ref={componentRef}>
-        <Heading
-          isBreadcrumb={true}
-          // secondTitle={
-          //   <>
-          //     <button
-          //       onClick={handleFullPageScreenshot}
-          //       className="btn btn-sm btn-primary ml-5"
-          //     >
-          //       Capture Screenshot
-          //     </button>
-          //   </>
-          // }
-        />
+        <Heading isBreadcrumb={true} />
         <div className="row p-2">
           <MultiSelectComp
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"

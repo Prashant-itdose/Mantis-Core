@@ -41,12 +41,6 @@ const SaleConvertModal = ({ visible, setVisible, handleSearch }) => {
   };
 
   const getProjectEmail = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-    //   form.append("ProjectID", visible?.showData?.ProjectID),
-    //   axios
-    //     .post(apiUrls?.ProjectSelect, form, { headers })
     axiosInstances
       .post(apiUrls.ProjectSelect, {
         ProjectID: Number(visible?.showData?.ProjectID),
@@ -162,15 +156,6 @@ const SaleConvertModal = ({ visible, setVisible, handleSearch }) => {
   };
 
   const Quotation_PaymentTerms_Select = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("QuotationID", visible?.showData?.EncryptID),
-    //   axios
-    //     .post(apiUrls?.Quotation_PaymentTerms_Select, form, { headers })
     axiosInstances
       .post(apiUrls.Quotation_PaymentTerms_Select, {
         QuotationID: String(visible?.showData?.EncryptID),
@@ -208,31 +193,9 @@ const SaleConvertModal = ({ visible, setVisible, handleSearch }) => {
       });
     });
 
-    // let PaymentTerms = [];
-    // termsdata?.map((val, index) => {
-    //   PaymentTerms?.push({
-    //     "S.No.": index,
-    //     TermsID: val?.TermsID,
-    //     Terms: val?.Terms,
-    //   });
-    // });
+
     setLoading(true);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("QuotationID", visible?.showData?.EncryptID),
-    //   form.append("EmailTo", formData?.EmailTo),
-    //   form.append("EmailCC", formData?.EmailCC),
-    //   form.append(
-    //     "dtAcknowledgment",
-    //     moment(formData?.AcknowledgmentDate).format("YYYY-MM-DD")
-    //   ),
-    //   form.append("InstallmentData", JSON.stringify(DatePayload));
-    // axios
-    //   .post(apiUrls?.Quotation_SalesConvert, form, { headers })
+  
     axiosInstances
       .post(apiUrls.Quotation_SalesConvert, {
         QuotationID: String(visible?.showData?.EncryptID),

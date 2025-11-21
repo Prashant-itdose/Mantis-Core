@@ -78,15 +78,7 @@ const LoginModal = ({
   };
   const [tableData, setTableData] = useState([]);
   const handleTableSearch = () => {
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append(
-    //   "LoginName",
-    //   useCryptoLocalStorage("user_Data", "get", "realname")
-    // );
-    // form.append("Date", new Date().toISOString().split("T")[0]);
-    // axios
-    //   .post(apiUrls?.Attendence_Search, form, { headers })
+    
        axiosInstances
           .post(apiUrls.Attendence_Search, {
             EmployeeID: Number(0),
@@ -119,20 +111,7 @@ const LoginModal = ({
   const [notFound, setNotFound] = useState("");
 
   const LoginLogoutButton = () => {
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append(
-    //   "EmailID",
-    //   useCryptoLocalStorage("user_Data", "get", "EmailId")
-    // );
-    // form.append(
-    //   "LoginName",
-    //   useCryptoLocalStorage("user_Data", "get", "realname")
-    // );
-    // form.append("SearchType", "LogInStatus");
-
-    // axios
-    //   .post(apiUrls?.Attendence_Select, form, { headers })
+   
     axiosInstances
       .post(apiUrls.Attendence_Select, {
         EmailID: String(useCryptoLocalStorage("user_Data", "get", "EmailId")),
@@ -162,28 +141,9 @@ const LoginModal = ({
   }, []);
 
   const handleLogin = async () => {
-    // if (!formData?.LocationID) {
-    //   toast.error("Location is required");
-    //   return;
-    // }
+ 
     setLoading(true);
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID") || "");
-    // form.append(
-    //   "LoginName",
-    //   useCryptoLocalStorage("user_Data", "get", "realname") || ""
-    // );
-    // form.append("CrmEmpID", CRMID);
-    // form.append("Location", formData?.LocationID);
-    // form.append("Latitude", formData?.Latitude || "");
-    // form.append("Longitude", formData?.Longitude || "");
-    // form.append("Remarks", formData?.Remarks || "");
-    // form.append("StatusType", "LogIn");
 
-    // try {
-    //   const res = await axios.post(apiUrls?.Attendence_Login, form, {
-    //     headers,
-    //   });
       try {
           const res = await axiosInstances.post(apiUrls.Attendence_Login, {
             CrmEmpID: Number(CRMID),
@@ -216,28 +176,9 @@ const LoginModal = ({
   };
 
   const handleLogout = async () => {
-    // if (!formData?.LocationID) {
-    //   toast.error("Location is required");
-    //   return;
-    // }
+  
     setLoading(true);
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID") || "");
-    // form.append(
-    //   "LoginName",
-    //   useCryptoLocalStorage("user_Data", "get", "realname") || ""
-    // );
-    // form.append("CrmEmpID", CRMID);
-    // form.append("Location", formData?.LocationID);
-    // form.append("Latitude", formData?.Latitude || "");
-    // form.append("Longitude", formData?.Longitude || "");
-    // form.append("Remarks", formData?.Remarks || "");
-    // form.append("StatusType", "LogOut");
-
-    // try {
-    //   const res = await axios.post(apiUrls?.Attendence_Login, form, {
-    //     headers,
-    //   });
+   
       try {
       const res = await axiosInstances.post(apiUrls.Attendence_Login, {
         CrmEmpID: Number(CRMID),

@@ -9,8 +9,6 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import axios from "axios";
-import { headers } from "../../utils/apitools";
 
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -36,12 +34,6 @@ const PaidRequestChart = () => {
   );
 
   const handleFirstDashboardCount = (developerId, searchType) => {
-    // let form = new FormData();
-    // form.append("ID",  useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append("DeveloperID", developerId);
-    // form.append("SearchType", searchType == "" ? "0" : searchType);
-    // axios
-    //   .post(apiUrls?.CoorDashboard_Paid_Request_Status, form, { headers })
     axiosInstances
       .post(apiUrls.CoorDashboard_Paid_Request_Status, {
         CoordinatorID: Number(useCryptoLocalStorage("user_Data", "get", "ID")),

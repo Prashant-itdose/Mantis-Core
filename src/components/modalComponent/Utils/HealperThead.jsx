@@ -91,6 +91,7 @@ export const EmployeeTHEAD = [
   "MantisID",
   "User Name",
   "Real Name",
+  "BloodGroup",
   "Email",
   "Address",
   "Mobile No.",
@@ -226,6 +227,7 @@ export const salesbookingTHEAD = [
   "Remark",
   "isPaid",
   "Expected/Start Date",
+  "Live Date",
   "End Date",
   "Remove",
 ];
@@ -420,7 +422,7 @@ export const attendanceThead = [
   "Location",
 ];
 export const ViewExpenseThead = [
- { name: "S.No.", width: "2%" },
+  { name: "S.No.", width: "2%" },
   "Name",
   "TripName",
   "Date",

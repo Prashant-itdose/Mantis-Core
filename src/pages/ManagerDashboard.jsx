@@ -34,6 +34,10 @@ import ManagerTotalPendingChart from "./ManagerTotalPendingChart";
 import { useDispatch } from "react-redux";
 import LandingVideoModal from "./LandingVideoModal";
 import { axiosInstances } from "../networkServices/axiosInstance";
+import DeveloperFreeHours from "./DeveloperFreeHours";
+import ManagerVsActualWorkingHour from "./ManagerVsActualWorkingHour";
+import PointwiseResolutionWeekWise from "./PointwiseResolutionWeekWise";
+import PointwiseResolutionDayWise from "./PointwiseResolutionDayWise";
 const ManagerDashboard = () => {
   const { memberID, developerSearchType, setToggleModal, ToggleModal } =
     useSelector((state) => state?.loadingSlice);
@@ -201,7 +205,7 @@ const ManagerDashboard = () => {
         RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
       })
       .then((res) => {
-        console.log("Circular_News",res)
+        console.log("Circular_News", res);
         const data = res?.data?.data;
         setNewsList(res?.data?.data);
         if (data.some((item) => item.IsView === 0)) {
@@ -860,7 +864,7 @@ const ManagerDashboard = () => {
             <div className="mainDashboardwrp">
               <div
                 className="mainBox1"
-                style={{ width: "100%", height: "153px" }}
+                style={{ width: "100%", height: "175px" }}
               >
                 <div className="d-flex flex-wrap mainHeader">
                   <label className="ml-2 mt-1">Ageing POC</label>
@@ -873,13 +877,73 @@ const ManagerDashboard = () => {
             <div className="mainDashboardwrp">
               <div
                 className="mainBox1"
-                style={{ width: "100%", height: "153px" }}
+                style={{ width: "100%", height: "175px" }}
               >
                 <div className="d-flex flex-wrap mainHeader">
                   <label className="ml-2 mt-1">
                     {t("Total Pending Balance")}
                   </label>
                   <ManagerTotalPendingChart />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-3 col-sm-12 mt-2">
+            <div className="mainDashboardwrp">
+              <div
+                className="mainBox1"
+                style={{ width: "100%", height: "175px" }}
+              >
+                <div className="d-flex flex-wrap mainHeader">
+                  <label className="ml-2 mt-1">
+                    {t("Developer Free ManMinutes")}
+                  </label>
+                  <DeveloperFreeHours />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-3 col-sm-12 mt-2">
+            <div className="mainDashboardwrp">
+              <div
+                className="mainBox1"
+                style={{ width: "100%", height: "175px" }}
+              >
+                <div className="d-flex flex-wrap mainHeader">
+                  <label className="ml-2 mt-1">
+                    {t("Manager ManMinutes Vs Developer ManMinutes")}
+                  </label>
+                  <ManagerVsActualWorkingHour />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-3 col-sm-12 mt-2">
+            <div className="mainDashboardwrp">
+              <div
+                className="mainBox1"
+                style={{ width: "100%", height: "175px" }}
+              >
+                <div className="d-flex flex-wrap mainHeader">
+                  <label className="ml-2 mt-1">
+                    {t("Tickets Resolution Daywise")}
+                  </label>
+                  <PointwiseResolutionDayWise />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-3 col-sm-12 mt-2">
+            <div className="mainDashboardwrp">
+              <div
+                className="mainBox1"
+                style={{ width: "100%", height: "175px" }}
+              >
+                <div className="d-flex flex-wrap mainHeader">
+                  <label className="ml-2 mt-1">
+                    {t("Tickets Resolution Weekwise")}
+                  </label>
+                  <PointwiseResolutionWeekWise />
                 </div>
               </div>
             </div>

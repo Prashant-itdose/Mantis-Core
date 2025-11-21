@@ -315,10 +315,6 @@ const ExpenseSubmission = () => {
       toast.error("Please Select Expense Type");
       return;
     }
-    // if (!formData?.SelectFile) {
-    //   toast.error("Please Choose File");
-    //   return;
-    // }
 
     const GeneralDetailsJson = [
       {
@@ -619,28 +615,6 @@ const ExpenseSubmission = () => {
     };
     axiosInstances
       .post(apiUrls.ManageExpense_Insert, payload)
-      // let form = new FormData();
-      // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-      // form.append(
-      //   "EmpID",
-      //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      // );
-      // form.append(
-      //   "LoginName",
-      //   useCryptoLocalStorage("user_Data", "get", "realname")
-      // );
-      // form.append("GeneralDetails", GeneralDetailsJson);
-      // form.append("LocalTravelExp", JSON.stringify(LocalTravelpayload));
-      // form.append("InterCityTravelExp", JSON.stringify(InterCityTravelpayload));
-      // form.append("ActionType", "Update");
-      // form.append(
-      //   "ExpenseTransID",
-      //   state?.givenData?.expense_report_ID || reportidd
-      // );
-      // form.append("Document_Base64", formData?.Document_Base64);
-      // form.append("Document_FormatType", formData?.FileExtension);
-      // axios
-      //   .post(apiUrls?.ManageExpense_Insert, form, { headers })
       .then((res) => {
         if (res?.data?.status === true) {
           toast.success(res?.data?.message);
@@ -648,23 +622,6 @@ const ExpenseSubmission = () => {
 
           setFormData((prev) => ({
             ...prev,
-            // ExpenseType: "",
-            // HotelAmount: "",
-            // HotelName: "",
-            // HotelDescription: "",
-            // BreakfastAmount: "",
-            // LunchAmount: "",
-            // DinnerAmount: "",
-            // MealDescription: "",
-            // PhoneAmount: "",
-            // PhoneDescription: "",
-            // EntertainmentAmount: "",
-            // EntertainmentDescription: "",
-            // OtherAmount: "",
-            // OtherDescription: "",
-            // SelectFile: "",
-            // Document_Base64: "",
-            // FileExtension: "",
             ExpenseType: "",
             EmployeeName: "",
             VerticalID: [],
@@ -734,10 +691,6 @@ const ExpenseSubmission = () => {
           ]);
 
           setRowHandler(rowConst);
-
-          // setTimeout(() => {
-          //   window.location.reload();
-          // }, 1000);
         } else {
           toast.error(res?.data?.message);
           setLoading(false);
@@ -935,15 +888,7 @@ const ExpenseSubmission = () => {
   };
 
   const hasCalledRef = useRef(false);
-  // useEffect(() => {
-  //   if (!hasCalledRef.current) {
-  //     const dateToCheck = state?.edit ? state?.data : formData?.FromDate;
-  //     if (dateToCheck) {
-  //       hasCalledRef.current = true;
-  //       handleIsExpenseExists(dateToCheck);
-  //     }
-  //   }
-  // }, [state, formData?.FromDate]);
+
   useEffect(() => {
     if (state?.edit && !hasCalledRef.current) {
       hasCalledRef.current = true;
@@ -958,15 +903,13 @@ const ExpenseSubmission = () => {
     }
   }, [formData?.FromDate]);
 
-  const isCurrentMonthSelected = () => {
+   const isCurrentMonthSelected = () => {
     const today = new Date();
     const currentMonth = today.getMonth() + 1; // months are 0-based
     const currentYear = today.getFullYear();
-
     // Previous month and year logic
     const prevMonth = currentMonth === 1 ? 12 : currentMonth - 1;
     const prevMonthYear = currentMonth === 1 ? currentYear - 1 : currentYear;
-
     const isCurrentMonth =
       formData.currentMonth === currentMonth &&
       formData.currentYear === currentYear;
@@ -974,6 +917,7 @@ const ExpenseSubmission = () => {
     const isPreviousMonth =
       formData.currentMonth === prevMonth &&
       formData.currentYear === prevMonthYear;
+
     // Check if today is within the first 5 days of the month
     const isWithinFirst5Days = today.getDate() <= 5;
     // Allow previous month only for first 5 days
@@ -2113,6 +2057,7 @@ const ExpenseSubmission = () => {
       <div className="card">
         <div className="row m-2 d-flex">
           <BrowseInput handleImageChange={handleImageChange} />
+<<<<<<< HEAD
 
 
           {/* {state?.edit && state?.givenData?.FileURLs ? (
@@ -2155,6 +2100,8 @@ const ExpenseSubmission = () => {
             </div>
           ) : null} */}
 
+=======
+>>>>>>> b95a713ced8b902a14804c7aa0167443b0315e94
           {state?.edit || checkdataa ? (
             <button
               className="btn btn-sm btn-info ml-2"
@@ -2171,7 +2118,7 @@ const ExpenseSubmission = () => {
               disabled={isCurrentMonthSelected() === false}
               title={
                 isCurrentMonthSelected() === false
-                  ? "Expense Submit only for current month"
+                  ? "Expenses can be submitted only on the 5th of the previous month"
                   : "Click to Submit Expense"
               }
             >

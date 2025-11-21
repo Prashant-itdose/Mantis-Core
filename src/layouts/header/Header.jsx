@@ -166,13 +166,7 @@ const Header = React.memo(() => {
   };
 
   const handleIssueSearch = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append("TicketID", formData?.issuesearch);
-    // axios
-    //   .post(apiUrls?.ViewTicket, form, {
-    //     headers,
-    //   })
+   
     axiosInstances
       .post(apiUrls.ViewTicket, {
         TicketID: Number(formData?.issuesearch),
@@ -222,31 +216,18 @@ const Header = React.memo(() => {
         roleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
       })
     );
-    // navigate("/dashboard");
+    
   }, []);
 
   const BindRoleWiseMenu = async (RoleID) => {
     dispatch(GetRoleListByEmployeeIDAndCentreID({ roleID: Number(RoleID) }));
-    // window.location.href = "/dashboard";
+ 
     navigate("/dashboard");
   };
   const { memberID } = useSelector((state) => state?.loadingSlice);
   const [project, setProject] = useState([]);
 
-  // const handleHeaderCount = () => {
-  //   let form = new FormData();
-  //   form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-  //     form.append("Title", "NotAssigned"),
-  //     // form.append("DeveloperID", memberID || 0),
-  //     axios
-  //       .post(apiUrls?.DevDashboard_Summary, form, { headers })
-  //       .then((res) => {
-  //         setHeaderCount(res?.data?.dtSummary[0]);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  // };
+
 
   const handleHeaderCount = () => {
     axiosInstances
@@ -654,70 +635,6 @@ const Header = React.memo(() => {
           </li>
         </ul>
         <ul className="navbar-nav ml-auto d-md-flex">
-          {/* {["lg", "md", "sm"].includes(screenSize) ? (
-            <div type="button" className="mr-2">
-              <ReactSelectHead
-                name="RoleID"
-                placeholderName="Role"
-                dynamicOptions={rolelist?.map((ele) => {
-                  return {
-                    label: ele?.RoleName,
-                    value: ele?.RoleID,
-                  };
-                })}
-                searchable={true}
-                value={formData?.RoleID}
-                handleChange={handleDeliveryChange}
-                respclass={
-                  ["lg", "md", "sm"].includes(screenSize)
-                    ? "width100px"
-                    : "width80px"
-                }
-                plcN="center"
-              />
-            </div>
-          ) : (
-            <div type="button" className="mr-0">
-              <ReactSelectHead
-                name="RoleID"
-                placeholderName="Role"
-                dynamicOptions={rolelist?.map((ele) => {
-                  return {
-                    label: ele?.RoleName,
-                    value: ele?.RoleID,
-                  };
-                })}
-                searchable={true}
-                value={formData?.RoleID}
-                handleChange={handleDeliveryChange}
-                respclass={
-                  ["lg", "md", "sm"].includes(screenSize)
-                    ? "width100px"
-                    : "width80px"
-                }
-                plcN="center"
-              />
-            </div>
-          )} */}
-          {/* <li className="nav-item savetheme d-none">
-            <div type="button" className="headerboxsize">
-              <Input
-                type="text"
-                className="form-control issuesearchcss"
-                id="issuesearch"
-                name="issuesearch"
-                lable={t("Search by TicketID")}
-                placeholder=" "
-                onChange={handleChange}
-                onKeyDown={handleKeyDown}
-                value={formData?.issuesearch}
-                respclass="col-sm-6 col-12 col-md-10"
-                style={{ marginLeft: "10px" }}
-                isTooltip={false}
-              />
-            </div>
-          </li> */}
-
           {RoleID == 7 ? (
             ""
           ) : (
@@ -753,7 +670,6 @@ const Header = React.memo(() => {
                     <span className="ml-2 mr-2">
                       Break Count:{" "}
                       <span style={{ color: "red" }}>
-                        {/* {attCount?.BreakCount ? attCount?.BreakCount : "0"} */}
                         {new Date().getHours() < 21
                           ? attCount?.BreakCount ?? "0"
                           : "0"}
@@ -785,27 +701,10 @@ const Header = React.memo(() => {
                       {attCount?.WorkingHours ? attCount?.WorkingHours : "0:00"}
                     </span>
                     <span style={{ color: "red", marginLeft: "10px" }}>
-                      {/* {attCount?.BreakCount ? attCount?.BreakCount : "0"} */}
                       {new Date().getHours() < 21
                         ? attCount?.BreakCount ?? "0"
                         : "0"}
                     </span>
-
-                    {/* <span className="ml-1">
-                      WH:{" "}
-                      <span style={{ color: "green" }}>
-                        {attCount?.WorkingHours
-                          ? attCount?.WorkingHours
-                          : "0:00"}
-                      </span>
-                    </span> */}
-                    {/* <span className="ml-1 mr-1">
-                      BC:{" "}
-                      <span style={{ color: "red" }}>
-                        {" "}
-                        {attCount?.BreakCount ? attCount?.BreakCount : "0"}
-                      </span>
-                    </span> */}
                   </div>
                 )}
               </li>
@@ -910,11 +809,7 @@ const Header = React.memo(() => {
             </li>
           )}
 
-          {/* <li className="nav-item d-md-none">
-            <div type="button">
-              <SubMenuDropdown />
-            </div>
-          </li> */}
+        
           <li className="nav-item position-relative  d-md-flex mr-1">
             <Themedropdown />
           </li>
@@ -961,7 +856,6 @@ const Header = React.memo(() => {
                 type="button"
                 className="nav-link"
                 title="Click to Logout"
-                // onClick={logOut}
                 onClick={() => {
                   setVisible({ logoutVisible: true });
                 }}
@@ -975,7 +869,6 @@ const Header = React.memo(() => {
                 type="button"
                 className="nav-link"
                 title="Click to Logout"
-                // onClick={logOut}
                 onClick={() => {
                   setVisible({ logoutVisible: true });
                 }}

@@ -258,14 +258,7 @@ const CoordinatorDashboard = () => {
 
   const handleMultiChart = (value, developerId, searchType) => {
     const lotus = moment(value).format("YYYY-MM-DD");
-    // console.log("check lotus", lotus);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("dtFrom", lotus),
-    //   form.append("DeveloperID", developerId);
-    // form.append("SearchType", searchType === "" ? "0" : searchType);
-    // axios
-    //   .post(apiUrls?.CoorDashboard_Quotation_Month, form, { headers })
+
     const payload = {
       dtFrom: String(lotus || ""),
       DeveloperID: Number(developerId || ""),
@@ -357,36 +350,13 @@ const CoordinatorDashboard = () => {
     //   return;
     // }
     setLoading(true);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ToEmployeeID", item1),
-    //   form.append("ToEmployeeName", item2),
-    //   form.append("ToEMailID", String(item3).toLowerCase()),
-    //   form.append("WishesType", item4),
-    //   form.append(
-    //     "Subject",
-    //     `Greeting from ${useCryptoLocalStorage("user_Data", "get", "realname")}`
-    //   ),
-    //   form.append("SearchType", "WishesInsert"),
-    //   form.append("dtBirthday", item5),
-    //   form.append(
-    //     "Message",
-    //     item4 == "Birthday" ? "Happy Birthday!" : "Happy Work Anniversary!"
-    //   ),
-    //   axios
-    //     .post(apiUrls?.Birthday_Anniversary_Interface_Search, form, {
-    //       headers,
-    //     })
+
     axiosInstances
       .post(apiUrls.Birthday_Anniversary_Interface_Search, {
         searchType: String("WishesInsert"),
       })
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           setIsClicked(true);
           handleHeightOfBirthDaycardApi();
@@ -402,12 +372,6 @@ const CoordinatorDashboard = () => {
       });
   };
   const handleCircularRead = (eleid) => {
-    // console.log("gata",ele)
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("CircularUserID", eleid),
-    //   axios
-    //     .post(apiUrls?.Circular_Read, form, { headers })
     axiosInstances
       .post(apiUrls.GetTeamMember, {
         ID: Number(useCryptoLocalStorage("user_Data", "get", "ID")),

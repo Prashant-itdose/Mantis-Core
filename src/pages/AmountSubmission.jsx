@@ -152,7 +152,8 @@ const AmountSubmission = ({ data }) => {
         const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
         const excelBuffer = XLSX.write(wb, {
           bookType: "xlsx",
-          type: "array",s
+          type: "array",
+          s,
         });
         const data = new Blob([excelBuffer], { type: fileType });
         // Save the file with the title as username and current date
@@ -305,8 +306,6 @@ const AmountSubmission = ({ data }) => {
     t("Bank Name"),
     t("Cheque Number"),
     t("Cheque Date"),
-    // t("Deposite Date"),
-    // t("Deposite By"),
     t("Remarks"),
     t("Entry By"),
     t("Entry Date"),
@@ -356,41 +355,6 @@ const AmountSubmission = ({ data }) => {
     axiosInstances
       .post(apiUrls.AmountSubmission_ByAccounts, payload)
 
-      // let form = new FormData();
-
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("ProjectID", formData?.Project),
-      //   form.append("ProjectName", getlabel(formData?.Project, project)),
-      //   form.append("ReceivedDate", formatDate(formData?.ReceiveDate)),
-      //   form.append(
-      //     "ReceivedBy",
-      //     formData?.ReceivedBy ? formData?.ReceivedBy : ""
-      //   ),
-      //   form.append("PaymentMode", formData?.PaymentMode),
-      //   form.append("Amount", formData?.Amount),
-      //   form.append(
-      //     "BankName",
-      //     formData?.PaymentMode == "NEFT"
-      //       ? formData?.BankNeft
-      //       : formData?.BankName
-      //   );
-      // form.append("ChequeNo", formData?.ChequeNumber),
-      //   form.append("RecoveryTeam", formData?.RecoveryTeam),
-      //   form.append(
-      //     "ChequeDate",
-      //     moment(formData?.ChequeDate).format("YYYY-MM-DD")
-      //   ),
-      //   form.append("UtrNo", formData?.UTRNO ? formData?.UTRNO : ""),
-      //   form.append("Remark", formData?.Remarks),
-      //   form.append("VoucherNo", formData?.VoucherNo ? formData?.VoucherNo : ""),
-      //   form.append("Document_Base64", formData?.Document_Base64),
-      //   form.append("Document_FormatType", formData?.FileExtension),
-      //   axios
-      //     .post(apiUrls?.AmountSubmission_ByAccounts, form, { headers })
       .then((res) => {
         if (res?.data?.success == true) {
           toast.success(res?.data?.message);
@@ -447,7 +411,7 @@ const AmountSubmission = ({ data }) => {
           FileExtension: fileExtension,
         });
       };
-      reader.readAsDataURL(file); // Convert file to base64
+      reader.readAsDataURL(file); 
     }
   };
 

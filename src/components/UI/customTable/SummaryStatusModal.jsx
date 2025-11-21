@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import axios from "axios";
-import { headers } from "../../../utils/apitools";
+
 import { apiUrls } from "../../../networkServices/apiEndpoints";
 import Loading from "../../loader/Loading";
-import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorage";
 import { axiosInstances } from "../../../networkServices/axiosInstance";
 const SummaryStatusModal = ({ visible, setVisible }) => {
   const [formData, setFormData] = useState({
@@ -31,14 +29,7 @@ const SummaryStatusModal = ({ visible, setVisible }) => {
         ReOpenReasonID: "",
         ReOpenReason: "",
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-      //   form.append("TicketIDs", visible?.ele?.TicketID),
-      //   form.append("ActionText", "Summary"),
-      //   form.append("Summary", formData?.summary),
-      //   axios
-      //     .post(apiUrls?.ApplyAction, form, { headers })
+
       .then((res) => {
         if (res?.success === true) {
           toast.success(res?.data?.Success?.Success);

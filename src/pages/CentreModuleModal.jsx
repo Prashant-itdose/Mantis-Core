@@ -34,15 +34,6 @@ const CentreModuleModal = ({ data }) => {
 
   const handleAdd = () => {
     setLoading(true);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID")),
-    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname") ),
-    //   form.append("ProjectID", data?.Id || data?.ProjectID),
-    //   form.append("Centre", formData?.CentreName),
-    //   form.append("ActionType", "InsertCentre"),
-    //   axios
-    //     .post(apiUrls?.ProjectMasterUpdate, form, { headers })
 
     axiosInstances
       .post(apiUrls?.ProjectMasterUpdate, {
@@ -63,17 +54,6 @@ const CentreModuleModal = ({ data }) => {
   };
 
   const handleSearch = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ProjectName", data?.NAME || data?.ProjectName);
-    // form.append("ProjectID", data?.Id || data?.ProjectID);
-    // form.append("Title", "Centre");
-    // axios
-    //   .post(apiUrls?.getViewProject, form, { headers })
     axiosInstances
       .post(apiUrls?.getViewProject, {
         RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
@@ -95,22 +75,7 @@ const CentreModuleModal = ({ data }) => {
 
   const handleUpdate = () => {
     setLoading(true);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ProjectID", data?.Id || data?.ProjectID),
-    //   form.append("Centre", formData?.CentreName),
-    //   form.append("CentreID", formData?.CentreID),
-    //   form.append("ActionType", "UpdateCentre"),
-    //   axios
-    //     .post(apiUrls?.ProjectMasterUpdate, form, { headers })
+
     axiosInstances;
     post(apiUrls?.ProjectMasterUpdate, {
       ProjectID: data?.Id || data?.ProjectID,
@@ -131,7 +96,6 @@ const CentreModuleModal = ({ data }) => {
   };
 
   const handleBillingEdit = (ele) => {
-    // console.log("editdetails", ele);
     setFormData({
       ...formData,
       CentreName: ele?.Centre,

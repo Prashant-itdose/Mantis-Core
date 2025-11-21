@@ -36,16 +36,8 @@ const AgeingSheet = () => {
   const [poc3, setPoc3] = useState([]);
 
   const getProject = () => {
-    // let form = new FormData();
-    // form.append("ID",  useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-    //   axios
-    //     .post(apiUrls?.ProjectSelect, form, { headers })
     axiosInstances
-      .post(apiUrls.ProjectSelect, {
-        Id: useCryptoLocalStorage("user_Data", "get", "ID"),
-        LoginName: useCryptoLocalStorage("user_Data", "get", "realname"),
-      })
+      .post(apiUrls.ProjectSelect, {})
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return { name: item?.Project, code: item?.ProjectId };
@@ -58,14 +50,8 @@ const AgeingSheet = () => {
   };
 
   const getVertical = () => {
-    // let form = new FormData();
-    // form.append("Id",  useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Vertical_Select, form, { headers })
     axiosInstances
-      .post(apiUrls.Vertical_Select, {
-        Id: useCryptoLocalStorage("user_Data", "get", "ID"),
-      })
+      .post(apiUrls.Vertical_Select, {})
       .then((res) => {
         const verticals = res?.data.data.map((item) => {
           return { name: item?.Vertical, code: item?.VerticalID };
@@ -78,14 +64,8 @@ const AgeingSheet = () => {
   };
 
   const getTeam = () => {
-    // let form = new FormData();
-    // form.append("ID",  useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Team_Select, form, { headers })
     axiosInstances
-      .post(apiUrls.Team_Select, {
-        Id: useCryptoLocalStorage("user_Data", "get", "ID"),
-      })
+      .post(apiUrls.Team_Select, {})
       .then((res) => {
         const teams = res?.data.data.map((item) => {
           return { name: item?.Team, code: item?.TeamID };
@@ -98,14 +78,8 @@ const AgeingSheet = () => {
   };
 
   const getWing = () => {
-    // let form = new FormData();
-    // form.append("ID",  useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Wing_Select, form, { headers })
     axiosInstances
-      .post(apiUrls.Wing_Select, {
-        Id: useCryptoLocalStorage("user_Data", "get", "ID"),
-      })
+      .post(apiUrls.Wing_Select, {})
       .then((res) => {
         const wings = res?.data.data.map((item) => {
           return { name: item?.Wing, code: item?.WingID };
@@ -118,14 +92,8 @@ const AgeingSheet = () => {
   };
 
   const getPOC1 = () => {
-    // let form = new FormData();
-    // form.append("ID",  useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.POC_1_Select, form, { headers })
     axiosInstances
-      .post(apiUrls.POC_1_Select, {
-        Id: useCryptoLocalStorage("user_Data", "get", "ID"),
-      })
+      .post(apiUrls.POC_1_Select, {})
       .then((res) => {
         const poc1s = res?.data.data.map((item) => {
           return { name: item?.POC_1_Name, code: item?.POC_1_ID };
@@ -138,14 +106,8 @@ const AgeingSheet = () => {
   };
 
   const getPOC2 = () => {
-    // let form = new FormData();
-    // form.append("ID",  useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.POC_2_Select, form, { headers })
     axiosInstances
-      .post(apiUrls.POC_2_Select, {
-        Id: useCryptoLocalStorage("user_Data", "get", "ID"),
-      })
+      .post(apiUrls.POC_2_Select, {})
       .then((res) => {
         const poc2s = res?.data.data.map((item) => {
           return { name: item?.POC_2_Name, code: item?.POC_2_ID };
@@ -158,14 +120,8 @@ const AgeingSheet = () => {
   };
 
   const getPOC3 = () => {
-    // let form = new FormData();
-    // form.append("ID",  useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.POC_3_Select, form, { headers })
     axiosInstances
-      .post(apiUrls.POC_3_Select, {
-        Id: useCryptoLocalStorage("user_Data", "get", "ID"),
-      })
+      .post(apiUrls.POC_3_Select, {})
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return { name: item?.POC_3_Name, code: item?.POC_3_ID };
@@ -195,20 +151,7 @@ const AgeingSheet = () => {
 
   const handleSearch = () => {
     setLoading(true);
-    // let form = new FormData();
-    // form.append("ID",  useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-    //   form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID")),
-    //   form.append("ProjectID", formData.ProjectID),
-    //   form.append("VerticalID", formData.VerticalID),
-    //   form.append("TeamID", formData.TeamID),
-    //   form.append("WingID", formData.WingID),
-    //   form.append("POC1", formData.POC1),
-    //   form.append("POC2", formData.POC2),
-    //   form.append("POC3", formData.POC3),
-    //   form.append("GroupBy", formData.GroupBy),
-    //   axios
-    //     .post(apiUrls?.MantisSummary_Search, form, { headers })
+
     axiosInstances
       .post(apiUrls.MantisSummary_Search, {
         ID: 0,
@@ -218,7 +161,9 @@ const AgeingSheet = () => {
         ToDate: new Date().toISOString(),
 
         ProjectIDs: formData?.ProjectID?.length ? [...formData.ProjectID] : [0],
-        VerticalIDs: formData?.VerticalID?.length ? [...formData.VerticalID] : [0],
+        VerticalIDs: formData?.VerticalID?.length
+          ? [...formData.VerticalID]
+          : [0],
         TeamIDs: formData?.TeamID?.length ? [...formData.TeamID] : [0],
         WingIDs: formData?.WingID?.length ? [...formData.WingID] : [0],
         POC1s: formData?.POC1?.length ? [...formData.POC1] : [0],
@@ -226,7 +171,6 @@ const AgeingSheet = () => {
         POC3s: formData?.POC3?.length ? [...formData.POC3] : [0],
 
         DeveloperID: formData?.DeveloperID || 0,
-
       })
       .then((res) => {
         setTableData(res?.data?.dtAgeing);

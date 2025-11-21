@@ -22,39 +22,27 @@ const FeedbackGmailModal = (showData) => {
     setLoading(true);
     axiosInstances
       .post(apiUrls.ResendFeedbackMail, {
-  "FeedbackID": Number(showData?.visible?.showData?.FeedbackID),
-  "ProjectID": Number(showData?.visible?.showData?.ProjectID),
-  "ProjectName": String(showData?.visible?.showData?.ProjectName),
-  "ToEmailID":  String(formData?.Gmail),
-  "Content": String(showData?.visible?.showData?.Content)
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("FeedbackID", showData?.visible?.showData?.FeedbackID),
-    //   form.append("ProjectID", showData?.visible?.showData?.ProjectID),
-    //   form.append("ProjectName", showData?.visible?.showData?.ProjectName),
-    //   form.append("ToEmailID", formData?.Gmail),
-    //   form.append("Content", showData?.visible?.showData?.Content),
-    //   axios
-    //     .post(apiUrls?.ResendFeedbackMail, form, { headers })
-        .then((res) => {
-          if (res?.data?.success === true) {
-            toast.success(res?.data?.message);
-            showData?.setVisible(false);
-            showData?.handleSearchFeedback();
-            setLoading(false);
-          } else {
-            toast.error(res?.data?.message);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        FeedbackID: Number(showData?.visible?.showData?.FeedbackID),
+        ProjectID: Number(showData?.visible?.showData?.ProjectID),
+        ProjectName: String(showData?.visible?.showData?.ProjectName),
+        ToEmailID: String(formData?.Gmail),
+        Content: String(showData?.visible?.showData?.Content),
+      })
+
+      .then((res) => {
+        if (res?.data?.success === true) {
+          toast.success(res?.data?.message);
+          showData?.setVisible(false);
+          showData?.handleSearchFeedback();
+          setLoading(false);
+        } else {
+          toast.error(res?.data?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleChange = (e) => {

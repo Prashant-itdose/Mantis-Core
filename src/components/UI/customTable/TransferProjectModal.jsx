@@ -22,10 +22,6 @@ const TransferProjectModal = ({ tableData, userData, setVisible }) => {
     TargetUser: null,
   });
   const getReporter = () => {
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.GetUserName, form, { headers })
     axiosInstances
       .post(apiUrls.GetUserName, {
         Username: String(""),
@@ -41,10 +37,6 @@ const TransferProjectModal = ({ tableData, userData, setVisible }) => {
       });
   };
   const getTargetReporter = () => {
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.GetUserName, form, { headers })
     axiosInstances
       .post(apiUrls.GetUserName, {
         Username: "",
