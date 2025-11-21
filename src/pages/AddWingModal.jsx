@@ -53,17 +53,6 @@ const AddWingModal = (ele) => {
 
   const handleADD = () => {
     setLoading(true);
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("UserID", ele?.visible?.showData?.id),
-    //   form.append("Status", "Add"),
-    //   form.append("WingID", formData?.Wing),
-    //   axios
-    //     .post(apiUrls?.UserVsWingMapping, form, { headers })
     axiosInstances
       .post(apiUrls?.UserVsWingMapping, {
         EmployeeId: Number(ele?.visible?.showData?.id),
@@ -82,17 +71,6 @@ const AddWingModal = (ele) => {
   };
   const handleRemove = (item) => {
     setLoading(true);
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("UserID", ele?.visible?.showData?.id),
-    //   form.append("Status", "Remove"),
-    //   form.append("WingID", item?.WingID),
-    //   axios
-    //     .post(apiUrls?.UserVsWingMapping, form, { headers })
     axiosInstances
       .post(apiUrls?.UserVsWingMapping, {
         EmployeeId: Number(ele?.visible?.showData?.id),

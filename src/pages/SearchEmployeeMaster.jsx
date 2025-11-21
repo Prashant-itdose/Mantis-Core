@@ -69,6 +69,7 @@ const SearchEmployeeMaster = () => {
     AssignTo: "",
     Dashboard: "",
     ImageSignature: "",
+    BloodGroup: "",
   });
 
   /////////////////////////////////
@@ -273,7 +274,6 @@ const SearchEmployeeMaster = () => {
     });
   };
   const handleDeliveryChange = (name, e) => {
-
     const { value } = e;
     setFormData({
       ...formData,
@@ -350,28 +350,7 @@ const SearchEmployeeMaster = () => {
       toast.error("Please select atleast one searching criteria.");
     } else {
       setLoading(true);
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-      // form.append(
-      //   "LoginName",
-      //   useCryptoLocalStorage("user_Data", "get", "realname")
-      // );
-      // form.append("EmployeeName", formData?.EmployeeName);
-      // form.append("IsActive", formData?.Status);
-      // form.append("MobileNo", formData?.MobileNo);
-      // form.append("EmailID", formData?.Email);
-      // form.append("RoleID", formData?.Role);
-      // form.append("CategoryID", formData?.Category);
-      // form.append("ProjectID", formData?.ProjectID);
-      // form.append("TeamID", formData?.TeamID);
-      // form.append("WingID", formData?.WingID);
-      // form.append("VerticalID", formData?.VerticalID);
-      // form.append("rowColor", code ? code : 0);
 
-      // axios
-      //   .post(apiUrls?.SearchEmployee_Name, form, {
-      //     headers,
-      //   })
       axiosInstances
         .post(apiUrls?.SearchEmployee_Name, {
           EmployeeName: String(formData?.EmployeeName || ""),
@@ -384,6 +363,7 @@ const SearchEmployeeMaster = () => {
           TeamID: String(formData?.TeamID || "0"),
           WingID: String(formData?.WingID || "0"),
           VerticalID: String(formData?.VerticalID || "0"),
+          BloodGroup: String(formData?.BloodGroup || "0"),
           rowColor: String(code ? code : 0 || "0"),
         })
         .then((res) => {
@@ -1053,6 +1033,25 @@ const SearchEmployeeMaster = () => {
               }))}
             />
           )}
+          <ReactSelect
+            name="BloodGroup"
+            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+            placeholderName="Blood Group"
+            searchable={true}
+            dynamicOptions={[
+              { label: "Select", value: "0" },
+              { label: "A+", value: "A+" },
+              { label: "A-", value: "A-" },
+              { label: "B+", value: "B+" },
+              { label: "B-", value: "B-" },
+              { label: "AB+", value: "AB+" },
+              { label: "AB-", value: "AB-" },
+              { label: "O+", value: "O+" },
+              { label: "O-", value: "O-" },
+            ]}
+            value={formData?.BloodGroup}
+            handleChange={handleDeliveryChange}
+          />
           {isVisible("Status") && (
             <ReactSelect
               name="Status"
@@ -1173,6 +1172,7 @@ const SearchEmployeeMaster = () => {
               MantisID: ele?.CrmEmployeeID,
               "User Name": ele?.username,
               "Real Name": ele?.realname,
+              "BloodGroup": ele?.BloodGroup,
               Email: ele?.email,
               Address: ele?.Address,
               "Mobile No.": ele?.mobileno,

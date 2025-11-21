@@ -35,14 +35,7 @@ const ClientFeedbackSaleChart = () => {
   const [chartRawData, setChartRawData] = useState([]);
 
   const fetchSalesData = () => {
-    // let form = new FormData();
-    // form.append("Month", currentMonth);
-    // form.append("Year", currentYear);
-
-    // axios
-    //   .post(apiUrls?.ClientFeedbackStatsGraph, form, {
-    //     headers,
-    //   })
+   
     axiosInstances
       .post(apiUrls.ClientFeedbackStatsGraph, {
         Month: currentMonth,

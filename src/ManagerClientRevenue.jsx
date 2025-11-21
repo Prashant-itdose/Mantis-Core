@@ -17,12 +17,7 @@ function ManagerClientRevenue({ selectedDate, memberID }) {
 
   useEffect(() => {
     const datefrom = moment(selectedDate).format("YYYY-MM-DD");
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-
-    // Replace with actual API if different from the original
-    // axios
-    //   .post(apiUrls?.ManagerDashboard_Top_Client_Amount, form, { headers })
+  
     axiosInstances
       .post(apiUrls?.ManagerDashboard_Top_Client_Amount, {
         DeveloperID: String(useCryptoLocalStorage("user_Data", "get", "ID")),

@@ -24,10 +24,7 @@ const DocumentTypeModal = ({ tableData, setVisible }) => {
   const fileInputRef = useRef(null);
 
   const getType = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // axios
-    //   .post(apiUrls?.DocumentType_Select, form, { headers })
+  
        axiosInstances
           .post(apiUrls.DocumentType_Select, {
         ID: useCryptoLocalStorage("user_Data", "get", "ID"),

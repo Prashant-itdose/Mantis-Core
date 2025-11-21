@@ -64,6 +64,7 @@ const SalesBooking = ({ data }) => {
     ShippingGST: "",
     Sales: "",
     ShippingPanCard: "",
+    LiveDate: "",
   });
   const getState = (value) => {
     // let form = new FormData();
@@ -550,7 +551,7 @@ const SalesBooking = ({ data }) => {
     // })
     let payload = [];
     tableData?.map((val, index) => {
-      console.log("valllll", val);
+      // console.log("valllll", val);
       payload.push({
         Installment_No: String(index),
         Remark: String(val?.Remark),
@@ -560,6 +561,9 @@ const SalesBooking = ({ data }) => {
           : "1970-01-01",
         LiveDate: val?.LiveDate
           ? moment(val?.LiveDate).format("YYYY-MM-DD")
+          : "1970-01-01",
+        EndDate: val?.EndDate
+          ? moment(val?.EndDate).format("YYYY-MM-DD")
           : "1970-01-01",
         ItemID: Number(val?.ItemID),
         // ItemID: Number(val?.service?.value),
@@ -696,6 +700,9 @@ const SalesBooking = ({ data }) => {
         LiveDate: val?.LiveDate
           ? moment(val?.LiveDate).format("YYYY-MM-DD")
           : "1970-01-01",
+        EndDate: val?.EndDate
+          ? moment(val?.EndDate).format("YYYY-MM-DD")
+          : "1970-01-01",
         ItemID: Number(val?.service?.value),
         ItemName: String(val?.service?.label),
         SAC: String(""),
@@ -826,6 +833,7 @@ const SalesBooking = ({ data }) => {
           //   ShippingState: "",
           //   ShippingGST: "",
           //   Sales: "",
+          //LiveDate:"",
           //   ShippingPanCard: "",
           // });
         } else {
@@ -969,13 +977,25 @@ const SalesBooking = ({ data }) => {
           Project: res?.data?.data?.data[0]?.ProjectID,
           Items: res?.data?.data?.dataDetail[0]?.ItemID,
           ItemName: res?.data?.data?.dataDetail[0]?.ItemName,
-          ExpectedDate: res?.data?.data?.dataDetail[0]?.ExpectedDate,
-          EndDate: res?.data?.data?.dataDetail[0]?.EndDate,
+          // ExpectedDate: res?.data?.data?.dataDetail[0]?.ExpectedDate,
+          // EndDate: res?.data?.data?.dataDetail[0]?.EndDate,
           TaxAmount: res?.data?.data?.dataDetail[0]?.TaxAmount,
           DiscountAmount: res?.data?.data?.dataDetail[0]?.DiscountAmount,
           Payment_Installment_ID: res?.data?.data?.data[0]?.ID,
           PoNumber: res?.data?.data?.data[0]?.PoNo,
           SalesDate: new Date(res?.data?.data?.data[0]?.dtSales),
+          ExpectedDate:
+            res?.data?.dataDetail[0]?.ExpectedDate == "01-Jan-1970"
+              ? ""
+              : res?.data?.dataDetail[0]?.ExpectedDate,
+          LiveDate:
+            res?.data?.dataDetail[0]?.LiveDate == "01-Jan-1970"
+              ? ""
+              : res?.data?.dataDetail[0]?.LiveDate,
+          EndDate:
+            res?.data?.dataDetail[0]?.EndDate == "01-Jan-1970"
+              ? ""
+              : res?.data?.dataDetail[0]?.EndDate,
           // ExpiryDate: res?.data?.data?.data[0]?.dtExpiry,
           ExpiryDate: new Date(res?.data?.data?.data[0]?.dtExpiry),
           BillingCompany: res?.data?.data?.data[0]?.BillingCompanyID,
@@ -990,7 +1010,11 @@ const SalesBooking = ({ data }) => {
         const updatedData = res?.data?.data?.dataDetail.map((ele) => ({
           ...ele,
           label: ele?.service?.label || "",
-          ExpectedDate: ele?.ExpectedDate,
+          // ExpectedDate: ele?.ExpectedDate,
+          ExpectedDate:
+            ele?.ExpectedDate == "01-Jan-1970" ? "" : ele?.ExpectedDate,
+          LiveDate: ele?.LiveDate == "01-Jan-1970" ? "" : ele?.LiveDate,
+          EndDate: ele?.EndDate == "01-Jan-1970" ? "" : ele?.EndDate,
           TaxPercent: ele?.TaxPrecentage,
           Discount: ele?.DiscountAmount,
           DiscountPercent: ele?.DiscountPercent,
@@ -1139,7 +1163,6 @@ const SalesBooking = ({ data }) => {
             requiredClassName={"required-fields"}
           />
 
-       
           {state?.edit ? (
             <div className="col-xl-8 col-md-4 col-sm-6 col-12">
               <span style={{ fontWeight: "bold" }}>CreatedBy</span>:&nbsp;
@@ -1612,6 +1635,42 @@ const SalesBooking = ({ data }) => {
                   </div>
                 </>
               ),
+              "Live Date":
+                state?.edit === true ? (
+                  <div className="mt-2">
+                    <DatePicker
+                      className="custom-calendar"
+                      id="LiveDate"
+                      name="LiveDate"
+                      lable="Live Date"
+                      placeholder={VITE_DATE_FORMAT}
+                      value={new Date(ele?.LiveDate)}
+                      // selected={ele?.LiveDate ? new Date(ele?.LiveDate) : null}
+                      respclass="width80px"
+                      handleChange={(e) => searchHandleChange(e, index)}
+                    />
+                  </div>
+                ) : (
+                  (formData.Items.value === 329 ||
+                    formData.Items.value === 344 ||
+                    formData.Items.value === 351) && (
+                    <>
+                      <div className="mt-2">
+                        <DatePicker
+                          className="custom-calendar"
+                          id="LiveDate"
+                          name="LiveDate"
+                          lable="Live Date"
+                          placeholder={VITE_DATE_FORMAT}
+                          value={new Date(ele?.LiveDate)}
+                          // selected={ele?.LiveDate ? new Date(ele?.LiveDate) : null}
+                          respclass="width80px"
+                          handleChange={(e) => searchHandleChange(e, index)}
+                        />
+                      </div>
+                    </>
+                  )
+                ),
               "End Date": (ele?.service?.label === "AMC" ||
                 ele?.service?.label === "Saas") && (
                 <>

@@ -157,24 +157,17 @@ const AttendanceReport = () => {
     //   return;
     // }
 
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    form.append(
-      "LoginName",
-      useCryptoLocalStorage("user_Data", "get", "realname")
-    );
-    form.append("Month", formData?.currentMonth);
-    form.append("Year", formData?.currentYear);
-    form.append(
-      "EmployeeID",
-      formData?.EmployeeName?.length > 0 ? formData.EmployeeName : ""
-    );
-    form.append("Team", getlabel(formData?.TeamID, team) || "");
-    form.append("SubTeam", formData?.SubTeamID || "");
-    form.append("ReportType", "Export");
-
-    axios
-      .post(apiUrls?.Attendence_Report, form, { headers })
+    axiosInstances
+      .post(apiUrls.Attendence_Report, {
+        Month: String(formData?.currentMonth),
+        Year: String(formData?.currentYear),
+        EmployeeID: String(
+          formData?.EmployeeName?.length > 0 ? formData.EmployeeName : ""
+        ),
+        Team: String(getlabel(formData?.TeamID, team) || ""),
+        SubTeam: String(formData?.SubTeamID),
+        ReportType: String("Export"),
+      })
       .then((res) => {
         const htmlTable = res?.data;
 
@@ -216,24 +209,17 @@ const AttendanceReport = () => {
       });
   };
   const handleExportEmployee = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    form.append(
-      "LoginName",
-      useCryptoLocalStorage("user_Data", "get", "realname")
-    );
-    form.append("Month", formData?.currentMonth);
-    form.append("Year", formData?.currentYear);
-    form.append(
-      "EmployeeID",
-      Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID"))
-    );
-    form.append("Team", "");
-    form.append("SubTeam", "");
-    form.append("ReportType", "Export");
-
-    axios
-      .post(apiUrls?.Attendence_Report, form, { headers })
+    axiosInstances
+      .post(apiUrls.Attendence_Report, {
+        Month: String(formData?.currentMonth),
+        Year: String(formData?.currentYear),
+        EmployeeID: String(
+          Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID"))
+        ),
+        Team: String(""),
+        SubTeam: String(""),
+        ReportType: String("Export"),
+      })
       .then((res) => {
         const htmlTable = res?.data;
 
@@ -275,172 +261,6 @@ const AttendanceReport = () => {
       });
   };
 
-  const handleLeaveExport = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    form.append(
-      "LoginName",
-      useCryptoLocalStorage("user_Data", "get", "realname")
-    );
-    form.append("Month", formData?.currentMonth);
-    form.append("Year", formData?.currentYear);
-    form.append(
-      "EmployeeID",
-      formData?.EmployeeName?.length > 0 ? formData.EmployeeName : ""
-    );
-    form.append("Team", getlabel(formData?.TeamID, team) || "");
-    form.append("SubTeam", formData?.SubTeamID || "");
-    form.append("ReportType", "Export");
-
-    axios
-      .post(apiUrls?.MonthWiseAttendanceReoprt, form, { headers })
-      .then(async (res) => {
-        const responseData = res?.data;
-
-        // Check if it's HTML or JSON
-        if (
-          typeof responseData === "string" &&
-          responseData.includes("<table")
-        ) {
-          // HTML table export
-          const blob = new Blob([responseData], {
-            type: "application/vnd.ms-excel",
-          });
-
-          const monthIndex = parseInt(formData?.currentMonth, 10) - 1;
-          const shortMonth = [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-          ][monthIndex];
-
-          const fileName = `MyLeaveReport_${shortMonth}_${formData?.currentYear}.xls`;
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = fileName;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          window.URL.revokeObjectURL(url);
-        } else if (Array.isArray(responseData?.data)) {
-          // JSON data export using ExcelJS
-          const workbook = new ExcelJS.Workbook();
-          const worksheet = workbook.addWorksheet("Leave Report");
-
-          const jsonData = responseData.data;
-
-          if (jsonData.length === 0) {
-            toast.warn("No data found to export.");
-            return;
-          }
-
-          // Get headers from keys
-          const columns = Object.keys(jsonData[0]).map((key) => ({
-            header: key,
-            key: key,
-            width: 20,
-          }));
-
-          worksheet.columns = columns;
-          worksheet.addRows(jsonData);
-
-          const buffer = await workbook.xlsx.writeBuffer();
-          const shortMonth = [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-          ][parseInt(formData?.currentMonth, 10) - 1];
-
-          const fileName = `MyLeaveReport_${shortMonth}_${formData?.currentYear}.xlsx`;
-          saveAs(new Blob([buffer]), fileName);
-        } else {
-          toast.error("Unexpected data format from server.");
-        }
-      })
-      .catch((err) => {
-        console.error("Export error:", err);
-        toast.error("Export failed. Try again.");
-      });
-  };
-
-  const handleLeaveExportEmployee = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    form.append(
-      "LoginName",
-      useCryptoLocalStorage("user_Data", "get", "realname")
-    );
-    form.append("Month", formData?.currentMonth);
-    form.append("Year", formData?.currentYear);
-    form.append(
-      "EmployeeID",
-      Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID"))
-    );
-    form.append("Team", "");
-    form.append("SubTeam", "");
-    form.append("ReportType", "Export");
-
-    axios
-      .post(apiUrls?.MonthWiseAttendanceReoprt, form, { headers })
-      .then((res) => {
-        const htmlTable = res?.data;
-
-        // Get 3-letter month name
-        const monthIndex = parseInt(formData?.currentMonth, 10) - 1;
-        const shortMonth = [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
-        ][monthIndex];
-
-        // const fileName = `MyLeaveReport_${formData?.currentMonth}_${shortMonth}_${formData?.currentYear}.xls`;
-        const fileName = `MyLeaveReport_${shortMonth}_${formData?.currentYear}.xls`;
-        const blob = new Blob([htmlTable], {
-          type: "application/vnd.ms-excel",
-        });
-
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = fileName;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      })
-      .catch((err) => {
-        console.log("Export error:", err);
-        toast.error("Export failed. Try again.");
-      });
-  };
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5;
   const totalPages = Math.ceil(filteredData?.length / rowsPerPage);
@@ -524,25 +344,6 @@ const AttendanceReport = () => {
     const dynamicHeader = getAttendanceHeader(selectedMonth, selectedYear);
     setAttendanceTHEAD(dynamicHeader); // 👈 set header
 
-    // 2️⃣ Prepare form data
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append(
-    //   "LoginName",
-    //   useCryptoLocalStorage("user_Data", "get", "realname")
-    // );
-    // form.append("Month", selectedMonth);
-    // form.append("Year", selectedYear);
-    // form.append(
-    //   "EmployeeID",
-    //   formData?.EmployeeName?.length > 0 ? formData.EmployeeName : "0"
-    // );
-    // form.append("Team", getlabel(formData?.TeamID, team) || "");
-    // form.append("SubTeam", formData?.SubTeamID || "");
-    // form.append("ReportType", "");
-    // form.append("SearchType", formData?.SearchType);
-    // axios
-    //   .post(apiUrls?.AttendanceReoprtTypeWise, form, { headers })
     axiosInstances
       .post(apiUrls.AttendanceReoprtTypeWise, {
         Month: String(selectedMonth),
@@ -559,20 +360,15 @@ const AttendanceReport = () => {
         // const leaveData = Array.isArray(res?.data?.dtMontReport)
         //   ? res.data.dtMontReport
         //   : [];
-        const leaveData = Array.isArray(res?.data?.data)
-          ? res.data.data
-          : [];
+        const leaveData = Array.isArray(res?.data?.data) ? res.data.data : [];
         // console.log("leaveData", leaveData);
         setTableData1(leaveData);
         setFilteredData1(leaveData);
         if (res?.data?.success === true) {
-          const apiData = Array.isArray(res?.data?.data)
-            ? res.data.data
-            : [];
+          const apiData = Array.isArray(res?.data?.data) ? res.data.data : [];
           // const apiData = Array.isArray(res?.data?.dtAttReport)
           //   ? res.data.dtAttReport
           //   : [];
-        
 
           const formattedRows = apiData?.map((row, index) => {
             const {
@@ -675,26 +471,6 @@ const AttendanceReport = () => {
     const dynamicHeader = getAttendanceHeader(selectedMonth, selectedYear);
     setAttendanceTHEAD(dynamicHeader); // 👈 set header
 
-    // 2️⃣ Prepare form data
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append(
-    //   "LoginName",
-    //   useCryptoLocalStorage("user_Data", "get", "realname")
-    // );
-    // form.append("Month", selectedMonth);
-    // form.append("Year", selectedYear);
-    // form.append(
-    //   "EmployeeID",
-
-    //   Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID"))
-    // );
-    // form.append("Team", "");
-    // form.append("SubTeam", "");
-    // form.append("ReportType", "");
-    // form.append("SearchType", formData?.SearchType);
-    // axios
-    //   .post(apiUrls?.AttendanceReoprtTypeWise, form, { headers })
     axiosInstances
       .post(apiUrls.AttendanceReoprtTypeWise, {
         Month: String(selectedMonth),
@@ -932,7 +708,6 @@ const AttendanceReport = () => {
                   {ReportingManager == 1 ? (
                     <button
                       className="btn btn-sm btn-info ml-2"
-                      // onClick={handleLeaveExport}
                       onClick={exportToExcelReportLeave}
                     >
                       Leave Export
@@ -940,7 +715,6 @@ const AttendanceReport = () => {
                   ) : (
                     <button
                       className="btn btn-sm btn-info ml-2"
-                      // onClick={handleLeaveExportEmployee}
                       onClick={exportToExcelReportEmployee}
                     >
                       Leave Export

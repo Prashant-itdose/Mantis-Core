@@ -37,17 +37,7 @@ const CancelSalesBookingModal = ({ visible, setVisible, handleSearch }) => {
     if (formData?.CancelReason == "") {
       toast.error("Please Select CancelReason.");
     } else {
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-      //   form.append("SalesID", visible?.showData?.EncryptID),
-      //   form.append("CancelReason", getlabel(formData?.CancelReason, reason)),
-      //   form.append("CancelReasonID", formData?.CancelReason),
-      //   form.append("OtherCancelReason", formData?.OtherReason),
-      //   axios
-      //     .post(apiUrls?.SalesBooking_IsCancel, form, {
-      //       headers,
-      //     })
+     
       axiosInstances
         .post(apiUrls.SalesBooking_IsCancel, {
           SalesID: String(visible?.showData?.EncryptID),
@@ -71,12 +61,7 @@ const CancelSalesBookingModal = ({ visible, setVisible, handleSearch }) => {
   };
 
   const handleSearchReason = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.SalesBooking_CancelReason_Select, form, {
-    //       headers,
-    //     })
+  
     axiosInstances
       .post(apiUrls.SalesBooking_CancelReason_Select, {})
       .then((res) => {

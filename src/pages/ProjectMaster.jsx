@@ -323,7 +323,7 @@ const ProjectMaster = () => {
     axiosInstances
       .post(apiUrls?.Reporter_Select, {})
       .then((res) => {
-        console.log("Reporter_Select", res);
+      
         const reporters = res?.data.data.map((item) => {
           return { label: item?.Name, value: item?.ID };
         });
@@ -407,7 +407,6 @@ const ProjectMaster = () => {
       });
   };
   const getProjectPriority = () => {
-
     axiosInstances
       .post(apiUrls?.Reason_Select, { Title: "ProjectPriority" })
       .then((res) => {
@@ -421,7 +420,6 @@ const ProjectMaster = () => {
       });
   };
   const getProjectStatus = () => {
-
     axiosInstances
       .post(apiUrls?.Reason_Select, { Title: "ProjectStatus" })
       .then((res) => {
@@ -435,7 +433,6 @@ const ProjectMaster = () => {
       });
   };
   const getProject = () => {
-  
     axiosInstances
       .post(apiUrls?.ProjectSelect, {
         ProjectID: 0,
@@ -455,7 +452,6 @@ const ProjectMaster = () => {
       });
   };
   const getProjectOrganizationType = () => {
-   
     axiosInstances
       .post(apiUrls?.Reason_Select, { Title: "ProjectOrganizationType" })
       .then((res) => {
@@ -469,9 +465,8 @@ const ProjectMaster = () => {
       });
   };
   const [fetchDetails, setFetchDetails] = useState([]);
-  
-  const fetchProjectdetails = (value) => {
 
+  const fetchProjectdetails = (value) => {
     axiosInstances
       .post(apiUrls?.getViewProject, {
         Title: "",
@@ -614,7 +609,7 @@ const ProjectMaster = () => {
           ? moment(date).format("YYYY-MM-DD")
           : "2001-01-01";
       };
-     
+
       const payload = {
         ActionType: "InsertProject",
         ProjectID: Number(formData?.ProjectID) || 0,
@@ -708,8 +703,6 @@ const ProjectMaster = () => {
 
       setLoading(true);
       try {
- 
-
         axiosInstances
           .post(apiUrls?.ProjectMasterUpdate, payload)
           .then((res) => {
@@ -859,10 +852,9 @@ const ProjectMaster = () => {
         ProjectMachineProperty: formData?.ProjectMachineProperty || [],
         ProjectShiftDetails: formData?.ProjectShiftDetails || [],
       };
-     
 
       setLoading(true);
-   
+
       axiosInstances
         .post(apiUrls?.ProjectMasterUpdate, payload)
         .then((res) => {
@@ -895,7 +887,6 @@ const ProjectMaster = () => {
     getProject();
     getAMCTYPE();
   }, []);
-  
 
   useEffect(() => {
     if (state?.edit) {
@@ -962,7 +953,12 @@ const ProjectMaster = () => {
                             FrameName: "UserMapping",
                             Description: "UserMapping",
                           },
-
+                          // {
+                          //   FileName: "Rate List Master",
+                          //   URL: "RateListsMaster",
+                          //   FrameName: "RateListsMaster",
+                          //   Description: "RateListsMaster",
+                          // },
                           // {
                           //   FileName: "Finance Update",
                           //   URL: "FinanceModalTab",

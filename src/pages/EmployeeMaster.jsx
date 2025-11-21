@@ -345,24 +345,11 @@ const EmployeeMaster = () => {
   }, [category]);
 
   const fetchDatabyId = (id) => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append(
-    //   "LoginName",
-    //   useCryptoLocalStorage("user_Data", "get", "realname")
-    // );
-    // form.append("EmployeeID", id);
-
-    // axios
-    //   .post(apiUrls?.SearchEmployee_EmployeeID, form, {
-    //     headers,
-    //   })
     axiosInstances
       .post(apiUrls?.SearchEmployee_EmployeeID, {
         EmployeeId: Number(id),
       })
       .then((res) => {
-        console.log("kamal", res.data);
         const datas = res?.data?.data?.Employee[0];
         setFormData({
           ...formData,
@@ -569,76 +556,7 @@ const EmployeeMaster = () => {
       toast.error("Please Select MaximumWeekoffs.");
     } else {
       setLoading(true);
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-      // form.append(
-      //   "LoginName",
-      //   useCryptoLocalStorage("user_Data", "get", "realname")
-      // );
-      // form.append("UserName", formData?.Username);
-      // form.append("RealName", formData?.Name);
-      // form.append("Email", formData?.ContactEmail);
-      // form.append("Password", formData?.Password);
-      // form.append("MobileNo", formData?.ContactMobile);
-      // form.append("DOB", moment(formData?.DOB).format("YYYY-MM-DD"));
-      // form.append("DOJ", moment(formData?.JoiningDate).format("YYYY-MM-DD"));
-      // form.append("DesignationID", formData?.OfficeDesignation);
-      // form.append(
-      //   "DesignationName",
-      //   getlabel(formData?.OfficeDesignation, designation)
-      // );
-      // form.append("Access_level", formData?.AccessLevel);
-      // form.append("TeamLeaderID", formData?.ReporterTo);
-      // form.append("FatherName", formData?.FatherName);
-      // form.append("MotherName", formData?.MotherName);
-      // form.append("Qualification", formData?.Qualification);
-      // form.append("AlternateMobileNo", formData?.AlternateMobile);
-      // form.append("Address", formData?.CurrentAddress);
-      // form.append("PinCode", formData?.CurrentPinCode);
-      // form.append("Country", "14");
-      // form.append("City", formData?.CurrentCity);
-      // form.append("EmergencyContactNo", formData?.EmergencyMobile);
-      // form.append("EmergencyContactPerson", formData?.EmergencyName);
-      // form.append("Relation", formData?.Relation);
-      // form.append("StateID", formData?.CurrentState);
-      // form.append("State", getlabel(formData?.CurrentState, getstate));
-      // form.append("ContactMobile", formData?.ContactMobile);
-      // form.append("TeamID", formData?.TeamID);
-      // form.append("TeamName", getlabel(formData?.TeamID, team));
-      // form.append(
-      //   "NextAppraisalDate",
-      //   moment(formData?.NextAppraisalDate).format("YYYY-MM-DD")
-      // );
-      // form.append("EmployeeCode", formData?.EmployeeCode);
-      // form.append("Grade", formData?.Grade);
-      // form.append("EmployeeEmail", formData?.EmployeeEmail);
-      // form.append("BankName", formData?.BankName);
-      // form.append("AccountNumber", formData?.AccountNumber);
-      // form.append("IFSCCode", formData?.IFSCCode);
-      // form.append("AccountHolderName", formData?.AccountHolderName);
-      // form.append("MaximumWeekoffs", formData?.MaximumWeekoffs);
-      // form.append("IsActive", formData?.IsActive);
-      // form.append("Locality", formData?.CurrentLocality);
-      // form.append("PLocality", formData?.PermanentLocality);
-      // form.append("PPincode", formData?.PermanentPinCode);
-      // form.append("Coursename", formData?.Course);
-      // form.append("BloodGroup", formData?.BloodGroup);
-      // form.append("GovtIdentityType", formData?.GovtID);
-      // form.append("GovtIdentityNo", formData?.GovtIDNo);
-      // form.append("PStateID", formData?.PermanentState);
-      // form.append("PState", getlabel(formData?.PermanentState, getstate));
-      // form.append("PCity", formData?.PermanentCity);
-      // form.append("Paddress", formData?.PermanentAddress);
-      // form.append("Subteam", formData?.SubTeamID);
-      // // form.append("WorkStation", formData?.WorkStation);
-      // form.append("Title", formData?.Title);
 
-      // form.append("ProfileDetail", ImageJson);
-      // form.append("SignatureDetails", SignatureJson);
-
-      // axios
-      //   .post(apiUrls?.CreateEmployee, form, {
-      //     headers,
       axiosInstances
         .post(apiUrls.CreateEmployee, {
           UserName: String(formData?.Username),
@@ -713,98 +631,6 @@ const EmployeeMaster = () => {
             toast.success(res?.data?.message);
             setLoading(false);
             navigate("/SearchEmployeeMaster");
-            // setFormData({
-            //   ...formData,
-            //   Name: "",
-            //   DOB: new Date(),
-            //   Mobile: "",
-            //   ContactMobile: "",
-            //   Email: "",
-            //   ContactEmail: "",
-            //   EmployeeEmail: "",
-            //   Username: "",
-            //   Password: "",
-            //   IsActive: "",
-            //   Designation: "",
-            //   OfficeDesignation: "",
-            //   AccessLevel: "",
-            //   Category: "",
-            //   Project: "",
-            //   Manager: "",
-            //   AlternateMobile: "",
-            //   FatherName: "",
-            //   MotherName: "",
-            //   Qualification: "",
-            //   AadharCard: "",
-            //   PanCard: "",
-            //   Address: "",
-            //   CurrentAddress: "",
-            //   PermanentAddress: "",
-            //   Country: "",
-            //   State: "",
-            //   CurrentState: "",
-            //   PermanentState: "",
-            //   City: "",
-            //   CurrentCity: "",
-            //   PermanentCity: "",
-            //   District: "",
-            //   PinCode: "",
-            //   CurrentPinCode: "",
-            //   PermanentPinCode: "",
-            //   Locality: "",
-            //   CurrentLocality: "",
-            //   PermanentLocality: "",
-            //   Relation: "",
-            //   EmergencyMobile: "",
-            //   EmergencyName: "",
-            //   TeamLeaderID: "",
-            //   UpdatePassword: "",
-            //   Title: "Mr",
-            //   Course: "",
-            //   BloodGroup: "",
-            //   GovtID: "Aadhar Card",
-            //   GovtIDNo: "",
-            //   SameAsCurrent: "",
-            //   VerticalID: "",
-            //   TeamID: "",
-            //   WingID: "",
-            //   ReporterTo: "",
-            //   JoiningDate: new Date(),
-            //   NextAppraisalDate: new Date(),
-            //   EmployeeCode: "",
-            //   Grade: "",
-            //   Salary: "",
-            //   SalaryAccountBank: "",
-            //   SalaryAccountNumber: "",
-            //   RegisteredSalesEnquiry: "",
-            //   IsSalesTeamMember: "",
-            //   ApproveLeaveRequest: "",
-            //   MaximumWeekoffs: "",
-            //   WorkingDays: "",
-            //   BiometricEmployeeCode: "",
-            //   EmployeeID: "",
-            //   DocumentType: "",
-
-            //   SelectFile: "",
-            //   SelectFileSig: "",
-
-            //   Document_Base64: "",
-            //   FileExtension: "",
-
-            //   SigDocument_Base64: "",
-            //   FileExtensionSig: "",
-
-            //   BankName: "",
-            //   AccountNumber: "",
-            //   IFSCCode: "",
-            //   AccountHolderName: "",
-            //   SubTeamID: "",
-            //   IsProfile: "",
-            //   IsSiganture: "",
-
-            //   EmployeeID: "",
-            //   OldMantisID: "",
-            // });
           } else {
             toast.error(res?.data?.message);
             setLoading(false);
@@ -973,79 +799,7 @@ const EmployeeMaster = () => {
       toast.error("Please Select MaximumWeekoffs.");
     } else {
       setLoading(true);
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-      // form.append(
-      //   "LoginName",
-      //   useCryptoLocalStorage("user_Data", "get", "realname")
-      // );
-      // form.append("UserName", formData?.Username);
-      // form.append("RealName", formData?.Name);
-      // form.append("Email", formData?.ContactEmail);
-      // form.append("Password", formData?.Password);
-      // form.append("MobileNo", formData?.ContactMobile);
-      // form.append("DOB", moment(formData?.DOB).format("YYYY-MM-DD"));
-      // form.append("DOJ", moment(formData?.JoiningDate).format("YYYY-MM-DD"));
-      // form.append("DesignationID", formData?.OfficeDesignation);
-      // form.append(
-      //   "DesignationName",
-      //   getlabel(formData?.OfficeDesignation, designation)
-      // );
-      // form.append("Access_level", formData?.AccessLevel);
-      // form.append("TeamLeaderID", formData?.ReporterTo);
-      // form.append("FatherName", formData?.FatherName);
-      // form.append("MotherName", formData?.MotherName);
-      // form.append("Qualification", formData?.Qualification);
-      // form.append("AlternateMobileNo", formData?.AlternateMobile);
-      // form.append("Address", formData?.CurrentAddress);
-      // form.append("PinCode", formData?.CurrentPinCode);
-      // form.append("Country", "14");
-      // form.append("City", formData?.CurrentCity);
-      // form.append("EmergencyContactNo", formData?.EmergencyMobile);
-      // form.append("EmergencyContactPerson", formData?.EmergencyName);
-      // form.append("Relation", formData?.Relation);
-      // form.append("StateID", formData?.CurrentState);
-      // form.append("State", getlabel(formData?.CurrentState, getstate));
-      // form.append("ContactMobile", formData?.ContactMobile);
-      // form.append("TeamName", getlabel(formData?.TeamID, team));
-      // form.append("TeamID", formData?.TeamID);
-      // form.append(
-      //   "NextAppraisalDate",
-      //   moment(formData?.NextAppraisalDate).format("YYYY-MM-DD")
-      // );
-      // form.append("EmployeeCode", formData?.EmployeeCode);
-      // form.append("Grade", formData?.Grade);
-      // form.append("EmployeeEmail", formData?.EmployeeEmail);
-      // form.append("BankName", formData?.BankName);
-      // form.append("AccountNumber", formData?.AccountNumber);
-      // form.append("IFSCCode", formData?.IFSCCode);
-      // form.append("AccountHolderName", formData?.AccountHolderName);
-      // form.append("MaximumWeekoffs", formData?.MaximumWeekoffs);
-      // form.append("Enabled", formData?.IsActive || "0");
-      // form.append("Locality", formData?.CurrentLocality);
-      // form.append("PLocality", formData?.PermanentLocality);
-      // form.append("PPincode", formData?.PermanentPinCode);
-      // form.append("Coursename", formData?.Course);
-      // form.append("BloodGroup", formData?.BloodGroup);
-      // form.append("GovtIdentityType", formData?.GovtID);
-      // form.append("GovtIdentityNo", formData?.GovtIDNo);
-      // form.append("PStateID", formData?.PermanentState);
-      // form.append("PState", getlabel(formData?.PermanentState, getstate));
-      // form.append("PCity", formData?.PermanentCity);
-      // form.append("Paddress", formData?.PermanentAddress);
-      // form.append("Subteam", formData?.SubTeamID);
-      // form.append("Title", formData?.Title);
-      // form.append("UpdatePasswordKey", formData?.UpdatePassword);
-      // form.append("EmployeeID", state?.data);
-      // form.append("OldMantisEmpID", formData?.OldMantisID);
 
-      // form.append("ProfileDetail", ImageJson);
-      // form.append("SignatureDetails", SignatureJson);
-
-      // axios
-      //   .post(apiUrls?.UpdateEmployee, form, {
-      //     headers,
-      //   })
       axiosInstances
         .post(apiUrls.UpdateEmployee, {
           ID: String(useCryptoLocalStorage("user_Data", "get", "ID")),

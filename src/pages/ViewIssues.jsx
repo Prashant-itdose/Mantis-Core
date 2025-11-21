@@ -4,8 +4,6 @@ import Heading from "../components/UI/Heading";
 import ReactSelect from "../components/formComponent/ReactSelect";
 import DatePicker from "../components/formComponent/DatePicker";
 import MultiSelectComp from "../components/formComponent/MultiSelectComp";
-import axios from "axios";
-import { headers } from "../utils/apitools";
 import Tables from "../components/UI/customTable";
 import { toast } from "react-toastify";
 import Loading from "../components/loader/Loading";
@@ -22,8 +20,6 @@ import { PageSize } from "../utils/constant";
 import NoRecordFound from "../components/formComponent/NoRecordFound";
 import { useSelector } from "react-redux";
 import Tooltip from "./Tooltip";
-import { useFetchApi } from "../utils/hooks/useFetch";
-import { notify } from "../utils/utils";
 import ViewIssueDocModal from "../components/UI/customTable/ViewIssueDocModal";
 import ViewIssueDocTable from "../components/UI/customTable/ViewIssueDocTable";
 import ViewIssueNotesModal from "../components/UI/customTable/ViewIssueNotesModal";
@@ -607,19 +603,7 @@ const ViewIssues = ({ data }) => {
           ReOpenReasonID: "",
           ReOpenReason: "",
         })
-        //       let form = new FormData();
-        //       form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        //         form.append(
-        //           "LoginName",
-        //           useCryptoLocalStorage("user_Data", "get", "realname")
-        //         ),
-        //         form.append("TicketIDs", ticketIDs),
-        //         form.append("ActionText", "Close"),
-        //         form.append("ReferenceCode", formData?.RefereCode),
-        //         form.append("RCA", formData?.RefereRCA),
-        //         form.append("ManHour", formData?.ManHours),
-        //         axios
-        //           .post(apiUrls?.ApplyAction, form, { headers })
+      
         .then((res) => {
           toast.success(res?.data?.message);
           setFormData({
@@ -898,27 +882,7 @@ const ViewIssues = ({ data }) => {
           : prev.DelayedTicketType,
     }));
   };
-  // const handleManHour = (item) => {
-  //   let form = new FormData();
-  //   form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-  //     form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-  //     form.append("TicketIDs", item?.TicketID),
-  //     form.append("ActionText", "ManHours"),
-  //     form.append("ActionId", formData?.ManHours),
-  //     axios
-  //       .post(apiUrls?.ApplyAction, form, { headers })
-  //       .then((res) => {
-  //         toast.success(res?.data?.message);
-  //         setFormData({
-  //           ...formData,
-  //           ManHours: "",
-  //         });
-  //         handleViewSearch();
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  // };
+
   const handleHold = (item) => {
     axiosInstances
       .post(apiUrls.ApplyAction, {
@@ -938,18 +902,7 @@ const ViewIssues = ({ data }) => {
         ReOpenReasonID: "",
         ReOpenReason: "",
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("TicketIDs", item?.TicketID),
-      //   form.append("ActionText", "Hold"),
-      //   form.append("ActionId", formData?.Hold),
-      //   // form.append("HoldReason", formData?.Hold),
-      //   axios
-      //     .post(apiUrls?.ApplyAction, form, { headers })
+     
       .then((res) => {
         toast.success(res?.data?.message);
         setFormData({
@@ -988,19 +941,7 @@ const ViewIssues = ({ data }) => {
           ReOpenReasonID: "",
           ReOpenReason: "",
         })
-        // let form = new FormData();
-        // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        //   form.append(
-        //     "LoginName",
-        //     useCryptoLocalStorage("user_Data", "get", "realname")
-        //   ),
-        //   form.append("TicketIDs", item?.TicketID),
-        //   form.append("ActionText", "Close"),
-        //   form.append("ReferenceCode", ""),
-        //   form.append("RCA", formData?.RefereRCA),
-        //   form.append("ManHour", formData?.ManHours),
-        //   axios
-        //     .post(apiUrls?.ApplyAction, form, { headers })
+     
         .then((res) => {
           if (res?.data?.status === true) {
             toast.success(res?.data?.message);
@@ -1094,17 +1035,7 @@ const ViewIssues = ({ data }) => {
           ReOpenReasonID: "",
           ReOpenReason: "",
         })
-        // let form = new FormData();
-        // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        //   form.append(
-        //     "LoginName",
-        //     useCryptoLocalStorage("user_Data", "get", "realname")
-        //   ),
-        //   form.append("TicketIDs", ticketIDs),
-        //   form.append("ActionText", "DeliveryDate"),
-        //   form.append("ActionId", ""),
-        //   axios
-        //     .post(apiUrls?.ApplyAction, form, { headers })
+      
         .then((res) => {
           toast.success(res?.data?.message);
           setFormData({
@@ -1140,17 +1071,7 @@ const ViewIssues = ({ data }) => {
           ReOpenReasonID: "",
           ReOpenReason: "",
         })
-        // let form = new FormData();
-        // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        //   form.append(
-        //     "LoginName",
-        //     useCryptoLocalStorage("user_Data", "get", "realname")
-        //   ),
-        //   form.append("TicketIDs", ids),
-        //   form.append("ActionText", data?.label),
-        //   form.append("ActionId", data?.value),
-        //   axios
-        //     .post(apiUrls?.ApplyAction, form, { headers })
+      
         .then((res) => {
           toast.success(res?.data?.message);
           handleViewSearch();
@@ -4588,7 +4509,7 @@ const ViewIssues = ({ data }) => {
                 requiredClassName={"required-fields"}
               />
 
-              <div className="col-xl-8 col-md-5 col-sm-6 col-12 mt-1 d-flex">
+              {/* <div className="col-xl-8 col-md-5 col-sm-6 col-12 mt-1 d-flex"> */}
                 {/* <div className="d-flex"> */}
                 <div className="search-col" style={{ marginLeft: "8px" }}>
                   <div style={{ display: "flex", alignItems: "center" }}>
@@ -4712,7 +4633,7 @@ const ViewIssues = ({ data }) => {
                 >
                   {t("Search Filter")}
                 </button>
-              </div>
+              {/* </div> */}
               {/* </div> */}
             </div>
           </>

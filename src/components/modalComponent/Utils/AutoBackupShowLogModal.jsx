@@ -32,14 +32,7 @@ const AutoBackupShowLogModal = ({ visible, props }) => {
   });
 
   const handleSubmit = () => {
-    // let form = new FormData();
-    // form.append("ProjectID", visible?.showLogData?.id);
-    // axios
-    //   .post(
-    //    apiUrls?.AutobackupLog,
-    //     form,
-    //     { headers }
-    //   )
+ 
 
          axiosInstances
       .post(apiUrls?.AutobackupLog, {ProjectID:String(visible?.showLogData?.id)})

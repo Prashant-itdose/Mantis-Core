@@ -3,15 +3,12 @@ import { useTranslation } from "react-i18next";
 import Heading from "../components/UI/Heading";
 import MultiSelectComp from "../components/formComponent/MultiSelectComp";
 import MisReportTable from "../components/UI/customTable/MisReportTable";
-import { headers } from "../utils/apitools";
 import Loading from "../components/loader/Loading";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { apiUrls } from "../networkServices/apiEndpoints";
 import { ExportToExcel, ExportToPDF } from "../networkServices/Tools";
 import excelimg from "../../src/assets/image/excel.png";
 import pdf from "../../src/assets/image/pdf.png";
-import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import { axiosInstances } from "../networkServices/axiosInstance";
 const AutoBackupStatusSheet = () => {
   const [t] = useTranslation();
@@ -26,8 +23,6 @@ const AutoBackupStatusSheet = () => {
     POC3: [],
   });
 
-  console.log("formData11",formData);
-  
   const [project, setProject] = useState([]);
   const [vertical, setVertical] = useState([]);
   const [team, setTeam] = useState([]);
@@ -38,14 +33,6 @@ const AutoBackupStatusSheet = () => {
 
   const [loading, setLoading] = useState(false);
   const getProject = () => {
-    let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   axios
-    //     .post(apiUrls?.ProjectSelect, form, { headers })
     axiosInstances
       .post(apiUrls?.ProjectSelect, {
         ProjectID: 0,
@@ -69,18 +56,7 @@ const AutoBackupStatusSheet = () => {
   }, []);
   const handleSearch = (code) => {
     setLoading(true);
-    // let form = new FormData();
-    // form.append("ID",  useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("ProjectID", formData?.ProjectID),
-    //   form.append("VerticalID", formData?.VerticalID),
-    //   form.append("TeamID", formData?.TeamID),
-    //   form.append("WingID", formData?.WingID),
-    //   form.append("POC1", formData?.POC1),
-    //   form.append("POC2", formData?.POC2),
-    //   form.append("POC3", formData?.POC3),
-    //   form.append("StatusCode", code ? code : ""),
-    // axios
-    //   .post(apiUrls?.AutobackupSearch, form, { headers })
+
     const payload = {
       ProjectID: String(formData?.ProjectID || 0),
       VerticalID: String(formData?.VerticalID || 0),
@@ -98,7 +74,7 @@ const AutoBackupStatusSheet = () => {
         if (res?.data?.data?.length > 0) {
           setTableData(res?.data?.data);
         } else {
-          toast.error(res?.data?.message)
+          toast.error(res?.data?.message);
           setTableData([]);
         }
         // setFormData({
@@ -152,10 +128,6 @@ const AutoBackupStatusSheet = () => {
   };
 
   const getVertical = () => {
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Vertical_Select, form, { headers })
     axiosInstances
       .post(apiUrls?.Vertical_Select, {})
       .then((res) => {
@@ -169,10 +141,6 @@ const AutoBackupStatusSheet = () => {
       });
   };
   const getTeam = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Team_Select, form, { headers })
     axiosInstances
       .post(apiUrls?.Team_Select, {})
       .then((res) => {
@@ -186,10 +154,6 @@ const AutoBackupStatusSheet = () => {
       });
   };
   const getWing = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Wing_Select, form, { headers })
     axiosInstances
       .post(apiUrls?.Wing_Select, {})
       .then((res) => {
@@ -203,10 +167,6 @@ const AutoBackupStatusSheet = () => {
       });
   };
   const getPOC1 = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.POC_1_Select, form, { headers })
     axiosInstances
       .post(apiUrls?.POC_1_Select, {})
       .then((res) => {
@@ -220,10 +180,6 @@ const AutoBackupStatusSheet = () => {
       });
   };
   const getPOC2 = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.POC_2_Select, form, { headers })
     axiosInstances
       .post(apiUrls?.POC_2_Select, {})
       .then((res) => {
@@ -237,10 +193,6 @@ const AutoBackupStatusSheet = () => {
       });
   };
   const getPOC3 = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.POC_3_Select, form, { headers })
     axiosInstances
       .post(apiUrls?.POC_3_Select, {})
       .then((res) => {
@@ -255,7 +207,12 @@ const AutoBackupStatusSheet = () => {
   };
 
   useEffect(() => {
-    getVertical(), getTeam(), getWing(), getPOC1(), getPOC2(), getPOC3();
+    getVertical();
+    getTeam();
+    getWing();
+    getPOC1();
+    getPOC2();
+    getPOC3();
   }, []);
 
   return (

@@ -40,20 +40,6 @@ const CheckListEntry = ({ data }) => {
   };
 
   const handleCheckListSearch = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ProjectID", data?.Id || data?.ProjectID),
-    //   form.append("Title", "Checklist"),
-    // axios
-    //   .post(apiUrls?.getViewProject, form, { headers })
     axiosInstances
       .post(apiUrls?.getViewProject, {
         RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
@@ -69,16 +55,6 @@ const CheckListEntry = ({ data }) => {
   };
 
   const handleCheckListSave = () => {
-    // let payload = [];
-    // tableData?.map((val, index) => {
-    //   payload.push({
-    //     "S.No.": index + 1,
-    //     CheckListName: val?.CheckListName,
-    //     ChecklistID: val?.ChecklistID,
-    //     Status: val?.Status,
-    //     Remarks: val.Remarks,
-    //   });
-    // });
     const payload = tableData?.map((val, index) => ({
       "S.No.": index + 1, // index starts at 0, so +1
       CheckListName: val?.CheckListName,
@@ -87,21 +63,7 @@ const CheckListEntry = ({ data }) => {
       Remarks: val?.Remarks,
     }));
     setLoading(true);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ProjectID", data?.Id || data?.ProjectID),
-    //   form.append("ActionType", "UpdateCheckList"),
-    //   form.append("ProjectData", JSON.stringify(payload)),
-    // axios
-    //   .post(apiUrls?.ProjectMasterUpdate, form, { headers })
+
     axiosInstances
       .post(apiUrls?.ProjectMasterUpdate, {
         ProjectID: Number(data?.Id || data?.ProjectID),

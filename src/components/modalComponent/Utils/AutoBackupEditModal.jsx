@@ -37,20 +37,7 @@ const AutoBackupEditModal = ({ visible, setVisible }) => {
 
   const handleSubmit = () => {
     setLoading(true);
-    // let form = new FormData();
-    // form.append("ProjectID", visible?.showData?.id);
-    // form.append("Owner_Name", formData?.OwnerName);
-    // form.append("Owner_Mobile", formData?.OwnerMobile);
-    // form.append("Owner_Email", formData?.OwnerEmail);
-    // form.append("SPOC_Name", formData?.SPOCName);
-    // form.append("SPOC_Mobile", formData?.SPOCMobile);
-    // form.append("SPOC_EmailID", formData?.SPOCEmail);
-    // form.append("ItPersonName", formData?.ItPersonName);
-    // form.append("ItPersonMobile", formData?.ItPersonMobile);
-    // form.append("ItPersonEmail", formData?.ItPersonEmail);
-
-    // axios
-    //   .post(apiUrls?.SPOC_Update, form, { headers })
+   
     const payload = {
       ProjectID: Number(visible?.showData?.id || 0),
       Owner_Name: String(formData?.OwnerName || ""),

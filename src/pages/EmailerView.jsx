@@ -72,28 +72,9 @@ const EmailerView = () => {
         RowColor: code ? String(code) : "0",
         IsManual: 0,
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "RoleID",
-      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-      //   ),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("Email", emailID),
-      //   form.append("FromDate", formatDate(formData?.FromDate)),
-      //   form.append("ToDate", formatDate(formData?.ToDate)),
-      //   form.append("RowColor", code ? code : "0"),
-      //   form.append("IsManual", ""),
-      //   axios
-      //     .post(apiUrls?.EmailerSearch, form, {
-      //       headers,
-      //     })
+
       .then((res) => {
         if (res?.data?.success === true) {
-          
           setTableData(res?.data?.data?.Records);
           setLoading(false);
         } else {
@@ -111,32 +92,22 @@ const EmailerView = () => {
     setLoading(true);
     axiosInstances
       .post(apiUrls.RepushMail, {
-  "RepushID": Number(code),
-  "RoleID": 0
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("RepushID", code),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   axios
-    //     .post(apiUrls?.RepushMail, form, {
-    //       headers,
-    //     })
-        .then((res) => {
-          if (res?.data?.success === true) {
-            toast.success(res?.data?.message);
-            setLoading(false);
-          } else {
-            toast.error(res?.data?.message);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        RepushID: Number(code),
+        RoleID: 0,
+      })
+
+      .then((res) => {
+        if (res?.data?.success === true) {
+          toast.success(res?.data?.message);
+          setLoading(false);
+        } else {
+          toast.error(res?.data?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;

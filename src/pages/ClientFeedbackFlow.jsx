@@ -21,8 +21,6 @@ import {
 import DatePicker from "../components/formComponent/DatePicker";
 import MultiSelectComp from "../components/formComponent/MultiSelectComp";
 import { apiUrls } from "../networkServices/apiEndpoints";
-import axios from "axios";
-import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import { toast } from "react-toastify";
 import { inputBoxValidation } from "../utils/utils";
 import { MOBILE_NUMBER_VALIDATION_REGX } from "../utils/constant";
@@ -594,11 +592,6 @@ const ClientFeedbackFlow = () => {
     }
   };
   const handleProjectChart = (value) => {
-    // console.log("value value", value);
-    // let form = new FormData();
-    // form.append("ProjectID", value);
-    // axios
-    //   .post(apiUrls?.ClientFeedbackRatingGraph, form, { headers })
     axiosInstances
       .post(apiUrls.ClientFeedbackRatingGraph, {
         ProjectID: String(value),

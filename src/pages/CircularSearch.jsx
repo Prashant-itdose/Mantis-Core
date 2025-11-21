@@ -37,24 +37,19 @@ const CircularSearch = () => {
     Status: "",
   });
   const getCircular = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("Type", "To"),
-      // axios
-      //   .post(apiUrls?.Circular_UserList, form, { headers })
-      axiosInstances
-        .post(apiUrls.Circular_UserList, {
-          Type: "To",
-        })
-        .then((res) => {
-          const poc3s = res?.data.data.map((item) => {
-            return { label: item?.RealName, value: item?.Id };
-          });
-          setCircular(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls.Circular_UserList, {
+        Type: "To",
+      })
+      .then((res) => {
+        const poc3s = res?.data.data.map((item) => {
+          return { label: item?.RealName, value: item?.Id };
         });
+        setCircular(poc3s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleDeliveryChange = (name, e) => {
@@ -62,13 +57,6 @@ const CircularSearch = () => {
     setFormData({
       ...formData,
       [name]: value,
-    });
-  };
-  const handleSelectChange = (e) => {
-    const { name, value, checked, type } = e?.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? (checked ? "1" : "0") : value,
     });
   };
 
@@ -100,7 +88,7 @@ const CircularSearch = () => {
         CircularSentByID: Number(formData?.CircularSentBy || 0),
         Status: String(formData?.Status || ""),
       };
-      // .post(apiUrls?.Circular_Search, payload, { headers })
+
       axiosInstances
         .post(apiUrls?.Circular_Search, {
           ...payload,
@@ -110,15 +98,12 @@ const CircularSearch = () => {
           setLoading(false);
         })
         .catch((err) => {
-          console.error("Circular Search Error:", err);
+          console.log(err);
           setLoading(false);
         });
     }
   };
 
-  const shortenName = (name) => {
-    return name.length > 90 ? name.substring(0, 95) + "..." : name;
-  };
 
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
@@ -190,9 +175,7 @@ const CircularSearch = () => {
           title={"Circular Search"}
           secondTitle={
             <div style={{ fontWeight: "bold" }}>
-              <Link to="/Circular">
-                Create Circular
-              </Link>
+              <Link to="/Circular">Create Circular</Link>
             </div>
           }
         />
@@ -236,7 +219,7 @@ const CircularSearch = () => {
             dynamicOptions={circular}
             handleChange={handleDeliveryChange}
             value={formData.CircularSentBy}
-          // requiredClassName={"required-fields"}
+            // requiredClassName={"required-fields"}
           />
           <ReactSelect
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
@@ -249,7 +232,7 @@ const CircularSearch = () => {
             ]}
             handleChange={handleDeliveryChange}
             value={formData.Status}
-          // requiredClassName={"required-fields"}
+            // requiredClassName={"required-fields"}
           />
           {loading ? (
             <Loading />
@@ -305,7 +288,7 @@ const CircularSearch = () => {
                   >
                     <div>{ele?.ReadByCount}</div>
                     <div>
-                      {ele?.ReadByCount > 0 ?
+                      {ele?.ReadByCount > 0 ? (
                         <i
                           className="fa fa-eye"
                           onClick={() => {
@@ -313,8 +296,10 @@ const CircularSearch = () => {
                           }}
                         >
                           {" "}
-                        </i>:""
-                      }
+                        </i>
+                      ) : (
+                        ""
+                      )}
                     </div>
                   </div>
                 ),
@@ -324,7 +309,7 @@ const CircularSearch = () => {
                   >
                     <div>{ele?.UnReadByCount}</div>
                     <div>
-                      {ele?.UnReadByCount >0 ? 
+                      {ele?.UnReadByCount > 0 ? (
                         <i
                           className="fa fa-eye"
                           onClick={() => {
@@ -332,8 +317,10 @@ const CircularSearch = () => {
                           }}
                         >
                           {" "}
-                        </i>:""
-                      }
+                        </i>
+                      ) : (
+                        ""
+                      )}
                     </div>
                   </div>
                 ),

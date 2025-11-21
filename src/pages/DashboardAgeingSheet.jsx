@@ -32,15 +32,7 @@ const DashboardAgeingSheet = () => {
   const [chartRawData, setChartRawData] = useState([]);
 
   const fetchSalesData = (developerId, searchType) => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append("DeveloperID", developerId);
-    // form.append("SearchType", searchType == "" ? "0" : searchType);
-
-    // axios
-    //   .post(apiUrls?.CoorDashboard_Ageing_Sheet_Pending_Recovery, form, {
-    //     headers,
-    //   })
+  
     axiosInstances
       .post(apiUrls.CoorDashboard_Ageing_Sheet_Pending_Recovery, {
         CoordinatorID: Number(useCryptoLocalStorage("user_Data", "get", "ID")),

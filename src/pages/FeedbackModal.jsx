@@ -23,29 +23,22 @@ const FeedbackModal = (showData) => {
   const getProject = () => {
     axiosInstances
       .post(apiUrls.ProjectSelect, {
-  "ProjectID": 0,
-  "IsMaster": "0",
-  "VerticalID": 0,
-  "TeamID": 0,
-  "WingID": 0
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   axios
-    //     .post(apiUrls?.ProjectSelect, form, { headers })
-        .then((res) => {
-          const poc3s = res?.data.data.map((item) => {
-            return { label: item?.Project, value: item?.ProjectId };
-          });
-          setProject(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
+        ProjectID: 0,
+        IsMaster: "0",
+        VerticalID: 0,
+        TeamID: 0,
+        WingID: 0,
+      })
+
+      .then((res) => {
+        const poc3s = res?.data.data.map((item) => {
+          return { label: item?.Project, value: item?.ProjectId };
         });
+        setProject(poc3s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const handleFeedback = () => {
     if (formData.ProjectID.length === 0) {
@@ -55,17 +48,9 @@ const FeedbackModal = (showData) => {
     setLoading(true);
     axiosInstances
       .post(apiUrls.CreateFeedback, {
-  "ProjectID": Number(formData.ProjectID)
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ProjectID", formData.ProjectID);
-    // axios
-    //   .post(apiUrls?.CreateFeedback, form, { headers })
+        ProjectID: Number(formData.ProjectID),
+      })
+
       .then((res) => {
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);

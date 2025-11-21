@@ -31,39 +31,26 @@ const ChangeSubmitDateofTicket = () => {
       toast.error("Please Select Delivery Date.");
     } else {
       setLoading(true);
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("TicketIDs", formData?.TicketNo),
-      //   form.append(
-      //     "dtSubmit",
-      //     moment(formData?.DeliveryDate).format("YYYY-MM-DD")
-      //   ),
-      //   axios
-      //     .post(apiUrls?.ChangeSubmitDate, form, { headers })
+
       axiosInstances
-      .post(apiUrls.ChangeSubmitDate, {
-        ID: useCryptoLocalStorage("user_Data", "get", "ID"),
-        LoginName: useCryptoLocalStorage("user_Data", "get", "realname"),
-        TicketIDs: formData?.TicketNo,
-        dtSubmit: moment(formData?.DeliveryDate).format("YYYY-MM-DD"),
-      })
-          .then((res) => {
-         
-            if (res?.data?.status == true) {
-              toast.success(res?.data?.message);
-            } else {
-              toast.success(res?.data?.message);
-            }
-            setLoading(false);
-          })
-          .catch((err) => {
-            console.log(err);
-            setLoading(false);
-          });
+        .post(apiUrls.ChangeSubmitDate, {
+          ID: useCryptoLocalStorage("user_Data", "get", "ID"),
+          LoginName: useCryptoLocalStorage("user_Data", "get", "realname"),
+          TicketIDs: formData?.TicketNo,
+          dtSubmit: moment(formData?.DeliveryDate).format("YYYY-MM-DD"),
+        })
+        .then((res) => {
+          if (res?.data?.status == true) {
+            toast.success(res?.data?.message);
+          } else {
+            toast.success(res?.data?.message);
+          }
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
     }
   };
   return (

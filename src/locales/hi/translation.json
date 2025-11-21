@@ -421,5 +421,12 @@
 "Notes": "नोट्स",
 "Total ManMinutes": "कुल आदमी मिनट",
 "Total Records": "कुल अभिलेख",
-"Module Name": "मॉड्यूल का नाम"
+"Module Name": "मॉड्यूल का नाम",
+  "Dashboard":"डैशबोर्ड",
+  "ClientDashboard":"डैशबोर्ड",
+  "Developer Dashboard":"डेवलपर डैशबोर्ड",
+   "View Ticket Client":"टिकट क्लाइंट देखें",
+  "New Ticket Client":"नया टिकट ग्राहक",
+  "New Client": "नए ग्राहक",
+  "Client Ticket": "ग्राहक टिकट"
 }

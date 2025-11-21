@@ -129,7 +129,6 @@ const SettlementAmountModal = (visible, edit) => {
           SalesNo: dataID?.SalesNo || "",
           SalesID: "", // Explicitly set SalesID as empty string
         }));
-       
       })
       .catch((err) => {
         console.log(err);
@@ -137,20 +136,6 @@ const SettlementAmountModal = (visible, edit) => {
   };
 
   const getsalestable = () => {
-    let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ProjectID", visible?.visible?.showData?.ProjectID),
-    //   form.append("OnAccount_Req_ID", visible?.visible?.showData?.EncryptID),
-    // axios
-    //   .post(apiUrls?.Settlement_Select, form, { headers })
     const payload = {
       ProjectID: Number(visible?.visible?.showData?.ProjectID || "0"),
       OnAccount_Req_ID: String(visible?.visible?.showData?.EncryptID || ""),
@@ -188,26 +173,6 @@ const SettlementAmountModal = (visible, edit) => {
     });
   };
   const handleSettlement = () => {
-    // console.log(formData?.Sale?.SalesID);
-    let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("SalesID", formData?.SalesID),
-    //   form.append(
-    //     "OnAccount_Req_ID",
-    //     visible?.visible?.showData?.OnAccount_Req_ID
-    //   ),
-    //   form.append("SettlementAmount", formData?.SettlementAmount),
-    //   form.append("TDS", formData?.TDSAmount),
-    // axios
-    //   .post(apiUrls?.Settlement, form, { headers })
     const payload = {
       SalesID: Number(formData?.SalesID || "0"),
       OnAccount_Req_ID: Number(
@@ -235,26 +200,12 @@ const SettlementAmountModal = (visible, edit) => {
   };
 
   const SettlementCancel = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("SettlementID", ""),
-    //   form.append("Reason", ""),
-    // axios
-    //   .post(apiUrls?.Settlement, form, { headers })
     const payload = {
       RoleID: String(
         useCryptoLocalStorage("user_Data", "get", "RoleID") || "0"
       ),
-      SettlementID: String(""), // empty string like your form.append
-      Reason: String(""), // empty string like your form.append
+      SettlementID: String(""),
+      Reason: String(""),
     };
 
     axiosInstances

@@ -123,7 +123,7 @@ const AddResultQueryModal = () => {
   };
 
   const getQueryName = () => {
-    let form = new FormData();
+   
     
     axiosInstances
       .post(apiUrls.QueryVsResult_Select, {
@@ -145,17 +145,7 @@ const AddResultQueryModal = () => {
         });
   };
   const getQuery = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-    //   // form.append("IsActive", ""),
-    //   // form.append("ProductID", ""),
-    //   // form.append("ModuleID", ""),
-    //   // form.append("ModuleID", ""),
-    //   // form.append("QueryID", ""),
-    //   form.append("SearchType", "Result_Select"),
-    //   axios
-    //     .post(apiUrls?.QueryVsResult_Select, form, { headers })
+    
       axiosInstances
       .post(apiUrls.QueryVsResult_Select, {
         ID: useCryptoLocalStorage("user_Data", "get", "ID"),  

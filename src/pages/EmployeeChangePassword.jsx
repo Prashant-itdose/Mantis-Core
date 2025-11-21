@@ -42,15 +42,6 @@ const EmployeeChangePassword = () => {
   };
 
   const getReporter = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("IsMaster", "1"),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   axios
-    //     .post(apiUrls?.Reporter_Select, form, { headers })
     axiosInstances
       .post(apiUrls.Reporter_Select, {
         ID: useCryptoLocalStorage("user_Data", "get", "ID"),
@@ -75,16 +66,7 @@ const EmployeeChangePassword = () => {
       setLoading(false);
     } else {
       setLoading(true);
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("UserID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append("Password", formData?.Password),
-      //   axios
-      //     .post(apiUrls?.ChangePassword, form, { headers })
+    
       axiosInstances
       .post(apiUrls.ChangePassword, {
         UserID: String(useCryptoLocalStorage("user_Data", "get", "ID")),

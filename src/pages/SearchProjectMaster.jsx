@@ -1030,6 +1030,12 @@ const SearchProjectMaster = () => {
       Description: "ProjectFlagModal",
     },
     {
+      FileName: "Rate List Master",
+      URL: "RateListsMaster",
+      FrameName: "RateListsMaster",
+      Description: "RateListsMaster",
+    },
+    {
       FileName: "Centre Booking",
       URL: "CentreModuleModal",
       FrameName: "CentreModuleModal",

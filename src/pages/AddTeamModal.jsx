@@ -5,6 +5,7 @@ import Heading from "../components/UI/Heading";
 import Tables from "../components/UI/customTable";
 import Loading from "../components/loader/Loading";
 import { axiosInstances } from "../networkServices/axiosInstance";
+import { toast } from "react-toastify";
 const AddTeamModal = (ele) => {
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -49,17 +50,6 @@ const AddTeamModal = (ele) => {
 
   const handleADD = () => {
     setLoading(true);
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("UserID", ele?.visible?.showData?.id),
-    //   form.append("Status", "Add"),
-    //   form.append("TeamID", formData?.Team),
-    //   axios
-    //     .post(apiUrls?.UserVsTeamMapping, form, { headers })
     axiosInstances
       .post(apiUrls?.UserVsTeamMapping, {
         TeamID: Number(formData?.Team),
@@ -77,19 +67,7 @@ const AddTeamModal = (ele) => {
       });
   };
   const handleRemove = (item) => {
-    // console.log("item", item);
     setLoading(true);
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("UserID", ele?.visible?.showData?.id),
-    //   form.append("Status", "Remove"),
-    //   form.append("TeamID", item?.TeamID),
-    //   axios
-    //     .post(apiUrls?.UserVsTeamMapping, form, { headers })
     axiosInstances
       .post(apiUrls?.UserVsTeamMapping, {
         TeamID: Number(item?.TeamID),

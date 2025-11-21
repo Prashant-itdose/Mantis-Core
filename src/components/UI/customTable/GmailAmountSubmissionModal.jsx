@@ -80,15 +80,7 @@ const GmailAmountSubmissionModal = (visible) => {
     }
   };
   const getProjectEmail = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ProjectID", visible?.visible?.showData?.ProjectID),
-    // axios
-    //   .post(apiUrls?.ProjectSelect, form, { headers })
+   
     const payload = {
       ProjectID: String(visible?.visible?.showData?.ProjectID || "0"),
     };

@@ -40,14 +40,6 @@ const AddModuleModal = ({ visible, setVisible }) => {
     setEditMode(true);
   };
   const getModule = () => {
-    // let form = new FormData();
-    // form.append("ID",  useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("RoleID",  useCryptoLocalStorage("user_Data", "get", "RoleID")),
-    //   form.append("ProjectID", "0"),
-    //   form.append("IsActive", "1"),
-    //   form.append("IsMaster", "1"),
-    //   axios
-    //     .post(apiUrls?.Module_Select, form, { headers })
     axiosInstances
       .post(apiUrls?.Module_Select, {
         RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
@@ -65,37 +57,19 @@ const AddModuleModal = ({ visible, setVisible }) => {
         console.log(err);
       });
   };
-  function getlabel(id, dropdownData) {
-    const ele = dropdownData.filter((item) => item.value === id);
-    return ele.length > 0 ? ele[0].label : "";
-  }
+
   const handleSave = () => {
     if (formData?.ModuleName == "") {
       toast.error("Please Select Module");
     } else {
       setLoading(true);
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "RoleID",
-      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-      //   ),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("EmployeeID", visible?.showData?.id),
-      //   form.append("ModuleID", formData?.ModuleName),
-      //   axios
-      //     .post(apiUrls?.CreateEmployeeModule, form, { headers })
       axiosInstances
         .post(apiUrls?.CreateEmployeeModule, {
           ModuleID: String(formData?.ModuleName),
           EmployeeID: String(visible?.showData?.id),
         })
         .then((res) => {
-          console.log("check check",res.data)
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.message);
             getModuleSearch();
             setLoading(false);
@@ -113,15 +87,6 @@ const AddModuleModal = ({ visible, setVisible }) => {
   };
 
   const getModuleSearch = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append("EmployeeID", visible?.showData?.id),
-    //   axios
-    //     .post(apiUrls?.GetEmployeeModule, form, { headers })
     axiosInstances
       .post(apiUrls?.GetEmployeeModule, {
         ModuleId: String("0"),
