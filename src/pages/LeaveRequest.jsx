@@ -448,11 +448,11 @@ const LeaveRequest = ({ data }) => {
           <div className="row g-4 m-2">
             {/* <div className="col-sm-2 "> */}
             {/* <div className="d-flex"> */}
-            {/* <label className="mr-2">Name :</label>
+            <label className="mr-2">Name :</label>
                 <span style={{ textAlign: "right" }}>
                   {data ? data?.Name : LoginUserName}
-                </span> */}
-            {ReportingManager == 1 ? (
+                </span>
+            {/* {ReportingManager == 1 ? (
               <ReactSelect
                 respclass="col-xl-2 col-md-4 col-sm-6 col-12"
                 name="Employee"
@@ -474,7 +474,7 @@ const LeaveRequest = ({ data }) => {
                 // onChange={handleChange}
                 disabled={true}
               />
-            )}
+            )} */}
             {/* </div> */}
             {/* </div> */}
             <div className="col-sm-4 d-flex">
