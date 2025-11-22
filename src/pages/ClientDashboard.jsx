@@ -57,11 +57,11 @@ const ClientDashboard = () => {
     getProject();
   }, []);
 
-  useEffect(() => {
-    if (project.length > 0) {
-      handleRateListModal();
-    }
-  }, [project]);
+  // useEffect(() => {
+  //   if (project.length > 0) {
+  //     handleRateListModal();
+  //   }
+  // }, [project]);
   return (
     <>
       {shouldShowRateListModal && !ToggleModal && (
