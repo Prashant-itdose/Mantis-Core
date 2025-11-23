@@ -4,7 +4,6 @@ import "./KanBan.css";
 import Heading from "../components/UI/Heading";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
-import { headers } from "../utils/apitools";
 import { apiUrls } from "../networkServices/apiEndpoints";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import Input from "../components/formComponent/Input";
@@ -752,10 +751,13 @@ const KanbanBoard = () => {
   };
 
   const handleSearchList = () => {
+    
     setLoading(true);
     axiosInstances
       .post(apiUrls.GetKanbanViewList, {
-        AssignToID: formData?.AssignedTo ? formData.AssignedTo.join(",") : "0",
+        AssignToID: formData?.AssignedTo
+          ? String(formData.AssignedTo.join(","))
+          : "0",
       })
       .then((res) => {
         if (res?.data?.success === true) {
@@ -793,7 +795,7 @@ const KanbanBoard = () => {
     setLoading(true);
     axiosInstances
       .post(apiUrls.GetKanbanViewList, {
-        AssignToID: userId,
+        AssignToID: String(userId),
       })
       .then((res) => {
         if (res?.data?.success === true) {

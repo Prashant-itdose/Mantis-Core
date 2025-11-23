@@ -1711,10 +1711,10 @@ const ViewTicketClient = () => {
             </div>
           </div>
           <button
-            className="btn btn-sm btn-success ml-4"
+            className="btn btn-sm btn-primary ml-2 mt-0"
             onClick={() => handleViewSearch(undefined, "0")}
           >
-            {t("Apply Filter")}
+            <i className="fa fa-search mr-1" aria-hidden="true"></i> Search
           </button>
           <button className="btn btn-sm btn-danger ml-3" onClick={handleReset}>
             {t("Reset Filter")}

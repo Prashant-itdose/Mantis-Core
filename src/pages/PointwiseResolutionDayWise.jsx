@@ -37,9 +37,9 @@ const PointwiseResolutionDayWise = () => {
     Month: new Date(),
     Year: "",
     Reporter: Number(useCryptoLocalStorage("user_Data", "get", "ID"))
-        ? Number(useCryptoLocalStorage("user_Data", "get", "ID"))
-        : "",
-        SearchType:"1"
+      ? Number(useCryptoLocalStorage("user_Data", "get", "ID"))
+      : "",
+    SearchType: "1",
   });
 
   const handleDeliveryChange = (name, e) => {
@@ -51,14 +51,14 @@ const PointwiseResolutionDayWise = () => {
 
   const getReporter = () => {
     axiosInstances
-        .post(apiUrls.Reporter_Select, {
-          ID: useCryptoLocalStorage("user_Data", "get", "ID"),
-          IsMaster: "1",
-          RoleID: useCryptoLocalStorage("user_Data", "get", "RoleID"),
-        })
+      .post(apiUrls.Reporter_Select, {
+        ID: useCryptoLocalStorage("user_Data", "get", "ID"),
+        IsMaster: "1",
+        RoleID: useCryptoLocalStorage("user_Data", "get", "RoleID"),
+      })
       .then((res) => {
         const reporters = res?.data?.data?.map((item) => ({
-          label: item?.NAME,
+          label: item?.Name,
           value: item?.ID,
         }));
         setReporter(reporters);
@@ -84,22 +84,16 @@ const PointwiseResolutionDayWise = () => {
   };
 
   const handleDetail = ({ month, year }) => {
-    const form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    form.append(
-      "LoginName",
-      useCryptoLocalStorage("user_Data", "get", "realname")
-    );
-    form.append("DeveloperID", formData?.Reporter);
-    form.append("Type", "3");
-    form.append("Week", formData?.SearchType);
-    form.append("Month", month);
-    form.append("Year", year);
-
-    axios
-      .post(apiUrls.WeaklyMonthlyDeveloperFreeManMinute, form, { headers })
+    axiosInstances
+      .post(apiUrls.WeaklyMonthlyDeveloperFreeManMinute, {
+        DeveloperID: String(formData?.Reporter),
+        Type: "3",
+        Week: String(formData?.SearchType),
+        Month: String(month),
+        Year: String(year),
+      })
       .then((res) => {
-        if (res.data.status === true) {
+        if (res.data.success === true) {
           const apiData = res?.data?.data || [];
           const labels = apiData.map((item) =>
             item?.Day ? item.Day.slice(0, 3) : ""
@@ -150,7 +144,7 @@ const PointwiseResolutionDayWise = () => {
       legend: {
         display: false,
       },
-        datalabels: {
+      datalabels: {
         display: false, // 👈 disables value labels on bars
       },
       tooltip: {
@@ -207,7 +201,7 @@ const PointwiseResolutionDayWise = () => {
           name="Month"
           lable="Month/Year"
           placeholder="MM/YY"
-             value={formData?.Month}
+          value={formData?.Month}
           respclass="col-xl-4 col-md-4 col-sm-6 col-12"
           handleChange={(e) => handleMonthYearChange("Month", e)}
         />

@@ -153,22 +153,11 @@ const Summary = () => {
   };
 
   const getModule = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append("ProjectID", formData?.ProjectID),
-    //   form.append("IsActive", "1"),
-    //   form.append("IsMaster", "2"),
-    //   axios
-    //     .post(apiUrls?.Module_Select, form, { headers })
     axiosInstances
       .post(apiUrls.Module_Select, {
-        ProjectID: String(formData?.ProjectID),
-        IsActive: String("1"),
-        IsMaster: String("2"),
+        ProjectID: Number(formData?.ProjectID) || 0,
+        IsActive: 1,
+        IsMaster: 2,
       })
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {

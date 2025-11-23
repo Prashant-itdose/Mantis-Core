@@ -58,7 +58,7 @@ const DeveloperFreeHours = () => {
       })
       .then((res) => {
         const reporters = res?.data?.data?.map((item) => ({
-          label: item?.NAME,
+          label: item?.Name,
           value: item?.ID,
         }));
         setReporter(reporters);
@@ -84,27 +84,13 @@ const DeveloperFreeHours = () => {
   };
 
   const handleDetail = ({ month, year }) => {
-    // const form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append(
-    //   "LoginName",
-    //   useCryptoLocalStorage("user_Data", "get", "realname")
-    // );
-    // form.append("DeveloperID", formData?.Reporter);
-    // form.append("Type", "1");
-    // form.append("Week", formData?.SearchType);
-    // form.append("Month", month);
-    // form.append("Year", year);
-
-    // axios
-    //   .post(apiUrls.WeaklyMonthlyDeveloperFreeManMinute, form, { headers })
     axiosInstances
       .post(apiUrls?.WeaklyMonthlyDeveloperFreeManMinute, {
-        DeveloperID: String(useCryptoLocalStorage("user_Data", "get", "ID")),
+        DeveloperID: String(formData?.Reporter),
         Type: String("1"),
         Week: String(formData?.SearchType),
-        Month: month,
-        Year: year,
+        Month: String(month),
+        Year: String(year),
       })
       .then((res) => {
         if (res.data.success === true) {

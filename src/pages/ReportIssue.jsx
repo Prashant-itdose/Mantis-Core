@@ -357,8 +357,8 @@ const ReportIssue = ({ visibleTicket }) => {
         ModuleName: String(getlabel(formData?.ModuleName, moduleName) || ""),
         PagesID: String(formData.PageName || "0"),
         PagesName: String(getlabel(formData?.PageName, pageName) || ""),
-        ReferenceTicketID: String(visibleTicket?.showData?.TicketID || ""),
-        InchargeID: String(formData.Incharge || ""),
+        ReferenceTicketID: visibleTicket?.showData?.TicketID || 0,
+        InchargeID: formData.Incharge || 0,
         InchargeName: getlabel(formData?.Incharge, incharge) || "",
         ImageDetails: [
           {
