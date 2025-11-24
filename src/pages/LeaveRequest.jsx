@@ -449,9 +449,9 @@ const LeaveRequest = ({ data }) => {
             {/* <div className="col-sm-2 "> */}
             {/* <div className="d-flex"> */}
             <label className="mr-2">Name :</label>
-                <span style={{ textAlign: "right" }}>
-                  {data ? data?.Name : LoginUserName}
-                </span>
+            <span style={{ textAlign: "right" }}>
+              {data ? data?.Name : LoginUserName}
+            </span>
             {/* {ReportingManager == 1 ? (
               <ReactSelect
                 respclass="col-xl-2 col-md-4 col-sm-6 col-12"
@@ -477,8 +477,8 @@ const LeaveRequest = ({ data }) => {
             )} */}
             {/* </div> */}
             {/* </div> */}
-            <div className="col-sm-4 d-flex">
-              <div className="">
+            <div className="col-sm-5d-flex">
+              <div className="ml-4">
                 <label>Leave Month/Year :</label>
               </div>
               <div className="cl-sm-4">
@@ -495,7 +495,6 @@ const LeaveRequest = ({ data }) => {
               </div>
             </div>
             <div className="col-sm-2"></div>
-
             <div className="col-sm-4">
               <div className="d-flex flex-wrap">
                 <label className="mr-5">Available </label>

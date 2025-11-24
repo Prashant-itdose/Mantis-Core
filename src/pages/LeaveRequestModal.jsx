@@ -15,8 +15,6 @@ const LeaveRequestModal = ({
   data,
   handleLeaveRequest_BindCalender,
 }) => {
-
-
   const [loading, setLoading] = useState(false);
   const leaveData = visible?.CalenderDetails?.Table1?.find(
     (val) =>
@@ -206,45 +204,6 @@ const LeaveRequestModal = ({
         setLoading(false);
       });
   };
-  const handleLeaveRequest_Update = () => {
-    setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append(
-        "CRMEmpID",
-        useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      ),
-      form.append("FromDate", moment(visible?.data).format("YYYY-MM-DD")),
-      form.append("LeaveType", formData?.LeaveType),
-      form.append("OptionalType", formData?.OptionalType || ""),
-      form.append("Description", formData?.Description),
-      form.append("StatusType", "Update"),
-      form.append(
-        "LeaveTypeDateValue",
-        formData?.woType || formData?.OlType || formData?.hlType
-      ),
-      axios
-        .post(apiUrls?.LeaveRequest_Save, form, { headers })
-        .then((res) => {
-          if (res?.data?.status === true) {
-            toast.success(res?.data?.message);
-            setLoading(false);
-            setVisible(false);
-            handleLeaveRequest_BindCalender();
-          } else {
-            toast.error(res?.data?.message);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          setLoading(false);
-        });
-  };
 
   const handleLeaveRequest_Approve = () => {
     setLoading(true);
@@ -288,7 +247,7 @@ const LeaveRequestModal = ({
         StatusType: String("Delete"),
       })
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           setLoading(false);
           handleLeaveRequest_BindCalender();
@@ -315,19 +274,20 @@ const LeaveRequestModal = ({
     { label: "SL", value: "SL" },
     { label: "Week Off", value: "WO" },
     { label: "Comp Off", value: "COMP-Off" },
-    // { label: "CL/CIR", value: "CL/CIR" },
-    // { label: "SL/CIR", value: "SL/CIR" },
     { label: "Optional Leave", value: "OL" },
     { label: "Leave Without Pay", value: "LWP" },
   ];
 
-  const filteredLeaveOptions = leaveOptions?.filter((opt) => {
-    if (["CL", "SL", "OL", "WO"].includes(opt.value)) {
-      return getLeaveAvailable(opt.value) > 0;
-    }
-    // keep all others always
-    return true;
-  });
+  const filteredLeaveOptions =
+    ReportingManager == "1"
+      ? leaveOptions // show all if ReportingManager is "1"
+      : leaveOptions.filter((opt) => {
+          if (["CL", "SL", "OL", "WO"].includes(opt.value)) {
+            return getLeaveAvailable(opt.value) > 0;
+          }
+          return true;
+        });
+        
   return (
     <>
       <div className="">

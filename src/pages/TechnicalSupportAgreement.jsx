@@ -305,31 +305,8 @@ const TechnicalSupportAgreement = () => {
     { name: "Action", width: "5%" },
   ];
 
-  console.log("formData",formData)
   const handleSearch = (code) => {
     setLoading(true);
-    // const form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ProjectID", formData?.ProjectID),
-    //   form.append("VerticalID", formData?.VerticalID),
-    //   form.append("TeamID", formData?.TeamID),
-    //   form.append("WingID", formData?.WingID),
-    //   form.append("POC1", formData?.POC1),
-    //   form.append("POC2", formData?.POC2),
-    //   form.append("POC3", formData?.POC3),
-    //   form.append("Month", formData?.currentMonth),
-    //   form.append("Year", formData?.currentYear),
-    //   form.append("RowColor", code ? code : "0"),
-    // axios
-    //   .post(apiUrls?.TSAAggrementSearch, form, { headers })
     const payload = {
       ProjectID: String(formData?.ProjectID || 0),
       VerticalID: String(formData?.VerticalID || 0),
@@ -342,7 +319,7 @@ const TechnicalSupportAgreement = () => {
 
       Month: Number(formData?.currentMonth || 0),
       Year: Number(formData?.currentYear || 0),
-      RowColor: String(code || "0"),
+      RowColor: code || 0,
     };
 
     axiosInstances
@@ -904,21 +881,30 @@ const TechnicalSupportAgreement = () => {
               ),
               AgreementType: ele?.AgreementType,
               CreatedBy: ele?.CreatedBy,
-              CreatedDate: new Date(ele.dtEntry?.Value).toLocaleDateString("en-GB", {
-                day: "2-digit",
-                month: "short",
-                year: "numeric",
-              }),
-              ValidFrom: new Date(ele.ValidFrom?.Value).toLocaleDateString("en-GB", {
-                day: "2-digit",
-                month: "short",
-                year: "numeric",
-              }),
-              ValidTo: new Date(ele.ValidTo?.Value).toLocaleDateString("en-GB", {
-                day: "2-digit",
-                month: "short",
-                year: "numeric",
-              }),
+              CreatedDate: new Date(ele.dtEntry?.Value).toLocaleDateString(
+                "en-GB",
+                {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                }
+              ),
+              ValidFrom: new Date(ele.ValidFrom?.Value).toLocaleDateString(
+                "en-GB",
+                {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                }
+              ),
+              ValidTo: new Date(ele.ValidTo?.Value).toLocaleDateString(
+                "en-GB",
+                {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                }
+              ),
               // Action: ele?.IsCancel == 0 && (
               //   <button
               //     className="btn btn-sm btn-danger"
@@ -997,7 +983,7 @@ const TechnicalSupportAgreement = () => {
               //     </div>
               //   </>
               // ),
-              Action:ele?.IsDocumentGenrate === 1 && (
+              Action: ele?.IsDocumentGenrate === 1 && (
                 <>
                   <ReactSelect
                     style={{ width: "100%" }}
