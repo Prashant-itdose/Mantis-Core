@@ -210,19 +210,7 @@ const SearchQuotationBooking = ({ data }) => {
           useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "CrmEmpID",
-      //     useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      //   ),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("PageName", "SearchQuotationBooking"),
-      //   axios
-      //     .post(apiUrls?.GetFilterTableReprintData, form, { headers })
+
       .then((res) => {
         const data = res.data.data;
         if (res?.data.success === true) {
@@ -235,6 +223,27 @@ const SearchQuotationBooking = ({ data }) => {
         console.log(err);
       });
   };
+
+  const handlePrint1 = (ele) => {
+    axiosInstances
+      .post(apiUrls.QuotationPrintOut, {
+        QuoteID: Number(ele?.QuotationNo) || 0,
+        SignatureCode: String(""),
+      })
+
+      .then((res) => {
+        const data = res.data.data;
+        if (res?.data.success === true) {
+          window.open(data, "_blank");
+        } else {
+          toast.error("No Data found.");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const SearchAmountSubmissionTableFilter = () => {
     axiosInstances
       .post(apiUrls.GetFilterTableReprintData, {
@@ -700,52 +709,52 @@ const SearchQuotationBooking = ({ data }) => {
   const handleExcel = (page) => {
     setLoading(true);
     const payloadData = {
-  DateType: formData?.DateType || "",
-  FromDate: formatDate(formData?.FromDate) || "",
-  ToDate: formatDate(formData?.ToDate) || "",
-  Status: formData?.Status || "",
-  SearchType: "OnScreen", // fixed value
-  PageSize: Number(formData?.PageSize) || 0,
-  PageNo: Number(page ?? currentPage - 1) || 0,
-  IsExcel: 1, // from your FormData
-  ProjectID: formData?.ProjectID || "",
-  VerticalID: formData?.VerticalID || "",
-  TeamID: formData?.TeamID || "",
-  WingID: formData?.WingID || "",
-  POC1: formData?.POC1 || "",
-  POC2: formData?.POC2 || "",
-  POC3: formData?.POC3 || "",
-};
+      DateType: formData?.DateType || "",
+      FromDate: formatDate(formData?.FromDate) || "",
+      ToDate: formatDate(formData?.ToDate) || "",
+      Status: formData?.Status || "",
+      SearchType: "OnScreen", // fixed value
+      PageSize: Number(formData?.PageSize) || 0,
+      PageNo: Number(page ?? currentPage - 1) || 0,
+      IsExcel: 1, // from your FormData
+      ProjectID: formData?.ProjectID || "",
+      VerticalID: formData?.VerticalID || "",
+      TeamID: formData?.TeamID || "",
+      WingID: formData?.WingID || "",
+      POC1: formData?.POC1 || "",
+      POC2: formData?.POC2 || "",
+      POC3: formData?.POC3 || "",
+    };
 
-     axiosInstances
+    axiosInstances
       .post(apiUrls.Quotation_Search, payloadData)
 
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ProjectID", formData?.ProjectID),
-    //   form.append("VerticalID", formData?.VerticalID),
-    //   form.append("TeamID", formData?.TeamID),
-    //   form.append("WingID", formData?.WingID),
-    //   form.append("POC1", formData?.POC1),
-    //   form.append("POC2", formData?.POC2),
-    //   form.append("POC3", formData?.POC3),
-    //   form.append("Status", formData?.Status),
-    //   form.append("DateType", formData?.DateType),
-    //   form.append("FromDate", formatDate(formData?.FromDate)),
-    //   form.append("ToDate", formatDate(formData?.ToDate)),
-    //   form.append("SearchType", "OnScreen"),
-    //   form.append("IsExcel", "1"),
-    //   form.append("PageSize", formData?.PageSize),
-    //   form.append("PageNo", page ?? currentPage - 1),
-    //   axios
-    //     .post(apiUrls?.Quotation_Search, form, { headers })
-        .then((res) => {
-          // console.log("dataatata", res?.data?.data);
-          const datas = res?.data?.data;
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append(
+      //     "LoginName",
+      //     useCryptoLocalStorage("user_Data", "get", "realname")
+      //   ),
+      //   form.append("ProjectID", formData?.ProjectID),
+      //   form.append("VerticalID", formData?.VerticalID),
+      //   form.append("TeamID", formData?.TeamID),
+      //   form.append("WingID", formData?.WingID),
+      //   form.append("POC1", formData?.POC1),
+      //   form.append("POC2", formData?.POC2),
+      //   form.append("POC3", formData?.POC3),
+      //   form.append("Status", formData?.Status),
+      //   form.append("DateType", formData?.DateType),
+      //   form.append("FromDate", formatDate(formData?.FromDate)),
+      //   form.append("ToDate", formatDate(formData?.ToDate)),
+      //   form.append("SearchType", "OnScreen"),
+      //   form.append("IsExcel", "1"),
+      //   form.append("PageSize", formData?.PageSize),
+      //   form.append("PageNo", page ?? currentPage - 1),
+      //   axios
+      //     .post(apiUrls?.Quotation_Search, form, { headers })
+      .then((res) => {
+        // console.log("dataatata", res?.data?.data);
+        const datas = res?.data?.data;
 
         if (!datas || datas.length === 0) {
           console.error("No data available for download.");
@@ -1567,7 +1576,8 @@ const SearchQuotationBooking = ({ data }) => {
                     color: "black",
                   }}
                   title="Click here to Print."
-                  onClick={() => window.open(ele?.QuotationURL, "_blank")}
+                  // onClick={() => window.open(ele?.QuotationURL, "_blank")}
+                  onClick={() => handlePrint1(ele)}
                 ></i>
               ),
               "Print PI":
@@ -1592,7 +1602,8 @@ const SearchQuotationBooking = ({ data }) => {
                       color: "black",
                     }}
                     title="Click here to Print."
-                    onClick={() => window.open(ele?.PIURL, "_blank")}
+                    // onClick={() => window.open(ele?.PIURL, "_blank")}
+                    // onClick={() => handlePrint2(ele)}
                   ></i>
                   // )
                 ),
