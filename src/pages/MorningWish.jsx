@@ -298,7 +298,7 @@ const MorningWish = () => {
       })
       .then((res) => {
         const datas = res?.data?.data;
-        console.log("dataas", datas);
+     
         setFormData({
           ...formData,
           SelectDate: datas?.Day,
