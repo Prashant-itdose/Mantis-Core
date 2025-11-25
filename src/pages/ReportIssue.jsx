@@ -140,7 +140,7 @@ const ReportIssue = ({ visibleTicket }) => {
     axiosInstances
       .post(apiUrls.ProjectSelect, {
         ProjectID: 0,
-        IsMaster: "string",
+        IsMaster: "0",
         VerticalID: 0,
         TeamID: 0,
         WingID: 0,
@@ -196,7 +196,7 @@ const ReportIssue = ({ visibleTicket }) => {
   const getIncharge = (value) => {
     axiosInstances
       .post(apiUrls.Reporter_Select_Module_Wise, {
-        ID: value || "",
+        ID: value || "0",
       })
       .then((res) => {
         const options = res?.data?.data?.map((item) => ({
