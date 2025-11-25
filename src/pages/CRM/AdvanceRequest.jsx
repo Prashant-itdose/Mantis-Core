@@ -94,36 +94,36 @@ const AdvanceRequest = () => {
     setLoading(true);
     axiosInstances
       .post(apiUrls.AdvanceAmount_Requset, {
-  "AdvanceType": String(formData?.AdvanceType),
-  "AmountRequired": Number(totalAmount),
-  "PurposeofAdvance": String(formData?.PurposeOfAdvance),
-  "ExpectedDate": new Date(formData.AdvanceExpectedDate).toISOString(),
-  "EMIDetails": termsPayload,
-  "DocumentDetails": [
-    {
-        Document_Base64: formData?.Document_Base64,
-        FileExtension: formData?.FileExtension,
-      }
-  ]
-})
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append(
-    //   "LoginName",
-    //   useCryptoLocalStorage("user_Data", "get", "realname")
-    // );
-    // form.append(
-    //   "CrmID",
-    //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-    // );
-    // form.append("ExpectedDate", formatDate(formData?.AdvanceExpectedDate));
-    // form.append("AmountRequired", totalAmount);
-    // form.append("PurposeofAdvance", formData?.PurposeOfAdvance);
-    // form.append("AdvanceType", formData?.AdvanceType);
-    // form.append("DocumentDetails", ImageJson);
-    // form.append("EMIDetails", JSON.stringify(termsPayload));
-    // axios
-    //   .post(apiUrls?.AdvanceAmount_Requset, form, { headers })
+        AdvanceType: String(formData?.AdvanceType),
+        AmountRequired: Number(totalAmount),
+        PurposeofAdvance: String(formData?.PurposeOfAdvance),
+        ExpectedDate: new Date(formData.AdvanceExpectedDate).toISOString(),
+        EMIDetails: termsPayload,
+        DocumentDetails: [
+          {
+            Document_Base64: formData?.Document_Base64,
+            FileExtension: formData?.FileExtension,
+          },
+        ],
+      })
+      // let form = new FormData();
+      // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
+      // form.append(
+      //   "LoginName",
+      //   useCryptoLocalStorage("user_Data", "get", "realname")
+      // );
+      // form.append(
+      //   "CrmID",
+      //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+      // );
+      // form.append("ExpectedDate", formatDate(formData?.AdvanceExpectedDate));
+      // form.append("AmountRequired", totalAmount);
+      // form.append("PurposeofAdvance", formData?.PurposeOfAdvance);
+      // form.append("AdvanceType", formData?.AdvanceType);
+      // form.append("DocumentDetails", ImageJson);
+      // form.append("EMIDetails", JSON.stringify(termsPayload));
+      // axios
+      //   .post(apiUrls?.AdvanceAmount_Requset, form, { headers })
       .then((res) => {
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);
@@ -203,17 +203,9 @@ const AdvanceRequest = () => {
   const getAdvanceType = () => {
     axiosInstances
       .post(apiUrls.AdvaceAmount_Select, {
-        SearchType : "AdvanceType"
+        SearchType: String("AdvanceType"),
       })
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append(
-    //   "LoginName",
-    //   useCryptoLocalStorage("user_Data", "get", "realname")
-    // );
-    // form.append("SearchType", "AdvanceType");
-    // axios
-    //   .post(apiUrls?.AdvaceAmount_Select, form, { headers })
+
       .then((res) => {
         const poc3s = res?.data?.data?.map((item) => {
           return { label: item?.AdvanceType, value: item?.AdvanceTypeID };

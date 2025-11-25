@@ -333,6 +333,12 @@ const initialState = {
           childrenOrder: "8",
           breadcrumb: "Tools / Morning Wish",
         },
+          {
+          childrenName: "FestivalWish",
+          url: "/FestivalWish",
+          childrenOrder: "10",
+          breadcrumb: "Tools / Festival Wish",
+        },
         {
           childrenName: "BirthdayWish",
           url: "/BirthdayWish",

@@ -535,6 +535,20 @@ const allRoutes = {
       component: lazy(() => import("@app/pages/MorningWishSearch.jsx")),
       exact: true,
     },
+        {
+      Guard: Authenticated,
+      layout: Layout,
+      path: "/FestivalWish",
+      component: lazy(() => import("@app/pages/FestivalWish.jsx")),
+      exact: true,
+    },
+    {
+      Guard: Authenticated,
+      layout: Layout,
+      path: "/FestivalWishSearch",
+      component: lazy(() => import("@app/pages/FestivalWishSearch.jsx")),
+      exact: true,
+    },
     {
       Guard: Authenticated,
       layout: Layout,

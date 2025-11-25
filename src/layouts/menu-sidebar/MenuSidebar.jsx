@@ -265,6 +265,12 @@ export const MENU = {
           path: "/MorningWish",
           breadcrumb: "Tools / Morning Wish",
         },
+          {
+          name: "FestivalWish",
+          icon: "fas fa-regular fa-user",
+          path: "/FestivalWish",
+          breadcrumb: "Tools / Festival Wish",
+        },
         {
           name: "BirthdayWish",
           icon: "fas fa-regular fa-user",

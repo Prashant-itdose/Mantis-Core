@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import Heading from "../components/UI/Heading";
-import ReactSelect from "../components/formComponent/ReactSelect";
-import TextEditor from "../components/formComponent/TextEditor";
 import { useTranslation } from "react-i18next";
 import Modal from "../components/modalComponent/Modal";
 import UploadFile from "../utils/UploadFile";
@@ -13,10 +11,15 @@ import { headers } from "../utils/apitools";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import "./MorningWish.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import Input from "../components/formComponent/Input";
+import ReactSelect from "../components/formComponent/ReactSelect";
+import DatePicker from "../components/formComponent/DatePicker";
+import TextEditor from "../components/formComponent/TextEditor";
+import moment from "moment/moment";
 import { axiosInstances } from "../networkServices/axiosInstance";
-
-const MorningWish = () => {
+const FestivalWish = () => {
   const fileInputRef = useRef(null);
+  const { VITE_DATE_FORMAT } = import.meta.env;
   const [t] = useTranslation();
   const location = useLocation();
   const { state } = location;
@@ -24,8 +27,6 @@ const MorningWish = () => {
   const navigate = useNavigate();
   const [dragActive, setDragActive] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [selectedImageUrl, setSelectedImageUrl] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     SelectDate: "",
     Description: "",
@@ -34,41 +35,18 @@ const MorningWish = () => {
     Document_Base64: "",
     FileExtension: "",
     WishID: "",
-    ImageCheck: "",
+    FestivalName: "",
+    FestivalDate: "",
+    LeaveType: "",
   });
-  const days = [
-    { label: "1", value: "1" },
-    { label: "2", value: "2" },
-    { label: "3", value: "3" },
-    { label: "4", value: "4" },
-    { label: "5", value: "5" },
-    { label: "6", value: "6" },
-    { label: "7", value: "7" },
-    { label: "8", value: "8" },
-    { label: "9", value: "9" },
-    { label: "10", value: "10" },
-    { label: "11", value: "11" },
-    { label: "12", value: "12" },
-    { label: "13", value: "13" },
-    { label: "14", value: "14" },
-    { label: "15", value: "15" },
-    { label: "16", value: "16" },
-    { label: "17", value: "17" },
-    { label: "18", value: "18" },
-    { label: "19", value: "19" },
-    { label: "20", value: "20" },
-    { label: "21", value: "21" },
-    { label: "22", value: "22" },
-    { label: "23", value: "23" },
-    { label: "24", value: "24" },
-    { label: "25", value: "25" },
-    { label: "26", value: "26" },
-    { label: "27", value: "27" },
-    { label: "28", value: "28" },
-    { label: "29", value: "29" },
-    { label: "30", value: "30" },
-    { label: "31", value: "31" },
-  ];
+  const IsEmployee = useCryptoLocalStorage("user_Data", "get", "realname");
+  const CRMID = useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID");
+  const ReportingManager = useCryptoLocalStorage(
+    "user_Data",
+    "get",
+    "IsReportingManager"
+  );
+
   const handleDeliveryChange = (name, e) => {
     const { value } = e;
     setFormData({
@@ -154,13 +132,17 @@ const MorningWish = () => {
     return text?.replace(/<[^>]*>?/gm, "");
   }
   const handleSave = () => {
-    if (formData?.SelectDate == "") {
-      toast.error("Please Select Day.");
+    if (formData?.FestivalName == "") {
+      toast.error("Please Enter Festival Name.");
+      return;
+    }
+    if (formData?.LeaveType == "") {
+      toast.error("Please Select LeaveType.");
       return;
     }
 
-    if (formData?.SelectFile == "") {
-      toast.error("Please Select File.");
+    if (formData?.FestivalDate == "") {
+      toast.error("Please Select FestivalDate.");
       return;
     }
 
@@ -170,24 +152,13 @@ const MorningWish = () => {
     // }
 
     setLoading(true);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("Day", formData?.SelectDate),
-    //   form.append(
-    //     "Content",
-    //     formData.Description ? removeHtmlTags(formData.Description) : ""
-    //   ),
-    //   form.append("Image_Base64", formData?.Document_Base64),
-    //   form.append("FileFormat_Base64", formData?.FileExtension),
-    //   axios
-    //     .post(apiUrls?.MorningWishSave, form, {
+
     axiosInstances
-      .post(apiUrls.MorningWishSave, {
+      .post(apiUrls.FestivalWishSave, {
         Day: formData?.SelectDate,
+        FestivalName: formData?.FestivalName,
+        FestivalDate: formData?.FestivalDate,
+        LeaveType: formData?.LeaveType,
         Content: formData.Description
           ? removeHtmlTags(formData.Description)
           : "",
@@ -195,7 +166,7 @@ const MorningWish = () => {
         FileFormat_Base64: formData?.FileExtension,
       })
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           setLoading(false);
           setFormData({
@@ -207,9 +178,12 @@ const MorningWish = () => {
             Document_Base64: "",
             FileExtension: "",
             WishID: "",
+            FestivalName: "",
+            FestivalDate: "",
+            LeaveType: "",
           });
           setRowHandler({});
-          navigate("/MorningWishSearch");
+          // navigate("/FestivalWishSearch");
         } else {
           toast.error(res?.data?.message);
           setLoading(false);
@@ -235,27 +209,14 @@ const MorningWish = () => {
     //   return;
     // }
     setLoading(true);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("Day", formData?.SelectDate),
-    //   form.append(
-    //     "Content",
-    //     formData.Description ? removeHtmlTags(formData.Description) : ""
-    //   ),
-    //   form.append("Image_Base64", formData?.Document_Base64),
-    //   form.append("FileFormat_Base64", formData?.FileExtension),
-    //   form.append("WishID", formData?.WishID),
-    //   axios
-    //     .post(apiUrls?.UpdateMorningWish, form, {
-    //       headers,
-    //     })
+
     axiosInstances
-      .post(apiUrls.UpdateMorningWish, {
+      .post(apiUrls.FestivalWishUpdate, {
         Day: formData?.SelectDate,
+        FestivalName: formData?.FestivalName,
+        WishID: formData?.WishID,
+        FestivalDate: formData?.FestivalDate,
+        LeaveType: formData?.LeaveType,
         Content: formData.Description
           ? removeHtmlTags(formData.Description)
           : "",
@@ -275,9 +236,12 @@ const MorningWish = () => {
             Document_Base64: "",
             FileExtension: "",
             WishID: "",
+            FestivalName: "",
+            FestivalDate: "",
+            LeaveType: "",
           });
           setRowHandler({});
-          navigate("/MorningWishSearch");
+          // navigate("/FestivalWishSearch");
         } else {
           toast.error(res?.data?.message);
           setLoading(false);
@@ -285,20 +249,17 @@ const MorningWish = () => {
       })
       .catch((err) => {
         console.log(err);
-      })
-      .finally(() => {
-        setLoading(false); // ✅ always stop loader
       });
   };
 
   const EditMorningWish = (id) => {
     axiosInstances
-      .post(apiUrls.EditMorningWish, {
+      .post(apiUrls.EditFestivalWish, {
         WishID: id,
       })
       .then((res) => {
-        const datas = res?.data?.data;
-        console.log("dataas", datas);
+        const datas = res?.data?.data[0];
+
         setFormData({
           ...formData,
           SelectDate: datas?.Day,
@@ -308,7 +269,9 @@ const MorningWish = () => {
           Document_Base64: "",
           FileExtension: "",
           WishID: datas?.ID,
-          ImageCheck: datas?.DocumentUrl,
+          FestivalName: datas?.FestivalName,
+          FestivalDate: new Date(datas?.FestivalDate),
+          LeaveType: datas?.LeaveType,
         });
         setEditMode(true);
       })
@@ -317,13 +280,20 @@ const MorningWish = () => {
       });
   };
 
+  const searchHandleChange = (e) => {
+    const { name, value, checked, type } = e?.target;
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? (checked ? "1" : "0") : value,
+    });
+  };
+
   useEffect(() => {
     if (state?.edit) {
       EditMorningWish(state?.data);
     }
   }, []);
-
-  const [selected, setSelected] = React.useState("yes");
+  const [selected, setSelected] = React.useState("no");
 
   const handleRadioChange = (value) => {
     setSelected(value);
@@ -350,7 +320,7 @@ const MorningWish = () => {
       </Modal>
       <div className="card">
         <Heading
-          title={<span style={{ fontWeight: "bold" }}>Morning Wish</span>}
+          title={<span style={{ fontWeight: "bold" }}>Festival Wish</span>}
           isBreadcrumb={true}
           secondTitle={
             <div className="d-flex" style={{ justifyContent: "space-between" }}>
@@ -383,15 +353,40 @@ const MorningWish = () => {
           }
         />
         <div className="row p-2">
-          <ReactSelect
-            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
-            name="SelectDate"
-            placeholderName={"Select Date"}
-            dynamicOptions={days}
-            value={formData?.SelectDate}
-            handleChange={handleDeliveryChange}
+          <Input
+            type="text"
+            className="form-control"
+            id="FestivalName"
+            name="FestivalName"
+            lable="Festival Name"
+            onChange={searchHandleChange}
+            value={formData?.FestivalName}
+            respclass="col-xl-2 col-md-4 col-12 col-sm-12"
           />
 
+          <ReactSelect
+            name="LeaveType"
+            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+            placeholderName="Leave Type"
+            dynamicOptions={[
+              { label: "GZ", value: "GZ" },
+              { label: "RT", value: "RT" },
+              { label: "OL", value: "OL" },
+              { label: "OTHER", value: "OTHER" },
+            ]}
+            value={formData?.LeaveType}
+            handleChange={handleDeliveryChange}
+          />
+          <DatePicker
+            className="custom-calendar"
+            id="FestivalDate"
+            name="FestivalDate"
+            lable={t("Festival Date")}
+            placeholder={VITE_DATE_FORMAT}
+            value={formData?.FestivalDate}
+            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+            handleChange={searchHandleChange}
+          />
           <div className=" ml-3 mr-2" style={{ display: "flex" }}>
             <div style={{ width: "100%", marginRight: "3px" }}>
               <button
@@ -451,100 +446,6 @@ const MorningWish = () => {
             </div>
           )}
 
-          <div>
-            {formData?.ImageCheck && (
-              <i
-                className="fa fa-eye ml-3"
-                style={{
-                  marginLeft: "5px",
-                  cursor: "pointer",
-                  color: "white",
-                  border: "1px solid grey",
-                  padding: "4px",
-                  background: "green",
-                  borderRadius: "3px",
-                }}
-                onClick={() => {
-                  setSelectedImageUrl(formData?.ImageCheck);
-                  setIsModalOpen(true);
-                }}
-                title="Click to View Image."
-              ></i>
-            )}
-
-            {/* Modal */}
-            {isModalOpen && selectedImageUrl && (
-              <div
-                style={{
-                  position: "fixed",
-                  top: 0,
-                  left: 0,
-                  width: "100vw",
-                  height: "100vh",
-                  backgroundColor: "rgba(0,0,0,0.6)",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  zIndex: 1000,
-                  overflowY: "auto",
-                }}
-              >
-                <div
-                  style={{
-                    background: "white",
-                    width: "500px",
-                    height: "auto",
-                    position: "relative",
-                    padding: "10px",
-                    borderRadius: "8px",
-                    border: "2px solid grey",
-                    maxHeight: "90vh",
-                    overflow: "auto",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  {/* Close button */}
-                  <div
-                    style={{
-                      width: "100%",
-                      display: "flex",
-                      justifyContent: "flex-end",
-                    }}
-                  >
-                    <button
-                      onClick={() => {
-                        setIsModalOpen(false);
-                        setSelectedImageUrl(null);
-                      }}
-                      style={{
-                        padding: "5px 10px",
-                        backgroundColor: "#dc3545",
-                        color: "#fff",
-                        border: "none",
-                        borderRadius: "4px",
-                        cursor: "pointer",
-                        marginBottom: "10px",
-                      }}
-                    >
-                      X
-                    </button>
-                  </div>
-
-                  <img
-                    src={selectedImageUrl}
-                    alt="Document"
-                    style={{
-                      width: "100%",
-                      height: "auto",
-                      borderRadius: "5px",
-                    }}
-                  />
-                </div>
-              </div>
-            )}
-          </div>
           <div className=" ml-3" style={{ display: "flex" }}>
             <div style={{ width: "40%", marginRight: "3px" }}>
               <button
@@ -588,14 +489,14 @@ const MorningWish = () => {
             </div>
           )}
           <div
-            className="col d-flex justify-content-end"
             style={{ fontWeight: "bold" }}
+            className="col d-flex justify-content-end"
           >
-            <Link to="/MorningWishSearch">Morning Wish Search</Link>
+            <Link to="/FestivalWishSearch">Festival Wish Search</Link>
           </div>
         </div>
       </div>
     </>
   );
 };
-export default MorningWish;
+export default FestivalWish;

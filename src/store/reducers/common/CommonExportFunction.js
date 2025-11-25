@@ -374,6 +374,12 @@ export const GetBindMenu = createAsyncThunk(
                 childrenOrder: "15",
                 breadcrumb: "Tools / Morning Wish",
               },
+                {
+                childrenName: "FestivalWish",
+                url: "/FestivalWish",
+                childrenOrder: "17",
+                breadcrumb: "Tools / Festival Wish",
+              },
               {
                 childrenName: "BirthdayWish",
                 url: "/BirthdayWish",
