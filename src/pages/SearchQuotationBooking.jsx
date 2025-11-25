@@ -114,26 +114,7 @@ const SearchQuotationBooking = ({ data }) => {
         FilterData: JSON.stringify(filterData),
         PageName: "SearchQuotationBooking",
       })
-      // let form = new FormData();
-
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-      // form.append(
-      //   "CrmEmpID",
-      //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      // );
-      // form.append(
-      //   "LoginName",
-      //   useCryptoLocalStorage("user_Data", "get", "realname")
-      // );
-      // form.append("PageName", "SearchQuotationBooking");
-
-      // // Example FilterData array
-
-      // // Append stringified FilterData
-      // form.append("FilterData", JSON.stringify(filterData));
-
-      // axios
-      //   .post(apiUrls?.SaveFilterTableReprintData, form, { headers })
+    
       .then((res) => {
         console.log(res.data.message);
       })
@@ -176,23 +157,7 @@ const SearchQuotationBooking = ({ data }) => {
         FilterData: JSON.stringify(filterData),
         PageName: "SearchQuotationBookingTable",
       })
-      // let form = new FormData();
-
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-      // form.append(
-      //   "CrmEmpID",
-      //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      // );
-      // form.append(
-      //   "LoginName",
-      //   useCryptoLocalStorage("user_Data", "get", "realname")
-      // );
-      // form.append("PageName", "SearchQuotationBookingTable");
-
-      // // Example FilterData array
-
-      // axios
-      //   .post(apiUrls?.SaveFilterTableReprintData, form, { headers })
+    
       .then((res) => {
         console.log(res.data.message);
       })
@@ -252,22 +217,10 @@ const SearchQuotationBooking = ({ data }) => {
           useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "CrmEmpID",
-      //     useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      //   ),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("PageName", "SearchQuotationBookingTable"),
-      //   axios
-      //     .post(apiUrls?.GetFilterTableReprintData, form, { headers })
+     
       .then((res) => {
         const data = res.data.data;
-        if (res?.data.status === true) {
+        if (res?.data.success === true) {
           setColumnConfig(data);
         } else {
           SaveTableFilter();
@@ -1148,7 +1101,7 @@ const SearchQuotationBooking = ({ data }) => {
               placeholderName="PageSize"
               dynamicOptions={PageSize}
               value={formData?.PageSize}
-              // defaultValue={status.find((option) => option.value === "resolved")}
+              // defaultValue={success.find((option) => option.value === "resolved")}
               handleChange={handleDeliveryChange}
               requiredClassName={"required-fields"}
             />

@@ -286,36 +286,7 @@ const ViewExpense = () => {
           IsAccountant: Number(0),
           StatusType: Number(0),
         })
-        // let form = new FormData();
-        // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-        // form.append(
-        //   "LoginName",
-        //   useCryptoLocalStorage("user_Data", "get", "realname")
-        // );
-        // form.append(
-        //   "CrmEmployeeID",
-        //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-        // );
-        // form.append(
-        //   "ExpenseEmployeeID",
-        //   formData?.Employee ? formData.Employee : "0"
-        //   // IsManager == 1
-        //   //   ? "0"
-        //   //   : formData?.Employee
-        //   //     ? formData.Employee
-        //   //     : useCryptoLocalStorage("user_Data", "get", "ID")
-        // );
-        // form.append("Month", formData?.currentMonth),
-        //   form.append("Year", formData?.currentYear),
-        //   form.append("Status", "0");
-        // form.append("TripName", "");
-        // form.append("ExpenseType", formData?.ExpenseType);
-        // form.append("VerticalID", formData?.VerticalID);
-        // form.append("TeamID", formData?.TeamID);
-        // form.append("WingID", formData?.WingID);
-
-        // axios
-        //   .post(apiUrls?.ViewExpenseList, form, { headers })
+        
         .then((res) => {
           if (res?.data?.success === true) {
             setTableData(res?.data?.data);
@@ -357,33 +328,9 @@ const ViewExpense = () => {
           IsAccountant: Number(0),
           StatusType: Number(0),
         })
-        // let form = new FormData();
-        // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-        // form.append(
-        //   "CrmEmployeeID",
-        //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-        // );
-        // form.append(
-        //   "LoginName",
-        //   useCryptoLocalStorage("user_Data", "get", "realname")
-        // );
-        // form.append(
-        //   "ExpenseEmployeeID",
-        //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-        // );
-        // form.append("Month", formData?.currentMonth),
-        //   form.append("Year", formData?.currentYear),
-        //   form.append("Status", "0");
-        // form.append("TripName", "");
-        // form.append("ExpenseType", formData?.ExpenseType);
-        // form.append("VerticalID", formData?.VerticalID);
-        // form.append("TeamID", formData?.TeamID);
-        // form.append("WingID", formData?.WingID);
-
-        // axios
-        //   .post(apiUrls?.ViewExpenseList, form, { headers })
+       
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             setTableData(res?.data?.data);
             setFilteredData(res?.data?.data);
             setLoading(false);

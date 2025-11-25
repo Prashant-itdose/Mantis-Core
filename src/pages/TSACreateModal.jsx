@@ -307,7 +307,7 @@ const TSACreateModal = (showData) => {
     axiosInstances
       .post(apiUrls?.Change_Tsa_Agreement_Format, payload)
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           toast.success(res?.data?.message);
         } else {
           toast.error(res?.data?.message);

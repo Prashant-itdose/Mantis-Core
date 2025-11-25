@@ -48,7 +48,7 @@ const NotificationTabModal = ({data}) => {
     axios
       .post(apiUrls?.UpdateNotification, form, { headers })
       .then((res) => {
-        if(res?.data?.status==true){
+        if(res?.data?.success==true){
           toast.success(res?.data?.message);
         }else{
           toast.error(res?.data?.message);

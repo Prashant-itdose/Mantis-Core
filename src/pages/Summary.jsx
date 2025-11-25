@@ -291,7 +291,7 @@ const Summary = () => {
       .then((res) => {
         console.log("check Response", res?.data?.status);
         const data = res?.data;
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           setByProject(data?.dtProject);
           setbyStatus(data?.dtStatus);
           setbyCategory(data?.dtCategory);

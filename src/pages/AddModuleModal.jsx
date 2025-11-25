@@ -153,7 +153,7 @@ const AddModuleModal = ({ visible, setVisible }) => {
       })
       .then((res) => {
         console.log("check check", res.data);
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           setLoading(false);
           getModuleSearch();

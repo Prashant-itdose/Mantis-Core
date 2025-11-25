@@ -153,7 +153,7 @@ const RateListsMaster = ({ data }) => {
       axios
         .post(apiUrls?.ProjectRateListSave, form, { headers })
         .then((res) => {
-          if (res.data.status === true) {
+          if (res.data.success === true) {
             toast.success(res.data.message);
             handleSearch();
             setLoading(false);
@@ -202,7 +202,7 @@ const RateListsMaster = ({ data }) => {
       axios
         .post(apiUrls?.ProjectRateListUpdate, form, { headers })
         .then((res) => {
-          if (res.data.status === true) {
+          if (res.data.success === true) {
             toast.success(res.data.message);
             handleSearch();
             setEditMode(false);

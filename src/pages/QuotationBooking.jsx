@@ -1056,7 +1056,7 @@ const QuotationBooking = ({ data }) => {
             setLoading(false);
             setIsSubmitting(false);
           }
-          if (res.status) {
+          if (res.data.success ===true) {
             // console.log("res.status", res.status);
             localStorage.setItem("lotus", res.data.ID);
             setRecordID(res.data.ID); // Store the ID in state
@@ -1172,7 +1172,7 @@ const QuotationBooking = ({ data }) => {
             setLoading(false);
           }
           // console.log("res.status", res);
-          if (res.status) {
+          if (res.data.success) {
             // console.log("res.status", res.status);
             localStorage.setItem("lotus", res.data.ID);
             setRecordID(res.data.ID); // Store the ID in state
@@ -1398,7 +1398,7 @@ const QuotationBooking = ({ data }) => {
             setLoading(false);
           }
           // console.log("res.status", res);
-          if (res.status) {
+          if (res.data.success) {
             // console.log("res.status", res.status);
             localStorage.setItem("lotus", res.data.ID);
             setRecordID(res.data.ID); // Store the ID in state

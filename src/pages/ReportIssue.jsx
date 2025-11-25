@@ -370,7 +370,7 @@ const ReportIssue = ({ visibleTicket }) => {
 
       toast.success(response?.data?.message);
 
-      if (response?.data?.status) {
+      if (response?.data?.success) {
         setticketid(response.data.TicketID);
         if (formData?.IsActive === "1") {
           setVisible({ showVisible: true, visible: response.data.data });

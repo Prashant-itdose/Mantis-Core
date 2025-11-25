@@ -484,7 +484,7 @@ const SalesLeadCreate = () => {
         NoOfMachine: Number(formData?.NoOfMachine),
       })
       .then((res) => {
-        if (res?.data?.status == true) {
+        if (res?.data?.success == true) {
           toast.success(res?.data?.message);
           setLoading(false);
           setFormData({
@@ -696,7 +696,7 @@ const SalesLeadCreate = () => {
     axiosInstances
       .post(apiUrls?.UpdateSalesLead, paylode)
       .then((res) => {
-        if (res?.data?.status == true) {
+        if (res?.data?.success == true) {
           toast.success(res?.data?.message);
           setLoading(false);
           setFormData({

@@ -135,7 +135,7 @@ const ShowWorkingDays = () => {
     axios
       .post(apiUrls?.MonthWiseAttendanceReoprt, form, { headers })
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           setTableData(res?.data?.data);
           setFilteredData(res?.data?.data);
           setLoading(false);

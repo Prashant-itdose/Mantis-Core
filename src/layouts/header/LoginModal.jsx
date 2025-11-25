@@ -188,7 +188,7 @@ const LoginModal = ({
         Remarks: String(formData?.Remarks || ""),
         StatusType: String("LogOut"),
       });
-      if (res?.data?.status === true) {
+      if (res?.data?.success === true) {
         toast.success(res?.data?.message);
         setIsLogin(false);
         localStorage.setItem("isLogin", "false");

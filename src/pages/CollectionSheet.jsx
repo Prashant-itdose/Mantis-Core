@@ -193,7 +193,7 @@ const CollectionSheet = () => {
       })
       .then((res) => {
         const data = res.data.data;
-        if (res?.data.status === true) {
+        if (res?.data.success === true) {
           setDynamicFilter(data);
         } else {
           SaveFilter();
@@ -213,7 +213,7 @@ const CollectionSheet = () => {
       })
       .then((res) => {
         const data = res.data.data;
-        if (res?.data.status === true) {
+        if (res?.data.success === true) {
           setColumnConfig(data);
         } else {
           SaveTableFilter();

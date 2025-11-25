@@ -142,7 +142,7 @@ const ImageSignatureUpload = (showData) => {
       axios
         .post(apiUrls?.UploadEmployeeImages, form, { headers })
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.message);
             setLoading(false);
             setFormData({
@@ -190,7 +190,7 @@ const ImageSignatureUpload = (showData) => {
       axios
         .post(apiUrls?.UploadEmployeeImages, form, { headers })
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.message);
             setLoading(false);
             setFormData({
@@ -245,7 +245,7 @@ const ImageSignatureUpload = (showData) => {
           headers,
         })
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.message);
             setLoading(false);
             handleSearch();
@@ -272,7 +272,7 @@ const ImageSignatureUpload = (showData) => {
           headers,
         })
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.message);
             setLoading(false);
             handleSearch();

@@ -616,7 +616,7 @@ const ExpenseSubmission = () => {
     axiosInstances
       .post(apiUrls.ManageExpense_Insert, payload)
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           setLoading(false);
 

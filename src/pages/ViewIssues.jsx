@@ -946,7 +946,7 @@ const ViewIssues = ({ data }) => {
         })
 
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.message);
             setFormData({
               ...formData,
@@ -2053,7 +2053,7 @@ const ViewIssues = ({ data }) => {
         ReOpenReason: String(data?.label),
       })
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           handleViewSearch();
         } else {
@@ -2084,18 +2084,7 @@ const ViewIssues = ({ data }) => {
         ReOpenReasonID: String(data?.value),
         ReOpenReason: String(data?.label),
       })
-      // console.log("check latest", data);
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("TicketIDs", tableData[index]?.TicketID),
-      //   form.append("ActionText", data?.label),
-      //   form.append("ActionId", data?.value),
-      //   axios
-      //     .post(apiUrls?.ApplyAction, form, { headers })
+    
       .then((res) => {
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);

@@ -17,7 +17,7 @@ const CircularUNCountModal = ({ visible }) => {
         Type: String("Unread"),
       })
       .then((res) => {
-        if (res.data.status === true) {
+        if (res.data.success === true) {
           setTableData(res.data.data);
         } else {
           toast.error("No record found.");

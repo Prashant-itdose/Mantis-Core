@@ -582,15 +582,7 @@ const SearchSalesBooking = ({ data }) => {
       .post(apiUrls.SalesBooking_GeneratePI, {
         SalesID: String(ele),
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("SalesID", ele),
-      //   axios
-      //     .post(apiUrls?.SalesBooking_GeneratePI, form, { headers })
+    
       .then((res) => {
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);
@@ -608,17 +600,7 @@ const SearchSalesBooking = ({ data }) => {
       .post(apiUrls.SalesBooking_GenerateTax, {
         SalesID: String(ele),
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("SalesID", ele),
-      //   axios
-      //     .post(apiUrls?.SalesBooking_GenerateTax, form, { headers })
-      // axiosInstances
-      //   .post(apiUrls?.SalesBooking_GenerateTax, {})
+   
       .then((res) => {
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);

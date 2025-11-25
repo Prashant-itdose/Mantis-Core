@@ -495,7 +495,7 @@ const AttendanceReport = () => {
         // console.log("leaveData", leaveData);
         setTableData1(leaveData);
         setFilteredData1(leaveData);
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           const apiData = Array.isArray(res?.data?.data?.dtAttReport)
             ? res?.data?.data?.dtAttReport
             : [];

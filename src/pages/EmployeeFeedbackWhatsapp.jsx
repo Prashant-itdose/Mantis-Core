@@ -25,7 +25,7 @@ const EmployeeFeedbackWhatsapp = (showData) => {
         MobileNo: String(formData?.WhatsappNumber),
       })
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           showData.setVisible(false);
           showData.handleSearchList();

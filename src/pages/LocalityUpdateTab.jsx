@@ -128,7 +128,10 @@ const LocalityUpdateTab = ({ data }) => {
   const getProduct = (value) => {
     let form = new FormData();
     form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname") ),
+      form.append(
+        "LoginName",
+        useCryptoLocalStorage("user_Data", "get", "realname")
+      ),
       axios
         .post(apiUrls?.GetProductVersion, form, {
           headers,
@@ -161,7 +164,10 @@ const LocalityUpdateTab = ({ data }) => {
       setLoading(true);
       let form = new FormData();
       form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname") ),
+        form.append(
+          "LoginName",
+          useCryptoLocalStorage("user_Data", "get", "realname")
+        ),
         form.append("ProjectID", data?.Id || data?.ProjectID),
         form.append("Country", getlabel(formData?.Country, country)),
         form.append("State", getlabel(formData?.State, state)),
@@ -179,12 +185,12 @@ const LocalityUpdateTab = ({ data }) => {
             headers,
           })
           .then((res) => {
-            if(res?.data?.status==true){
+            if (res?.data?.success === true) {
               toast.success(res?.data?.message);
-              setLoading(false)
-            }else{
+              setLoading(false);
+            } else {
               toast.error(res?.data?.message);
-              setLoading(false)
+              setLoading(false);
             }
           })
           .catch((err) => {
@@ -222,7 +228,9 @@ const LocalityUpdateTab = ({ data }) => {
   return (
     <>
       <div className="card p-2">
-        <span style={{ fontWeight: "bold" }}>Project Name : {data?.NAME || data?.ProjectName}</span>
+        <span style={{ fontWeight: "bold" }}>
+          Project Name : {data?.NAME || data?.ProjectName}
+        </span>
       </div>
       <div className="card LocalityCard border p-2">
         <div className="row">

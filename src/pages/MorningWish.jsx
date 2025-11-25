@@ -195,7 +195,7 @@ const MorningWish = () => {
         FileFormat_Base64: formData?.FileExtension,
       })
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           setLoading(false);
           setFormData({

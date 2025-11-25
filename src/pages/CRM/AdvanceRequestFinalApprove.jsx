@@ -39,7 +39,7 @@ const AdvanceRequestFinalApprove = ({
     axios
       .post(apiUrls?.AdvanceAmount_Status_Update, form, { headers })
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           setLoading(false);
           setVisible(false);

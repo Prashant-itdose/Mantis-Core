@@ -252,7 +252,7 @@ const CentreModuleModal = ({ data }) => {
         CentreID: selectedIds.join(","),
       })
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           setLoading(false);
           handleSearch();
