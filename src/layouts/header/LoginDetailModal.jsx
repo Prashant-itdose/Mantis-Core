@@ -72,8 +72,8 @@ const LoginDetailModal = () => {
       })
       .then((res) => {
         if (res?.data?.success === true) {
-          setTableData(res?.data?.transactions);
-          setBreakData(res?.data?.breaks);
+          setTableData(res?.data?.data?.transactions);
+          setBreakData(res?.data?.data?.breaks);
           setLoading(false);
         } else {
           setTableData([]);
@@ -89,15 +89,13 @@ const LoginDetailModal = () => {
     setLoading(true);
     axiosInstances
       .post(apiUrls.GetEmployeeTransactions, {
-        CrmEmpID: Number(
-          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-        ),
+        CrmEmpID: Number(formData?.AssignedTo ? formData.AssignedTo : "0"),
         Date: String(new Date(formData?.FromDate).toISOString()),
       })
       .then((res) => {
         if (res?.data?.success === true) {
-          setTableData(res?.data?.transactions);
-          setBreakData(res?.data?.breaks);
+          setTableData(res?.data?.data?.transactions);
+          setBreakData(res?.data?.data?.breaks);
           setLoading(false);
         } else {
           toast.error(res?.data?.message);
@@ -121,8 +119,8 @@ const LoginDetailModal = () => {
       })
       .then((res) => {
         if (res?.data?.success === true) {
-          setTableData(res?.data?.transactions);
-          setBreakData(res?.data?.breaks);
+          setTableData(res?.data?.data?.transactions);
+          setBreakData(res?.data?.data?.breaks);
           setLoading(false);
         } else {
           toast.error(res?.data?.message);
@@ -135,7 +133,7 @@ const LoginDetailModal = () => {
         console.log(err);
       });
   };
-
+  console.log("masti", tableData);
   // Function to convert HH:mm:ss to seconds
   const timeToSeconds = (timeStr) => {
     if (!timeStr) return 0;
@@ -209,7 +207,7 @@ const LoginDetailModal = () => {
         <div className="card">
           <div className="row p-2">
             <span style={{ fontWeight: "bold", marginLeft: "10px" }}>
-              Employee Code:- {tableData[0]?.EmpCode}
+              Employee Code:- {tableData[0]?.empcode}
             </span>
           </div>
         </div>
@@ -342,7 +340,7 @@ const LoginDetailModal = () => {
         />
         <div className="row p-2 d-flex">
           <span style={{ fontWeight: "bold", marginLeft: "10px" }}>
-            Login Time: {tableData[0]?.LoginTime}
+            Login Time: {tableData?.[0]?.LoginTime}
           </span>
           &nbsp; &nbsp; &nbsp; &nbsp;{" "}
           <span
@@ -353,7 +351,9 @@ const LoginDetailModal = () => {
             }}
           >
             Logout Time:{" "}
-            {tableData[0]?.LogoutTime ? tableData[0]?.LogoutTime : "00:00:00"}
+            {tableData?.[0]?.LogoutTime
+              ? tableData?.[0]?.LogoutTime
+              : "00:00:00"}
           </span>{" "}
         </div>
       </div>

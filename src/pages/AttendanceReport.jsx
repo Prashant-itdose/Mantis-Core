@@ -360,12 +360,17 @@ const AttendanceReport = () => {
         // const leaveData = Array.isArray(res?.data?.dtMontReport)
         //   ? res.data.dtMontReport
         //   : [];
-        const leaveData = Array.isArray(res?.data?.data) ? res.data.data : [];
-        // console.log("leaveData", leaveData);
+        console.log("kakak", res.data.data?.dtAttReport);
+        const leaveData = Array.isArray(res?.data?.data?.dtAttReport)
+          ? res?.data?.data?.dtAttReport
+          : [];
+        console.log("leaveData", leaveData);
         setTableData1(leaveData);
         setFilteredData1(leaveData);
         if (res?.data?.success === true) {
-          const apiData = Array.isArray(res?.data?.data) ? res.data.data : [];
+          const apiData = Array.isArray(res?.data?.data?.dtAttReport)
+            ? res?.data?.data?.dtAttReport
+            : [];
           // const apiData = Array.isArray(res?.data?.dtAttReport)
           //   ? res.data.dtAttReport
           //   : [];
@@ -484,15 +489,15 @@ const AttendanceReport = () => {
         AttendanceType: Number(formData?.SearchType),
       })
       .then((res) => {
-        const leaveData = Array.isArray(res?.data?.dtMontReport)
-          ? res.data.dtMontReport
+        const leaveData = Array.isArray(res?.data?.data?.dtAttReport)
+          ? res?.data?.data?.dtAttReport
           : [];
         // console.log("leaveData", leaveData);
         setTableData1(leaveData);
         setFilteredData1(leaveData);
         if (res?.data?.status === true) {
-          const apiData = Array.isArray(res?.data?.dtAttReport)
-            ? res.data.dtAttReport
+          const apiData = Array.isArray(res?.data?.data?.dtAttReport)
+            ? res?.data?.data?.dtAttReport
             : [];
           // console.log("ApiData", apiData);
 
@@ -634,7 +639,7 @@ const AttendanceReport = () => {
             value={formData?.SearchType}
           />
 
-          <div className="col-2 d-flex">
+          <div className="col-1 d-flex">
             {ReportingManager == 1 ? (
               <div>
                 {loading ? (

@@ -37,7 +37,7 @@ const LoginModal = ({
   };
 
   const locationOptions = [
-    { label: "Noida Office", value: "Noida Office" },
+    // { label: "Noida Office", value: "Noida Office" },
     { label: "Client Site", value: "Client Site" },
     { label: "Work From Home", value: "Work From Home" },
     { label: "Office+Client", value: "Office+Client" },

@@ -56,7 +56,7 @@ const Attendance = () => {
   });
 
   const locationOptions = [
-    { label: "Noida Office", value: "Noida Office" },
+    // { label: "Noida Office", value: "Noida Office" },
     { label: "Client Site", value: "Client Site" },
     { label: "Work From Home", value: "Work From Home" },
     { label: "Office+Client", value: "Office+Client" },
@@ -88,7 +88,7 @@ const Attendance = () => {
         SearchType: String("LogInStatus"),
       })
       .then((res) => {
-        console.log("data data data", res?.data?.message);
+        // console.log("data data data", res?.data?.message);
         const data = res?.data?.data;
         // console.log("data data", data);
         // setNotFound(res?.data?.message == "Found");

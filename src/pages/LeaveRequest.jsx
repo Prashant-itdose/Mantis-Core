@@ -446,8 +446,6 @@ const LeaveRequest = ({ data }) => {
         <div className="card">
           <Heading title={"Attendance Calendar"} isBreadcrumb={true} />
           <div className="row g-4 m-2">
-            {/* <div className="col-sm-2 "> */}
-            {/* <div className="d-flex"> */}
             <label className="mr-2">Name :</label>
             <span style={{ textAlign: "right" }}>
               {data ? data?.Name : LoginUserName}
@@ -475,8 +473,7 @@ const LeaveRequest = ({ data }) => {
                 disabled={true}
               />
             )} */}
-            {/* </div> */}
-            {/* </div> */}
+
             <div className="col-sm-5d-flex">
               <div className="ml-4">
                 <label>Leave Month/Year :</label>
