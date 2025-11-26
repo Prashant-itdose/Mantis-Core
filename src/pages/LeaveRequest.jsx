@@ -10,8 +10,7 @@ import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import LeaveRequestModal from "./LeaveRequestModal";
 import Loading from "../components/loader/Loading";
 import { axiosInstances } from "../networkServices/axiosInstance";
-import ReactSelect from "../components/formComponent/ReactSelect";
-import MultiSelectComp from "../components/formComponent/MultiSelectComp";
+
 const getDaysInMonth = (year, month) => {
   return new Array(new Date(year, month, 0).getDate())
     .fill(null)

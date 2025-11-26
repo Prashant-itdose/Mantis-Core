@@ -16,7 +16,9 @@ const LeaveRequestModal = ({
   handleLeaveRequest_BindCalender,
 }) => {
   const [loading, setLoading] = useState(false);
-  const leaveData = visible?.CalenderDetails?.Table1?.find(
+  console.log("check kkk", visible, data);
+  console.log("check kkk visible ,", visible?.CalenderDetails?.[1]);
+  const leaveData = visible?.CalenderDetails?.[1]?.find(
     (val) =>
       String(val?.Day) ===
       moment(visible?.data).format("DD-MMM-YYYY").split("-")[0]
@@ -147,7 +149,8 @@ const LeaveRequestModal = ({
     const { name, value } = e?.target;
     setFormData({ ...formData, [name]: value });
   };
-  const leaveDataFilter = visible?.CalenderDetails?.Table || [];
+  
+  const leaveDataFilter = visible?.CalenderDetails?.[0] || [];
   const getLeaveAvailable = (leaveType) => {
     const leave = leaveDataFilter.find((item) => item?.LeaveType === leaveType);
     return leave ? leave.Available : "0";
@@ -287,7 +290,7 @@ const LeaveRequestModal = ({
           }
           return true;
         });
-        
+
   return (
     <>
       <div className="">
