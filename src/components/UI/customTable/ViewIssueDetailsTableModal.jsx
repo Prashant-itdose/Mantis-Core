@@ -21,6 +21,7 @@ import { useSelector } from "react-redux";
 import Tooltip from "../../../pages/Tooltip";
 import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorage";
 import { axiosInstances } from "../../../networkServices/axiosInstance";
+import moment from "moment";
 
 const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
   // console.log("visible", visible);
@@ -371,7 +372,7 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
           ),
           PagesID: Number(formDataUpdate?.PageName ?? 0),
           PagesName: String(getlabel(formDataUpdate?.PageName, pageName) || ""),
-          IsReOpen: Boolean(Number(formDataUpdate?.IsReOpen ?? 1)), // "1" → true, "0" → false
+          IsReOpen: 1,
           ReOpenReasonID: Number(formDataUpdate?.ReOpen ?? 0),
           ReOpenReason: String(getlabel(formDataUpdate?.ReOpen, reopen) || ""),
         })
