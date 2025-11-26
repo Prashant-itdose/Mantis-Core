@@ -125,7 +125,8 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
         RoleID: useCryptoLocalStorage("user_Data", "get", "RoleID"),
         ProjectID: visible?.showData?.ProjectID,
         IsActive: 1,
-        IsMaster: 0,
+        IsMaster: 2,
+        InchargeID: "",
       })
 
       .then((res) => {

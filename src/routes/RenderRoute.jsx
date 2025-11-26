@@ -542,6 +542,13 @@ const allRoutes = {
       component: lazy(() => import("@app/pages/FestivalWish.jsx")),
       exact: true,
     },
+      {
+      Guard: Authenticated,
+      layout: Layout,
+      path: "/ModuleMaster",
+      component: lazy(() => import("@app/pages/ModuleMaster.jsx")),
+      exact: true,
+    },
     {
       Guard: Authenticated,
       layout: Layout,

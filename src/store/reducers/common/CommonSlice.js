@@ -101,7 +101,6 @@ const initialState = {
           childrenOrder: "8",
           breadcrumb: "Tickets / Employee Task Tracker",
         },
-      
       ],
     },
 
@@ -155,7 +154,7 @@ const initialState = {
           childrenOrder: "3",
           breadcrumb: "Feedback / Emailer View",
         },
-          {
+        {
           childrenName: "Client Feedback",
           url: "/ClientFeedbackFlow",
           childrenOrder: "4",
@@ -333,7 +332,7 @@ const initialState = {
           childrenOrder: "8",
           breadcrumb: "Tools / Morning Wish",
         },
-          {
+        {
           childrenName: "FestivalWish",
           url: "/FestivalWish",
           childrenOrder: "10",
@@ -350,6 +349,12 @@ const initialState = {
           url: "/ImplementationStepMaster",
           childrenOrder: "7",
           breadcrumb: "Tools /Implementaion Step Master",
+        },
+        {
+          childrenName: "ModuleMaster",
+          url: "/ModuleMaster",
+          childrenOrder: "11",
+          breadcrumb: "Master / Module Master",
         },
       ],
     },

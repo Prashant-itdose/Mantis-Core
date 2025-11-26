@@ -371,6 +371,7 @@ const ViewTicketClient = () => {
   };
 
   const handleViewSearch = (code, page) => {
+    setLoading(true);
     axiosInstances
       .post(apiUrls.ViewIssueSearchClient, {
         RoleID:
@@ -928,7 +929,7 @@ const ViewTicketClient = () => {
 
       {visible?.docVisible && (
         <Modal
-          modalWidth={"400px"}
+          modalWidth={"600px"}
           visible={visible}
           setVisible={setVisible}
           Header="Upload Documents"
@@ -1710,12 +1711,16 @@ const ViewTicketClient = () => {
               </div>
             </div>
           </div>
-          <button
-            className="btn btn-sm btn-primary ml-2 mt-0"
-            onClick={() => handleViewSearch(undefined, "0")}
-          >
-            <i className="fa fa-search mr-1" aria-hidden="true"></i> Search
-          </button>
+          {loading ? (
+            <Loading />
+          ) : (
+            <button
+              className="btn btn-sm btn-primary ml-2 mt-0"
+              onClick={() => handleViewSearch(undefined, "0")}
+            >
+              <i className="fa fa-search mr-1" aria-hidden="true"></i> Search
+            </button>
+          )}
           <button className="btn btn-sm btn-danger ml-3" onClick={handleReset}>
             {t("Reset Filter")}
           </button>

@@ -305,6 +305,7 @@ export const apiUrls = {
   Module_Select: "/CRMCOREAPI/api/MasterBind/Module_Select",
   Pages_Select: "/CRMCOREAPI/api/MasterBind/Pages_Select",
   CreateModule: "/CRMCOREAPI/api/MasterBind/CreateModule",
+  UpdateModule: "/CRMCOREAPI/api/MasterBind/UpdateModule",
   CreatePages: "/CRMCOREAPI/api/MasterBind/CreatePages",
   UpdatePages: "/CRMCOREAPI/api/MasterBind/UpdatePages",
   UpdateModule: "/CRMCOREAPI/api/MasterBind/UpdateModule",
@@ -362,6 +363,7 @@ export const apiUrls = {
     "/CRMCOREAPI/api/CoordinatorDashboard/CoorDashboardAgeingSheetPendingRecovery",
   CentreRemoveProject:
     "/CRMCOREAPI/api/ProjectMasterUpdate/CentreRemoveProject",
+  Module_Search: "/CRMCOREAPI/api/MasterBind/Module_Search",
   BulkNoteInsert: "/CRMCOREAPI/api/BugReport/BulkNoteInsert",
   CreateEmployeeModule: "/CRMCOREAPI/api/EmployeeMaster/CreateEmployeeModule",
   GetEmployeeModule: "/CRMCOREAPI/api/EmployeeMaster/GetEmployeeModule",

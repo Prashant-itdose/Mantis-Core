@@ -324,6 +324,12 @@ export const GetBindMenu = createAsyncThunk(
                 childrenOrder: "11",
                 breadcrumb: "Master / ImplementationStepMaster",
               },
+                {
+                childrenName: "ModuleMaster",
+                url: "/ModuleMaster",
+                childrenOrder: "12",
+                breadcrumb: "Master / Module Master",
+              },
             ],
           },
           {

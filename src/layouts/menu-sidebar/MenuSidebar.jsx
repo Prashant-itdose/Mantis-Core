@@ -217,6 +217,12 @@ export const MENU = {
           path: "/ImplementationStepMaster",
           breadcrumb: "Master / ImplementationStepMaster",
         },
+         {
+          name: "ModuleMaster",
+          icon: "fas fa-regular fa-user",
+          path: "/ModuleMaster",
+          breadcrumb: "Master / Module Master",
+        },
       ],
     },
     {
