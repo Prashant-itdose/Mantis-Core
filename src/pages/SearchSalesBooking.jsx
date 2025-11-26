@@ -214,7 +214,44 @@ const SearchSalesBooking = ({ data }) => {
         console.log(err);
       });
   };
+  const handlePrint2 = (ele) => {
+    axiosInstances
+      .post(apiUrls.GeneratePIPDF, {
+        PINo: Number(ele?.PINo) || 0,
+      })
+      .then((res) => {
+        if (res?.data?.success === true) {
+          const base64 = res.data.data; // <-- Base64 string you provided
 
+          // Convert Base64 to binary
+          const byteCharacters = atob(base64);
+          const byteNumbers = new Array(byteCharacters.length);
+
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+
+          const byteArray = new Uint8Array(byteNumbers);
+
+          // Create PDF Blob
+          const blob = new Blob([byteArray], { type: "application/pdf" });
+
+          // Create Blob URL
+          const url = URL.createObjectURL(blob);
+
+          // Open PDF in new tab
+          window.open(url, "_blank");
+
+          // Optional: Revoke URL later
+          setTimeout(() => URL.revokeObjectURL(url), 5000);
+        } else {
+          console.error("PDF generation failed");
+        }
+      })
+      .catch((err) => {
+        console.error("Error:", err);
+      });
+  };
   const isVisible = (header) =>
     dynamicFilter.find((f) => f?.header === header)?.visible;
   const isTableVisible = (header) =>
@@ -1200,7 +1237,7 @@ const SearchSalesBooking = ({ data }) => {
                         padding: "2px",
                         borderRadius: "3px",
                       }}
-                      onClick={() => window.open(ele?.PIURL, "_blank")}
+                      onClick={() => handlePrint2(ele)}
                     ></i>
                   ),
 

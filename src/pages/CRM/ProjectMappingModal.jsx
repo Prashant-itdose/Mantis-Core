@@ -70,7 +70,9 @@ const ProjectMappingModal = (ele) => {
     //     headers,
     //   })
     axiosInstances
-      .post(apiUrls?.UserVsProject_Select, {})
+      .post(apiUrls?.UserVsProject_Select, {
+        UserID: Number(ele?.visible?.showData?.id)
+      })
       .then((res) => {
         const data = res?.data?.data;
         setTableData(data);
@@ -105,26 +107,14 @@ const ProjectMappingModal = (ele) => {
       toast.error("Please Select AccessType.");
       setLoading(false);
     } else {
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("UserID", ele?.visible?.showData?.id),
-      //   form.append("Status", "Add"),
-      //   form.append("TargetUserID", ""),
-      //   form.append("ProjectID", formData?.Project),
-      //   form.append("AccessType", formData?.AccessType),
-      //   axios
-      //     .post(apiUrls?.UserVsProjectMapping, form, { headers })
+      
       axiosInstances
         .post(apiUrls?.UserVsProjectMapping, {
           AccessType: String(formData?.AccessType),
           // ProjectIDs: (formData?.Project).join(","),
           ProjectIDs: formData?.Project,
           Status: "Add",
-          TargetUserID: Number("0"),
+          TargetUserID: Number(ele?.visible?.showData?.id),
         })
         .then((res) => {
           if (res?.data?.success === true) {

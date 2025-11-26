@@ -191,26 +191,79 @@ const SearchQuotationBooking = ({ data }) => {
 
   const handlePrint1 = (ele) => {
     axiosInstances
-      .post(
-        apiUrls.QuotationPrintOut,
-        {
-          QuoteID: Number(ele?.QuotationNo) || 0,
-          SignatureCode: "",
-        },
-        { responseType: "blob" }
-      )
+      .post(apiUrls.QuotationPrintOut, {
+        QuoteID: Number(ele?.QuotationNo) || 0,
+        SignatureCode: "",
+      })
       .then((res) => {
-        if (res?.data.success === true) {
-          const blob = new Blob([res.data.data], { type: "application/pdf" });
-          const url = window.URL.createObjectURL(blob);
+        if (res?.data?.success === true) {
+          const base64 = res.data.data; // <-- Base64 string you provided
+
+          // Convert Base64 to binary
+          const byteCharacters = atob(base64);
+          const byteNumbers = new Array(byteCharacters.length);
+
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+
+          const byteArray = new Uint8Array(byteNumbers);
+
+          // Create PDF Blob
+          const blob = new Blob([byteArray], { type: "application/pdf" });
+
+          // Create Blob URL
+          const url = URL.createObjectURL(blob);
+
+          // Open PDF in new tab
           window.open(url, "_blank");
+
+          // Optional: Revoke URL later
+          setTimeout(() => URL.revokeObjectURL(url), 5000);
         } else {
-          toast.error("No Data found.");
+          console.error("PDF generation failed");
         }
       })
       .catch((err) => {
-        console.log("PDF Error:", err);
-        toast.error("Unable to generate PDF.");
+        console.error("Error:", err);
+      });
+  };
+  const handlePrint2 = (ele) => {
+    axiosInstances
+      .post(apiUrls.GeneratePIPDF, {
+        PINo: Number(ele?.PINo) || 0,
+      })
+      .then((res) => {
+        if (res?.data?.success === true) {
+          const base64 = res.data.data; // <-- Base64 string you provided
+
+          // Convert Base64 to binary
+          const byteCharacters = atob(base64);
+          const byteNumbers = new Array(byteCharacters.length);
+
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+
+          const byteArray = new Uint8Array(byteNumbers);
+
+          // Create PDF Blob
+          const blob = new Blob([byteArray], { type: "application/pdf" });
+
+          // Create Blob URL
+          const url = URL.createObjectURL(blob);
+
+          // Open PDF in new tab
+          window.open(url, "_blank");
+
+          // Optional: Revoke URL later
+          setTimeout(() => URL.revokeObjectURL(url), 5000);
+        } else {
+          console.error("PDF generation failed");
+        }
+      })
+      .catch((err) => {
+        console.error("Error:", err);
       });
   };
 
@@ -1561,7 +1614,7 @@ const SearchQuotationBooking = ({ data }) => {
                     }}
                     title="Click here to Print."
                     // onClick={() => window.open(ele?.PIURL, "_blank")}
-                    // onClick={() => handlePrint2(ele)}
+                    onClick={() => handlePrint2(ele)}
                   ></i>
                   // )
                 ),

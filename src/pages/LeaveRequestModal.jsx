@@ -89,7 +89,7 @@ const LeaveRequestModal = ({
         LeaveType: Number(1),
       })
       .then((res) => {
-        const verticals = res?.data?.dtOL?.map((item) => {
+        const verticals = res?.data?.data?.map((item) => {
           return { label: item?.Day, value: item?.Day };
         });
         setOLTypeWise(verticals);
@@ -112,7 +112,8 @@ const LeaveRequestModal = ({
         LeaveType: Number(2),
       })
       .then((res) => {
-        const verticals = res?.data?.dtSunday?.map((item) => {
+        console.log("kasjaksjkajs", res?.data?.data[0]);
+        const verticals = res?.data?.data?.map((item) => {
           return { label: item?.Day, value: item?.Day };
         });
         setWOTypeWise(verticals);
@@ -136,7 +137,7 @@ const LeaveRequestModal = ({
         LeaveType: Number(3),
       })
       .then((res) => {
-        const verticals = res?.data?.dtHoly?.map((item) => {
+        const verticals = res?.data?.data?.map((item) => {
           return { label: item?.Day, value: item?.Day };
         });
         setHLTypeWise(verticals);
@@ -149,7 +150,7 @@ const LeaveRequestModal = ({
     const { name, value } = e?.target;
     setFormData({ ...formData, [name]: value });
   };
-  
+
   const leaveDataFilter = visible?.CalenderDetails?.[0] || [];
   const getLeaveAvailable = (leaveType) => {
     const leave = leaveDataFilter.find((item) => item?.LeaveType === leaveType);

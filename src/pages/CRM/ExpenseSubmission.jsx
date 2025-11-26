@@ -315,33 +315,6 @@ const ExpenseSubmission = () => {
       toast.error("Please Select Expense Type");
       return;
     }
-
-    const GeneralDetailsJson = [
-      {
-        Date: moment(formData?.FromDate).format("YYYY-MM-DD"),
-        TripName: formData?.TripName,
-        // State: getlabel(formData?.State, states),
-        stateID: formData?.State,
-        City: formData?.City,
-        Locality: formData?.Locality,
-        ClientName: formData?.ClientName,
-        other_employees: formData?.OtherTeammate,
-        ExpenseType: formData?.ExpenseType,
-        HotelAmount: formData?.HotelAmount || "0",
-        HotelName: formData?.HotelName,
-        HotelDesc: formData?.HotelDescription,
-        BreakfastAmount: formData?.BreakfastAmount || "0",
-        LunchAmount: formData?.LunchAmount || "0",
-        DinnerAmount: formData?.DinnerAmount || "0",
-        mealsDesc: formData?.MealDescription,
-        PhoneAmount: formData?.PhoneAmount || "0",
-        phoneDesc: formData?.PhoneDescription,
-        Client_Enterment_Amount: formData?.EntertainmentAmount || "0",
-        Client_Enterment_Desc: formData?.EntertainmentDescription,
-        amount: formData?.OtherAmount || "0",
-        Other_Desc: formData?.OtherDescription,
-      },
-    ];
     let LocalTravelpayload = [];
     rows?.map((val, index) => {
       LocalTravelpayload.push({
@@ -523,37 +496,7 @@ const ExpenseSubmission = () => {
       toast.error("Please Select Expense Type");
       return;
     }
-    // if (!formData?.SelectFile) {
-    //   toast.error("Please Choose File");
-    //   return;
-    // }
 
-    const GeneralDetailsJson = JSON.stringify([
-      {
-        Date: moment(formData?.FromDate).format("YYYY-MM-DD"),
-        TripName: formData?.TripName,
-        // State: getlabel(formData?.State, states),
-        stateID: formData?.State,
-        City: formData?.City,
-        Locality: formData?.Locality,
-        ClientName: formData?.ClientName,
-        other_employees: formData?.OtherTeammate,
-        ExpenseType: formData?.ExpenseType,
-        HotelAmount: formData?.HotelAmount || "0",
-        HotelName: formData?.HotelName,
-        HotelDesc: formData?.HotelDescription,
-        BreakfastAmount: formData?.BreakfastAmount || "0",
-        LunchAmount: formData?.LunchAmount || "0",
-        DinnerAmount: formData?.DinnerAmount || "0",
-        mealsDesc: formData?.MealDescription,
-        PhoneAmount: formData?.PhoneAmount || "0",
-        phoneDesc: formData?.PhoneDescription,
-        Client_Enterment_Amount: formData?.EntertainmentAmount || "0",
-        Client_Enterment_Desc: formData?.EntertainmentDescription,
-        amount: formData?.OtherAmount || "0",
-        Other_Desc: formData?.OtherDescription,
-      },
-    ]);
     let LocalTravelpayload = [];
     rows?.map((val, index) => {
       LocalTravelpayload.push({
@@ -728,8 +671,9 @@ const ExpenseSubmission = () => {
   const [reportidd, setreportid] = useState("");
 
   const handleIsExpenseExists = (check) => {
+    console.log("ddi", check);
     const formatDateToLocal = (date) => {
-      const d = new Date(date?.Value);
+      const d = new Date(date);
       const year = d.getFullYear();
       const month = String(d.getMonth() + 1).padStart(2, "0");
       const day = String(d.getDate()).padStart(2, "0");
@@ -747,7 +691,7 @@ const ExpenseSubmission = () => {
         ExpenseDate: String(formatDateToLocal(check)),
       })
       .then((res) => {
-        const response = res?.data?.data?.data?.dt[0];
+        const response = res?.data?.data?.dt[0];
         const datecheck = response?.Date;
         const filetd = response?.FileURL;
         setFiledta(filetd);
@@ -884,9 +828,14 @@ const ExpenseSubmission = () => {
 
   const searchHandleChange = (e) => {
     const { name, value } = e?.target;
-    setFormData({ ...formData, [name]: value });
+    const date = new Date(value);
+    setFormData({
+      ...formData,
+      [name]: value,
+      currentMonth: date.getMonth() + 1,
+      currentYear: date.getFullYear(),
+    });
   };
-
   const hasCalledRef = useRef(false);
 
   useEffect(() => {
@@ -895,7 +844,7 @@ const ExpenseSubmission = () => {
       handleIsExpenseExists(state?.data);
     }
   }, [state]);
-
+  console.log("mamamama", state);
   useEffect(() => {
     if (formData?.FromDate && !hasCalledRef.current) {
       hasCalledRef.current = true;
@@ -903,7 +852,7 @@ const ExpenseSubmission = () => {
     }
   }, [formData?.FromDate]);
 
-   const isCurrentMonthSelected = () => {
+  const isCurrentMonthSelected = () => {
     const today = new Date();
     const currentMonth = today.getMonth() + 1; // months are 0-based
     const currentYear = today.getFullYear();

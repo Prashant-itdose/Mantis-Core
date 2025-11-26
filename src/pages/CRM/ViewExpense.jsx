@@ -138,10 +138,7 @@ const ViewExpense = () => {
   const getReporter = () => {
     axiosInstances
       .post(apiUrls.GetReportingTo_Employee, {})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.GetReportingTo_Employee, form, { headers })
+      
       .then((res) => {
         const reporters = res?.data.data.map((item) => {
           return { label: item?.NAME, value: item?.Employee_ID };
@@ -161,17 +158,7 @@ const ViewExpense = () => {
         ),
         RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
       })
-      // let form = new FormData();
-      // form.append(
-      //   "CrmEmployeeID",
-      //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      // ),
-      //   form.append(
-      //     "RoleID",
-      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-      //   ),
-      //   axios
-      //     .post(apiUrls?.EmployeeBind, form, { headers })
+   
       .then((res) => {
         const wings = res?.data?.data?.map((item) => {
           return { label: item?.EmployeeName, value: item?.Employee_ID };
@@ -186,10 +173,6 @@ const ViewExpense = () => {
   const getVertical = () => {
     axiosInstances
       .post(apiUrls.Vertical_Select, {})
-      // let form = new FormData();
-      // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.Vertical_Select, form, { headers })
       .then((res) => {
         const verticals = res?.data.data.map((item) => {
           return { name: item?.Vertical, code: item?.VerticalID };
@@ -203,10 +186,6 @@ const ViewExpense = () => {
   const getTeam = () => {
     axiosInstances
       .post(apiUrls.Team_Select, {})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.Team_Select, form, { headers })
       .then((res) => {
         const teams = res?.data.data.map((item) => {
           return { name: item?.Team, code: item?.TeamID };
@@ -220,10 +199,6 @@ const ViewExpense = () => {
   const getWing = () => {
     axiosInstances
       .post(apiUrls.Wing_Select, {})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.Wing_Select, form, { headers })
       .then((res) => {
         const wings = res?.data.data.map((item) => {
           return { name: item?.Wing, code: item?.WingID };
@@ -312,7 +287,7 @@ const ViewExpense = () => {
       axiosInstances
         .post(apiUrls.ViewExpenseList, {
           ExpenseEmployeeID: Number(
-            formData?.Employee ? Number(formData.Employee) : 0
+           useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
           ),
           Month: Number(formData?.currentMonth),
           Year: Number(formData?.currentYear),
