@@ -191,17 +191,17 @@ const SearchQuotationBooking = ({ data }) => {
 
   const handlePrint1 = (ele) => {
     axiosInstances
-      .post(apiUrls.QuotationPrintOut, {
-        QuoteID: Number(ele?.QuotationNo) || 0,
-        SignatureCode: String(""),
-      })
-
+      .post(
+        apiUrls.QuotationPrintOut,
+        {
+          QuoteID: Number(ele?.QuotationNo) || 0,
+          SignatureCode: "",
+        },
+        { responseType: "blob" }
+      )
       .then((res) => {
-        const data = res.data.data;
-        console.log("gsgshdg",res.data)
         if (res?.data.success === true) {
-        
-          const blob = new Blob([data], { type: "application/pdf" });
+          const blob = new Blob([res.data.data], { type: "application/pdf" });
           const url = window.URL.createObjectURL(blob);
           window.open(url, "_blank");
         } else {
@@ -209,7 +209,8 @@ const SearchQuotationBooking = ({ data }) => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.log("PDF Error:", err);
+        toast.error("Unable to generate PDF.");
       });
   };
 
