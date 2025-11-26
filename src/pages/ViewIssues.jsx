@@ -2084,7 +2084,7 @@ const ViewIssues = ({ data }) => {
         ReOpenReasonID: String(data?.value),
         ReOpenReason: String(data?.label),
       })
-    
+
       .then((res) => {
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);
@@ -2240,10 +2240,10 @@ const ViewIssues = ({ data }) => {
     if (formData?.HideStatus == "") {
       toast.error("Please Select HideStatus.");
     } else {
-      setLoading(true)
+      setLoading(true);
       axiosInstances
         .post(apiUrls.ViewIssueSearch, paylaod)
-       
+
         .then((res) => {
           setLoading(false);
           const data = res?.data?.data;
