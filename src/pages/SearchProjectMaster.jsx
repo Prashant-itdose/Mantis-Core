@@ -330,125 +330,18 @@ const SearchProjectMaster = () => {
   const [centretabledata, setCentretabledata] = useState([]);
 
   const handleViewProject = () => {
-    // if (
-    //   formData?.ProjectName == "" &&
-    //   formData?.Category.length === 0 &&
-    //   formData?.ProjectID.length === 0 &&
-    //   formData?.VerticalID.length === 0 &&
-    //   formData?.TeamID.length === 0 &&
-    //   formData?.WingID.length === 0 &&
-    //   formData?.POC1.length === 0 &&
-    //   formData?.POC2.length === 0 &&
-    //   formData?.POC3.length === 0
-    // ) {
-    //   toast.error("Please select atleast one searching criteria.");
-    // } else {
     setLoading(true);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ProjectName", formData?.ProjectName);
-    // form.append("ProjectID", "");
-    // form.append("VerticalID", formData?.VerticalID);
-    // form.append("TeamID", formData?.TeamID);
-    // form.append("WingID", formData?.WingID);
-    // form.append("POC1", formData?.POC1);
-    // form.append("POC2", formData?.POC2);
-    // form.append("POC3", formData?.POC3);
-    // form.append(
-    //   "OnlyMappingClient",
-    //   formData?.OnlyMappingClient == 1 ? "1" : "0"
-    // ),
-    //   form.append("DateType", formData?.DateType);
-    // form.append(
-    //   "FromDate",
-    //   moment(formData?.FromDate).isValid()
-    //     ? moment(formData?.FromDate).format("YYYY-MM-DD")
-    //     : ""
-    // );
-    // form.append(
-    //   "ToDate",
-    //   moment(formData?.ToDate).isValid()
-    //     ? moment(formData?.ToDate).format("YYYY-MM-DD")
-    //     : ""
-    // ),
-    // form.append("POStatus", formData?.PODate),
-    //   form.append(
-    //     "POFromDate",
-    //     formatDate(formData?.PODateBefore)
-    //       ? formatDate(formData?.PODateBefore)
-    //       : ""
-    //   ),
-    //   form.append(
-    //     "POToDate",
-    //     formatDate(formData?.PODateAfter)
-    //       ? formatDate(formData?.PODateAfter)
-    //       : ""
-    //   ),
-    //   form.append("StartStatus", formData?.StartDate),
-    //   form.append(
-    //     "StartFromDate",
-    //     formatDate(formData?.StartDateBefore)
-    //       ? formatDate(formData?.StartDateBefore)
-    //       : ""
-    //   ),
-    //   form.append(
-    //     "StartToDate",
-    //     formatDate(formData?.StartDateAfter)
-    //       ? formatDate(formData?.StartDateAfter)
-    //       : ""
-    //   ),
-    //   form.append("LiveStatus", formData?.LiveDate),
-    //   form.append(
-    //     "LiveFromDate",
-    //     formatDate(formData?.LiveDateBefore)
-    //       ? formatDate(formData?.LiveDateBefore)
-    //       : ""
-    //   ),
-    //   form.append(
-    //     "LiveToDate",
-    //     formatDate(formData?.LiveDateAfter)
-    //       ? formatDate(formData?.LiveDateAfter)
-    //       : ""
-    //   ),
 
-    //   form.append("TransferStatus", formData?.TransferDate),
-    // form.append(
-    //   "TransferFromDate",
-    //   formatDate(formData?.TransferDateBefore)
-    //     ? formatDate(formData?.TransferDateBefore)
-    //     : ""
-    // ),
-    // form.append(
-    //   "TransferToDate",
-    //   formatDate(formData?.TransferDateAfter)
-    //     ? formatDate(formData?.TransferDateAfter)
-    //     : ""
-    // ),
-
-    // form.append(
-    //   "Status",
-    //   getlabel(formData?.ProjectStatus, projectStatus) || ""
-    // );
-    // axios
-    //   .post(apiUrls?.ViewProject, form, { headers })
     const payload = {
       RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")) || 0,
       ProjectID: Number(formData?.ProjectID) || 0,
       ProjectName: String(formData?.ProjectName || ""),
-      VerticalID: Number(formData?.VerticalID) || 0,
-      TeamID: Number(formData?.TeamID) || 0,
-      WingID: Number(formData?.WingID) || 0,
-      POC1: Number(formData?.POC1) || 0,
-      POC2: Number(formData?.POC2) || 0,
-      POC3: Number(formData?.POC3) || 0,
+      VerticalID: String(formData?.VerticalID) || "",
+      TeamID: String(formData?.TeamID) || "",
+      WingID: String(formData?.WingID) || "",
+      POC1: String(formData?.POC1) || "",
+      POC2: String(formData?.POC2) || "",
+      POC3: String(formData?.POC3) || "",
       CategoryID: String(formData?.Category || ""),
       DateType: String(formData?.DateType || ""),
       FromDate: moment(formData?.FromDate).isValid()
@@ -459,8 +352,8 @@ const SearchProjectMaster = () => {
         : "",
       Status: String(getlabel(formData?.ProjectStatus, projectStatus) || ""),
       IsExcel: Number(formData?.IsExcel) || 0,
-      ProductVersion: formData?.ProductVersion || "",
-      OnlyMappingClient: formData?.OnlyMappingClient || "",
+      ProductVersion: String(formData?.ProductVersion || ""),
+      OnlyMappingClient: Number(formData?.OnlyMappingClient || ""),
     };
 
     axiosInstances
@@ -537,48 +430,9 @@ const SearchProjectMaster = () => {
       .catch((err) => {
         console.log(err);
       });
-    // }
   };
 
   const handleViewProjectExcel = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ProjectName", formData?.ProjectName);
-    // form.append("ProjectID", "");
-    // form.append("IsExcel", "1");
-    // form.append("VerticalID", formData?.VerticalID);
-    // form.append("TeamID", formData?.TeamID);
-    // form.append("WingID", formData?.WingID);
-    // form.append("POC1", formData?.POC1);
-    // form.append("POC2", formData?.POC2);
-    // form.append("POC3", formData?.POC3);
-    // form.append("DateType", formData?.DateType);
-    // form.append(
-    //   "FromDate",
-    //   moment(formData?.FromDate).isValid()
-    //     ? moment(formData?.FromDate).format("YYYY-MM-DD")
-    //     : ""
-    // );
-    // form.append(
-    //   "ToDate",
-    //   moment(formData?.ToDate).isValid()
-    //     ? moment(formData?.ToDate).format("YYYY-MM-DD")
-    //     : ""
-    // ),
-    //   form.append(
-    //     "Status",
-    //     getlabel(formData?.ProjectStatus, projectStatus) || ""
-    //   );
-    // axios
-    //   .post(apiUrls?.ViewProject, form, { headers })
     axiosInstances
       .post(apiUrls?.ViewProject, {
         RoleID:
@@ -661,57 +515,19 @@ const SearchProjectMaster = () => {
       });
   };
   const handleViewProjectExcelDelivery = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ProjectName", formData?.ProjectName);
-    // form.append("ProjectID", "");
-    // form.append("IsExcel", "2");
-    // form.append("VerticalID", formData?.VerticalID);
-    // form.append("TeamID", formData?.TeamID);
-    // form.append("WingID", formData?.WingID);
-    // form.append("POC1", formData?.POC1);
-    // form.append("POC2", formData?.POC2);
-    // form.append("POC3", formData?.POC3);
-    // form.append("DateType", formData?.DateType);
-    // form.append(
-    //   "FromDate",
-    //   moment(formData?.FromDate).isValid()
-    //     ? moment(formData?.FromDate).format("YYYY-MM-DD")
-    //     : ""
-    // );
-    // form.append(
-    //   "ToDate",
-    //   moment(formData?.ToDate).isValid()
-    //     ? moment(formData?.ToDate).format("YYYY-MM-DD")
-    //     : ""
-    // ),
-    //   form.append(
-    //     "Status",
-    //     getlabel(formData?.ProjectStatus, projectStatus) || ""
-    //   );
-    // axios
-    //   .post(apiUrls?.ViewProject, form, { headers })
     axiosInstances
       .post(apiUrls?.ViewProject, {
         RoleID:
           String(useCryptoLocalStorage("user_Data", "get", "RoleID")) || "0",
         ProjectID: String(formData?.ProjectID) || "0",
         ProjectName: formData?.ProjectName || "",
-        VerticalID: String(formData?.VerticalID) || "0",
+        VerticalID: String(formData?.VerticalID) || "",
         TeamID: String(formData?.TeamID) || "0",
         WingID: String(formData?.WingID) || "0",
         POC1: String(formData?.POC1) || "0",
         POC2: String(formData?.POC2) || "0",
         POC3: String(formData?.POC3) || "0",
-        CategoryID: formData?.CategoryID || "",
+        CategoryID: formData?.Category || "",
         DateType: formData?.DateType || "",
         FromDate: moment(formData?.FromDate).isValid()
           ? moment(formData?.FromDate).format("YYYY-MM-DD")

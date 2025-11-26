@@ -164,54 +164,6 @@ const LeaveRequest = ({ data }) => {
     return "missing-attendance";
   };
 
-  // const renderDay = (day, index, today, table1Data) => {
-  //   const { date, status } = day;
-  //   const todayMidnight = new Date(today);
-  //   todayMidnight.setHours(0, 0, 0, 0);
-  //   const [month, dayOfMonth] = date.split("/").map(Number);
-  //   const dayDate = new Date(today.getFullYear(), month - 1, dayOfMonth);
-  //   // const isBeforeToday = dayDate < todayMidnight;
-  //   const currentMonth = today.getMonth();
-  //   const targetMonth = month - 1;
-  //   const isBeforeToday = targetMonth < currentMonth;
-
-  //   const formattedDate = dayDate?.toLocaleDateString("en-US", {
-  //     month: "short",
-  //     day: "numeric",
-  //   });
-  //   const dayDetails = table1Data?.find((d) => d?.Day === dayOfMonth);
-
-  //   return (
-  //     <td
-  //       key={index}
-  //       // className={`verticalTable ${isBeforeToday ? "disabled-day" : "active-day"} ${getStatusClass}`}
-  //       className={`verticalTable ${isBeforeToday ? "disabled-day" : "active-day"} ${getStatusClass(dayOfMonth, table1Data)}`}
-  //       onClick={() => {
-  //         if (isBeforeToday) return;
-  //         setVisible({
-  //           showVisible: true,
-  //           data: dayDate,
-  //           CalenderDetails: CalenderDetails,
-  //         });
-  //         setclickeddate(dayDate);
-  //       }}
-  //       style={{
-  //         cursor: isBeforeToday ? "not-allowed" : "pointer",
-  //         pointerEvents: isBeforeToday ? "none" : "auto",
-  //       }}
-  //     >
-  //       <label className="formattedDate">{formattedDate}</label>
-  //       {status && <div className="day-status">{status}</div>}
-  //       {dayDetails && (
-  //         <div
-  //           className="day-details"
-  //           dangerouslySetInnerHTML={{ __html: dayDetails.Holiday }}
-  //         />
-  //       )}
-  //     </td>
-  //   );
-  // };
-
   const renderDay = (day, index, today, table1Data) => {
     const { date, status } = day;
     const [month, dayOfMonth] = date.split("/").map(Number);
@@ -337,23 +289,6 @@ const LeaveRequest = ({ data }) => {
 
   const handleLeaveRequest_BindCalender = (details) => {
     setLoading(true);
-    // let form = new FormData();
-    // form.append(
-    //   "ID",
-    //   data?.EmployeeId ||
-    //     data?.Employee_Id ||
-    //     useCryptoLocalStorage("user_Data", "get", "ID")
-    // );
-
-    // form.append(
-    //   "LoginName",
-    //   data ? data?.Name : useCryptoLocalStorage("user_Data", "get", "realname")
-    // ),
-    //   form.append("CrmEmpID", data?.Employee_Id || data?.EmployeeId || CRMID),
-    //   form.append("Month", details ? details?.month : currentMonth),
-    //   form.append("Year", details ? details?.year : currentYear),
-    //   axios
-    //     .post(apiUrls?.LeaveRequest_BindCalender, form, { headers })
     axiosInstances
       .post(apiUrls.LeaveRequest_BindCalender, {
         CrmEmpID: Number(data?.Employee_Id || data?.EmployeeId || CRMID),
@@ -419,7 +354,7 @@ const LeaveRequest = ({ data }) => {
           setLoading(false);
         });
   };
-
+  console.log("check", CalenderDetails);
   return (
     <>
       {visible?.showVisible && (
@@ -473,7 +408,7 @@ const LeaveRequest = ({ data }) => {
               />
             )} */}
 
-            <div className="col-sm-5d-flex">
+            <div className="col-sm-4 d-flex">
               <div className="ml-4">
                 <label>Leave Month/Year :</label>
               </div>

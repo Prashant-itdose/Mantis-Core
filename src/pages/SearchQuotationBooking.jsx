@@ -114,7 +114,7 @@ const SearchQuotationBooking = ({ data }) => {
         FilterData: JSON.stringify(filterData),
         PageName: "SearchQuotationBooking",
       })
-    
+
       .then((res) => {
         console.log(res.data.message);
       })
@@ -157,7 +157,7 @@ const SearchQuotationBooking = ({ data }) => {
         FilterData: JSON.stringify(filterData),
         PageName: "SearchQuotationBookingTable",
       })
-    
+
       .then((res) => {
         console.log(res.data.message);
       })
@@ -198,8 +198,12 @@ const SearchQuotationBooking = ({ data }) => {
 
       .then((res) => {
         const data = res.data.data;
+        console.log("gsgshdg",res.data)
         if (res?.data.success === true) {
-          window.open(data, "_blank");
+        
+          const blob = new Blob([data], { type: "application/pdf" });
+          const url = window.URL.createObjectURL(blob);
+          window.open(url, "_blank");
         } else {
           toast.error("No Data found.");
         }
@@ -217,7 +221,7 @@ const SearchQuotationBooking = ({ data }) => {
           useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
       })
-     
+
       .then((res) => {
         const data = res.data.data;
         if (res?.data.success === true) {
