@@ -126,10 +126,7 @@ const ExpenseSubmission = () => {
       .post(apiUrls.GetState, {
         CountryID: "14",
       })
-      // let form = new FormData();
-      // form.append("CountryID", "14"),
-      //   axios
-      //     .post(apiUrls?.GetState, form, { headers })
+     
       .then((res) => {
         const states = res?.data.data.map((item) => {
           return { label: item?.StateName, value: item?.StateID };
@@ -156,11 +153,7 @@ const ExpenseSubmission = () => {
     });
   };
 
-  // useEffect(() => {
-  //   if (formData?.FromDate) {
-  //     handleIsExpenseExists(formData?.FromDate);
-  //   }
-  // }, [formData?.FromDate]);
+
 
   const rowConst = {
     show: false,

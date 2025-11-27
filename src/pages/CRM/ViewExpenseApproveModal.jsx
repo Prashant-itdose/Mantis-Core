@@ -13,7 +13,7 @@ const ViewExpenseApproveModal = ({
   handleTableSearch,
   handleTableSearchEmployee,
 }) => {
-  console.log(visible);
+ 
   const [loading, setLoading] = useState(false);
 
   const handleApprove = () => {
@@ -21,7 +21,7 @@ const ViewExpenseApproveModal = ({
     axiosInstances
       .post(apiUrls.UpdateStatusCopy, {
         ActionType: "Approve",
-        ExpenseReportID: Number(0),
+        ExpenseReportID: Number(visible?.showData?.expense_report_ID),
       })
 
       .then((res) => {
