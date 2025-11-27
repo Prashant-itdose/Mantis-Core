@@ -5079,7 +5079,7 @@ const ViewIssues = ({ data }) => {
                         </div>
                       </>
                     ),
-                    Status: ele?.Status,
+                    Status: ele?.STATUS,
                     "Date Submitted": ele?.TicketRaisedDate,
                     "Delivery Date": (
                       // clientId === 7 ? (

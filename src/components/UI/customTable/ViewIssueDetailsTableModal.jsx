@@ -346,12 +346,12 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
           PriorityID: Number(formDataUpdate?.Priority ?? 0),
           DeliveryDate: String(
             formDataUpdate?.DeliveryDate == ""
-              ? moment(new Date()).format("YYYY-MM-DD")
+              ? ""
               : formatDate(formDataUpdate?.DeliveryDate)
           ),
           DeliveryDateClient: String(
             formDataUpdate?.ClientDeliveryDate == ""
-              ? moment(new Date()).format("YYYY-MM-DD")
+              ? ""
               : formatDate(formDataUpdate?.ClientDeliveryDate)
           ),
           Summary: String(formDataUpdate?.Summary || ""),

@@ -128,16 +128,7 @@ const ViewTicketClient = () => {
     "get",
     "AllowDeleteTicket"
   );
-  // const tdRefs = useRef([]);
-  // useEffect(() => {
-  //   if (tdRefs?.current[selectedRowIndex]) {
-  //     tdRefs?.current[selectedRowIndex]?.scrollIntoView({
-  //       behavior: "smooth",
-  //       block: "center",
-  //       inline: "nearest",
-  //     });
-  //   }
-  // }, [selectedRowIndex]);
+ 
 
   const handleSaveFilter = () => {
     localStorage.setItem("formData", JSON.stringify(formData));
@@ -147,7 +138,7 @@ const ViewTicketClient = () => {
     }
     axiosInstances
       .post(apiUrls.SaveFilterData, {
-        FiterData: String(savedData),
+        FiterData: savedData,
         Type: String(""),
       })
       .then((res) => {
@@ -165,37 +156,13 @@ const ViewTicketClient = () => {
         ID: String(useCryptoLocalStorage("user_Data", "get", "ID")),
       })
       .then((res) => {
-        if (res?.data) {
-          let data = res?.data;
+        if (res?.data?.success === true) {
+          const data = res?.data?.data;
 
-          setFormData((val) => ({
-            ...val,
-            VerticalID: res?.data?.VerticalID,
-            TeamID: data?.TeamID || "",
-            ProjectID: data?.ProjectID || "",
-            WingID: data?.WingID || "",
-            PageSize: data?.PageSize || "",
-            POC1: data?.POC1 || "",
-            POC2: data?.POC2 || "",
-            POC3: data?.POC3 || "",
-            Reporter: data?.Reporter || "",
-            AssignedTo: data?.AssignedTo || "",
-            Category: data?.Category || "",
-            Priority: data?.Priority || "",
-            HideStatus: data?.HideStatus || "",
-            Status: data?.Status || "",
-            SearhType: data?.SearhType || "",
-            OnlyReOpen: data?.OnlyReOpen || "",
-            OnlyDelay: data?.OnlyDelay || "",
-            ClientManHourDropdown: data?.ClientManHourDropdown || "",
-            ManHourDropdown: data?.ManHourDropdown || "",
-            ClientDeliveryDate: data?.ClientDeliveryDate || "",
-            SubmitDate: data?.SubmitDate || "",
-            DeliveryDate: data?.DeliveryDate || "",
-            ResolveDate: data?.ResolveDate || "",
-            CloseDate: data?.CloseDate || "",
-            UpadteDate: data?.UpadteDate || "",
-            Ticket: data?.Ticket || "",
+          // Auto-map everything returned by backend
+          setFormData((prev) => ({
+            ...prev,
+            ...data,
           }));
         } else {
           console.error("No data found in the response.");
