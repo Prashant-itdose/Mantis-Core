@@ -1252,7 +1252,8 @@ const SearchSalesBooking = ({ data }) => {
                     ) : (
                       <Link
                         style={{ cursor: "pointer" }}
-                        onClick={() => window.open(ele?.PIURL, "_blank")}
+                        // onClick={() => window.open(ele?.PIURL, "_blank")}
+                          onClick={() => handlePrint2(ele)}
                       >
                         <Tooltip label={ele?.ActualPINo}>
                           <span
