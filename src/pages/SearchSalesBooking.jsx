@@ -95,7 +95,7 @@ const SearchSalesBooking = ({ data }) => {
     const payload = {
       PageName: "SearchSalesBooking",
       FilterData: JSON.stringify(filterData),
-      CrmEmpID: useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID"),
+      CrmEmpID: String(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),
     };
     axiosInstances
       .post(apiUrls?.SaveFilterTableReprintData, payload)
