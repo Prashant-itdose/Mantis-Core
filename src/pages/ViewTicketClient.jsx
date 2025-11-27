@@ -871,7 +871,7 @@ const ViewTicketClient = () => {
     getProject();
     getAssignTo();
     getReopen();
-    // handleGetFilter();
+    handleGetFilter();
   }, []);
   return (
     <>
