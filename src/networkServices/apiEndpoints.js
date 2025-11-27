@@ -189,6 +189,7 @@ export const apiUrls = {
   CreateRole: "/CRMCOREAPI/api/AccessRight/CreateRole",
   QuotationPrintOut: "/CRMCOREAPI/api/Reports/QuotationPrintOut",
   GeneratePIPDF: "/CRMCOREAPI/api/Reports/GeneratePIPDF",
+  Sales_Connector_pdf: "/CRMCOREAPI/api/Reports/Sales_Connector_pdf",
   SearchRole: "/CRMCOREAPI/api/AccessRight/SearchRole",
   UpdateRole: "/CRMCOREAPI/api/AccessRight/UpdateRole",
   EmployeeView: "/CRMCOREAPI/api/AccessRight/EmployeeView",
