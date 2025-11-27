@@ -16,8 +16,7 @@ const LeaveRequestModal = ({
   handleLeaveRequest_BindCalender,
 }) => {
   const [loading, setLoading] = useState(false);
-  console.log("check kkk", visible, data);
-  console.log("check kkk visible ,", visible?.CalenderDetails?.[1]);
+
   const leaveData = visible?.CalenderDetails?.[1]?.find(
     (val) =>
       String(val?.Day) ===
@@ -186,7 +185,8 @@ const LeaveRequestModal = ({
       .post(apiUrls.LeaveRequest_Save, {
         FromDate: String(moment(visible?.data).format("YYYY-MM-DD")),
         CrmEmpID: Number(
-          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+          data?.EmployeeId ||
+            useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
         LeaveType: String(formData?.LeaveType),
         Description: String(formData?.Description),
@@ -215,7 +215,8 @@ const LeaveRequestModal = ({
       .post(apiUrls.LeaveRequest_Save, {
         FromDate: String(moment(visible?.data).format("YYYY-MM-DD")),
         CrmEmpID: Number(
-          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+          data?.EmployeeId ||
+            useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
         LeaveType: String(formData?.LeaveType),
         Description: String(formData?.Description),
@@ -244,6 +245,7 @@ const LeaveRequestModal = ({
       .post(apiUrls.LeaveRequest_Save, {
         FromDate: String(moment(visible?.data).format("YYYY-MM-DD")),
         CrmEmpID: Number(
+           data?.EmployeeId ||
           useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
         LeaveType: String(formData?.LeaveType),
