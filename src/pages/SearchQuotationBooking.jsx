@@ -192,7 +192,7 @@ const SearchQuotationBooking = ({ data }) => {
   const handlePrint1 = (ele) => {
     axiosInstances
       .post(apiUrls.QuotationPrintOut, {
-        QuoteID: Number(ele?.QuotationNo) || 0,
+        QuoteID: Number(ele?.ID) || 0,
         SignatureCode: "",
       })
       .then((res) => {
@@ -1592,7 +1592,7 @@ const SearchQuotationBooking = ({ data }) => {
                 ></i>
               ),
               "Print PI":
-                ele?.NoOfPI > 1 ? (
+                ele?.PINo === 0 ? (
                   <i
                     className="fa fa-eye ml-2"
                     onClick={() => {
@@ -1604,7 +1604,6 @@ const SearchQuotationBooking = ({ data }) => {
                     }}
                   ></i>
                 ) : (
-                  // ele?.NoOfPI > 0 && (
                   <i
                     className="fa fa-print"
                     style={{
@@ -1616,7 +1615,6 @@ const SearchQuotationBooking = ({ data }) => {
                     // onClick={() => window.open(ele?.PIURL, "_blank")}
                     onClick={() => handlePrint2(ele)}
                   ></i>
-                  // )
                 ),
               Action: (
                 <div>

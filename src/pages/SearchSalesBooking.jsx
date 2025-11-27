@@ -217,7 +217,7 @@ const SearchSalesBooking = ({ data }) => {
   const handlePrint2 = (ele) => {
     axiosInstances
       .post(apiUrls.GeneratePIPDF, {
-        PINo: Number(ele?.PINo) || 0,
+        PINo: Number(ele?.ID) || 0,
       })
       .then((res) => {
         if (res?.data?.success === true) {
