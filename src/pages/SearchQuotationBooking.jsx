@@ -189,81 +189,131 @@ const SearchQuotationBooking = ({ data }) => {
       });
   };
 
-  const handlePrint1 = (ele) => {
-    axiosInstances
-      .post(apiUrls.QuotationPrintOut, {
-        QuoteID: Number(ele?.ID) || 0,
+  // const handlePrint1 = (ele) => {
+  //   axiosInstances
+  //     .post(apiUrls.QuotationPrintOut, {
+  //       QuoteID: Number(ele?.ID) || 0,
+  //       SignatureCode: "",
+  //     })
+  //     .then((res) => {
+  //       if (res?.data?.success === true) {
+  //         const base64 = res.data.data; // <-- Base64 string you provided
+
+  //         // Convert Base64 to binary
+  //         const byteCharacters = atob(base64);
+  //         const byteNumbers = new Array(byteCharacters.length);
+
+  //         for (let i = 0; i < byteCharacters.length; i++) {
+  //           byteNumbers[i] = byteCharacters.charCodeAt(i);
+  //         }
+
+  //         const byteArray = new Uint8Array(byteNumbers);
+
+  //         // Create PDF Blob
+  //         const blob = new Blob([byteArray], { type: "application/pdf" });
+
+  //         // Create Blob URL
+  //         const url = URL.createObjectURL(blob);
+
+  //         // Open PDF in new tab
+  //         window.open(url, "_blank");
+
+  //         // Optional: Revoke URL later
+  //         setTimeout(() => URL.revokeObjectURL(url), 5000);
+  //       } else {
+  //         console.error("PDF generation failed");
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.error("Error:", err);
+  //     });
+  // };
+
+const handlePrint1 = (ele) => {
+  axiosInstances
+    .post(apiUrls.QuotationPrintOut, {
+      QuoteID: Number(ele?.ID) || 0,
         SignatureCode: "",
-      })
-      .then((res) => {
-        if (res?.data?.success === true) {
-          const base64 = res.data.data; // <-- Base64 string you provided
+    })
+    .then((res) => {
+      if (!res?.data?.success) {
+        console.error("Invalid PDF response");
+        return;
+      }
 
-          // Convert Base64 to binary
-          const byteCharacters = atob(base64);
-          const byteNumbers = new Array(byteCharacters.length);
+      const base64 = res?.data?.data; // Base64 string
 
-          for (let i = 0; i < byteCharacters.length; i++) {
-            byteNumbers[i] = byteCharacters.charCodeAt(i);
-          }
+      // Convert Base64 to byte array
+      const byteCharacters = atob(base64);
+      const byteNumbers = new Array(byteCharacters.length);
 
-          const byteArray = new Uint8Array(byteNumbers);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
 
-          // Create PDF Blob
-          const blob = new Blob([byteArray], { type: "application/pdf" });
+      const byteArray = new Uint8Array(byteNumbers);
 
-          // Create Blob URL
-          const url = URL.createObjectURL(blob);
+      // Convert to PDF blob
+      const blob = new Blob([byteArray], { type: "application/pdf" });
 
-          // Open PDF in new tab
-          window.open(url, "_blank");
+      const url = window.URL.createObjectURL(blob);
 
-          // Optional: Revoke URL later
-          setTimeout(() => URL.revokeObjectURL(url), 5000);
-        } else {
-          console.error("PDF generation failed");
-        }
-      })
-      .catch((err) => {
-        console.error("Error:", err);
-      });
-  };
+      // Create download link
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${ele?.ProjectName || "SalesConnector"}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      window.URL.revokeObjectURL(url);
+    })
+    .catch((err) => {
+      console.error("Error downloading PDF:", err);
+    });
+};
+
   const handlePrint2 = (ele) => {
     axiosInstances
       .post(apiUrls.GeneratePIPDF, {
         PINo: Number(ele?.PINo) || 0,
+        // SignatureCode: "",
       })
       .then((res) => {
-        if (res?.data?.success === true) {
-          const base64 = res.data.data; // <-- Base64 string you provided
-
-          // Convert Base64 to binary
-          const byteCharacters = atob(base64);
-          const byteNumbers = new Array(byteCharacters.length);
-
-          for (let i = 0; i < byteCharacters.length; i++) {
-            byteNumbers[i] = byteCharacters.charCodeAt(i);
-          }
-
-          const byteArray = new Uint8Array(byteNumbers);
-
-          // Create PDF Blob
-          const blob = new Blob([byteArray], { type: "application/pdf" });
-
-          // Create Blob URL
-          const url = URL.createObjectURL(blob);
-
-          // Open PDF in new tab
-          window.open(url, "_blank");
-
-          // Optional: Revoke URL later
-          setTimeout(() => URL.revokeObjectURL(url), 5000);
-        } else {
-          console.error("PDF generation failed");
+        if (!res?.data?.success) {
+          console.error("Invalid PDF response");
+          return;
         }
+  
+        const base64 = res?.data?.data; // Base64 string
+  
+        // Convert Base64 to byte array
+        const byteCharacters = atob(base64);
+        const byteNumbers = new Array(byteCharacters.length);
+  
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+  
+        const byteArray = new Uint8Array(byteNumbers);
+  
+        // Convert to PDF blob
+        const blob = new Blob([byteArray], { type: "application/pdf" });
+  
+        const url = window.URL.createObjectURL(blob);
+  
+        // Create download link
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `${ele?.ProjectName || "SalesConnector"}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+  
+        window.URL.revokeObjectURL(url);
       })
       .catch((err) => {
-        console.error("Error:", err);
+        console.error("Error downloading PDF:", err);
       });
   };
 
