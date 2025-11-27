@@ -180,7 +180,7 @@ const SaleConvertModal = ({ visible, setVisible, handleSearch }) => {
   const handleSaleConvert = () => {
     let DatePayload = [];
     tableData?.map((val, index) => {
-      // console.log("val val", val);
+ 
       DatePayload?.push({
         "S.No.": index + 1,
         // Installment: val?.Installment,
@@ -193,14 +193,15 @@ const SaleConvertModal = ({ visible, setVisible, handleSearch }) => {
       });
     });
 
-
     setLoading(true);
-  
+
     axiosInstances
       .post(apiUrls.Quotation_SalesConvert, {
         QuotationID: String(visible?.showData?.EncryptID),
-        dtAcknowledgement:  String(moment(formData?.AcknowledgmentDate).format("YYYY-MM-DD")),
-        InstallmentData:  String(DatePayload),
+        dtAcknowledgement: String(
+          moment(formData?.AcknowledgmentDate).format("YYYY-MM-DD")
+        ),
+        InstallmentData: JSON.stringify(DatePayload),
       })
       .then((res) => {
         if (res?.data?.success == true) {
