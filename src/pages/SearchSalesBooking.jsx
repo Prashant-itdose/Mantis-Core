@@ -76,21 +76,6 @@ const SearchSalesBooking = ({ data }) => {
   /////////////////////////////////
 
   const SaveFilter = () => {
-    // let form = new FormData();
-
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append(
-    //   "CrmEmpID",
-    //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-    // );
-    // form.append(
-    //   "LoginName",
-    //   useCryptoLocalStorage("user_Data", "get", "realname")
-    // );
-    // form.append("PageName", "SearchSalesBooking");
-
-    // Example FilterData array
-
     const filterData = [
       { header: "S.No", visible: true },
       { header: "ProjectID", visible: true },
@@ -106,24 +91,26 @@ const SearchSalesBooking = ({ data }) => {
       { header: "Status", visible: true },
       { header: "PageSize", visible: true },
     ];
-    // Append stringified FilterData
-    // form.append("FilterData", JSON.stringify(filterData));
-
-    // axios
-    //   .post(apiUrls?.SaveFilterTableReprintData, form, { headers })
 
     const payload = {
       PageName: "SearchSalesBooking",
-      FilterData: String(filterData),
+      FilterData: JSON.stringify(filterData),
+      CrmEmpID: useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID"),
     };
     axiosInstances
       .post(apiUrls?.SaveFilterTableReprintData, payload)
       .then((res) => {
-        console.log(res.data.message);
+       if (res.data.success === true) {
+          console.log(err);
+           setLoading(false)
+        } else {
+          toast.error(res.data.message);
+          setLoading(false)
+        }
       })
       .catch((err) => {
         console.log(err);
-        setLoading(true);
+        setLoading(false);
       });
   };
 
@@ -165,11 +152,17 @@ const SearchSalesBooking = ({ data }) => {
     axiosInstances
       .post(apiUrls?.SaveFilterTableReprintData, payload)
       .then((res) => {
-        console.log(res.data.message);
+        if (res.data.success === true) {
+          console.log(err);
+           setLoading(false)
+        } else {
+          toast.error(res.data.message);
+          setLoading(false)
+        }
       })
       .catch((err) => {
         console.log(err);
-        setLoading(true);
+        setLoading(false);
       });
   };
 
@@ -619,7 +612,7 @@ const SearchSalesBooking = ({ data }) => {
       .post(apiUrls.SalesBooking_GeneratePI, {
         SalesID: String(ele),
       })
-    
+
       .then((res) => {
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);
@@ -637,7 +630,7 @@ const SearchSalesBooking = ({ data }) => {
       .post(apiUrls.SalesBooking_GenerateTax, {
         SalesID: String(ele),
       })
-   
+
       .then((res) => {
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);
@@ -1059,7 +1052,6 @@ const SearchSalesBooking = ({ data }) => {
               onClick={() => ExportToPDF(tableData)}
             ></img>
           )} */}
-        
         </div>
       </div>
 
@@ -1253,7 +1245,7 @@ const SearchSalesBooking = ({ data }) => {
                       <Link
                         style={{ cursor: "pointer" }}
                         // onClick={() => window.open(ele?.PIURL, "_blank")}
-                          onClick={() => handlePrint2(ele)}
+                        onClick={() => handlePrint2(ele)}
                       >
                         <Tooltip label={ele?.ActualPINo}>
                           <span
