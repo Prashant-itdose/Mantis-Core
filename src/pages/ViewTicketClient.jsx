@@ -147,7 +147,7 @@ const ViewTicketClient = () => {
     }
     axiosInstances
       .post(apiUrls.SaveFilterData, {
-        FilterData: String(savedData),
+        FiterData: String(savedData),
         Type: String(""),
       })
       .then((res) => {
@@ -162,7 +162,7 @@ const ViewTicketClient = () => {
   const handleGetFilter = () => {
     axiosInstances
       .post(apiUrls.SearchFilterData, {
-        Type: String(""),
+        ID: String(useCryptoLocalStorage("user_Data", "get", "ID")),
       })
       .then((res) => {
         if (res?.data) {
@@ -1715,23 +1715,21 @@ const ViewTicketClient = () => {
             <Loading />
           ) : (
             <button
-              className="btn btn-sm btn-primary ml-2 mt-0"
+              className="btn btn-sm btn-primary ml-4 mt-0"
               onClick={() => handleViewSearch(undefined, "0")}
             >
               <i className="fa fa-search mr-1" aria-hidden="true"></i> Search
             </button>
           )}
-          <button className="btn btn-sm btn-danger ml-3" onClick={handleReset}>
-            {t("Reset Filter")}
-          </button>
-          {/* {tableData?.length > 0 && ( */}
 
-          {/* )} */}
           <button
-            className="btn btn-sm btn-danger ml-2"
+            className="btn btn-sm btn-danger ml-3"
             onClick={handleSaveFilter}
           >
             {t("Save Filter")}
+          </button>
+          <button className="btn btn-sm btn-danger ml-3" onClick={handleReset}>
+            {t("Reset Filter")}
           </button>
           <button
             className="btn btn-sm btn-danger ml-2 d-none"
