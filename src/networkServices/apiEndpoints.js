@@ -230,7 +230,7 @@ export const apiUrls = {
   UpdateProfile: "/CRMCOREAPI/api/EmployeeMaster/UpdateProfile",
   SaveSettlement: "/CRMCOREAPI/api/Accounts/SaveSettlement",
   ForgetPassword_ValdiateEmailMobile:
-    "/CRMCOREAPI/api/EmployeeMaster/ForgetPassword_ValdiateEmailMobile",
+    "/CRMCOREAPI/api/EmployeeMaster/ForgetPassword_ValidateEmailMobile",
   ForgetPassword_ValdiateOTP:
     "/CRMCOREAPI/api/EmployeeMaster/ForgetPassword_ValdiateOTP",
   ForgetPassword_ChangePassword:
