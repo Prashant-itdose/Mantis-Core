@@ -26,7 +26,8 @@ const TATBarChart = () => {
         DeveloperID: String(memberID || "0"),
       })
       .then((res) => {
-        setCountData(res?.data?.dtDelayed[0]);
+       
+        setCountData(res?.data?.data?.dtDelayed?.[0]);
       })
       .catch((err) => {
         console.log(err);

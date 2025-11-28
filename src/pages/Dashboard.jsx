@@ -191,7 +191,7 @@ const Dashboard = () => {
         DeveloperID: String(memberID || "0"),
       })
       .then((res) => {
-        setCountData(res.data.data.dtSummary[0]);
+        setCountData(res?.data?.data?.dtSummary?.[0]);
       })
       .catch((err) => {
         toast.error(
@@ -242,7 +242,7 @@ const Dashboard = () => {
         dtFrom: String(datefrom),
       })
       .then((res) => {
-        setFilterData(res?.data?.dtStatus);
+        setFilterData(res?.data?.data?.dtStatus);
       })
       .catch((err) => {
         console.log(err);
@@ -991,7 +991,7 @@ const Dashboard = () => {
                       textAlign: "center",
                     }}
                   >
-                    {/* {getChart(formData?.chart, filterdata)} */}
+                    {getChart(formData?.chart, filterdata)}
                   </div>
                 </div>
               </div>
@@ -1094,21 +1094,7 @@ const Dashboard = () => {
                     >
                       <div className="d-flex align-items-center justify-content-between">
                         <h4 style={{ color: "rgb(0, 0, 0)" }}>{t("ReOpen")}</h4>
-                        {/* <i
-                          className="pi pi-list"
-                          style={{
-                            color: "red",
-                            backgroundColor: "rgb(255, 245, 245)",
-                            margin: "0px",
-                            display: "flex",
-                            alignItems: "center",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => {
-                            setVisible({ show2: true, showData: "" });
-                          }}
-                          title="Click to Show List."
-                        ></i> */}
+                       
                         {countData?.ReOpend > 0 && (
                           <span style={{ height: "0px" }}>
                             <AmountSubmissionSeeMoreList
@@ -1415,18 +1401,7 @@ const Dashboard = () => {
                     <label style={{ fontWeight: "bold", margin: "0px" }}>
                       {t("Open Tickets by Priority")}
                     </label>
-                    {/* <ReactSelect
-                      id="priorityType"
-                      respclass="col-xl-4 col-md-4 col-sm-6 col-12"
-                      placeholderName="Type"
-                      name="priorityType"
-                      value={formData?.priorityType}
-                      dynamicOptions={[
-                        { label: "Weekly", value: "Weekly" },
-                        { label: "Monthly", value: "Monthly" },
-                      ]}
-                      handleChange={handleDeliveryChange}
-                    /> */}
+                   
                     <div
                       className="chart-container mt-2"
                       style={{ width: "100%" }}
@@ -1484,18 +1459,7 @@ const Dashboard = () => {
                     <label style={{ fontWeight: "bold", margin: "0px" }}>
                       {t("Total Ticket Vs Total Working Hour")}
                     </label>
-                    {/* <ReactSelect
-                  id="viewTypeMonthWeek"
-                  respclass="col-5"
-                  placeholderName="Select"
-                  name="viewTypeMonthWeek"
-                  value={formData?.viewTypeMonthWeek}
-                  dynamicOptions={[
-                    { label: "Week Wise", value: "day" },
-                    { label: "Month Wise", value: "month" },
-                  ]}
-                  handleChange={handleDeliveryChange}
-                /> */}
+                  
                     <div
                       className="chart-container mt-2"
                       style={{ width: "100%" }}

@@ -71,7 +71,7 @@ const ProjectMappingModal = (ele) => {
     //   })
     axiosInstances
       .post(apiUrls?.UserVsProject_Select, {
-        UserID: Number(ele?.visible?.showData?.id)
+        UserID: Number(ele?.visible?.showData?.id),
       })
       .then((res) => {
         const data = res?.data?.data;
@@ -107,7 +107,6 @@ const ProjectMappingModal = (ele) => {
       toast.error("Please Select AccessType.");
       setLoading(false);
     } else {
-      
       axiosInstances
         .post(apiUrls?.UserVsProjectMapping, {
           AccessType: String(formData?.AccessType),
@@ -215,6 +214,7 @@ const ProjectMappingModal = (ele) => {
     axiosInstances
       .post(apiUrls?.Remove_UserVsProjectMapping, {
         ProjectIDs: selectedIds.map((id) => Number(id)),
+        TargetUserId: Number(ele?.visible?.showData?.id),
       })
       .then((res) => {
         if (res?.data?.success === true) {

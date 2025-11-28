@@ -51,7 +51,8 @@ const handleFirstDashboardCount = () => {
       DeveloperID: String(memberID || "0"),
     })
     .then((res) => {
-      const performance = Number(res?.data?.performance?.Score || 0);
+      console.log("hhah",res)
+      const performance = Number(res?.data?.data?.performance?.Score || 0);
       
       setPerformanceValue(performance);
 

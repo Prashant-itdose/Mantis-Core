@@ -35,7 +35,7 @@ const SpeedometerTable = () => {
         DeveloperID: String(memberID || 0),
       })
       .then((res) => {
-        setTableData(res?.data?.dtCal);
+        setTableData(res?.data?.data?.performance?.dtCal);
         setLoading(false);
       })
       .catch((err) => {

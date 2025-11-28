@@ -39,7 +39,7 @@ const AverageTime = () => {
           DeveloperID: String(memberID || "0"),
         }
       );
-      setCountData(response?.data?.dtPriority || []);
+      setCountData(response?.data?.data?.dtPriority || []);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
