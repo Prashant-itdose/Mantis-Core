@@ -759,7 +759,7 @@ const Attendance = () => {
                   </th>
                   <th style={{ textAlign: "left" }}>Login</th>
                   <th style={{ textAlign: "left" }}>Location</th>
-                  <th style={{ textAlign: "left" }}> Logout</th>
+                  <th style={{ textAlign: "left" }}>Logout</th>
                   <th style={{ textAlign: "left" }}>Location</th>
                   <th style={{ textAlign: "left" }}>Leave</th>
                   <th style={{ textAlign: "left" }}>Status</th>
@@ -793,10 +793,10 @@ const Attendance = () => {
                     </td>
                     <td style={{ textAlign: "left" }}>{member?.Location}</td>
                     <td style={{ textAlign: "left" }}>
-                      {member?.LogoutLocation}
+                      {member?.LogoutTime}
                     </td>
                     <td style={{ textAlign: "left" }}>
-                      {member?.LogoutTime || " "}
+                      {member?.LogoutLocation}
                     </td>
                     <td style={{ textAlign: "left" }}>
                       <div>
