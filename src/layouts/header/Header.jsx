@@ -236,7 +236,7 @@ const Header = React.memo(() => {
         developerID: String(""),
       })
       .then((res) => {
-        setHeaderCount(res?.data?.dtSummary?.[0] || {});
+        setHeaderCount(res?.data?.data?.dtSummary?.[0] || {});
       })
       .catch((err) => {
         toast.error(err?.response?.data?.message || "Something went wrong");
