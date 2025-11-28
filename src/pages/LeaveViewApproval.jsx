@@ -125,19 +125,7 @@ const LeaveViewApproval = () => {
 
   const handleTableSearch = (code) => {
     setLoading(true);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append(
-    //     "CrmEmployeeID",
-    //     formData?.Employee ? formData.Employee : "0"
-    //   );
-    // form.append("SearchType", formData?.SearchType);
-    // form.append("Month", formData?.currentMonth),
-    //   form.append("Year", formData?.currentYear),
+   
     axiosInstances
       .post(apiUrls.LeaveApproval_Search, {
         CrmID: Number(formData?.Employee ? formData.Employee : "0"),
@@ -148,7 +136,7 @@ const LeaveViewApproval = () => {
         TeamID: Number(0),
         WingID: Number(0),
         Name: String(""),
-        SearchType: String(formData?.SearchType),
+        SearchType: Number(formData?.SearchType),
       })
       .then((res) => {
         if (res?.data?.success === true) {
