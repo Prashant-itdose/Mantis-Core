@@ -276,7 +276,7 @@ const handlePrint1 = (ele) => {
   const handlePrint2 = (ele) => {
     axiosInstances
       .post(apiUrls.GeneratePIPDF, {
-        PINo: Number(ele?.PINo) || 0,
+        PINo: String(ele?.ActualPINo),
         // SignatureCode: "",
       })
       .then((res) => {

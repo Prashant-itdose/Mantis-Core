@@ -249,7 +249,7 @@ const SearchSalesBooking = ({ data }) => {
  const handlePrint2 = (ele) => {
     axiosInstances
       .post(apiUrls.GeneratePIPDF, {
-        PINo: Number(ele?.ID) || 0,
+        PINo: String(ele?.ActualPINo),
         // SignatureCode: "",
       })
       .then((res) => {
