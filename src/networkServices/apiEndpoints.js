@@ -229,15 +229,12 @@ export const apiUrls = {
   Settlement_Select: "/CRMCOREAPI/api/Accounts/SettlementSelect",
   UpdateProfile: "/CRMCOREAPI/api/EmployeeMaster/UpdateProfile",
   SaveSettlement: "/CRMCOREAPI/api/Accounts/SaveSettlement",
-  // ForgetPassword_ValdiateEmailMobile:'/CRMCOREAPI/api/EmployeeMaster/ForgetPassword_ValdiateEmailMobile',
   ForgetPassword_ValdiateEmailMobile:
-    "/CRMCOREAPI/api/LoginAPIDynamic/ForgetPassword_ValdiateEmailMobile",
-  // ForgetPassword_ValdiateOTP:'/CRMCOREAPI/api/EmployeeMaster/ForgetPassword_ValdiateOTP',
+    "/CRMCOREAPI/api/EmployeeMaster/ForgetPassword_ValdiateEmailMobile",
   ForgetPassword_ValdiateOTP:
-    "/CRMCOREAPI/api/LoginAPIDynamic/ForgetPassword_ValdiateOTP",
-  // ForgetPassword_ChangePassword:'/CRMCOREAPI/api/EmployeeMaster/ForgetPassword_ChangePassword',
+    "/CRMCOREAPI/api/EmployeeMaster/ForgetPassword_ValdiateOTP",
   ForgetPassword_ChangePassword:
-    "/CRMCOREAPI/api/LoginAPIDynamic/ForgetPassword_ChangePassword",
+    "/CRMCOREAPI/api/EmployeeMaster/ForgetPassword_ChangePassword",
   LedgerStatus: "/CRMCOREAPI/api/Accounts/LedgerStatusFromForm",
   LedgerStatus_LockUnLock: "/CRMCOREAPI/api/Accounts/LedgerStatusLockUnLock",
   LedgerStatus_LockUnLock_Log:

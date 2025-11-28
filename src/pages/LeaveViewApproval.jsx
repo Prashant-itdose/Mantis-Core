@@ -148,6 +148,7 @@ const LeaveViewApproval = () => {
         TeamID: Number(0),
         WingID: Number(0),
         Name: String(""),
+        SearchType: String(formData?.SearchType),
       })
       .then((res) => {
         if (res?.data?.success === true) {

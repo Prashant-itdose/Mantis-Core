@@ -404,6 +404,7 @@ const ClientViewIssueModal = ({
         IsReOpen: Number("1"),
         ReOpenReasonID: Number(formDataUpdate?.ReOpen) || 0,
         ReOpenReason: getlabel(formDataUpdate?.ReOpen, reopen) || "",
+        OtherReferenceNo:String(formDataUpdate?.OtherReferenceNo)||"",
       };
 
       axiosInstances
