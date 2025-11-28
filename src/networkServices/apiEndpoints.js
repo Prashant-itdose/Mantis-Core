@@ -232,7 +232,7 @@ export const apiUrls = {
   ForgetPassword_ValdiateEmailMobile:
     "/CRMCOREAPI/api/EmployeeMaster/ForgetPassword_ValidateEmailMobile",
   ForgetPassword_ValdiateOTP:
-    "/CRMCOREAPI/api/EmployeeMaster/ForgetPassword_ValdiateOTP",
+    "/CRMCOREAPI/api/EmployeeMaster/ForgetPassword_ValidateOTP",
   ForgetPassword_ChangePassword:
     "/CRMCOREAPI/api/EmployeeMaster/ForgetPassword_ChangePassword",
   LedgerStatus: "/CRMCOREAPI/api/Accounts/LedgerStatusFromForm",

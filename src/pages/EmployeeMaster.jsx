@@ -117,7 +117,7 @@ const EmployeeMaster = () => {
     RegisteredSalesEnquiry: "",
     IsSalesTeamMember: "",
     ApproveLeaveRequest: "",
-    MaximumWeekoffs: "",
+    MaximumWeekoffs: "0",
     WorkingDays: "",
     BiometricEmployeeCode: "",
     EmployeeID: "",
@@ -415,7 +415,7 @@ const EmployeeMaster = () => {
           RegisteredSalesEnquiry: "",
           IsSalesTeamMember: "",
           ApproveLeaveRequest: "",
-          MaximumWeekoffs: datas?.MaxWeekOffs,
+          MaximumWeekoffs:  datas?.MaxWeekOffs == "0" ? "0" : datas?.MaxWeekOffs,
           WorkingDays: "",
           BiometricEmployeeCode: "",
           EmployeeID: "",
@@ -588,7 +588,7 @@ const EmployeeMaster = () => {
           TeamName: String(getlabel(formData?.TeamID, team)),
           TeamID: String(formData?.TeamID),
           BankName: String(formData?.BankName),
-          AccountNumber: String(formData?.AccountNumber),
+          AccountNumber: String(formData?.AccountNumber) || 0,
           AccountHolderName: String(formData?.AccountHolderName),
           IFSCCode: String(formData?.IFSCCode),
           Title: String(formData?.Title),
@@ -839,7 +839,7 @@ const EmployeeMaster = () => {
           TeamName: String(getlabel(formData?.TeamID, team)),
           TeamID: String(formData?.TeamID),
           BankName: String(formData?.BankName),
-          AccountNumber: String(formData?.AccountNumber),
+          AccountNumber: String(formData?.AccountNumber) || 0,
           AccountHolderName: String(formData?.AccountHolderName),
           IFSCCode: String(formData?.IFSCCode),
           Title: String(formData?.Title),
@@ -2164,17 +2164,17 @@ const EmployeeMaster = () => {
                 respclass="col-xl-2 col-md-4 col-sm-6 col-12"
                 placeholderName="Maximum Weekoffs"
                 dynamicOptions={[
-                  {
+                 {
                     label: "None",
                     value: "0",
                   },
                   {
                     label: "Alternate Saturdays",
-                    value: "1",
+                    value: "2",
                   },
                   {
                     label: "All Saturdays",
-                    value: "2",
+                    value: "5",
                   },
                   {
                     label: "3rd WeekOff",

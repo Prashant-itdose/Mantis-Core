@@ -218,7 +218,7 @@ const LoginComponent = () => {
     setValues(values);
   };
   const [showotp, setshowotp] = useState([]);
-
+console.log("haha",showotp)
   const handleEmailMobileSubmit = () => {
     if (values?.email == "") {
       toast.error("Please Enter Valid EmailId.");
@@ -231,6 +231,7 @@ const LoginComponent = () => {
           MobileNo: String(values?.mobile),
         })
         .then((res) => {
+          console.log("res data",res.data)
           if (res?.data?.success == true) {
             toast.success(res?.data?.message);
             setshowotp(res?.data?.data);
@@ -259,7 +260,7 @@ const LoginComponent = () => {
     } else {
       axiosInstances
         .post(apiUrls.ForgetPassword_ValdiateOTP, {
-          EmpID: String(showotp[0]?.EmpID),
+          EncryptedEmpID: String(showotp?.EmpID),
           OTP: String(values?.otp),
         })
         .then((res) => {
@@ -290,7 +291,7 @@ const LoginComponent = () => {
     } else {
       axiosInstances
         .post(apiUrls.ForgetPassword_ChangePassword, {
-          EmpID: String(showpassword[0]?.EmpID),
+          // EmpID: String(showpassword[0]?.EmpID),
           Password: String(values?.newPassword),
           ConfirmedPassword: String(values?.confirmPassword),
         })
