@@ -136,7 +136,7 @@ const WelcomeVideoTable = ({ visible, setVisible }) => {
         )
       );
 
-      console.log("Filtered Data:", filtered);
+  
       setTableData(filtered);
     }
     setCurrentPage(1);

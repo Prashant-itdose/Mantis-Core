@@ -38,7 +38,7 @@ const RoleMaster = () => {
   };
   const [editMode, setEditMode] = useState(false);
   const handleBillingEdit = (ele) => {
-    console.log("editdetails", ele);
+ 
     setFormData({
       ...formData,
       RoleName: ele?.RoleName,

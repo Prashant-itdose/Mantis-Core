@@ -9,7 +9,7 @@ import { Tooltip } from "primereact/tooltip";
 const SlotModal = (props) => {
   const { data, handleSetData, handleConfirmBox, typePage, confirmBoxvisible } =
     props;
-  console.log("DDDDDDDDDDDDDDD", data);
+
   const { VITE_DATE_FORMAT } = import.meta.env;
   const [t] = useTranslation();
 

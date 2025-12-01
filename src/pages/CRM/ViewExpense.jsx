@@ -91,7 +91,7 @@ const ViewExpense = () => {
   const [seeMore, setSeeMore] = useState([]);
   const normalizeString = (str) => str.toLowerCase().replace(/\s+/g, "").trim();
   const handleChangeComponent = (e) => {
-    console.log("e", e);
+ 
     ModalComponent(e?.label, e?.component);
   };
   const handleSearchTable = (event) => {

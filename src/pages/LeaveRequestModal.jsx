@@ -111,7 +111,7 @@ const LeaveRequestModal = ({
         LeaveType: Number(2),
       })
       .then((res) => {
-        console.log("kasjaksjkajs", res?.data?.data[0]);
+        // console.log("kasjaksjkajs", res?.data?.data[0]);
         const verticals = res?.data?.data?.map((item) => {
           return { label: item?.Day, value: item?.Day };
         });

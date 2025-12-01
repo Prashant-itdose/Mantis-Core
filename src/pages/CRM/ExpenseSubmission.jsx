@@ -664,7 +664,7 @@ const ExpenseSubmission = () => {
   const [reportidd, setreportid] = useState("");
 
   const handleIsExpenseExists = (check) => {
-    console.log("ddi", check);
+   
     const formatDateToLocal = (date) => {
       const d = new Date(date);
       const year = d.getFullYear();

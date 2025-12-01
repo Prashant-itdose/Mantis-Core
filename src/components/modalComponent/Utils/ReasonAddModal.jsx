@@ -12,7 +12,7 @@ export default function ReasonAddModal({ handleChangeModel, inputData }) {
     handleChangeModel(inputs);
   }, [inputs]);
 
-  console.log("inputData",inputData)
+
 
   return (
     <div className="row p-2">

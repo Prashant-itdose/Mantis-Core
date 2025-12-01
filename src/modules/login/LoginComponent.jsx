@@ -188,7 +188,7 @@ const LoginComponent = () => {
           MobileNo: String(values?.mobile),
         })
         .then((res) => {
-          console.log("res data", res.data);
+
           if (res?.data?.success == true) {
             toast.success(res?.data?.message);
             setshowotp(res?.data?.data);

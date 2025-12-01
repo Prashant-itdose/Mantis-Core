@@ -291,13 +291,14 @@ const Header = React.memo(() => {
         VerticalID: Number("0"),
       })
       .then((res) => {
+    
         const poc3s = res?.data.data.map((item) => {
           return { label: item?.Project, value: item?.ProjectId };
         });
         setProject(poc3s);
       })
       .catch((err) => {
-        // localStorage.clear();
+        localStorage.clear();
         navigate("/login");
       });
   };

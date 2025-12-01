@@ -1,7 +1,7 @@
 import React from "react";
 
 const TripDetailModal = ({ visible, setVisible }) => {
-  console.log("visible", visible);
+  // console.log("visible", visible);
   return (
     <>
       {/* <div className="card p-2">

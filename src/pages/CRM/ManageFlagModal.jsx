@@ -32,6 +32,9 @@ const ManageFlagModal = (ele) => {
     AllowExpenseApprove: "0",
     AllowTicketAssignTo: "0",
     AllowAutobackup: "0",
+    AllowIsIncharge: "0",
+    FeedbackInhouseAutomation: "0",
+    NoAppraisalDue: "0",
   });
 
   useEffect(() => {
@@ -69,6 +72,10 @@ const ManageFlagModal = (ele) => {
         AllowTicketAssignTo:
           flagdata[0]?.AllowTicketAssignTo == "1" ? "1" : "0",
         AllowAutobackup: flagdata[0]?.AllowAutobackup == "1" ? "1" : "0",
+        AllowIsIncharge: flagdata[0]?.AllowIsIncharge == "1" ? "1" : "0",
+        FeedbackInhouseAutomation:
+          flagdata[0]?.FeedbackInhouseAutomation == "1" ? "1" : "0",
+        NoAppraisalDue: flagdata[0]?.NoAppraisalDue == "1" ? "1" : "0",
       });
     }
   }, [flagdata]);
@@ -86,52 +93,6 @@ const ManageFlagModal = (ele) => {
   };
 
   const getNotfication = (updatedFormData) => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID"));
-    // form.append(
-    //   "LoginName",
-    //   useCryptoLocalStorage("user_Data", "get", "realname")
-    // );
-    // form.append("UserID", ele?.visible?.showData?.id);
-    // form.append("DotNetMantis", updatedFormData?.DotNetMantis);
-    // form.append("AllowLockUnLock", updatedFormData?.LockUnLock);
-    // form.append(
-    //   "AllowAmountSubmissionCancel",
-    //   updatedFormData?.AllowPaymentCancel
-    // );
-    // form.append("AllowQuotaionCreate", updatedFormData?.AllowQuotaionCreate);
-    // form.append("AllowQuotationUpdate", updatedFormData?.AllowQuotationUpdate);
-    // form.append(
-    //   "AllowQuotationApproved",
-    //   updatedFormData?.AllowQuotationApproved
-    // );
-    // form.append("AllowQuotationReject", updatedFormData?.AllowQuotationReject);
-    // form.append("AllowSalesBooking", updatedFormData?.AllowSalesBooking);
-    // form.append("AllowSalesUpdate", updatedFormData?.AllowSalesUpdate);
-    // form.append("AllowSalesReject", updatedFormData?.AllowSalesReject);
-    // form.append("AllowPICreate", updatedFormData?.AllowPICreate);
-    // form.append("AllowDeleteTicket", updatedFormData?.AllowDeleteTicket);
-    // form.append("IsActive", updatedFormData?.IsActive);
-    // form.append("AllowSentCircular", updatedFormData?.AllowSentCircular);
-    // form.append("AllowAddModule", updatedFormData?.AllowAddModule);
-    // form.append("AllowAddPages", updatedFormData?.AllowAddPages);
-    // form.append(
-    //   "AllowDeliveryDateEdit",
-    //   updatedFormData?.AllowDeliveryDateEdit
-    // );
-    // form.append("AllowManHourEdit", updatedFormData?.AllowManHourEdit);
-    // form.append(
-    //   "ShowClientDeliveryDate",
-    //   updatedFormData?.ShowClientDeliveryDate
-    // );
-    // form.append("ShowClientManHour", updatedFormData?.ShowClientManHour);
-    // form.append("AllowExpenseApprove", updatedFormData?.AllowExpenseApprove);
-    // form.append("AllowTicketAssignTo", updatedFormData?.AllowTicketAssignTo);
-    // form.append("AllowAutobackup", updatedFormData?.AllowAutobackup);
-
-    // axios
-    //   .post(apiUrls?.UpdateFlag, form, { headers })
     axiosInstances
       .post(apiUrls?.UpdateFlag, {
         UserID: Number(ele?.visible?.showData?.id),
@@ -160,6 +121,11 @@ const ManageFlagModal = (ele) => {
         AllowExpenseApprove: Number(updatedFormData?.AllowExpenseApprove),
         AllowTicketAssignTo: Number(updatedFormData?.AllowTicketAssignTo),
         AllowAutobackup: Number(updatedFormData?.AllowAutobackup),
+        AllowIsIncharge: Number(updatedFormData?.AllowIsIncharge),
+        FeedbackInhouseAutomation: Number(
+          updatedFormData?.FeedbackInhouseAutomation
+        ),
+        NoAppraisalDue: Number(updatedFormData?.NoAppraisalDue),
       })
       .then((res) => {
         if (res?.data?.success === true) {
@@ -206,7 +172,7 @@ const ManageFlagModal = (ele) => {
             width: "100%",
           }}
         >
-          {[0, 1, 2, 3, 4, 5].map((col) => (
+          {[0, 1, 2, 3, 4].map((col) => (
             <div
               key={col}
               style={{ display: "flex", flexDirection: "column", flex: 1 }}
@@ -244,8 +210,17 @@ const ManageFlagModal = (ele) => {
                 { name: "AllowExpenseApprove", label: "AllowExpenseApprove" },
                 { name: "AllowTicketAssignTo", label: "AllowTicketAssignTo" },
                 { name: "AllowAutobackup", label: "AllowAutobackup" },
+                { name: "AllowIsIncharge", label: "AllowIsIncharge" },
+                {
+                  name: "FeedbackInhouseAutomation",
+                  label: "FeedbackInhouseAutomation",
+                },
+                {
+                  name: "NoAppraisalDue",
+                  label: "NoAppraisalDue",
+                },
               ]
-                .slice(col * Math.ceil(11 / 3), (col + 1) * Math.ceil(11 / 3))
+                .slice(col * Math.ceil(11 / 2), (col + 1) * Math.ceil(11 / 2))
                 .map((item, idx) => (
                   <div
                     key={idx}

@@ -92,7 +92,7 @@ const PurchaseOrder = () => {
   };
   const getProject = () => {
     let form = new FormData();
-    console.log("ram","17")
+    
     form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
     form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname") ),
       axios

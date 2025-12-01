@@ -20,15 +20,12 @@ const GmailSalesModal = ({ visible, setVisible }) => {
   const [loading, setLoading] = useState(false);
   const [quotationLog, setQuotationLog] = useState([]);
   const [projectEmail, setProjectEmail] = useState([]);
-  console.log("projectemail", projectEmail);
+ 
   const [formData, setFormData] = useState({
     EmailTo: projectEmail?.EmailTo || "",
     EmailCC: projectEmail?.EmailCC || "",
   });
-  // const searchHandleChange = (e, index) => {
-  //   const { name, value } = e.target;
-  //   setFormData({ ...formData, [name]: value });
-  // };
+
   const searchHandleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({

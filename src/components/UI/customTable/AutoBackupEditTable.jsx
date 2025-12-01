@@ -8,7 +8,7 @@ const AutoBackupEditTable = (props) => {
     const [t] = useTranslation();
     const {  tbody = [...tbody], values, handleCustomSelect } = props;
 
-    console.log("first", tbody);
+
 
     const THEAD = [
         t("S.No."),
@@ -20,7 +20,6 @@ const AutoBackupEditTable = (props) => {
         t("Autobackup Date")
     ];
 
-    console.log("THEADCHECK" ,THEAD ,tbody)
 
     return (
         <>

@@ -5,7 +5,6 @@ import Input from "@app/components/formComponent/Input";
 export default function StateModel({ handleChangeModel ,inputData}) {
   const [t] = useTranslation();
 
-  console.log("inputData",inputData)
 
   const [inputs, setInputs] = useState(inputData)
   const handlechange = (e) => {

@@ -220,8 +220,7 @@ const PackageDetails = ({ data, handlePackageData }) => {
     return tableData;
   };
 
-  console.log("sahil", data);
-  console.log("doctor", GetAllDoctorList);
+ 
 
   return (
     <>

@@ -11,7 +11,7 @@ import Heading from "../components/UI/Heading";
 import Tables from "../components/UI/customTable";
 import NoRecordFound from "../components/formComponent/NoRecordFound";
 const ImageSignatureUpload = (showData) => {
-  console.log("showData", showData);
+  // console.log("showData", showData);
   const [t] = useTranslation();
   const [selectedImageUrl, setSelectedImageUrl] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);

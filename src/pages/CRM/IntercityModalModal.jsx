@@ -5,31 +5,30 @@ import { apiUrls } from "../../networkServices/apiEndpoints";
 import { headers } from "../../utils/apitools";
 import { axiosInstances } from "../../networkServices/axiosInstance";
 const IntercityModalModal = ({ visible, setVisible }) => {
-  console.log("visible",visible);
   const [tableData, setTableData] = useState([]);
   const handleSearch = () => {
     axiosInstances
-          .post(apiUrls.ExpenceDetails,{
-      "ExpenseReportID": Number(visible?.showData?.expense_report_ID),
-      "ActionType": "InterCity"
-    })
-    // let form = new FormData();
-    // form.append("ExpenseReportID", visible?.showData?.expense_report_ID),
-    //   form.append("ActionType", "InterCity"),
-    //   axios
-    //     .post(apiUrls?.ExpenceDetails, form, { headers })
-        .then((res) => {
-          // setTableData(res?.data?.dtDetailCity);
-          const data = res?.data?.dtDetailCity;
-          if (Array.isArray(data)) {
-            setTableData(data);
-          } else {
-            setTableData([]); // fall back to empty array
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      .post(apiUrls.ExpenceDetails, {
+        ExpenseReportID: Number(visible?.showData?.expense_report_ID),
+        ActionType: "InterCity",
+      })
+      // let form = new FormData();
+      // form.append("ExpenseReportID", visible?.showData?.expense_report_ID),
+      //   form.append("ActionType", "InterCity"),
+      //   axios
+      //     .post(apiUrls?.ExpenceDetails, form, { headers })
+      .then((res) => {
+        // setTableData(res?.data?.dtDetailCity);
+        const data = res?.data?.dtDetailCity;
+        if (Array.isArray(data)) {
+          setTableData(data);
+        } else {
+          setTableData([]); // fall back to empty array
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const localTHEAD = [
     "S.No.",

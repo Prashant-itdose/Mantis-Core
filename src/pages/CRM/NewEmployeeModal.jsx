@@ -182,7 +182,7 @@ const NewEmployeeModal = () => {
   };
   const [editMode, setEditMode] = useState(false);
   const handleBillingEdit = (ele) => {
-    console.log("editdetails", ele);
+    
     setFormData({
       ...formData,
       UserName: ele?.username,

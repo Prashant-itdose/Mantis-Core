@@ -133,7 +133,7 @@ const LoginDetailModal = () => {
         console.log(err);
       });
   };
-  console.log("masti", tableData);
+
   // Function to convert HH:mm:ss to seconds
   const timeToSeconds = (timeStr) => {
     if (!timeStr) return 0;

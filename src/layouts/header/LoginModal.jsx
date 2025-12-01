@@ -102,7 +102,6 @@ const LoginModal = ({
           Longitude: currentLocation.split(",")[1].split(":")[1].trim(),
         }));
 
-        console.log("Current Location:", currentLocation);
       })
       .catch((error) => {
         console.error("Error fetching location:", error);

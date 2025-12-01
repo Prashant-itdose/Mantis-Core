@@ -30,7 +30,7 @@ const AddModuleModal = ({ visible, setVisible }) => {
   });
   const [t] = useTranslation();
   const handleEditModule = (ele) => {
-    console.log("checking", ele);
+    // console.log("checking", ele);
     setFormData({
       ...formData,
       ModuleName: ele?.ModuleID,

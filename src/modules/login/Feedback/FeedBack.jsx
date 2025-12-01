@@ -197,7 +197,7 @@ const FeedBack = () => {
   };
 
   const handleSubmit = () => {
-    console.log("SubmitForm", globalData, formData);
+    // console.log("SubmitForm", globalData, formData);
   };
 
   const handleClearData = () => {

@@ -4,7 +4,7 @@ import Tables from "../components/UI/customTable";
 import NoRecordFound from "../components/formComponent/NoRecordFound";
 import { axiosInstances } from "../networkServices/axiosInstance";
 const EmployeeFeedbackDetails = (showData) => {
-  console.log("data", showData);
+  // console.log("data", showData);
   const [tableData, setTableData] = useState([]);
   const handleApprove = () => {
     axiosInstances

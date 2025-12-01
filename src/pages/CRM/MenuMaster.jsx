@@ -37,7 +37,6 @@ const MenuMaster = () => {
   };
   const [editMode, setEditMode] = useState(false);
   const handleBillingEdit = (ele) => {
-    console.log("editdetails", ele);
     setFormData({
       ...formData,
       MenuName: ele?.MenuName,

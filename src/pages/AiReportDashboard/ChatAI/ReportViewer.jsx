@@ -29,7 +29,7 @@ const ReportViewer = () => {
   const [getReportValue, setGetReportValue] = useState(false)
   // const testId = `${new URLSearchParams(window.location.search).get('testId')},${location?.hash?.split('&')[0]?.slice(1).split('#')?.join(',')}`
  const testId =  extractTestIds(window.location.href)
-  console.log("testIdtestIdtestIdtestId", extractTestIds(window.location.href))
+  
   const getAPIURL = async () => {
     const apiResp = await AIReportsAIClientDetail(clientcode)
     if (apiResp?.success) {

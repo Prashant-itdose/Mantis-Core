@@ -12,7 +12,7 @@ import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorag
 import { axiosInstances } from "../../../networkServices/axiosInstance";
 
 const GmailAmountSubmissionModal = (visible) => {
-  console.log("visible visible", visible?.visible);
+  // console.log("visible visible", visible?.visible);
   const [t] = useTranslation();
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -36,7 +36,7 @@ const GmailAmountSubmissionModal = (visible) => {
     axiosInstances
       .post(apiUrls?.Quotation_Email_Log, payload)
       .then((res) => {
-        console.log("email log", res);
+        // console.log("email log", res);
         setTableData(res?.data?.data);
       })
       .catch((err) => {
@@ -88,7 +88,7 @@ const GmailAmountSubmissionModal = (visible) => {
     axiosInstances
       .post(apiUrls?.ProjectSelect, payload)
       .then((res) => {
-        console.log("res lotus", res);
+     
         setProjectEmail(res?.data?.data[0]);
       })
       .catch((err) => {

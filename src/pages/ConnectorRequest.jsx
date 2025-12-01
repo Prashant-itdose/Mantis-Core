@@ -57,7 +57,7 @@ const ConnectorRequest = ({ data }) => {
       CourierCharges: connectdata?.CourierCharges,
     });
 
-    console.log("formData useEffect", formData);
+    // console.log("formData useEffect", formData);
     setTableData((prevTableData) => [
       ...prevTableData,
       {
@@ -104,7 +104,7 @@ const ConnectorRequest = ({ data }) => {
     return `${year}/${month}/${day}`;
   }
   const handleDeliveryChange = (name, e) => {
-    console.log("namename", name, e);
+    // console.log("namename", name, e);
 
     const { value } = e;
     if (name == "Project") {

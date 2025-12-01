@@ -8,7 +8,7 @@ import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorag
 import Loading from "../../loader/Loading";
 import { axiosInstances } from "../../../networkServices/axiosInstance";
 const TaxInvoicePIModal = (visible, setVisible) => {
-  console.log("lotus ", visible);
+  // console.log("lotus ", visible);
   const [formData, setFormData] = useState({
     TaxInvoiceNo: "",
     DocumentType: "",
