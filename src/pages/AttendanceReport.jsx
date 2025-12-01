@@ -152,21 +152,16 @@ const AttendanceReport = () => {
   );
 
   const handleExport = () => {
-    // if (!formData?.TeamID) {
-    //   toast.error("Please Select Team");
-    //   return;
-    // }
-
     axiosInstances
       .post(apiUrls.Attendence_Report, {
-        Month: String(formData?.currentMonth),
-        Year: String(formData?.currentYear),
-        EmployeeID: String(
-          formData?.EmployeeName?.length > 0 ? formData.EmployeeName : ""
-        ),
+        Month: String(selectedMonth),
+        Year: String(selectedYear),
+        SubTeam: String(formData?.SubTeamID || ""),
         Team: String(getlabel(formData?.TeamID, team) || ""),
-        SubTeam: String(formData?.SubTeamID),
-        ReportType: String("Export"),
+        ReportType: String(""),
+        EmployeeID: String(
+          formData?.EmployeeName?.length > 0 ? formData.EmployeeName : "0"
+        ),
       })
       .then((res) => {
         const htmlTable = res?.data;
@@ -209,16 +204,34 @@ const AttendanceReport = () => {
       });
   };
   const handleExportEmployee = () => {
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
+    // form.append(
+    //   "LoginName",
+    //   useCryptoLocalStorage("user_Data", "get", "realname")
+    // );
+    // form.append("Month", formData?.currentMonth);
+    // form.append("Year", formData?.currentYear);
+    // form.append(
+    //   "EmployeeID",
+    //   Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID"))
+    // );
+    // form.append("Team", "");
+    // form.append("SubTeam", "");
+    // form.append("ReportType", "Export");
+
+    // axios
+    //   .post(apiUrls?.Attendence_Report, form, { headers })
     axiosInstances
       .post(apiUrls.Attendence_Report, {
         Month: String(formData?.currentMonth),
         Year: String(formData?.currentYear),
+        SubTeam: String(""),
+        Team: String(""),
+        ReportType: String("Export"),
         EmployeeID: String(
           Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID"))
         ),
-        Team: String(""),
-        SubTeam: String(""),
-        ReportType: String("Export"),
       })
       .then((res) => {
         const htmlTable = res?.data;
@@ -260,7 +273,6 @@ const AttendanceReport = () => {
         toast.error("Export failed. Try again.");
       });
   };
-
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5;
   const totalPages = Math.ceil(filteredData?.length / rowsPerPage);
@@ -360,9 +372,9 @@ const AttendanceReport = () => {
         // const leaveData = Array.isArray(res?.data?.dtMontReport)
         //   ? res.data.dtMontReport
         //   : [];
-        console.log("kakak", res.data.data?.dtAttReport);
-        const leaveData = Array.isArray(res?.data?.data?.dtAttReport)
-          ? res?.data?.data?.dtAttReport
+
+        const leaveData = Array.isArray(res?.data?.data?.dtMontReport)
+          ? res?.data?.data?.dtMontReport
           : [];
         console.log("leaveData", leaveData);
         setTableData1(leaveData);
@@ -489,8 +501,8 @@ const AttendanceReport = () => {
         AttendanceType: Number(formData?.SearchType),
       })
       .then((res) => {
-        const leaveData = Array.isArray(res?.data?.data?.dtAttReport)
-          ? res?.data?.data?.dtAttReport
+        const leaveData = Array.isArray(res?.data?.data?.dtMontReport)
+          ? res?.data?.data?.dtMontReport
           : [];
         // console.log("leaveData", leaveData);
         setTableData1(leaveData);
@@ -639,7 +651,7 @@ const AttendanceReport = () => {
             value={formData?.SearchType}
           />
 
-          <div className="col-1 d-flex">
+          <div className="col-2 d-flex">
             {ReportingManager == 1 ? (
               <div>
                 {loading ? (
@@ -713,6 +725,7 @@ const AttendanceReport = () => {
                   {ReportingManager == 1 ? (
                     <button
                       className="btn btn-sm btn-info ml-2"
+                      // onClick={handleLeaveExport}
                       onClick={exportToExcelReportLeave}
                     >
                       Leave Export
@@ -720,6 +733,7 @@ const AttendanceReport = () => {
                   ) : (
                     <button
                       className="btn btn-sm btn-info ml-2"
+                      // onClick={handleLeaveExportEmployee}
                       onClick={exportToExcelReportEmployee}
                     >
                       Leave Export

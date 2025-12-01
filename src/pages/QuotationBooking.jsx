@@ -1018,7 +1018,7 @@ const QuotationBooking = ({ data }) => {
 
         IsApproved: "0",
         PoNo: String(formData?.PoNumber || ""),
-        EmailStatus: "0",
+        EmailStatus: String(formData?.EmailStatus),
         EmailTo: String(formData?.EmailTo || ""),
         EmailCC: String(formData?.EmailCC || ""),
       };
@@ -1302,9 +1302,9 @@ const QuotationBooking = ({ data }) => {
         PoNo: String(formData?.PoNumber || ""),
 
         // Extra fields from schema (set empty if not in FormData)
-        EmailStatus: String(""),
-        EmailTo: String(""),
-        EmailCC: String(""),
+        EmailStatus: String(formData?.EmailStatus),
+        EmailTo: String(formData?.EmailTo || ""),
+        EmailCC: String(formData?.EmailCC || ""),
       };
 
       axiosInstances

@@ -170,29 +170,29 @@ const UserDropdown = ({
               title="Click to Upload Image."
             />
 
-            {(inputs?.showDropdown || !ProfileImage) && !inputs?.preview ? (
-              <div className="profile-upload-btn" title="Click to Upload File">
-                <input
-                  type="file"
-                  id="fileInput"
-                  onChange={handleImageChange}
-                  style={{ display: "none" }}
-                />
-                <label
-                  htmlFor="fileInput"
-                  className="text-white profile-upload-file"
+            {/* {(inputs?.showDropdown || !ProfileImage) && !inputs?.preview ? ( */}
+            <div className="profile-upload-btn" title="Click to Upload File">
+              <input
+                type="file"
+                id="fileInput"
+                onChange={handleImageChange}
+                style={{ display: "none" }}
+              />
+              <label
+                htmlFor="fileInput"
+                className="text-white profile-upload-file"
+              >
+                <p
+                  className="buttonclasss m-0 p-1"
+                  style={{ cursor: "pointer" }}
                 >
-                  <p
-                    className="buttonclasss m-0 p-1"
-                    style={{ cursor: "pointer" }}
-                  >
-                    Upload Image
-                  </p>
-                </label>
-              </div>
-            ) : (
+                  Upload Image
+                </p>
+              </label>
+            </div>
+            {/* ) : (
               ""
-            )}
+            )} */}
 
             <div className="headerUserDropdownField ">
               <div className="d-flex mb-3 ml-1 mr-1 mt-4">
