@@ -154,11 +154,11 @@ const AttendanceReport = () => {
   const handleExport = () => {
     axiosInstances
       .post(apiUrls.Attendence_Report, {
-        Month: String(selectedMonth),
-        Year: String(selectedYear),
+        Month: String(formData?.currentMonth),
+        Year: String(formData?.currentYear),
         SubTeam: String(formData?.SubTeamID || ""),
         Team: String(getlabel(formData?.TeamID, team) || ""),
-        ReportType: String(""),
+        ReportType: String("Export"),
         EmployeeID: String(
           formData?.EmployeeName?.length > 0 ? formData.EmployeeName : "0"
         ),
@@ -204,24 +204,6 @@ const AttendanceReport = () => {
       });
   };
   const handleExportEmployee = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append(
-    //   "LoginName",
-    //   useCryptoLocalStorage("user_Data", "get", "realname")
-    // );
-    // form.append("Month", formData?.currentMonth);
-    // form.append("Year", formData?.currentYear);
-    // form.append(
-    //   "EmployeeID",
-    //   Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID"))
-    // );
-    // form.append("Team", "");
-    // form.append("SubTeam", "");
-    // form.append("ReportType", "Export");
-
-    // axios
-    //   .post(apiUrls?.Attendence_Report, form, { headers })
     axiosInstances
       .post(apiUrls.Attendence_Report, {
         Month: String(formData?.currentMonth),
@@ -364,7 +346,7 @@ const AttendanceReport = () => {
         Team: String(getlabel(formData?.TeamID, team) || ""),
         ReportType: String(""),
         EmployeeID: String(
-          formData?.EmployeeName?.length > 0 ? formData.EmployeeName : "0"
+          formData?.EmployeeName?.length > 0 ? formData.EmployeeName : ""
         ),
         AttendanceType: Number(formData?.SearchType),
       })
@@ -690,7 +672,8 @@ const AttendanceReport = () => {
                       {formData?.EmployeeName?.length === 1 ? (
                         <button
                           className="btn btn-sm btn-info ml-2"
-                          onClick={handleExport}
+                          // onClick={handleExport}
+                          onClick={exportToExcelReport}
                         >
                           Attendance Export
                         </button>

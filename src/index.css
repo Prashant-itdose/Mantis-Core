@@ -4383,17 +4383,8 @@ table .verticalTable {
   /* animation: blinkTextD 5s infinite; */
 }
 
-/* @keyframes blinkTextD {
-  0% {
-    opacity: 1;
-  }
-  80% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-} */
+.textraeaheight {
+  min-height: 65px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}

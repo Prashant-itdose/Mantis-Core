@@ -249,19 +249,13 @@ const DeveloperCalendar = () => {
 
     axiosInstances
       .post(apiUrls.Dev_Caledar, {
-  "AssignToID": formData?.AssignedTo ? Number(formData?.AssignedTo) : 0,
-  "Date": formattedDate,
-  "View": "Detailed"
-})
+        AssignToID:
+          Number(formData?.AssignedTo) ||
+          useCryptoLocalStorage("user_Data", "get", "ID"),
+        Date: formattedDate,
+        View: "Detailed",
+      })
 
-    // const form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append("AssignToID", formData?.AssignedTo);
-    // form.append("Date", formattedDate);
-    // form.append("View", "Detailed");
-
-    // axios
-    //   .post(apiUrls?.Dev_Caledar, form, { headers })
       .then((res) => {
         const filteredData = res?.data?.data?.dtDetailed?.filter(
           (item) => item.CurrentDeliveryDate === formattedDate
@@ -297,44 +291,44 @@ const DeveloperCalendar = () => {
   const handleManHourTable = (details) => {
     axiosInstances
       .post(apiUrls.ApplyAction, {
-  "TicketIDs": String(details?.TicketID),
-  "ActionText": "ManHours",
-  "ActionId": String(details?.ManHour),
-  "RCA": "",
-  "ReferenceCode": "",
-  "ManHour": "",
-  "Summary": "",
-  "ModuleID": "",
-  "ModuleName": "",
-  "PagesID": "",
-  "PagesName": "",
-  "ManHoursClient": "",
-  "DeliveryDateClient": "",
-  "ReOpenReasonID": "",
-  "ReOpenReason": ""
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("TicketIDs", details?.TicketID),
-    //   form.append("ActionText", "ManHours"),
-    //   form.append("ActionId", details?.ManHour),
-    //   axios
-    //     .post(apiUrls?.ApplyAction, form, { headers })
-        .then((res) => {
-          if (res?.data?.message === "Record Updated Successfully") {
-            toast.success(res?.data?.message);
-          } else {
-            toast.error(res?.data?.message);
-          }
-          // handleViewSearch();
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        TicketIDs: String(details?.TicketID),
+        ActionText: "ManHours",
+        ActionId: String(details?.ManHour),
+        RCA: "",
+        ReferenceCode: "",
+        ManHour: "",
+        Summary: "",
+        ModuleID: "",
+        ModuleName: "",
+        PagesID: "",
+        PagesName: "",
+        ManHoursClient: "",
+        DeliveryDateClient: "",
+        ReOpenReasonID: "",
+        ReOpenReason: "",
+      })
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append(
+      //     "LoginName",
+      //     useCryptoLocalStorage("user_Data", "get", "realname")
+      //   ),
+      //   form.append("TicketIDs", details?.TicketID),
+      //   form.append("ActionText", "ManHours"),
+      //   form.append("ActionId", details?.ManHour),
+      //   axios
+      //     .post(apiUrls?.ApplyAction, form, { headers })
+      .then((res) => {
+        if (res?.data?.message === "Record Updated Successfully") {
+          toast.success(res?.data?.message);
+        } else {
+          toast.error(res?.data?.message);
+        }
+        // handleViewSearch();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleMonthYearChange = (name, e) => {
@@ -472,6 +466,7 @@ const DeveloperCalendar = () => {
             isActive ? "#fff" : "#000"
           )}
           onClick={() => handleDateClick(dayDate)}
+
           // onMouseEnter={handleMouseEnter}
         >
           Tickets: {totalTickets}
