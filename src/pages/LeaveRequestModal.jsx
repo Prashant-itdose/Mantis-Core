@@ -17,12 +17,16 @@ const LeaveRequestModal = ({
 }) => {
   const [loading, setLoading] = useState(false);
 
-  const leaveData = visible?.CalenderDetails?.[1]?.find(
-    (val) =>
-      String(val?.Day) ===
-      moment(visible?.data).format("DD-MMM-YYYY").split("-")[0]
-  );
+  // const leaveData = visible?.CalenderDetails?.[1]?.find(
+  //   (val) =>
+  //     String(val?.Day) ===
+  //     moment(visible?.data).format("DD-MMM-YYYY").split("-")[0]
+  // );
 
+   const leaveData = visible?.CalenderDetails?.[1]?.find(
+    (val) => String(val?.Day) === moment(visible?.data).format("D")
+  );
+  console.log("leavedata", leaveData);
   const [OLTypeWise, setOLTypeWise] = useState([]);
   const [WOTypeWise, setWOTypeWise] = useState([]);
   const [HLTypeWise, setHLTypeWise] = useState([]);

@@ -89,8 +89,8 @@ const Attendance = () => {
       })
       .then((res) => {
         // console.log("data data data", res?.data?.message);
-        const data = res?.data?.data;
-        // console.log("data data", data);
+        const data = res?.data?.data?.[0];
+       
         // setNotFound(res?.data?.message == "Found");
         if (data?.IsLoggedIn === 1 && data?.IsLogout === 0) {
           setIsLogin(true);
