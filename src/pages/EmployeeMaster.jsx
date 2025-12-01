@@ -649,7 +649,7 @@ const EmployeeMaster = () => {
           useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
         IsMaster: 0,
-        RoleID: 0,
+        RoleID: useCryptoLocalStorage("user_Data", "get", "RoleID"),
         OnlyItdose: 0,
       })
       .then((res) => {
