@@ -332,7 +332,7 @@ const LeaveRequest = ({ data }) => {
   };
 
   useEffect(() => {
-    // handleLeaveRequest_BindCalender();
+    handleLeaveRequest_BindCalender();
     getReporter();
   }, []);
 
@@ -371,7 +371,7 @@ const LeaveRequest = ({ data }) => {
           setLoading(false);
         });
   };
-  console.log("check", CalenderDetails);
+  // console.log("check", CalenderDetails);
   return (
     <>
       {visible?.showVisible && (
