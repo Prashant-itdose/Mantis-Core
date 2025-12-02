@@ -671,22 +671,6 @@ const QuotationBooking = ({ data }) => {
         ItemName: "",
         SearchType: "GetItem",
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "RoleID",
-      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-      //   ),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("ProjectID", value),
-      //   form.append("ItemID", ""),
-      //   form.append("ItemName", ""),
-      //   form.append("SearchType", "GetItem"),
-      //   axios
-      //     .post(apiUrls?.Quotation_Select, form, { headers })
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return { label: item?.ItemNameGroup, value: item?.ItemIDGroup };
@@ -820,64 +804,6 @@ const QuotationBooking = ({ data }) => {
 
     axiosInstances
       .post(apiUrls.Quotation_Update, payloadData)
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "RoleID",
-      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-      //   ),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("ProjectID", formData?.Project),
-      //   form.append("ProjectName", getlabel(formData?.Project, project)),
-      //   form.append("BillingCompanyID", formData?.BillingCompany),
-      //   form.append(
-      //     "BillingCompanyName",
-      //     getlabel(formData?.BillingCompany, billingcompany)
-      //   ),
-      //   form.append("BillingCompanyAddress", formData?.BillingAddress),
-      //   form.append("BillingState", formData?.BillingState),
-      //   form.append("GSTNo", formData?.BillingGST),
-      //   form.append("PanCardNo", formData?.BillingPanCard),
-      //   form.append("ShippingCompanyID", formData?.ShippingCompany),
-      //   form.append(
-      //     "ShippingCompanyName",
-      //     getlabel(formData?.ShippingCompany, shippingcompany)
-      //   ),
-      //   form.append("ShippingCompanyAddress", formData?.ShippingAddress),
-      //   form.append("ShippingState", formData?.ShippingState),
-      //   form.append("ShippingGSTNo", formData?.ShippingGST),
-      //   form.append("ShippingPanCardNo", formData?.ShippingPanCard),
-      //   form.append("dtSales", moment(formData?.SalesDate).format("YYYY-MM-DD")),
-      //   form.append("PONo", formData?.PoNumber ?? ""),
-      //   form.append(
-      //     "ExpiryDate",
-      //     moment(formData?.ExpiryDate).format("YYYY-MM-DD")
-      //   ),
-      //   form.append("GrossAmount", GrossAmount),
-      //   // form.append("GrossAmount", formData?.TotalAmount),
-      //   form.append("DiscountAmount", payload[0]?.DiscountAmount ?? ""),
-      //   form.append("TaxAmount", Tax || ""),
-      //   form.append("Tax_Per", 18),
-      //   form.append("CGST_Amount", formData?.CgstAmount),
-      //   form.append("SGST_Amount", formData?.SgstAmount),
-      //   form.append("IGST_Amount", ""),
-      //   form.append("CGST_Per", ""),
-      //   form.append("SGST_Per", ""),
-      //   form.append("IGST_Per", ""),
-      //   form.append("RoundOff", formData?.RoundOff || ""),
-      //   form.append("Document_Base64", ""),
-      //   form.append("Document_FormatType", ""),
-      //   form.append("QuotationID", state?.data || recordID),
-      //   form.append("EmailTo", formData?.EmailTo),
-      //   form.append("EmailCC", formData?.EmailCC),
-      //   form.append("EmailStatus", formData?.EmailStatus),
-      //   form.append("ItemData", JSON.stringify(payload));
-      // form.append("PaymentTerms", JSON.stringify(termsPayload));
-      // axios
-      //   .post(apiUrls?.Quotation_Update, form, { headers })
       .then((res) => {
         if (res?.data?.success == true) {
           toast.success(res?.data?.message);
@@ -1302,65 +1228,6 @@ const QuotationBooking = ({ data }) => {
 
       axiosInstances
         .post(apiUrls.Quotation_Insert, FinalPayload)
-        // let form = new FormData();
-        // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        //   form.append(
-        //     "RoleID",
-        //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-        //   ),
-        //   form.append(
-        //     "LoginName",
-        //     useCryptoLocalStorage("user_Data", "get", "realname")
-        //   ),
-        //   form.append("ProjectID", formData?.Project),
-        //   form.append("IsApproved", "1"),
-        //   form.append("ProjectName", getlabel(formData?.Project, project)),
-        //   form.append("BillingCompanyID", formData?.BillingCompany),
-        //   form.append(
-        //     "BillingCompanyName",
-        //     getlabel(formData?.BillingCompany, billingcompany)
-        //   ),
-        //   form.append("BillingCompanyAddress", formData?.BillingAddress),
-        //   form.append("BillingState", formData?.BillingState),
-        //   form.append("GSTNo", formData?.BillingGST),
-        //   form.append("PoNo", formData?.PoNumber || ""),
-        //   form.append("PanCardNo", formData?.BillingPanCard),
-        //   form.append("ShippingCompanyID", formData?.ShippingCompany),
-        //   form.append(
-        //     "ShippingCompanyName",
-        //     getlabel(formData?.ShippingCompany, shippingcompany)
-        //   ),
-        //   form.append("ShippingCompanyAddress", formData?.ShippingAddress),
-        //   form.append("ShippingGSTNo", formData?.ShippingGST),
-        //   form.append("ShippingPanCardNo", formData?.ShippingPanCard),
-        //   form.append("ShippingState", formData?.ShippingState),
-        //   form.append(
-        //     "dtSales",
-        //     moment(formData?.SalesDate).format("YYYY-MM-DD")
-        //   ),
-        //   form.append(
-        //     "ExpiryDate",
-        //     moment(formData?.ExpiryDate).format("YYYY-MM-DD")
-        //   ),
-        //   // form.append("GrossAmount", GrossAmount),
-        //   form.append("GrossAmount", formData?.TotalAmount),
-        //   form.append("DiscountAmount", payload[0]?.DiscountAmount),
-        //   form.append("TaxAmount", Tax),
-        //   form.append("Tax_Per", 18),
-        //   form.append("CGST_Amount", formData?.CgstAmount),
-        //   form.append("SGST_Amount", formData?.SgstAmount),
-        //   form.append("IGST_Amount", ""),
-        //   form.append("CGST_Per", ""),
-        //   form.append("SGST_Per", ""),
-        //   form.append("IGST_Per", ""),
-        //   form.append("RoundOff", formData?.RoundOff ?? ""),
-        //   form.append("Document_Base64", ""),
-        //   form.append("Document_FormatType", ""),
-        //   form.append("QuotationID", state?.data || recordID),
-        //   form.append("ItemData", JSON.stringify(payload));
-        // form.append("PaymentTerms", JSON.stringify(termsPayload));
-        // axios
-        // .post(apiUrls?.Quotation_Insert, form, { headers })
         .then((res) => {
           if (res?.data?.success == true) {
             toast.success(res?.data?.message);
@@ -1578,10 +1445,7 @@ const QuotationBooking = ({ data }) => {
       .post(apiUrls.GetState, {
         CountryID: "14",
       })
-      // let form = new FormData();
-      // form.append("CountryID", "14"),
-      //   axios
-      //     .post(apiUrls?.GetState, form, { headers })
+    
       .then((res) => {
         const states = res?.data.data.map((item) => {
           return { label: item?.StateName, value: item?.StateID };
@@ -1606,15 +1470,15 @@ const QuotationBooking = ({ data }) => {
   const [savelotus, setSaveLotus] = useState([]);
 
   const fetchDatabyId = (id) => {
-    console.log("master", id);
+    // console.log("master", id);
     axiosInstances
       .post(apiUrls.Quotation_Load_QuotationID, {
         QuotationID: String(id),
       })
       .then((res) => {
-        console.log("data ", res.data.data.data);
-        console.log("dataDetail ", res.data.data.dataDetail);
-        console.log("dataterms ", res.data.data.dtTerms);
+        // console.log("data ", res.data.data.data);
+        // console.log("dataDetail ", res.data.data.dataDetail);
+        // console.log("dataterms ", res.data.data.dtTerms);
         setSaveLotus(res?.data?.data?.data[0]);
         setFormData({
           ...formData,
