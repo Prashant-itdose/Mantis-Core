@@ -68,7 +68,6 @@ const SalesBooking = ({ data }) => {
     LiveDate: "",
   });
 
-  console.log("formdata project", formData);
   const getState = (value) => {
     axiosInstances
       .post(apiUrls?.GetState, { CountryID: "14" })
@@ -85,6 +84,7 @@ const SalesBooking = ({ data }) => {
 
   useEffect(() => {
     getState();
+    getProject();
   }, []);
 
   const [rowHandler, setRowHandler] = useState({
@@ -111,19 +111,15 @@ const SalesBooking = ({ data }) => {
     showData: {},
   });
   const handlerefresh = () => {
-    console.log("formData.Project", formData.Project);
     getCompany(formData.Project);
   };
   const getCompany = (proj) => {
-    console.log("check project", proj);
-
     axiosInstances
       .post(apiUrls?.BillingCompany_Select, {
         ProjectID: Number(proj || formData?.Project),
         IsActive: String("1"),
       })
       .then((res) => {
-        console.log("billingcompany", res?.data?.data);
         const poc3s = res?.data.data.map((item) => {
           return { label: item?.BillingCompanyName, value: item?.BillingID };
         });
@@ -213,17 +209,6 @@ const SalesBooking = ({ data }) => {
           [name]: value,
           Items: data?.ItemName,
         });
-        // setFormData((val) => ({ ...val,
-        //   ItemName: data?.ItemName,
-        //   BillingAddress: "",
-        //   BillingState: "",
-        //   BillingGST: "",
-        //   BillingPanCard: "",
-        //   ShippingAddress: "",
-        //   ShippingState: "",
-        //   ShippingGST: "",
-        //   ShippingPanCard: "",
-        // }));
         handleGetItemRate({ label: data?.ItemName, value: "" });
       } else {
         setFormData({
@@ -300,20 +285,6 @@ const SalesBooking = ({ data }) => {
       [name]: type === "checkbox" ? (checked ? "1" : "0") : value,
     });
   };
-
-  // const handleDeliveryChangeItems = (name, value) => {
-  //   if (name == "Items") {
-  //     handleGetItemRate({
-  //       label: value?.label,
-  //       value: value.value,
-  //     });
-  //   } else {
-  //     setFormData({
-  //       ...formData,
-  //       [name]: value,
-  //     });
-  //   }
-  // };
 
   const handleDeliveryChangeItems = (name, value) => {
     if (name === "Items") {
@@ -502,13 +473,10 @@ const SalesBooking = ({ data }) => {
   };
 
   useEffect(() => {
-    getProject();
-    // SalesBooking_Load_SalesID();
-    // getCompany(formData?.Project);
-  }, []);
+    getCompany(formData?.Project);
+  }, [formData?.Project]);
 
   const handleGetItemSearch = (value) => {
-    console.log("jajaja", value);
     const payload = {
       ProjectID: Number(value),
       ItemName: String(),
@@ -1014,8 +982,8 @@ const SalesBooking = ({ data }) => {
           // console.log(updatedData);
           setTableData(updatedData);
           // setTableData(res?.data?.data?.dataDetail);
-          if (res?.data?.data?.data[0]?.ProjectID > 0) {
-            handleGetItemSearch(res?.data?.data?.data[0]?.ProjectID);
+          if (res.data.data.data[0].ProjectID > 0) {
+            handleGetItemSearch(res.data.data.data[0].ProjectID);
 
             // handleGetItemRate(res?.data?.data?.dataDetail[0])
           }
@@ -1091,12 +1059,12 @@ const SalesBooking = ({ data }) => {
             <ReactSelect
               respclass="col-xl-2 col-md-4 col-sm-6 col-12"
               name="Project"
-              placeholderName="Project Edit"
+              placeholderName="Project"
               dynamicOptions={project}
               className="Project"
               handleChange={handleDeliveryChange}
               value={formData.Project}
-              // isDisabled={true}
+              isDisabled={true}
             />
           ) : (
             <ReactSelect
