@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Heading from "../components/UI/Heading";
 import DatePickerMonth from "../components/formComponent/DatePickerMonth";
 import Modal from "../components/modalComponent/Modal";
@@ -29,16 +29,22 @@ const currentYear = currentDate.getFullYear();
 
 const LeaveRequest = ({ data }) => {
   // console.log("data check", data);
+
+  const dataMonth = data?.MonthYear;
+  const jsDate = new Date(`${dataMonth?.replace("-", " ")} 1`);
+  // console.log("data check", data?.MonthYear);
+  // console.log("js date", jsDate);
   const CRMID = useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID");
   const LoginUserName = useCryptoLocalStorage("user_Data", "get", "realname");
   const [employee, setEmployee] = useState([]);
   const [formData, setFormData] = useState({
-    Month: new Date(),
+    Month: dataMonth == undefined ? new Date() : jsDate,
     Year: "",
     currentMonth: currentMonth,
     currentYear: currentYear,
     Employee: [],
   });
+  // console.log("data formdata", formData);
   const ReportingManager = useCryptoLocalStorage(
     "user_Data",
     "get",
@@ -78,13 +84,6 @@ const LeaveRequest = ({ data }) => {
       });
   };
 
-  const handleDeliveryChange = (name, e) => {
-    setFormData({
-      ...formData,
-      [name]: e?.value,
-    });
-  };
-
   const handleMonthYearChange = (name, e) => {
     const { value } = e.target;
     const date = new Date(value);
@@ -99,6 +98,24 @@ const LeaveRequest = ({ data }) => {
       [name]: value,
     });
   };
+
+  const apiCalledRef = useRef(false);
+  useEffect(() => {
+    if (apiCalledRef.current) return; // <-- prevents second call
+
+    if (data?.MonthYear) {
+      apiCalledRef.current = true; // mark as executed once
+
+      const jsDate = new Date(`${data?.MonthYear?.replace("-", " ")} 1`);
+      const selectedYear = jsDate.getFullYear();
+      const selectedMonth = jsDate.getMonth() + 1;
+
+      handleLeaveRequest_BindCalender({
+        year: selectedYear,
+        month: selectedMonth,
+      });
+    }
+  }, [data?.MonthYear]);
 
   const getStatusClass = (day, table1Data) => {
     const Table1LeaveList = table1Data?.find((d) => d.Day === day);
@@ -315,7 +332,7 @@ const LeaveRequest = ({ data }) => {
   };
 
   useEffect(() => {
-    handleLeaveRequest_BindCalender();
+    // handleLeaveRequest_BindCalender();
     getReporter();
   }, []);
 
