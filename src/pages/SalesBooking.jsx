@@ -366,18 +366,10 @@ const SalesBooking = ({ data }) => {
   // console.log("tableData", tableData);
 
   const getProject = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   axios
-    //     .post(apiUrls?.ProjectSelect, form, { headers })
     axiosInstances
       .post(apiUrls?.ProjectSelect, {
         ProjectID: 0,
-        IsMaster: "string",
+        IsMaster: "0",
         VerticalID: 0,
         TeamID: 0,
         WingID: 0,
