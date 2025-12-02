@@ -157,7 +157,7 @@ const FestivalWish = () => {
       .post(apiUrls.FestivalWishSave, {
         Day: formData?.SelectDate,
         FestivalName: formData?.FestivalName,
-        FestivalDate: formData?.FestivalDate,
+        FestivalDate: moment(formData?.FestivalDate).format("YYYY-MM-DD"),
         LeaveType: formData?.LeaveType,
         Content: formData.Description
           ? removeHtmlTags(formData.Description)
@@ -214,8 +214,8 @@ const FestivalWish = () => {
       .post(apiUrls.FestivalWishUpdate, {
         Day: formData?.SelectDate,
         FestivalName: formData?.FestivalName,
-        WishID: formData?.WishID,
-        FestivalDate: formData?.FestivalDate,
+        WishID: String(formData?.WishID),
+        FestivalDate: moment(formData?.FestivalDate).format("YYYY-MM-DD"),
         LeaveType: formData?.LeaveType,
         Content: formData.Description
           ? removeHtmlTags(formData.Description)
@@ -255,10 +255,10 @@ const FestivalWish = () => {
   const EditMorningWish = (id) => {
     axiosInstances
       .post(apiUrls.EditFestivalWish, {
-        WishID: id,
+        WishID: String(id),
       })
       .then((res) => {
-        const datas = res?.data?.data[0];
+        const datas = res?.data?.data;
 
         setFormData({
           ...formData,

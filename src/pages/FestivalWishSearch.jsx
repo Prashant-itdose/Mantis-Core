@@ -7,7 +7,6 @@ import axios from "axios";
 import { apiUrls } from "../networkServices/apiEndpoints";
 import { toast } from "react-toastify";
 import Heading from "../components/UI/Heading";
-import { headers } from "../utils/apitools";
 import { Link } from "react-router-dom";
 import ReactSelect from "../components/formComponent/ReactSelect";
 import Loading from "../components/loader/Loading";
@@ -16,6 +15,7 @@ import MorningWishContentModal from "./MorningWishContentModal";
 import Modal from "../components/modalComponent/Modal";
 import Input from "../components/formComponent/Input";
 import DatePicker from "../components/formComponent/DatePicker";
+import { axiosInstances } from "../networkServices/axiosInstance";
 
 const FestivalWishSearch = () => {
   const { VITE_DATE_FORMAT } = import.meta.env;
@@ -87,7 +87,7 @@ const FestivalWishSearch = () => {
     setLoading(true);
     axiosInstances
       .post(apiUrls.RemoveFestivalWish, {
-        WishID: Number(ele?.ID),
+        WishID: String(ele?.ID),
       })
       .then((res) => {
         if (res?.data?.success === true) {
