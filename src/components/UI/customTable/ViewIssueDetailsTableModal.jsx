@@ -52,6 +52,7 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
   const [reopen, setReOpen] = useState([]);
   const [tableData2, setTableData2] = useState([]);
   const [tableData1, setTableData1] = useState([]);
+  const [incharge, setIncharge] = useState([]);
   const [loading, setLoading] = useState();
   const [formData, setFormData] = useState({
     TicketID: "",
@@ -79,8 +80,10 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
     ProjectID: "",
     ModuleName: "",
     PageName: "",
+    Incharge: "",
   });
   const [formDataUpdate, setFormDataUpdate] = useState({
+    Incharge: "",
     TicketID: "",
     Project: "",
     Category: "",
@@ -113,10 +116,20 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
   const { clientId } = useSelector((state) => state?.loadingSlice);
   const handleDeliveryChange = (name, e) => {
     const { value } = e;
-    setFormDataUpdate({
-      ...formDataUpdate,
-      [name]: value,
-    });
+    if (name === "ModuleName") {
+      setFormDataUpdate({
+        ...formDataUpdate,
+        [name]: value, // module ID
+        Incharge: "",
+      });
+
+      getIncharge(value);
+    } else {
+      setFormDataUpdate({
+        ...formDataUpdate,
+        [name]: value,
+      });
+    }
   };
 
   const RoleID = useCryptoLocalStorage("user_Data", "get", "RoleID");
@@ -140,7 +153,30 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
         console.log(err);
       });
   };
-
+  const getIncharge = (value) => {
+    // let form = new FormData();
+    // form.append("Id", value || ""),
+    //   // form.append("IsIncharge", "1"),
+    //   axios
+    //     .post(apiUrls?.Reporter_Select_Module_Wise, form, { headers })
+    axiosInstances
+      .post(apiUrls.Reporter_Select_Module_Wise, {
+        ID: value || "0",
+      })
+      .then((res) => {
+        const assigntos = res?.data?.data?.map((item) => {
+          return { label: item?.NAME, value: item?.ID };
+        });
+        setIncharge(assigntos);
+        setFormDataUpdate((val) => ({
+          ...val,
+          Incharge: res.data.data[0]?.ID,
+        }));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const getPage = () => {
     axiosInstances
       .post(apiUrls.Pages_Select, {
@@ -276,6 +312,7 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
           ReferenceCode: res?.data.data[0]?.ReferenceCode,
           HoldReason: res?.data.data[0]?.HoldReason,
           ModuleName: res?.data.data[0]?.ModuleName,
+          Incharge: res?.data.data[0]?.InchargeName,
           PageName: res?.data.data[0]?.PagesName,
           ModuleID: res?.data.data[0]?.ModuleID,
           PagesID: res?.data.data[0]?.PagesID,
@@ -314,8 +351,9 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
           HoldReason: res?.data.data[0]?.HoldReason,
           ModuleName: res?.data.data[0]?.ModuleID,
           PageName: res?.data.data[0]?.PagesID,
+          Incharge: res?.data.data[0]?.InchargeID,
         });
-        // }
+        getIncharge(res?.data.data[0]?.ModuleID);
       })
       .catch((err) => {
         console.log(err);
@@ -375,6 +413,10 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
           IsReOpen: 1,
           ReOpenReasonID: Number(formDataUpdate?.ReOpen ?? 0),
           ReOpenReason: String(getlabel(formDataUpdate?.ReOpen, reopen) || ""),
+          InchargeID: Number(formDataUpdate.Incharge || 0),
+          InchargeName: String(
+            getlabel(formDataUpdate?.Incharge, incharge) || ""
+          ),
         })
 
         .then((res) => {
@@ -1145,7 +1187,30 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
               // requiredClassName={`${formData?.Category?.MandatoryModule_Ticket === 1 && "required-fields"}`}
             />
           )}
-
+          {edit == false ? (
+            <Input
+              type="text"
+              className="form-control mt-2"
+              id="Incharge"
+              name="Incharge"
+              lable="Incharge"
+              value={formData?.Incharge}
+              placeholder=" "
+              respclass="col-md-2 col-12 col-sm-12"
+              onChange={handleChange}
+              disabled={edit == false}
+            />
+          ) : (
+            <ReactSelect
+              respclass="col-md-2 col-12 col-sm-12 mt-2"
+              name="Incharge"
+              placeholderName={t("Incharge")}
+              dynamicOptions={incharge}
+              value={formDataUpdate?.Incharge}
+              handleChange={handleDeliveryChange}
+              isDisabled={!!formDataUpdate?.Incharge}
+            />
+          )}
           {edit == false ? (
             <Input
               type="text"

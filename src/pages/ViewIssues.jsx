@@ -682,7 +682,7 @@ const ViewIssues = ({ data }) => {
         ProjectID: 0,
         IsActive: 1,
         IsMaster: 2,
-        InchargeID: value || "",
+        InchargeID: String(value || ""),
       })
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
