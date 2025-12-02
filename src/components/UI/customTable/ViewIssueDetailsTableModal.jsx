@@ -578,7 +578,7 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
 
       .then((res) => {
         const assigntos = res?.data.data.map((item) => {
-          return { label: item?.NAME, value: item?.ID };
+          return { label: item?.Name, value: item?.ID };
         });
         setAssignedto(assigntos);
       })
@@ -1027,11 +1027,12 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
                   respclass="col-md-2 col-12 col-sm-12 mt-2"
                   value={formDataUpdate?.ClientDeliveryDate}
                   handleChange={searchHandleChange}
-                  disabled={
-                    ShowClientDeliveryDate !== "0" ||
-                    ShowClientDeliveryDate === undefined ||
-                    ShowClientDeliveryDate === null
-                  }
+                  // disabled={
+                  //   ShowClientDeliveryDate !== "0" ||
+                  //   ShowClientDeliveryDate === undefined ||
+                  //   ShowClientDeliveryDate === null
+                  // }
+                  disabled={AllowDeliveryDateEdit === 0}
                 />
               )}
             </>
@@ -1061,11 +1062,7 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
                   respclass="col-md-2 col-12 col-sm-12 mt-2"
                   value={formDataUpdate?.DeliveryDate}
                   handleChange={searchHandleChange}
-                  disabled={
-                    AllowDeliveryDateEdit !== "0" ||
-                    AllowDeliveryDateEdit === undefined ||
-                    AllowDeliveryDateEdit === null
-                  }
+                  disabled={AllowDeliveryDateEdit === 0}
                 />
               )}
             </>
