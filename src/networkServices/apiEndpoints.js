@@ -544,4 +544,5 @@ export const apiUrls = {
     "/CRMCOREAPI/api/AccountsPaymentInstallment/ProjectRateListUpdate",
   OpenPI_Select: "/CRMCOREAPI/api/AdvanceAmount/OpenPI_Select",
   OpenPI_SelectPINo: "/CRMCOREAPI/api/AdvanceAmount/OpenPI_SelectPINo",
+  POAttachementUpload: "/CRMCOREAPI/api/AccountsPaymentInstallment/POAttachementUpload",
 };

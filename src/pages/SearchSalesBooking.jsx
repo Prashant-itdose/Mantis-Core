@@ -42,8 +42,10 @@ const SearchSalesBooking = ({ data }) => {
   const [project, setProject] = useState([]);
   const [team, setTeam] = useState([]);
   const [wing, setWing] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [poc1, setPoc1] = useState([]);
   const [poc2, setPoc2] = useState([]);
+  const [selectedImageUrl, setSelectedImageUrl] = useState(null);
   const [listVisible, setListVisible] = useState(false);
   const [poc3, setPoc3] = useState([]);
   const [dynamicFilter, setDynamicFilter] = useState([]);
@@ -825,12 +827,12 @@ const SearchSalesBooking = ({ data }) => {
       )}
       {visible?.poVisible && (
         <Modal
-          modalWidth={"800px"}
+          modalWidth={"700px"}
           visible={visible}
           setVisible={setVisible}
           Header="PO Details"
         >
-          <PoSalesModal visible={visible} setVisible={setVisible} edit={true} />
+          <PoSalesModal visible={visible} setVisible={setVisible} edit={true} handleSearch={handleSearch}/>
         </Modal>
       )}
       {data?.type === "LedgerStatus" && (
@@ -1305,6 +1307,98 @@ const SearchSalesBooking = ({ data }) => {
                         }}
                       >
                         {ele?.PoNo}
+                        {ele?.PoFile && (
+                          <i
+                            className="fa fa-eye"
+                            style={{
+                              marginLeft: "5px",
+                              cursor: "pointer",
+                              color: "white",
+                              border: "1px solid grey",
+                              padding: "4px",
+                              background: "green",
+                              borderRadius: "3px",
+                            }}
+                            // onClick={() => {
+                            //   setSelectedImageUrl(ele?.PoFile);
+                            //   setIsModalOpen(true);
+                            // }}
+                            onClick={() => window.open(ele?.PoFile, "_blank")}
+                            title="Click to View Profole Image."
+                          ></i>
+                        )}
+                        {/* {isModalOpen && selectedImageUrl && (
+                          <div
+                            style={{
+                              position: "fixed",
+                              top: 0,
+                              left: 0,
+                              width: "100vw",
+                              height: "100vh",
+                              backgroundColor: "rgba(0,0,0,0.6)",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              zIndex: 1000,
+                              overflowY: "auto",
+                            }}
+                          >
+                            <div
+                              style={{
+                                background: "white",
+                                width: "500px",
+                                height: "auto",
+                                position: "relative",
+                                padding: "10px",
+                                borderRadius: "8px",
+                                border: "2px solid grey",
+                                maxHeight: "90vh",
+                                overflow: "auto",
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                              }}
+                            >
+                           
+                              <div
+                                style={{
+                                  width: "100%",
+                                  display: "flex",
+                                  justifyContent: "flex-end",
+                                }}
+                              >
+                                <button
+                                  onClick={() => {
+                                    setIsModalOpen(false);
+                                    setSelectedImageUrl(null);
+                                  }}
+                                  style={{
+                                    padding: "5px 10px",
+                                    backgroundColor: "#dc3545",
+                                    color: "#fff",
+                                    border: "none",
+                                    borderRadius: "4px",
+                                    cursor: "pointer",
+                                    marginBottom: "10px",
+                                  }}
+                                >
+                                  X
+                                </button>
+                              </div>
+
+                              <img
+                                src={selectedImageUrl}
+                                alt="Document"
+                                style={{
+                                  width: "100%",
+                                  height: "auto",
+                                  borderRadius: "5px",
+                                }}
+                              />
+                            </div>
+                          </div>
+                        )} */}
+
                         <i
                           className="fa fa-upload"
                           style={{
