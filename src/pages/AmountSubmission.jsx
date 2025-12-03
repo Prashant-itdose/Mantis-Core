@@ -663,7 +663,7 @@ const AmountSubmission = ({ data }) => {
                 value={formData?.PiAmount}
                 respclass="col-xl-2 col-md-3 col-sm-4 col-12 mt-2"
               />
-              <Input
+              {/* <Input
                 type="number"
                 className="form-control required-fields"
                 id="PiReceiveAmount"
@@ -672,8 +672,8 @@ const AmountSubmission = ({ data }) => {
                 onChange={handleSelectChange}
                 value={formData?.PiReceiveAmount}
                 respclass="col-xl-2 col-md-3 col-sm-4 col-12 mt-2"
-              />
-              <Input
+              /> */}
+              {/* <Input
                 type="number"
                 className="form-control required-fields"
                 id="PiPendingAmount"
@@ -682,7 +682,7 @@ const AmountSubmission = ({ data }) => {
                 onChange={handleSelectChange}
                 value={formData?.PiPendingAmount}
                 respclass="col-xl-2 col-md-3 col-sm-4 col-12 mt-2"
-              />
+              /> */}
             </>
           )}
           <Input
