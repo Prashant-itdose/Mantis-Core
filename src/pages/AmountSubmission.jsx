@@ -24,6 +24,7 @@ const AmountSubmission = ({ data }) => {
   const [project, setProject] = useState([]);
 
   const [tableData, setTableData] = useState([]);
+  const [pinum, setPiNum] = useState([]);
   const [formData, setFormData] = useState({
     Project: "",
     ReceiveDate: new Date(),
@@ -44,22 +45,44 @@ const AmountSubmission = ({ data }) => {
     DepositedBy: "",
     VoucherNo: "",
     RecoveryTeam: "",
+
+    PINumberDropdown: "",
+    PiNumber: "",
+    PiDate: "",
+    PiAmount: "",
+    PiReceiveAmount: "",
+    PiPendingAmount: "",
+    Picheckbox: "",
   });
-  // const handleDeliveryChange = (name, e) => {
-  //   const { value } = e;
-  //   setFormData({
-  //     ...formData,
-  //     [name]: value,
-  //     ...(value === "NEFT" || value === "Cheque"
-  //       ? { ReceivedBy: "" }
-  //       : { ReceivedBy: "Jai Guru Dev" }),
-  //   });
 
-  //   if (name === "Project") {
-  //     handleSearch(value);
-  //   }
-  // };
-
+  const handleOpenPI_Select = () => {
+    // let form = new FormData();
+    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+    //   form.append(
+    //     "RoleID",
+    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
+    //   ),
+    //   form.append(
+    //     "LoginName",
+    //     useCryptoLocalStorage("user_Data", "get", "realname")
+    //   ),
+    //   axios
+    //     .post(apiUrls?.OpenPI_Select, form, { headers })
+    axiosInstances
+      .post(apiUrls.OpenPI_Select, {})
+      .then((res) => {
+        const pics = res?.data.data.map((item) => {
+          return {
+            label: item?.SalesNo,
+            value: item?.id,
+          };
+        });
+        setPiNum(pics);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const handleDeliveryChange = (name, e) => {
     const { value, fullData } = e;
 
@@ -411,12 +434,13 @@ const AmountSubmission = ({ data }) => {
           FileExtension: fileExtension,
         });
       };
-      reader.readAsDataURL(file); 
+      reader.readAsDataURL(file);
     }
   };
 
   useEffect(() => {
     getProject();
+    // handleOpenPI_Select();
   }, []);
   return (
     <>
@@ -523,7 +547,70 @@ const AmountSubmission = ({ data }) => {
             value={formData.PaymentMode}
             requiredClassName={"required-fields"}
           />
-
+          {/* <ReactSelect
+            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+            name="PINumberDropdown"
+            placeholderName={t("PI No.")}
+            dynamicOptions={[{ label: "Select", value: "0" }, ...pinum]}
+            handleChange={handleDeliveryChange}
+            value={formData.PINumberDropdown}
+          /> */}
+          {/* {formData?.PINumberDropdown == 0 ? (
+            ""
+          ) : (
+            <>
+              <Input
+                type="number"
+                className="form-control required-fields "
+                id="PiNumber"
+                name="PiNumber"
+                lable={t("PiNumber")}
+                onChange={handleSelectChange}
+                value={formData?.PiNumber}
+                respclass="col-xl-2 col-md-3 col-sm-4 col-12"
+              />
+              <DatePicker
+                className="custom-calendar "
+                id="PiDate"
+                name="PiDate"
+                lable={t("PI Date")}
+                placeholder={VITE_DATE_FORMAT}
+                value={formData?.PiDate}
+                respclass="col-xl-2 col-md-4 col-sm-6 col-12 mt-2"
+                handleChange={searchHandleChange}
+              />
+              <Input
+                type="number"
+                className="form-control required-fields"
+                id="PiAmount"
+                name="PiAmount"
+                lable={t("PI Amount")}
+                onChange={handleSelectChange}
+                value={formData?.PiAmount}
+                respclass="col-xl-2 col-md-3 col-sm-4 col-12 mt-2"
+              />
+              <Input
+                type="number"
+                className="form-control required-fields"
+                id="PiReceiveAmount"
+                name="PiReceiveAmount"
+                lable={t("Receive Amount")}
+                onChange={handleSelectChange}
+                value={formData?.PiReceiveAmount}
+                respclass="col-xl-2 col-md-3 col-sm-4 col-12 mt-2"
+              />
+              <Input
+                type="number"
+                className="form-control required-fields"
+                id="PiPendingAmount"
+                name="PiPendingAmount"
+                lable={t("Pending Amount")}
+                onChange={handleSelectChange}
+                value={formData?.PiPendingAmount}
+                respclass="col-xl-2 col-md-3 col-sm-4 col-12 mt-2"
+              />
+            </>
+          )} */}
           <Input
             type="number"
             className="form-control required-fields"
