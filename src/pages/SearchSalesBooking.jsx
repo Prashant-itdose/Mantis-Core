@@ -518,7 +518,7 @@ const SearchSalesBooking = ({ data }) => {
       });
   };
   const shortenName = (name) => {
-    return name.length > 15 ? name.substring(0, 25) + "..." : name;
+    return name?.length > 15 ? name?.substring(0, 25) + "..." : name;
   };
   const handleExcel = (page) => {
     setLoading(true);
