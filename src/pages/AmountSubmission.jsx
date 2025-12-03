@@ -17,12 +17,14 @@ import { useTranslation } from "react-i18next";
 import moment from "moment";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import { axiosInstances } from "../networkServices/axiosInstance";
+import Modal from "../components/modalComponent/Modal";
+import TDSDiscountModal from "../components/UI/customTable/TDSDiscountModal";
 const AmountSubmission = ({ data }) => {
   const [t] = useTranslation();
   const [loading, setLoading] = useState(false);
   const { VITE_DATE_FORMAT } = import.meta.env;
   const [project, setProject] = useState([]);
-
+  const [pisaledetail, setPiSaleDetail] = useState([]);
   const [tableData, setTableData] = useState([]);
   const [pinum, setPiNum] = useState([]);
   const [formData, setFormData] = useState({
@@ -53,6 +55,7 @@ const AmountSubmission = ({ data }) => {
     PiReceiveAmount: "",
     PiPendingAmount: "",
     Picheckbox: "",
+    PoNumber: "",
   });
 
   const handleOpenPI_Select = () => {
@@ -91,15 +94,22 @@ const AmountSubmission = ({ data }) => {
 
       setFormData((prev) => ({
         ...prev,
-        [name]: value, // value = ProjectId
+        [name]: value,
         ReceivedBy:
           prev.ReceivedBy === "NEFT" || prev.ReceivedBy === "Cheque"
             ? ""
             : "Jai Guru Dev",
-        RecoveryTeam: isSupport ? "Support" : "", // Clear unless IsSupport === 1
+        RecoveryTeam: isSupport ? "Support" : "",
       }));
 
-      handleSearch(value); // Call search with ProjectId
+      handleSearch(value);
+    } else if (name == "PINumberDropdown") {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+
+      handleOpenPI_SelectPINo(e.label);
     } else {
       setFormData((prev) => ({
         ...prev,
@@ -437,13 +447,67 @@ const AmountSubmission = ({ data }) => {
       reader.readAsDataURL(file);
     }
   };
+  const handleCheckBox = (e) => {
+    const { name, value, checked, type } = e?.target;
+    if (name == "Picheckbox") {
+      setVisible({
+        showVisible: true,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: type === "checkbox" ? (checked ? 1 : 0) : value,
+      });
+    }
+  };
+  const [visible, setVisible] = useState({
+    showVisible: false,
 
+    showData: {},
+  });
+  console.log("pisaledetail", pisaledetail);
+  const handleOpenPI_SelectPINo = (value) => {
+    axiosInstances
+      .post(apiUrls.OpenPI_SelectPINo, {
+        PINo: String(value),
+      })
+      .then((res) => {
+        setPiSaleDetail(res.data.data);
+        setFormData((prev) => ({
+          ...prev,
+          PiNumber: res.data.data?.PINo || "",
+          PiDate: new Date(res.data.data?.PIDate) || "",
+          PiAmount: res.data.data?.PIAmount || "",
+          PoNumber: res.data.data?.PoNo || "",
+          PiReceiveAmount: res.data.data?.PiReceiveAmount || "",
+          PiPendingAmount: res.data.data?.PiPendingAmount || "",
+        }));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   useEffect(() => {
     getProject();
-    // handleOpenPI_Select();
+    handleOpenPI_Select();
   }, []);
   return (
     <>
+      {visible?.showVisible && (
+        <Modal
+          modalWidth={"500px"}
+          visible={visible}
+          setVisible={setVisible}
+          Header="TDS Amount Details"
+        >
+          <TDSDiscountModal
+            visible={visible}
+            setVisible={setVisible}
+            // edit={true}
+            // handleSearch={handleSearch}
+          />
+        </Modal>
+      )}
       <div className="card">
         <Heading
           title={
@@ -547,15 +611,15 @@ const AmountSubmission = ({ data }) => {
             value={formData.PaymentMode}
             requiredClassName={"required-fields"}
           />
-          {/* <ReactSelect
+          <ReactSelect
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
             name="PINumberDropdown"
             placeholderName={t("PI No.")}
             dynamicOptions={[{ label: "Select", value: "0" }, ...pinum]}
             handleChange={handleDeliveryChange}
             value={formData.PINumberDropdown}
-          /> */}
-          {/* {formData?.PINumberDropdown == 0 ? (
+          />
+          {formData?.PINumberDropdown == 0 ? (
             ""
           ) : (
             <>
@@ -568,6 +632,16 @@ const AmountSubmission = ({ data }) => {
                 onChange={handleSelectChange}
                 value={formData?.PiNumber}
                 respclass="col-xl-2 col-md-3 col-sm-4 col-12"
+              />
+              <Input
+                type="number"
+                className="form-control required-fields "
+                id="PoNumber"
+                name="PoNumber"
+                lable={t("PoNumber")}
+                onChange={handleSelectChange}
+                value={formData?.PoNumber}
+                respclass="col-xl-2 col-md-3 col-sm-4 col-12 mt-2"
               />
               <DatePicker
                 className="custom-calendar "
@@ -610,7 +684,7 @@ const AmountSubmission = ({ data }) => {
                 respclass="col-xl-2 col-md-3 col-sm-4 col-12 mt-2"
               />
             </>
-          )} */}
+          )}
           <Input
             type="number"
             className="form-control required-fields"
@@ -619,7 +693,7 @@ const AmountSubmission = ({ data }) => {
             lable={t("Amount")}
             onChange={handleSelectChange}
             value={formData?.Amount}
-            respclass="col-xl-2 col-md-3 col-sm-4 col-12"
+            respclass="col-xl-2 col-md-3 col-sm-4 col-12 mt-1"
           />
           {formData?.PaymentMode == "Cash" && (
             <>
@@ -757,7 +831,28 @@ const AmountSubmission = ({ data }) => {
           /> */}
           <div className="col-sm-3 d-flex mt-2">
             <BrowseButton handleImageChange={handleImageChange} />
-
+            <div className="search-col" style={{ marginLeft: "12px" }}>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <label className="switch" style={{ marginTop: "7px" }}>
+                  <input
+                    type="checkbox"
+                    name="Picheckbox"
+                    checked={formData?.Picheckbox ? 1 : 0}
+                    onChange={handleCheckBox}
+                  />
+                  <span className="slider"></span>
+                </label>
+                <span
+                  style={{
+                    marginLeft: "3px",
+                    marginRight: "5px",
+                    fontSize: "12px",
+                  }}
+                >
+                  {/* {t("isDue")} */}
+                </span>
+              </div>
+            </div>
             {loading ? (
               <Loading />
             ) : (

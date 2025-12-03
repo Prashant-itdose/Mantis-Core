@@ -10,6 +10,7 @@ import Heading from "../../components/UI/Heading";
 import ReactSelect from "../../components/formComponent/ReactSelect";
 import Input from "../../components/formComponent/Input";
 import { axiosInstances } from "../../networkServices/axiosInstance";
+import moment from "moment";
 const LoginDetailModal = () => {
   const ReportingManager = useCryptoLocalStorage(
     "user_Data",
@@ -90,7 +91,7 @@ const LoginDetailModal = () => {
     axiosInstances
       .post(apiUrls.GetEmployeeTransactions, {
         CrmEmpID: Number(formData?.AssignedTo ? formData.AssignedTo : "0"),
-        Date: String(new Date(formData?.FromDate).toISOString()),
+        Date: String(moment(formData?.FromDate).format("YYYY-MM-DD")),
       })
       .then((res) => {
         if (res?.data?.success === true) {
@@ -115,7 +116,7 @@ const LoginDetailModal = () => {
         CrmEmpID: Number(
           useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
-        Date: String(new Date(formData?.FromDate).toISOString()),
+        Date: String(moment(formData?.FromDate).format("YYYY-MM-DD")),
       })
       .then((res) => {
         if (res?.data?.success === true) {
@@ -152,19 +153,12 @@ const LoginDetailModal = () => {
     return `${hrs}:${mins}:${secs}`;
   };
 
-  // Calculate total break duration in seconds
   const totalBreakSeconds = breakData?.reduce((acc, ele) => {
     return acc + timeToSeconds(ele?.BreakDuration);
   }, 0);
 
   // Convert to HH:mm:ss
   const totalBreakTime = secondsToTime(totalBreakSeconds);
-
-  ///////////////////////////////////
-
-  // ⬆️ keep the rest of your component unchanged
-
-  // 1️⃣  — total up all row durations (in ms)
   const getCurrentTempLogoutTime = () => {
     const now = new Date();
     const hours = String(now.getHours()).padStart(2, "0");

@@ -317,7 +317,6 @@ const LeaveRequest = ({ data }) => {
       })
       .then((res) => {
         setCalenderDetails(res?.data?.data);
-
         setLoading(false);
       })
       .catch((err) => {

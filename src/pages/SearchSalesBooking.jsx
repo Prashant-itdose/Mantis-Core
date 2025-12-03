@@ -31,6 +31,7 @@ import SearchLotusFilter from "./SearchLotusFilter";
 import Accordion from "./Accordion";
 import { useTranslation } from "react-i18next";
 import { axiosInstances } from "../networkServices/axiosInstance";
+import PoSalesModal from "../components/UI/customTable/PoSalesModal";
 const SearchSalesBooking = ({ data }) => {
   // console.log("data data", data);
   const [t] = useTranslation();
@@ -95,17 +96,19 @@ const SearchSalesBooking = ({ data }) => {
     const payload = {
       PageName: "SearchSalesBooking",
       FilterData: JSON.stringify(filterData),
-      CrmEmpID: String(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),
+      CrmEmpID: String(
+        useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+      ),
     };
     axiosInstances
       .post(apiUrls?.SaveFilterTableReprintData, payload)
       .then((res) => {
-       if (res.data.success === true) {
+        if (res.data.success === true) {
           console.log(err);
-           setLoading(false)
+          setLoading(false);
         } else {
           toast.error(res.data.message);
-          setLoading(false)
+          setLoading(false);
         }
       })
       .catch((err) => {
@@ -128,6 +131,7 @@ const SearchSalesBooking = ({ data }) => {
       { header: "Net Amount", visible: true },
       { header: "Print", visible: true },
       { header: "PI", visible: true },
+      { header: "PO", visible: true },
       { header: "Tax", visible: true },
       { header: "Entry Date", visible: true },
       { header: "EmailStatus", visible: true },
@@ -154,10 +158,10 @@ const SearchSalesBooking = ({ data }) => {
       .then((res) => {
         if (res.data.success === true) {
           console.log(err);
-           setLoading(false)
+          setLoading(false);
         } else {
           toast.error(res.data.message);
-          setLoading(false)
+          setLoading(false);
         }
       })
       .catch((err) => {
@@ -246,7 +250,7 @@ const SearchSalesBooking = ({ data }) => {
   //     });
   // };
 
- const handlePrint2 = (ele) => {
+  const handlePrint2 = (ele) => {
     axiosInstances
       .post(apiUrls.GeneratePIPDF, {
         PINo: String(ele?.ActualPINo),
@@ -257,24 +261,24 @@ const SearchSalesBooking = ({ data }) => {
           console.error("Invalid PDF response");
           return;
         }
-  
+
         const base64 = res?.data?.data; // Base64 string
-  
+
         // Convert Base64 to byte array
         const byteCharacters = atob(base64);
         const byteNumbers = new Array(byteCharacters.length);
-  
+
         for (let i = 0; i < byteCharacters.length; i++) {
           byteNumbers[i] = byteCharacters.charCodeAt(i);
         }
-  
+
         const byteArray = new Uint8Array(byteNumbers);
-  
+
         // Convert to PDF blob
         const blob = new Blob([byteArray], { type: "application/pdf" });
-  
+
         const url = window.URL.createObjectURL(blob);
-  
+
         // Create download link
         const link = document.createElement("a");
         link.href = url;
@@ -282,14 +286,13 @@ const SearchSalesBooking = ({ data }) => {
         document.body.appendChild(link);
         link.click();
         link.remove();
-  
+
         window.URL.revokeObjectURL(url);
       })
       .catch((err) => {
         console.error("Error downloading PDF:", err);
       });
   };
-
 
   const isVisible = (header) =>
     dynamicFilter.find((f) => f?.header === header)?.visible;
@@ -304,7 +307,7 @@ const SearchSalesBooking = ({ data }) => {
   }, []);
   ///////////////////////////////////
   const ModalComponent = (name, component) => {
-    console.log("name component sale..", name, component);
+    // console.log("name component sale..", name, component);
     setListVisible(true);
     setRenderComponent({
       name: name,
@@ -353,10 +356,6 @@ const SearchSalesBooking = ({ data }) => {
     setFormData({ ...formData, [name]: value });
   };
   const getVertical = () => {
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Vertical_Select, form, { headers })
     axiosInstances
       .post(apiUrls?.Vertical_Select, {})
       .then((res) => {
@@ -370,10 +369,6 @@ const SearchSalesBooking = ({ data }) => {
       });
   };
   const getTeam = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Team_Select, form, { headers })
     axiosInstances
       .post(apiUrls?.Team_Select, {})
       .then((res) => {
@@ -387,10 +382,6 @@ const SearchSalesBooking = ({ data }) => {
       });
   };
   const getWing = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Wing_Select, form, { headers })
     axiosInstances
       .post(apiUrls?.Wing_Select, {})
       .then((res) => {
@@ -404,10 +395,6 @@ const SearchSalesBooking = ({ data }) => {
       });
   };
   const getPOC1 = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.POC_1_Select, form, { headers })
     axiosInstances
       .post(apiUrls?.POC_1_Select, {})
       .then((res) => {
@@ -421,10 +408,6 @@ const SearchSalesBooking = ({ data }) => {
       });
   };
   const getPOC2 = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.POC_2_Select, form, { headers })
     axiosInstances
       .post(apiUrls?.POC_2_Select, {})
       .then((res) => {
@@ -438,10 +421,6 @@ const SearchSalesBooking = ({ data }) => {
       });
   };
   const getPOC3 = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.POC_3_Select, form, { headers })
     axiosInstances
       .post(apiUrls?.POC_3_Select, {})
       .then((res) => {
@@ -650,6 +629,7 @@ const SearchSalesBooking = ({ data }) => {
     showVisible: false,
     removeVisible: false,
     gmailVisible: false,
+    poVisible: false,
     showData: {},
   });
 
@@ -794,6 +774,7 @@ const SearchSalesBooking = ({ data }) => {
     "Net Amount",
     "Print",
     "PI",
+    "PO",
     "Tax",
     "Entry Date",
     "EmailStatus",
@@ -840,6 +821,16 @@ const SearchSalesBooking = ({ data }) => {
             setVisible={setVisible}
             edit={true}
           />
+        </Modal>
+      )}
+      {visible?.poVisible && (
+        <Modal
+          modalWidth={"800px"}
+          visible={visible}
+          setVisible={setVisible}
+          Header="PO Details"
+        >
+          <PoSalesModal visible={visible} setVisible={setVisible} edit={true} />
         </Modal>
       )}
       {data?.type === "LedgerStatus" && (
@@ -1166,7 +1157,7 @@ const SearchSalesBooking = ({ data }) => {
               </div>
             }
           />
-          {console.log("salesSearchTheadsalesSearchThead", salesSearchThead)}
+          {/* {console.log("salesSearchTheadsalesSearchThead", salesSearchThead)} */}
           <Tables
             thead={salesSearchThead}
             tbody={currentData
@@ -1304,6 +1295,37 @@ const SearchSalesBooking = ({ data }) => {
                         </Tooltip>
                       </Link>
                     ),
+                  PO: (
+                    <>
+                      <span
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        {ele?.PoNo}
+                        <i
+                          className="fa fa-upload"
+                          style={{
+                            marginLeft: "5px",
+                            cursor: "pointer",
+                            color: "black",
+                            padding: "2px",
+                            borderRadius: "3px",
+                          }}
+                          onClick={() => {
+                            setVisible({
+                              poVisible: true,
+                              showData: ele,
+                              ele,
+                            });
+                          }}
+                          title="Click to Upload PO file."
+                        ></i>
+                      </span>
+                    </>
+                  ),
                   Tax: (
                     <>
                       {ele?.TaxInvoiceStatus === 0 && (

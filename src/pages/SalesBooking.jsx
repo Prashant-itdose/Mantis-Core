@@ -509,7 +509,7 @@ const SalesBooking = ({ data }) => {
       // console.log("valllll", val);
       payload.push({
         Installment_No: String(index),
-        Remark: String(val?.Remark),
+        Remark: String(val?.Remark == undefined ? "" : val?.Remark) || "",
         IsPaid: Number(val?.isPaid ? "1" : "0"),
         ExpectedDate: val?.ExpectedDate
           ? moment(val?.ExpectedDate).format("YYYY-MM-DD")
@@ -647,7 +647,7 @@ const SalesBooking = ({ data }) => {
       // console.log("valllll", val);
       payload.push({
         Installment_No: String(index),
-        Remark: String(val?.Remark),
+        Remark: String(val?.Remark == undefined ? "" : val?.Remark) || "",
         IsPaid: Number(val?.isPaid ? "1" : "0"),
         ExpectedDate: val?.ExpectedDate
           ? moment(val?.ExpectedDate).format("YYYY-MM-DD")
@@ -1099,7 +1099,7 @@ const SalesBooking = ({ data }) => {
             handleChange={searchHandleChange}
           />
           <Input
-            type="number"
+            type="text"
             className="form-control"
             id="PoNumber"
             name="PoNumber"
