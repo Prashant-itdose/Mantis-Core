@@ -623,7 +623,7 @@ const AmountSubmission = ({ data }) => {
             ""
           ) : (
             <>
-              <Input
+              {/* <Input
                 type="number"
                 className="form-control required-fields "
                 id="PiNumber"
@@ -632,7 +632,7 @@ const AmountSubmission = ({ data }) => {
                 onChange={handleSelectChange}
                 value={formData?.PiNumber}
                 respclass="col-xl-2 col-md-3 col-sm-4 col-12"
-              />
+              /> */}
               <Input
                 type="number"
                 className="form-control required-fields "

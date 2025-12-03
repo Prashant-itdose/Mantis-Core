@@ -91,7 +91,6 @@ const ViewExpense = () => {
   const [seeMore, setSeeMore] = useState([]);
   const normalizeString = (str) => str.toLowerCase().replace(/\s+/g, "").trim();
   const handleChangeComponent = (e) => {
- 
     ModalComponent(e?.label, e?.component);
   };
   const handleSearchTable = (event) => {
@@ -138,7 +137,7 @@ const ViewExpense = () => {
   const getReporter = () => {
     axiosInstances
       .post(apiUrls.GetReportingTo_Employee, {})
-      
+
       .then((res) => {
         const reporters = res?.data.data.map((item) => {
           return { label: item?.NAME, value: item?.Employee_ID };
@@ -158,7 +157,7 @@ const ViewExpense = () => {
         ),
         RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
       })
-   
+
       .then((res) => {
         const wings = res?.data?.data?.map((item) => {
           return { label: item?.EmployeeName, value: item?.Employee_ID };
@@ -261,7 +260,7 @@ const ViewExpense = () => {
           IsAccountant: Number(0),
           StatusType: Number(0),
         })
-        
+
         .then((res) => {
           if (res?.data?.success === true) {
             setTableData(res?.data?.data);
@@ -287,7 +286,7 @@ const ViewExpense = () => {
       axiosInstances
         .post(apiUrls.ViewExpenseList, {
           ExpenseEmployeeID: Number(
-           useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+            useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
           ),
           Month: Number(formData?.currentMonth),
           Year: Number(formData?.currentYear),
@@ -303,7 +302,7 @@ const ViewExpense = () => {
           IsAccountant: Number(0),
           StatusType: Number(0),
         })
-       
+
         .then((res) => {
           if (res?.data?.success === true) {
             setTableData(res?.data?.data);
@@ -405,6 +404,7 @@ const ViewExpense = () => {
     return isCurrentMonth; // normal current month behavior
   };
 
+  const RoleID = useCryptoLocalStorage("user_Data", "get", "RoleID");
   return (
     <>
       {visible?.ShowApprove && (
@@ -550,7 +550,7 @@ const ViewExpense = () => {
       <div className="card">
         <Heading isBreadcrumb={true} />
         <div className="row g-4 m-2">
-          {ReportingManager == 1 ? (
+          {ReportingManager == 1 || RoleID === 4 ? (
             <ReactSelect
               name="Employee"
               respclass="col-xl-2 col-md-4 col-sm-6 col-12"
@@ -652,7 +652,7 @@ const ViewExpense = () => {
             tabIndex="1"
             requiredClassName={"required-fields"}
           />
-          {ReportingManager == 1 ? (
+          {ReportingManager == 1 || RoleID === 4 ? (
             <div>
               {loading ? (
                 <Loading />
