@@ -5,7 +5,7 @@ import { apiUrls } from "../../networkServices/apiEndpoints";
 import { headers } from "../../utils/apitools";
 import { axiosInstances } from "../../networkServices/axiosInstance";
 const LocalDetailModal = ({ visible, setVisible }) => {
-  console.log(visible);
+  // console.log(visible);
   // const localData = localTabelData?.filter(
   //   (item) => item?.expense_report_master_Id === expense_report_ID
   // );
@@ -13,27 +13,22 @@ const LocalDetailModal = ({ visible, setVisible }) => {
   const [tableData, setTableData] = useState([]);
   const handleSearch = () => {
     axiosInstances
-      .post(apiUrls.ExpenceDetails,{
-  "ExpenseReportID": Number(visible?.showData?.expense_report_ID),
-  "ActionType": "Local"
-})
-    // let form = new FormData();
-    // form.append("ExpenseReportID", visible?.showData?.expense_report_ID),
-    //   form.append("ActionType", "Local"),
-    //   axios
-    //     .post(apiUrls?.ExpenceDetails, form, { headers })
-        .then((res) => {
-          // setTableData(res?.data?.dtDetailLocal);
-          const data = res?.data?.dtDetailLocal;
-          if (Array.isArray(data)) {
-            setTableData(data);
-          } else {
-            setTableData([]); // fall back to empty array
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      .post(apiUrls.ExpenceDetails, {
+        ExpenseReportID: Number(visible?.showData?.expense_report_ID),
+        ActionType: "Local",
+      })
+      .then((res) => {
+        // setTableData(res?.data?.dtDetailLocal);
+        const data = res?.data?.data?.dtDetailLocal;
+        if (Array.isArray(data)) {
+          setTableData(data);
+        } else {
+          setTableData([]); // fall back to empty array
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const localTHEAD = [
     "S.No.",

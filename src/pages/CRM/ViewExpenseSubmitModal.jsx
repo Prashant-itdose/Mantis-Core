@@ -12,7 +12,7 @@ const ViewExpenseSubmitModal = ({
   handleTableSearch,
   handleTableSearchEmployee,
 }) => {
-  console.log(visible);
+  // console.log(visible);
   const IsManager = useCryptoLocalStorage(
     "user_Data",
     "get",

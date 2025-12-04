@@ -14,7 +14,11 @@ const ViewExpenseRejectModal = ({
 }) => {
   console.log(visible);
   const [loading, setLoading] = useState(false);
-
+ const IsManager = useCryptoLocalStorage(
+    "user_Data",
+    "get",
+    "AllowExpenseApprove"
+  );
   const handleApprove = () => {
     setLoading(true);
     axiosInstances
