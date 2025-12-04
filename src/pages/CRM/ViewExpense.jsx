@@ -198,14 +198,28 @@ const ViewExpense = () => {
     });
   };
 
+  // const handleMonthYearChange = (name, e) => {
+  //   const { value } = e.target;
+  //   const date = new Date(value);
+  //   setFormData({
+  //     ...formData,
+  //     currentMonth: date.getMonth() + 1,
+  //     currentYear: date.getFullYear(),
+  //   });
+  //   setTableData([]);
+  // };
+
   const handleMonthYearChange = (name, e) => {
     const { value } = e.target;
     const date = new Date(value);
-    setFormData({
-      ...formData,
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value, // ← store selected value
       currentMonth: date.getMonth() + 1,
       currentYear: date.getFullYear(),
-    });
+    }));
+
     setTableData([]);
   };
 
@@ -279,9 +293,11 @@ const ViewExpense = () => {
           CrmEmployeeID: Number(
             useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
           ),
-          IsAccountant: Number( useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID") == "650"
-          ? "1"
-          : "0"),
+          IsAccountant: Number(
+            useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID") == "650"
+              ? "1"
+              : "0"
+          ),
           StatusType: Number(formData?.StatusType),
         })
 
@@ -1091,8 +1107,8 @@ const ViewExpense = () => {
               ),
               Total: ele?.Total,
               Status: ele?.Status,
-          
-             Action: (
+
+              Action: (
                 <div
                   style={{
                     display: "flex",
