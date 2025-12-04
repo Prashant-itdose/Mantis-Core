@@ -19,6 +19,7 @@ import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import { axiosInstances } from "../networkServices/axiosInstance";
 import Modal from "../components/modalComponent/Modal";
 import TDSDiscountModal from "../components/UI/customTable/TDSDiscountModal";
+import { set } from "lodash";
 const AmountSubmission = ({ data }) => {
   const [t] = useTranslation();
   const [loading, setLoading] = useState(false);
@@ -58,23 +59,20 @@ const AmountSubmission = ({ data }) => {
     PoNumber: "",
   });
 
-  const handleOpenPI_Select = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   axios
-    //     .post(apiUrls?.OpenPI_Select, form, { headers })
+  const piTHEAD = [
+    "S.No.",
+    "PI No.",
+    "PO No.",
+    "PI Date",
+    "PI Amount",
+    "Received Amount",
+    "Pending Amount",
+  ];
+  const handleOpenPI_Select = (value) => {
     axiosInstances
-      .post(apiUrls.OpenPI_Select, {})
+      .post(apiUrls.OpenPI_Select, { ProjectId: value })
       .then((res) => {
-        const pics = res?.data.data.map((item) => {
+        const pics = res?.data?.data?.map((item) => {
           return {
             label: item?.SalesNo,
             value: item?.id,
@@ -91,7 +89,6 @@ const AmountSubmission = ({ data }) => {
 
     if (name === "Project") {
       const isSupport = fullData?.IsSupport === 1;
-
       setFormData((prev) => ({
         ...prev,
         [name]: value,
@@ -100,9 +97,11 @@ const AmountSubmission = ({ data }) => {
             ? ""
             : "Jai Guru Dev",
         RecoveryTeam: isSupport ? "Support" : "",
+        PINumberDropdown: "",
       }));
-
+      setPiSaleDetail([]);
       handleSearch(value);
+      handleOpenPI_Select(value);
     } else if (name == "PINumberDropdown") {
       setFormData((prev) => ({
         ...prev,
@@ -344,7 +343,10 @@ const AmountSubmission = ({ data }) => {
     t("Entry Date"),
   ];
 
-  const handleSave = () => {
+  const handleSave = (actionType = "") => {
+    setVisible({
+      showVisible: false,
+    });
     const { error, message } = handleValidation(formData);
     if (error) {
       toast.error(message);
@@ -367,7 +369,7 @@ const AmountSubmission = ({ data }) => {
       ShippingGSTNo: String(""),
       ShippingPanCardNo: String(""),
       ReceivedDate: formatDate(formData?.ReceiveDate) || "",
-      PaymentMode: String(formData?.PaymentMode || ""),
+      PaymentMode: actionType === 1 ? "TDS" : String(formData?.PaymentMode),
       Amount: String(formData?.Amount || ""),
       ReceivedBy: String(formData?.ReceivedBy || ""),
       Remark: String(formData?.Remarks || ""),
@@ -465,7 +467,23 @@ const AmountSubmission = ({ data }) => {
 
     showData: {},
   });
-  console.log("pisaledetail", pisaledetail);
+
+  const PIPendingCal = pisaledetail?.reduce(
+    (acc, item) => acc + Number(item.PendingAmount || 0),
+    0
+  );
+  const PIAmountCal = pisaledetail?.reduce(
+    (acc, item) => acc + Number(item.PIAmount || 0),
+    0
+  );
+  const PITotal2Per = (PIAmountCal * 2) / 100;
+ 
+  const PITotal10Per = (PIAmountCal * 10) / 100;
+ 
+  const Total2Percent = PIPendingCal.toFixed(2) == PITotal2Per.toFixed(2);
+  const Total10Percent = PIPendingCal.toFixed(2) == PITotal10Per.toFixed(2);
+
+
   const handleOpenPI_SelectPINo = (value) => {
     axiosInstances
       .post(apiUrls.OpenPI_SelectPINo, {
@@ -473,23 +491,21 @@ const AmountSubmission = ({ data }) => {
       })
       .then((res) => {
         setPiSaleDetail(res.data.data);
-        setFormData((prev) => ({
-          ...prev,
-          PiNumber: res.data.data?.PINo || "",
-          PiDate: new Date(res.data.data?.PIDate) || "",
-          PiAmount: res.data.data?.PIAmount || "",
-          PoNumber: res.data.data?.PoNo || "",
-          PiReceiveAmount: res.data.data?.PiReceiveAmount || "",
-          PiPendingAmount: res.data.data?.PiPendingAmount || "",
-        }));
+  
       })
       .catch((err) => {
         console.log(err);
       });
   };
+  const handleCallbackAction = () => {
+    if (!(Total2Percent || Total10Percent)) {
+      handleSave("");
+      return;
+    }
+    setVisible((prev) => ({ ...prev, showVisible: true }));
+  };
   useEffect(() => {
     getProject();
-    handleOpenPI_Select();
   }, []);
   return (
     <>
@@ -503,8 +519,7 @@ const AmountSubmission = ({ data }) => {
           <TDSDiscountModal
             visible={visible}
             setVisible={setVisible}
-            // edit={true}
-            // handleSearch={handleSearch}
+            handleSave={handleSave}
           />
         </Modal>
       )}
@@ -525,7 +540,15 @@ const AmountSubmission = ({ data }) => {
             value={project.find((p) => p.value === formData.Project)}
             requiredClassName={"required-fields"}
           />
-
+          <ReactSelect
+            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+            name="PINumberDropdown"
+            placeholderName={t("PI No.")}
+            dynamicOptions={[{ label: "Select", value: "0" }, ...pinum]}
+            handleChange={handleDeliveryChange}
+            value={formData.PINumberDropdown}
+            isDisabled={!formData?.Project}
+          />
           <ReactSelect
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
             name="RecoveryTeam"
@@ -597,14 +620,7 @@ const AmountSubmission = ({ data }) => {
               ))}
             </div>
           </div> */}
-          <ReactSelect
-            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
-            name="PINumberDropdown"
-            placeholderName={t("PI No.")}
-            dynamicOptions={[{ label: "Select", value: "0" }, ...pinum]}
-            handleChange={handleDeliveryChange}
-            value={formData.PINumberDropdown}
-          />
+
           <ReactSelect
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
             name="PaymentMode"
@@ -619,72 +635,6 @@ const AmountSubmission = ({ data }) => {
             requiredClassName={"required-fields"}
           />
 
-          {formData?.PINumberDropdown == 0 ? (
-            ""
-          ) : (
-            <>
-              {/* <Input
-                type="number"
-                className="form-control required-fields "
-                id="PiNumber"
-                name="PiNumber"
-                lable={t("PiNumber")}
-                onChange={handleSelectChange}
-                value={formData?.PiNumber}
-                respclass="col-xl-2 col-md-3 col-sm-4 col-12"
-              /> */}
-              {/* <Input
-                type="number"
-                className="form-control"
-                id="PoNumber"
-                name="PoNumber"
-                lable={t("PoNumber")}
-                onChange={handleSelectChange}
-                value={formData?.PoNumber}
-                respclass="col-xl-2 col-md-3 col-sm-4 col-12 mt-2"
-              /> */}
-              {/* <DatePicker
-                className="custom-calendar "
-                id="PiDate"
-                name="PiDate"
-                lable={t("PI Date")}
-                placeholder={VITE_DATE_FORMAT}
-                value={formData?.PiDate}
-                respclass="col-xl-2 col-md-4 col-sm-6 col-12 mt-2"
-                handleChange={searchHandleChange}
-              /> */}
-              {/* <Input
-                type="number"
-                className="form-control"
-                id="PiAmount"
-                name="PiAmount"
-                lable={t("PI Amount")}
-                onChange={handleSelectChange}
-                value={formData?.PiAmount}
-                respclass="col-xl-2 col-md-3 col-sm-4 col-12 mt-2"
-              /> */}
-              {/* <Input
-                type="number"
-                className="form-control"
-                id="PiReceiveAmount"
-                name="PiReceiveAmount"
-                lable={t("Receive Amount")}
-                onChange={handleSelectChange}
-                value={formData?.PiReceiveAmount}
-                respclass="col-xl-2 col-md-3 col-sm-4 col-12 mt-2"
-              /> */}
-              {/* <Input
-                type="number"
-                className="form-control"
-                id="PiPendingAmount"
-                name="PiPendingAmount"
-                lable={t("Pending Amount")}
-                onChange={handleSelectChange}
-                value={formData?.PiPendingAmount}
-                respclass="col-xl-2 col-md-3 col-sm-4 col-12 mt-2"
-              /> */}
-            </>
-          )}
           <Input
             type="number"
             className="form-control required-fields"
@@ -694,6 +644,7 @@ const AmountSubmission = ({ data }) => {
             onChange={handleSelectChange}
             value={formData?.Amount}
             respclass="col-xl-2 col-md-3 col-sm-4 col-12 mt-1"
+            disabled={!formData?.Project}
           />
           {formData?.PaymentMode == "Cash" && (
             <>
@@ -820,6 +771,7 @@ const AmountSubmission = ({ data }) => {
             onChange={handleSelectChange}
             value={formData?.Remarks}
             respclass="col-xl-2 col-md-4 col-sm-4 col-12 mt-1"
+            disabled={!formData?.Project}
           />
           {/* <Input
             type="file"
@@ -856,12 +808,14 @@ const AmountSubmission = ({ data }) => {
             {loading ? (
               <Loading />
             ) : (
-              <button
-                className="btn btn-sm btn-success ml-3"
-                onClick={handleSave}
-              >
-                {t("Save")}
-              </button>
+              <>
+                <button
+                  className="btn btn-sm btn-success ml-3"
+                  onClick={handleCallbackAction}
+                >
+                  {t("Save")}
+                </button>
+              </>
             )}
 
             <Link
@@ -872,8 +826,40 @@ const AmountSubmission = ({ data }) => {
               {t("Back to List")}
             </Link>
           </div>
+          {pisaledetail?.length > 0 && (
+            <>
+              <div
+                className="col-sm-6"
+                style={{
+                  background: "#c3e1e3",
+                  padding: "5px",
+                  borderRadius: "5px",
+                  marginTop: "0px",
+                }}
+              >
+                {/* <span>PI Details</span> */}
+                <div className="card mt-2">
+                  {/* <Heading title={t("PI Details")} /> */}
+                  <Tables
+                    thead={piTHEAD}
+                    tbody={pisaledetail?.map((ele, index) => ({
+                      "S.No.": index + 1,
+                      "PI No.": ele?.PINo,
+                      "PO No.": ele?.PoNo,
+                      "PI Date": ele?.PIDate,
+                      "PI Amount": ele?.PIAmount,
+                      "Received Amount": ele?.ReceivedAmt,
+                      "Pending Amount": ele?.PendingAmount,
+                    }))}
+                    tableHeight={"tableHeight"}
+                  />
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
+
       {tableData?.length > 0 && (
         <div className="card mt-2">
           <Heading

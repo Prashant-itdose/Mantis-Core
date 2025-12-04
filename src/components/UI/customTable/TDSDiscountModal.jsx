@@ -5,31 +5,11 @@ import { useTranslation } from "react-i18next";
 import { axiosInstances } from "../../../networkServices/axiosInstance";
 import { apiUrls } from "../../../networkServices/apiEndpoints";
 
-const TDSDiscountModal = ({ visible }) => {
+const TDSDiscountModal = ({ visible, handleSave}) => {
   const [t] = useTranslation();
-  const handleSave = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ConnectorID", visible?.visible?.connectdata?.ID),
-    //   form.append("Status", "Issue"),
-    //   axios
-    //     .post(apiUrls?.Connector_Status_Update, form, { headers })
-    axiosInstances
-      .post(apiUrls.Connector_Status_Update, {
-        ConnectorID: visible?.visible?.connectdata?.ID,
-        Status: "Issue",
-      })
-      .then((res) => {
-        toast.success(res?.data?.message);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const handleSave = () => {
+   
+  // };
   return (
     <>
       <div className="row  m-2">
@@ -38,10 +18,10 @@ const TDSDiscountModal = ({ visible }) => {
           {visible?.visible?.connectdata?.IssueNo}
         </label>
         <div className="col-3">
-          <button className="btn btn-sm btn-success ml-3" onClick={handleSave}>
+          <button className="btn btn-sm btn-success ml-3" onClick={()=>handleSave(1)}>
             {t("Yes")}
           </button>
-          <button className="btn btn-sm btn-success ml-4" onClick={handleSave}>
+          <button className="btn btn-sm btn-success ml-4" onClick={()=>handleSave(0)}>
             {t("No")}
           </button>
         </div>
