@@ -1094,7 +1094,7 @@ const Dashboard = () => {
                     >
                       <div className="d-flex align-items-center justify-content-between">
                         <h4 style={{ color: "rgb(0, 0, 0)" }}>{t("ReOpen")}</h4>
-                       
+
                         {countData?.ReOpend > 0 && (
                           <span style={{ height: "0px" }}>
                             <AmountSubmissionSeeMoreList
@@ -1401,7 +1401,7 @@ const Dashboard = () => {
                     <label style={{ fontWeight: "bold", margin: "0px" }}>
                       {t("Open Tickets by Priority")}
                     </label>
-                   
+
                     <div
                       className="chart-container mt-2"
                       style={{ width: "100%" }}
@@ -1459,7 +1459,7 @@ const Dashboard = () => {
                     <label style={{ fontWeight: "bold", margin: "0px" }}>
                       {t("Total Ticket Vs Total Working Hour")}
                     </label>
-                  
+
                     <div
                       className="chart-container mt-2"
                       style={{ width: "100%" }}

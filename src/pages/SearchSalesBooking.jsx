@@ -1313,18 +1313,18 @@ const SearchSalesBooking = ({ data }) => {
                             style={{
                               marginLeft: "5px",
                               cursor: "pointer",
-                              color: "white",
-                              border: "1px solid grey",
+                              // color: "white",
+                              // border: "1px solid grey",
                               padding: "4px",
-                              background: "green",
-                              borderRadius: "3px",
+                              // background: "black",
+                              // borderRadius: "3px",
                             }}
                             // onClick={() => {
                             //   setSelectedImageUrl(ele?.PoFile);
                             //   setIsModalOpen(true);
                             // }}
                             onClick={() => window.open(ele?.PoFile, "_blank")}
-                            title="Click to View Profole Image."
+                            title="Click to View Document."
                           ></i>
                         )}
                         {/* {isModalOpen && selectedImageUrl && (

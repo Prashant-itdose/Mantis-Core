@@ -655,6 +655,9 @@ const allRoutes = {
       component: lazy(() => import("@app/pages/CRM/ExpenseSubmission.jsx")),
       exact: true,
     },
+    
+ 
+  
     {
       Guard: Authenticated,
       layout: Layout,
@@ -767,6 +770,14 @@ const allRoutes = {
       component: lazy(() => import("@app/pages/AmountSubmission.jsx")),
       exact: true,
     },
+    {
+      Guard: Authenticated,
+      layout: Layout,
+      path: "/OverseasExpenseManagement",
+      component: lazy(() => import("@app/pages/OverseasExpenseManagement.jsx")),
+      exact: true,
+    },
+   
     {
       Guard: Authenticated,
       layout: Layout,

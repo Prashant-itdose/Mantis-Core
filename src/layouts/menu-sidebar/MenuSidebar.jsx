@@ -505,6 +505,12 @@ export const MENU = {
           path: "/PurchaseOrder",
           breadcrumb: "Accounts / Purchase Order",
         },
+        {
+          name: "OverseasExpenseManagement",
+          icon: "fas fa-regular fa-user",
+          path: "/OverseasExpenseManagement ",
+          breadcrumb: "Accounts / OverseasExpenseManagement",
+        },
       ],
     },
   ],

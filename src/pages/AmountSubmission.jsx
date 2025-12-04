@@ -597,7 +597,14 @@ const AmountSubmission = ({ data }) => {
               ))}
             </div>
           </div> */}
-
+          {/* <ReactSelect
+            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+            name="PINumberDropdown"
+            placeholderName={t("PI No.")}
+            dynamicOptions={[{ label: "Select", value: "0" }, ...pinum]}
+            handleChange={handleDeliveryChange}
+            value={formData.PINumberDropdown}
+          /> */}
           <ReactSelect
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
             name="PaymentMode"
@@ -611,14 +618,7 @@ const AmountSubmission = ({ data }) => {
             value={formData.PaymentMode}
             requiredClassName={"required-fields"}
           />
-          <ReactSelect
-            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
-            name="PINumberDropdown"
-            placeholderName={t("PI No.")}
-            dynamicOptions={[{ label: "Select", value: "0" }, ...pinum]}
-            handleChange={handleDeliveryChange}
-            value={formData.PINumberDropdown}
-          />
+
           {formData?.PINumberDropdown == 0 ? (
             ""
           ) : (
@@ -633,17 +633,17 @@ const AmountSubmission = ({ data }) => {
                 value={formData?.PiNumber}
                 respclass="col-xl-2 col-md-3 col-sm-4 col-12"
               /> */}
-              <Input
+              {/* <Input
                 type="number"
-                className="form-control required-fields "
+                className="form-control"
                 id="PoNumber"
                 name="PoNumber"
                 lable={t("PoNumber")}
                 onChange={handleSelectChange}
                 value={formData?.PoNumber}
                 respclass="col-xl-2 col-md-3 col-sm-4 col-12 mt-2"
-              />
-              <DatePicker
+              /> */}
+              {/* <DatePicker
                 className="custom-calendar "
                 id="PiDate"
                 name="PiDate"
@@ -652,20 +652,20 @@ const AmountSubmission = ({ data }) => {
                 value={formData?.PiDate}
                 respclass="col-xl-2 col-md-4 col-sm-6 col-12 mt-2"
                 handleChange={searchHandleChange}
-              />
-              <Input
+              /> */}
+              {/* <Input
                 type="number"
-                className="form-control required-fields"
+                className="form-control"
                 id="PiAmount"
                 name="PiAmount"
                 lable={t("PI Amount")}
                 onChange={handleSelectChange}
                 value={formData?.PiAmount}
                 respclass="col-xl-2 col-md-3 col-sm-4 col-12 mt-2"
-              />
+              /> */}
               {/* <Input
                 type="number"
-                className="form-control required-fields"
+                className="form-control"
                 id="PiReceiveAmount"
                 name="PiReceiveAmount"
                 lable={t("Receive Amount")}
@@ -675,7 +675,7 @@ const AmountSubmission = ({ data }) => {
               /> */}
               {/* <Input
                 type="number"
-                className="form-control required-fields"
+                className="form-control"
                 id="PiPendingAmount"
                 name="PiPendingAmount"
                 lable={t("Pending Amount")}

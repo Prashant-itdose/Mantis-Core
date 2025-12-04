@@ -549,6 +549,12 @@ export const GetBindMenu = createAsyncThunk(
                 childrenOrder: "6",
                 breadcrumb: "Accounts / Purchase Order",
               },
+              {
+                childrenName: "OverseasExpenseManagement",
+                url: "/OverseasExpenseManagement",
+                childrenOrder: "7",
+                breadcrumb: "Accounts / OverseasExpenseManagement",
+              },
             ],
           },
         ],

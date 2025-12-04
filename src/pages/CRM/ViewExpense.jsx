@@ -232,7 +232,9 @@ const ViewExpense = () => {
       currentMonth: date.getMonth() + 1,
       currentYear: date.getFullYear(),
     });
+    setTableData([]);
   };
+
   const handleFilter = (filterValue) => {
     const filterData = tableData?.filter((item) => item?.Name === filterValue);
     return filterData;

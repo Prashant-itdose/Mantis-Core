@@ -46,7 +46,7 @@ const DesktopMenuItem = ({ filteredData }) => {
   });
 
   const { GetRoleList } = useSelector((state) => state?.CommonSlice);
-  
+
   const search = (event) => {
     const filteredSuggestions = extractedData
       .flat()
