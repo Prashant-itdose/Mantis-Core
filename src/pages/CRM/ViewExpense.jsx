@@ -11,9 +11,10 @@ import { Tabfunctionality } from "../../utils/helpers";
 import Modal from "../../components/modalComponent/Modal";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import { ExportToExcel } from "../../networkServices/Tools";
+import { ExportToExcel, ExportToExcelColor } from "../../networkServices/Tools";
 import excelimg from "../../assets/image/excel.png";
 import SlideScreen from "../SlideScreen";
+import excelimgOrange from "../../assets/image/orangeExcel.png";
 import SeeMoreSlideScreen from "../../components/SearchableTable/SeeMoreSlideScreen";
 import NoRecordFound from "../../components/formComponent/NoRecordFound";
 import ViewExpenseApproveModal from "./ViewExpenseApproveModal";
@@ -227,7 +228,39 @@ const ViewExpense = () => {
     const filterData = tableData?.filter((item) => item?.Name === filterValue);
     return filterData;
   };
-
+  const handleAccountantExcel = () => {
+    setLoading(true);
+    axiosInstances
+      .post(apiUrls.ViewExpenseListSummary, {
+        ExpenseEmployeeID: formData?.Employee ? Number(formData.Employee) : 0,
+        Month: Number(formData?.currentMonth),
+        Year: Number(formData?.currentYear),
+        Status: String(0),
+        TripName: String(""),
+        ExpenseType: String(formData?.ExpenseType),
+        VerticalID: Number(formData?.VerticalID),
+        TeamID: Number(formData?.TeamID),
+        WingID: Number(formData?.WingID),
+        CrmEmployeeID: Number(
+          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+        ),
+        IsAccountant: Number(
+          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID") == "650"
+            ? "1"
+            : "0"
+        ),
+        StatusType: Number(formData?.StatusType),
+      })
+      .then((res) => {
+        const data = res.data.data;
+        ExportToExcelColor(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  };
   const handleTableSearch = () => {
     if (formData?.ExpenseType == "") {
       toast.error("Please Select Expense Type.");
@@ -716,6 +749,22 @@ const ViewExpense = () => {
               onClick={() => ExportToExcel(tableData)}
               title="Click to download Excel"
             ></img>
+          )}
+          {useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID") ==
+            "650" && (
+            <>
+              {loading ? (
+                <Loading />
+              ) : (
+                <img
+                  src={excelimgOrange}
+                  className="ml-3"
+                  style={{ width: "34px", height: "27px", cursor: "pointer" }}
+                  onClick={handleAccountantExcel}
+                  title="Click to download Excel for Expense Summary"
+                ></img>
+              )}
+            </>
           )}
         </div>
       </div>

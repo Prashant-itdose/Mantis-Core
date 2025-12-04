@@ -597,14 +597,14 @@ const AmountSubmission = ({ data }) => {
               ))}
             </div>
           </div> */}
-          {/* <ReactSelect
+          <ReactSelect
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
             name="PINumberDropdown"
             placeholderName={t("PI No.")}
             dynamicOptions={[{ label: "Select", value: "0" }, ...pinum]}
             handleChange={handleDeliveryChange}
             value={formData.PINumberDropdown}
-          /> */}
+          />
           <ReactSelect
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
             name="PaymentMode"

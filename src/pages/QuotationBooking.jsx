@@ -781,6 +781,13 @@ const QuotationBooking = ({ data }) => {
       ShippingCompanyName: String(
         getlabel(formData?.ShippingCompany, shippingcompany) || ""
       ),
+        dtSales: formData?.SalesDate
+          ? String(moment(formData.SalesDate).format("YYYY-MM-DD"))
+          : "",
+        ExpiryDate: formData?.ExpiryDate
+          ? String(moment(formData.ExpiryDate).format("YYYY-MM-DD"))
+          : "",
+
       ShippingCompanyAddress: String(formData?.ShippingAddress || ""),
       ShippingState: String(formData?.ShippingState || ""),
       ShippingGSTNo: String(formData?.ShippingGST || ""),
