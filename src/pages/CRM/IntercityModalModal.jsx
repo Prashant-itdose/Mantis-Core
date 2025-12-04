@@ -12,14 +12,10 @@ const IntercityModalModal = ({ visible, setVisible }) => {
         ExpenseReportID: Number(visible?.showData?.expense_report_ID),
         ActionType: "InterCity",
       })
-      // let form = new FormData();
-      // form.append("ExpenseReportID", visible?.showData?.expense_report_ID),
-      //   form.append("ActionType", "InterCity"),
-      //   axios
-      //     .post(apiUrls?.ExpenceDetails, form, { headers })
+
       .then((res) => {
         // setTableData(res?.data?.dtDetailCity);
-        const data = res?.data?.dtDetailCity;
+        const data = res?.data?.data?.dtDetailCity;
         if (Array.isArray(data)) {
           setTableData(data);
         } else {
