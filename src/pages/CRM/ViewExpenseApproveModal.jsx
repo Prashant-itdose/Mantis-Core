@@ -13,9 +13,8 @@ const ViewExpenseApproveModal = ({
   handleTableSearch,
   handleTableSearchEmployee,
 }) => {
- 
   const [loading, setLoading] = useState(false);
- const IsManager = useCryptoLocalStorage(
+  const IsManager = useCryptoLocalStorage(
     "user_Data",
     "get",
     "AllowExpenseApprove"
