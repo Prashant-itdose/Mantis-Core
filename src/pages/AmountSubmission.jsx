@@ -356,22 +356,10 @@ const AmountSubmission = ({ data }) => {
     const payload = {
       ProjectID: String(formData?.Project || ""),
       ProjectName: String(getlabel(formData?.Project, project) || ""),
-      BillingCompanyID: String(""),
-      BillingCompanyName: String(""),
-      BillingCompanyAddress: String(""),
-      BillingState: String(""),
-      GSTNo: String(""),
-      PanCardNo: String(""),
-      ShippingCompanyID: String(""),
-      ShippingCompanyName: String(""),
-      ShippingCompanyAddress: String(""),
-      ShippingState: String(""),
-      ShippingGSTNo: String(""),
-      ShippingPanCardNo: String(""),
       ReceivedDate: formatDate(formData?.ReceiveDate) || "",
+      ReceivedBy: String(formData?.ReceivedBy || ""),
       PaymentMode: actionType === 1 ? "TDS" : String(formData?.PaymentMode),
       Amount: String(formData?.Amount || ""),
-      ReceivedBy: String(formData?.ReceivedBy || ""),
       Remark: String(formData?.Remarks || ""),
       UtrNo: String(formData?.UTRNO || ""),
       BankName:
@@ -386,6 +374,7 @@ const AmountSubmission = ({ data }) => {
       Document_FormatType: String(formData?.FileExtension || ""),
       VoucherNo: String(formData?.VoucherNo || ""),
       RecoveryTeam: String(formData?.RecoveryTeam),
+      PIID: String(formData?.PINumberDropdown),
     };
     axiosInstances
       .post(apiUrls.AmountSubmission_ByAccounts, payload)
@@ -410,6 +399,7 @@ const AmountSubmission = ({ data }) => {
             SelectFile: "",
             Document_Base64: "",
             FileExtension: "",
+            PINumberDropdown: "",
           });
           handleSearch(formData?.Project);
         } else {
@@ -477,12 +467,11 @@ const AmountSubmission = ({ data }) => {
     0
   );
   const PITotal2Per = (PIAmountCal * 2) / 100;
- 
+
   const PITotal10Per = (PIAmountCal * 10) / 100;
- 
+
   const Total2Percent = PIPendingCal.toFixed(2) == PITotal2Per.toFixed(2);
   const Total10Percent = PIPendingCal.toFixed(2) == PITotal10Per.toFixed(2);
-
 
   const handleOpenPI_SelectPINo = (value) => {
     axiosInstances
@@ -491,7 +480,6 @@ const AmountSubmission = ({ data }) => {
       })
       .then((res) => {
         setPiSaleDetail(res.data.data);
-  
       })
       .catch((err) => {
         console.log(err);
@@ -783,28 +771,7 @@ const AmountSubmission = ({ data }) => {
           /> */}
           <div className="col-sm-3 d-flex mt-2">
             <BrowseButton handleImageChange={handleImageChange} />
-            <div className="search-col" style={{ marginLeft: "12px" }}>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <label className="switch" style={{ marginTop: "7px" }}>
-                  <input
-                    type="checkbox"
-                    name="Picheckbox"
-                    checked={formData?.Picheckbox ? 1 : 0}
-                    onChange={handleCheckBox}
-                  />
-                  <span className="slider"></span>
-                </label>
-                <span
-                  style={{
-                    marginLeft: "3px",
-                    marginRight: "5px",
-                    fontSize: "12px",
-                  }}
-                >
-                  {/* {t("isDue")} */}
-                </span>
-              </div>
-            </div>
+
             {loading ? (
               <Loading />
             ) : (
