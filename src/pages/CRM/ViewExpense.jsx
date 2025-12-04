@@ -72,6 +72,7 @@ const ViewExpense = () => {
     currentMonth: currentMonth,
     currentYear: currentYear,
     ExpenseType: "Both",
+    StatusType: "0",
   });
   const [tableData, setTableData] = useState([]);
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
@@ -92,33 +93,6 @@ const ViewExpense = () => {
   const normalizeString = (str) => str.toLowerCase().replace(/\s+/g, "").trim();
   const handleChangeComponent = (e) => {
     ModalComponent(e?.label, e?.component);
-  };
-  const handleSearchTable = (event) => {
-    const rawQuery = event.target.value;
-    const query = normalizeString(rawQuery);
-
-    setSearchQuery(rawQuery);
-
-    if (query === "") {
-      setTableData(filteredData);
-      setCurrentPage(1);
-      return;
-    }
-
-    const filtered = filteredData?.filter((item) =>
-      Object.keys(item).some(
-        (key) => item[key] && normalizeString(String(item[key])).includes(query)
-      )
-    );
-
-    if (filtered.length === 0) {
-      setSearchQuery("");
-      setTableData(filteredData);
-    } else {
-      setTableData(filtered);
-    }
-
-    setCurrentPage(1);
   };
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -259,8 +233,12 @@ const ViewExpense = () => {
           CrmEmployeeID: Number(
             useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
           ),
-          IsAccountant: Number(0),
-          StatusType: Number(0),
+          IsAccountant: Number(
+            useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID") == "650"
+              ? "1"
+              : "0"
+          ),
+          StatusType: Number(formData?.StatusType),
         })
 
         .then((res) => {
@@ -301,8 +279,10 @@ const ViewExpense = () => {
           CrmEmployeeID: Number(
             useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
           ),
-          IsAccountant: Number(0),
-          StatusType: Number(0),
+          IsAccountant: Number( useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID") == "650"
+          ? "1"
+          : "0"),
+          StatusType: Number(formData?.StatusType),
         })
 
         .then((res) => {
@@ -654,6 +634,23 @@ const ViewExpense = () => {
             tabIndex="1"
             requiredClassName={"required-fields"}
           />
+          <ReactSelect
+            className="form-control"
+            name="StatusType"
+            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+            placeholderName="StatusType"
+            id="StatusType"
+            dynamicOptions={[
+              { label: "All", value: "0" },
+              { label: "Active", value: "4" },
+              { label: "Approved", value: "1" },
+              { label: "Submitted", value: "2" },
+              { label: "Rejected", value: "3" },
+            ]}
+            value={formData?.StatusType}
+            handleChange={handleDeliveryChange}
+            requiredClassName={"required-fields"}
+          />
           {ReportingManager == 1 || RoleID === 4 ? (
             <div>
               {loading ? (
@@ -896,19 +893,6 @@ const ViewExpense = () => {
                   Grand Total :&nbsp;
                   {tableData?.reduce((acc, curr) => acc + (curr.Total || 0), 0)}
                 </span>
-                {/* <div style={{ padding: "0px !important", marginLeft: "10px" }}>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    id="Title"
-                    name="Title"
-                    lable="Search"
-                    placeholder=" "
-                    onChange={handleSearchTable}
-                    value={searchQuery}
-                    respclass="col-xl-12 col-md-4 col-sm-6 col-12"
-                  />
-                </div> */}
                 <span style={{ fontWeight: "bold", marginLeft: "10px" }}>
                   Total Record :&nbsp;{tableData?.length}
                 </span>
