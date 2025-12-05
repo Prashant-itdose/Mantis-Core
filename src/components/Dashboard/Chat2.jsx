@@ -22,20 +22,20 @@ function Chat2({ state }) {
   };
 
   // Process API response to extract labels and data
-  const labels = state?.map((item) => t(item.StatusNew.replace(/_/g, " ")));
-  const dataValues = state.map((item) => item.Ticket);
-  const backgroundColors = state.map(
-    (item) => colorMap[item.StatusNew] || "gray"
+  const labels = state?.map((item) => t(item?.StatusNew?.replace(/_/g, " ")));
+  const dataValues = state?.map((item) => item?.Ticket);
+  const backgroundColors = state?.map(
+    (item) => colorMap[item?.StatusNew] || "gray"
   );
 
   // Ensure at least one non-zero value for display
-  const hasData = dataValues.some((val) => val > 0);
+  const hasData = dataValues?.some((val) => val > 0);
   const adjustedDataValues = hasData
     ? dataValues
-    : new Array(dataValues.length).fill(1);
+    : new Array(dataValues?.length).fill(1);
   const adjustedBackgroundColors = hasData
     ? backgroundColors
-    : new Array(dataValues.length).fill("lightgray");
+    : new Array(dataValues?.length).fill("lightgray");
 
   const data = {
     labels,

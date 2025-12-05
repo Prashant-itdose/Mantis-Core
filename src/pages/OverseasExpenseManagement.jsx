@@ -51,7 +51,6 @@ const OverseasExpenseManagement = () => {
 
       // Convert the sheet to JSON
       const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-      const isValidMobile = (mobile) => /^[0-9]{10}$/.test(mobile);
       const mappedData = transformData(jsonData).map((ele, index) => {
         return {
           "S.No.": index + 1,
