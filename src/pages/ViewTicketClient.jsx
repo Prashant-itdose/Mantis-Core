@@ -128,7 +128,6 @@ const ViewTicketClient = () => {
     "get",
     "AllowDeleteTicket"
   );
- 
 
   const handleSaveFilter = () => {
     localStorage.setItem("formData", JSON.stringify(formData));
@@ -1362,9 +1361,9 @@ const ViewTicketClient = () => {
                   className="custom-calendar"
                   id="SubmitDateBefore"
                   name="SubmitDateBefore"
-                  // lable={"Before"}
+                  lable={"From Date"}
                   placeholder={VITE_DATE_FORMAT}
-                  // respclass="col-xl-2.5 col-md-3 col-sm-6 col-12"
+                  respclass="mt-2"
                   value={formData?.SubmitDateBefore}
                   handleChange={searchHandleChange}
                 />
@@ -1372,9 +1371,9 @@ const ViewTicketClient = () => {
                   className="custom-calendar"
                   id="SubmitDateAfter"
                   name="SubmitDateAfter"
-                  // lable={"After"}
+                  lable={"To Date"}
                   placeholder={VITE_DATE_FORMAT}
-                  // respclass="col-xl-2.5 col-md-3 col-sm-6 col-12"
+                  respclass="mt-2"
                   value={formData?.SubmitDateAfter}
                   handleChange={searchHandleChange}
                 />
@@ -1390,9 +1389,9 @@ const ViewTicketClient = () => {
                 className="custom-calendar"
                 id="SubmitDateBefore"
                 name="SubmitDateBefore"
-                // lable={"Current"}
+                lable={"Select Date"}
                 placeholder={VITE_DATE_FORMAT}
-                // respclass={"col-xl-2 col-md-4 col-sm-6 col-12"}
+                respclass="mt-2"
                 value={formData?.SubmitDateBefore}
                 handleChange={searchHandleChange}
               />
@@ -1430,18 +1429,19 @@ const ViewTicketClient = () => {
                   className="custom-calendar"
                   id="ClientDeliveryDateBefore"
                   name="ClientDeliveryDateBefore"
-                  // lable={"Before"}
+                  lable={"From Date"}
                   placeholder={VITE_DATE_FORMAT}
                   value={formData?.ClientDeliveryDateBefore}
                   handleChange={searchHandleChange}
+                  respclass="mt-2"
                 />
                 <DatePicker
                   className="custom-calendar"
                   id="ClientDeliveryDateAfter"
                   name="ClientDeliveryDateAfter"
-                  // lable={"After"}
+                  lable={"To Date"}
                   placeholder={VITE_DATE_FORMAT}
-                  // respclass="col-xl-2.5 col-md-3 col-sm-6 col-12"
+                  respclass="mt-2"
                   value={formData?.ClientDeliveryDateAfter}
                   handleChange={searchHandleChange}
                 />
@@ -1452,10 +1452,10 @@ const ViewTicketClient = () => {
                 className="custom-calendar"
                 id="ClientDeliveryDateBefore"
                 name="ClientDeliveryDateBefore"
-                // lable={"Current"}
+                lable={"Select Date"}
                 placeholder={VITE_DATE_FORMAT}
-                // respclass={"col-xl-2 col-md-4 col-sm-6 col-12"}
-                value={new Date(formData?.ClientDeliveryDateBefore)}
+                respclass="mt-2"
+                value={formData?.ClientDeliveryDateBefore}
                 handleChange={searchHandleChange}
               />
             ) : (
@@ -1491,18 +1491,21 @@ const ViewTicketClient = () => {
                   className="custom-calendar"
                   id="UpadteDateBefore"
                   name="UpadteDateBefore"
+                  lable={"From Date"}
                   placeholder={VITE_DATE_FORMAT}
                   value={formData?.UpadteDateBefore}
                   handleChange={searchHandleChange}
+                  respclass="mt-2"
                 />
                 <DatePicker
                   className="custom-calendar"
                   id="UpadteDateAfter"
                   name="UpadteDateAfter"
-                  // lable={"UpadteDateAfter"}
+                  lable={"To Date"}
                   placeholder={VITE_DATE_FORMAT}
                   value={formData?.UpadteDateAfter}
                   handleChange={searchHandleChange}
+                  respclass="mt-2"
                 />
               </>
             )}
@@ -1516,9 +1519,9 @@ const ViewTicketClient = () => {
                 className="custom-calendar"
                 id="UpadteDateBefore"
                 name="UpadteDateBefore"
-                // lable={"Current"}
+                lable={"Select Date"}
                 placeholder={VITE_DATE_FORMAT}
-                // respclass={"col-xl-2 col-md-4 col-sm-6 col-12"}
+                respclass="mt-2"
                 value={formData?.UpadteDateBefore}
                 handleChange={searchHandleChange}
               />
@@ -1557,9 +1560,9 @@ const ViewTicketClient = () => {
                   className="custom-calendar"
                   id="CloseDateBefore"
                   name="CloseDateBefore"
-                  // lable={"Before"}
+                  lable={"From Date"}
                   placeholder={VITE_DATE_FORMAT}
-                  // respclass="col-xl-2.5 col-md-3 col-sm-6 col-12"
+                  respclass="mt-2"
                   value={formData?.CloseDateBefore}
                   handleChange={searchHandleChange}
                 />
@@ -1567,9 +1570,9 @@ const ViewTicketClient = () => {
                   className="custom-calendar"
                   id="CloseDateAfter"
                   name="CloseDateAfter"
-                  // lable={"After"}
+                  lable={"To Date"}
                   placeholder={VITE_DATE_FORMAT}
-                  // respclass="col-xl-2.5 col-md-3 col-sm-6 col-12"
+                  respclass="mt-2"
                   value={formData?.CloseDateAfter}
                   handleChange={searchHandleChange}
                 />
@@ -1585,9 +1588,9 @@ const ViewTicketClient = () => {
                 className="custom-calendar"
                 id="CloseDateBefore"
                 name="CloseDateBefore"
-                // lable={"Current"}
+                lable={"Select Date"}
                 placeholder={VITE_DATE_FORMAT}
-                // respclass={"col-xl-2 col-md-4 col-sm-6 col-12"}
+                respclass="mt-2"
                 value={formData?.CloseDateBefore}
                 handleChange={searchHandleChange}
               />

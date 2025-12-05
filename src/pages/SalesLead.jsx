@@ -23,6 +23,7 @@ import gmaillogo from "../../src/assets/image/Gmail_Logo.png";
 import Tooltip from "./Tooltip";
 import { axiosInstances } from "../networkServices/axiosInstance";
 import Loading from "../components/loader/Loading";
+import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 const SalesLead = () => {
   const [t] = useTranslation();
   const [tableData, setTableData] = useState([]);
@@ -34,7 +35,9 @@ const SalesLead = () => {
   const [productversion, setProductVersion] = useState([]);
   const [formData, setFormData] = useState({
     ProjectID: [],
-    AssignedTo: [],
+    AssignedTo: [useCryptoLocalStorage("user_Data", "get", "ID")]
+      ? [useCryptoLocalStorage("user_Data", "get", "ID")]
+      : [],
     FromDate: new Date(),
     ToDate: new Date(),
     OrganizationName: "",
@@ -152,7 +155,7 @@ const SalesLead = () => {
     "Loaction Details",
     "Software Details",
     "SPOC Details",
-    // "Website",
+    "Remark",
     "CreatedBy",
     { name: "Action", width: "5%" },
     "Converted",
@@ -160,7 +163,7 @@ const SalesLead = () => {
     "Edit",
   ];
   const shortenName = (name) => {
-    return name.length > 10 ? name.substring(0, 15) + "..." : name;
+    return name?.length > 10 ? name?.substring(0, 15) + "..." : name;
   };
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
@@ -734,17 +737,17 @@ const SalesLead = () => {
                 </span>
               ),
 
-              // Website: (
-              //   <Tooltip label={ele?.Website}>
-              //     <span
-              //       id={`Website-${index}`}
-              //       targrt={`Website-${index}`}
-              //       style={{ textAlign: "center" }}
-              //     >
-              //       {shortenName(ele?.Website)}
-              //     </span>
-              //   </Tooltip>
-              // ),
+              Remark: (
+                <Tooltip label={ele?.Remark}>
+                  <span
+                    id={`Remark-${index}`}
+                    targrt={`Remark-${index}`}
+                    style={{ textAlign: "center" }}
+                  >
+                    {shortenName(ele?.Remark)}
+                  </span>
+                </Tooltip>
+              ),
 
               CreatedBy: (
                 <span>

@@ -51,7 +51,9 @@ const SalesLeadCreate = () => {
     Email: "",
     ReferralSource: "",
     ProjectID: "0",
-    AssignedTo: "0",
+    AssignedTo: useCryptoLocalStorage("user_Data", "get", "ID")
+      ? useCryptoLocalStorage("user_Data", "get", "ID")
+      : "",
     SoftwareVertical: "N/A",
     OtherProject: "",
     OtherEmployee: "",
@@ -64,9 +66,10 @@ const SalesLeadCreate = () => {
     isDesignation: "",
     isEmail: "",
     isMobile: "",
+    Remark:""
   });
 
-  console.log("city", city);
+  // console.log("city", city);
   const handleDeliveryChange = (name, e) => {
     const { value } = e;
     if (name == "Country") {
@@ -99,20 +102,10 @@ const SalesLeadCreate = () => {
   };
 
   const getFetchDetails = (id) => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("LeadID", id),
-    // axios
-    //   .post(apiUrls?.EditSalesLead, form, { headers })
     axiosInstances
       .post(apiUrls?.EditSalesLead, { LeadID: Number(id) })
       .then((res) => {
         const data = res?.data?.data;
-        console.log("EditSalesLead", data);
 
         setFormData({
           ...formData,
@@ -137,6 +130,7 @@ const SalesLeadCreate = () => {
           LeadID: data?.ID,
           NoOfCentre: data?.NoOfCentre,
           NoOfMachine: data?.NoOfMachine,
+          Remark: data?.Remark,
         });
 
         getState(data?.CountryID);
@@ -152,14 +146,6 @@ const SalesLeadCreate = () => {
       });
   };
   const getProject = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   axios
-    //     .post(apiUrls?.ProjectSelect, form, { headers })
     axiosInstances
       .post(apiUrls?.ProjectSelect, {})
       .then((res) => {
@@ -173,10 +159,6 @@ const SalesLeadCreate = () => {
       });
   };
   const getCountry = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.GetCountry, form, { headers })
     axiosInstances
       .post(apiUrls?.GetCountry, {})
       .then((res) => {
@@ -190,10 +172,6 @@ const SalesLeadCreate = () => {
       });
   };
   const getState = (value) => {
-    // let form = new FormData();
-    // form.append("CountryID", value || "14"),
-    //   axios
-    //     .post(apiUrls?.GetState, form, { headers })
     axiosInstances
       .post(apiUrls?.GetState, { CountryID: String(value || "14") })
       .then((res) => {
@@ -207,16 +185,6 @@ const SalesLeadCreate = () => {
       });
   };
   const getProduct = (value) => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   axios
-    //     .post(apiUrls?.GetProductVersion, form, {
-    //       headers,
-    //     })
     axiosInstances
       .post(apiUrls?.GetProductVersion, {})
       .then((res) => {
@@ -229,12 +197,8 @@ const SalesLeadCreate = () => {
         console.log(err);
       });
   };
-  // .post(apiUrls?.AssignTo_Select, form, { headers })
+
   const getAssignTo = () => {
-    // let form = new FormData();
-    // form.append("ID", "0");
-    // axios
-    //   .post(apiUrls?.AllEmployeeSearch, form, { headers })
     axiosInstances
       .post(apiUrls?.AllEmployeeSearch, {})
       .then((res) => {
@@ -248,11 +212,6 @@ const SalesLeadCreate = () => {
       });
   };
   const getDistrict = (country, state) => {
-    // let form = new FormData();
-    // form.append("CountryID", formData?.Country ? formData?.Country : country),
-    //   form.append("StateID", state),
-    //   axios
-    //     .post(apiUrls?.GetDistrict, form, { headers })
     axiosInstances
       .post(apiUrls?.GetDistrict, {
         CountryID: String(formData?.Country ? formData?.Country : country),
@@ -269,14 +228,6 @@ const SalesLeadCreate = () => {
       });
   };
   const getCity = (country, state, district) => {
-    // let form = new FormData();
-    // form.append("CountryID", formData?.Country ? formData?.Country : country),
-    //   form.append("StateID", formData?.State ? formData?.State : state),
-    //   form.append("DistrictID", district),
-    //   axios
-    //     .post(apiUrls?.GetCity, form, {
-    //       headers,
-    //     })
     axiosInstances
       .post(apiUrls?.GetCity, {
         CountryID: String(formData?.Country ? formData?.Country : country),
@@ -360,73 +311,7 @@ const SalesLeadCreate = () => {
       return;
     }
     setLoading(true);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append(
-    //     "Country",
-    //     formData?.Country == "14"
-    //       ? "INDIA"
-    //       : getlabel(formData?.Country, country)
-    //   ),
-    //   form.append("CountryID", formData?.Country),
-    //   form.append("City", getlabel(formData?.City, city)),
-    //   form.append("CityID", formData?.City),
-    //   form.append("DistrictID", formData?.District),
-    //   form.append("District", getlabel(formData?.District, district)),
-    //   form.append("OrganizationName", formData?.OrganizationName),
-    //   form.append("State", getlabel(formData?.State, states)),
-    //   form.append("StateID", formData?.State),
-    //   form.append("IsUpcomingCentre", formData?.Centre),
-    //   form.append(
-    //     "SoftwareVertical",
-    //     formData?.SoftwareVertical == "0" ? "N/A" : formData.SoftwareVertical
-    //   ),
-    //   form.append("SPOC", formData?.ContactPersonName),
-    //   form.append("SPOC_Mobile", formData?.ContactPersonMobile),
-    //   form.append("SPOC_EmailID", formData?.ContactPersonEmail),
-    //   form.append("SPOC_Designation", formData?.ContactPersonDesignation),
-    //   form.append("Website", formData?.Website),
-    //   form.append("ReferralSource", formData?.ReferralSource),
-    //   form.append(
-    //     "ReferProjectID",
-    //     formData?.ProjectID == "Other" ? "-1" : formData?.ProjectID
-    //   ),
-    //   form.append(
-    //     "ReferProject",
-    //     getlabel(formData?.ProjectID, project)
-    //       ? getlabel(formData?.ProjectID, project)
-    //       : formData?.OtherProject
-    //   ),
-    //   form.append(
-    //     "ReferEmployeeID",
-    //     formData?.AssignedTo == "Other" ? "-1" : formData?.AssignedTo
-    //   ),
-    //   form.append(
-    //     "ReferEmployee",
-    //     getlabel(formData?.AssignedTo, assignto)
-    //       ? getlabel(formData?.AssignedTo, assignto)
-    //       : formData?.OtherEmployee
-    //   ),
-    //   form.append(
-    //     "SoftwareVersionID",
-    //     formData?.ProductVersion == "Other" ? "-1" : formData?.ProductVersion
-    //   ),
-    //   form.append(
-    //     "SoftwareVersionName",
-    //     formData?.ProductVersion == "0"
-    //       ? "N/A"
-    //       : getlabel(formData?.ProductVersion, productversion)
-    //   ),
-    //   form.append("NoOfCentre", formData?.NoOfCentre),
-    //   form.append("NoOfMachine", formData?.NoOfMachine),
-    // axios
-    //   .post(apiUrls?.CreateSalesLead, form, {
-    //     headers,
-    //   })
+  
     axiosInstances
       .post(apiUrls?.CreateSalesLead, {
         Country: String(
@@ -482,6 +367,7 @@ const SalesLeadCreate = () => {
 
         NoOfCentre: Number(formData?.NoOfCentre),
         NoOfMachine: Number(formData?.NoOfMachine),
+        Remark: String(formData?.Remark),
       })
       .then((res) => {
         if (res?.data?.status == true) {
@@ -505,6 +391,7 @@ const SalesLeadCreate = () => {
             SoftwareVertical: "",
             OtherProject: "",
             OtherEmployee: "",
+            Remark:""
           });
           navigate("/SalesLead");
         } else {
@@ -579,66 +466,7 @@ const SalesLeadCreate = () => {
       return;
     }
     setLoading(true);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("LeadID", formData?.LeadID),
-    //   form.append("Country", getlabel(formData?.Country, country)),
-    //   form.append("CountryID", formData?.Country),
-    //   form.append("City", getlabel(formData?.City, city)),
-    //   form.append("CityID", formData?.City),
-    //   form.append("DistrictID", formData?.District),
-    //   form.append("District", getlabel(formData?.District, district)),
-    //   form.append("OrganizationName", formData?.OrganizationName),
-    //   form.append("State", getlabel(formData?.State, states)),
-    //   form.append("StateID", formData?.State),
-    //   form.append("IsUpcomingCentre", formData?.Centre),
-    //   form.append("SoftwareVertical", formData?.SoftwareVertical),
-    //   form.append("SPOC", formData?.ContactPersonName),
-    //   form.append("SPOC_Mobile", formData?.ContactPersonMobile),
-    //   form.append("SPOC_EmailID", formData?.ContactPersonEmail),
-    //   form.append("SPOC_Designation", formData?.ContactPersonDesignation),
-    //   form.append("Website", formData?.Website),
-    //   form.append("ReferralSource", formData?.ReferralSource),
-    //   form.append(
-    //     "ReferProjectID",
-    //     formData?.ProjectID == "Other" ? "-1" : formData?.ProjectID
-    //   ),
-    //   form.append(
-    //     "ReferProject",
-    //     getlabel(formData?.ProjectID, project)
-    //       ? getlabel(formData?.ProjectID, project)
-    //       : formData?.OtherProject
-    //   ),
-    //   form.append(
-    //     "ReferEmployeeID",
-    //     formData?.AssignedTo == "Other" ? "-1" : formData?.AssignedTo
-    //   ),
-    //   form.append(
-    //     "ReferEmployee",
-    //     getlabel(formData?.AssignedTo, assignto)
-    //       ? getlabel(formData?.AssignedTo, assignto)
-    //       : formData?.OtherEmployee
-    //   ),
-    //   form.append(
-    //     "SoftwareVersionID",
-    //     formData?.ProductVersion == "Other" ? "-1" : formData?.ProductVersion
-    //   ),
-    //   form.append(
-    //     "SoftwareVersionName",
-    //     getlabel(formData?.ProductVersion, productversion)
-    //       ? getlabel(formData?.ProductVersion, productversion)
-    //       : formData?.ProductVersion
-    //   ),
-    //   form.append("NoOfCentre", formData?.NoOfCentre),
-    //   form.append("NoOfMachine", formData?.NoOfMachine),
-    //   axios
-    //     .post(apiUrls?.UpdateSalesLead, form, {
-    //       headers,
-    //     })
+  
 
     const paylode = {
       LeadID: Number(formData?.LeadID),
@@ -692,6 +520,7 @@ const SalesLeadCreate = () => {
 
       NoOfCentre: Number(formData?.NoOfCentre),
       NoOfMachine: Number(formData?.NoOfMachine),
+      Remark: String(formData?.Remark),
     };
     axiosInstances
       .post(apiUrls?.UpdateSalesLead, paylode)
@@ -717,6 +546,7 @@ const SalesLeadCreate = () => {
             SoftwareVertical: "",
             OtherProject: "",
             OtherEmployee: "",
+            Remark:""
           });
           navigate("/SalesLead");
         } else {
@@ -783,7 +613,6 @@ const SalesLeadCreate = () => {
     }
   };
 
-  console.log("formData", formData);
   useEffect(() => {
     getCountry();
     getCity();
@@ -1185,16 +1014,17 @@ const SalesLeadCreate = () => {
             value={formData?.NoOfMachine}
             respclass="col-xl-2 col-md-4 col-sm-4 col-12"
           />
-          {/* {loading ? (
-            <Loading />
-          ) : (
-            <button
-              className="btn btn-sm btn-primary ml-2 mt-1"
-              onClick={handleSave}
-            >
-              Save
-            </button>
-          )} */}
+           <Input
+            type="text"
+            className="form-control mt-1"
+            id="Remark"
+            name="Remark"
+            lable="Remark"
+            placeholder=" "
+            onChange={handleSelectChange}
+            value={formData?.Remark}
+            respclass="col-xl-4 col-md-4 col-sm-4 col-12"
+          />
 
           {state?.edit ? (
             <>
