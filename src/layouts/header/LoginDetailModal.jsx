@@ -169,7 +169,7 @@ const LoginDetailModal = () => {
   const totalDiffMs =
     tableData?.reduce((acc, ele) => {
       // ignore rows that are missing times
-      if(!ele?.LogoutTime){
+      if (!ele?.LogoutTime) {
         ele.LogoutTime = getCurrentTempLogoutTime();
       }
       if (!ele?.LoginTime || !ele?.LogoutTime) return acc;
@@ -376,7 +376,6 @@ const LoginDetailModal = () => {
                 const diffSec = String(
                   Math.floor((diffMs % (1000 * 60)) / 1000)
                 ).padStart(2, "0");
-
                 return {
                   "S.No.": index + 1,
                   Date: ele?.LogDate
@@ -392,7 +391,10 @@ const LoginDetailModal = () => {
                       })()
                     : "",
                   IN: ele?.LoginTime,
-                  OUT: tableData?.length == index+1 ? "00:00:00" :ele?.LogoutTime,
+                  OUT:
+                    tableData?.length == index + 1 
+                      ? (Number(ele?.LogDate?.split('-')?.[2]) == new Date().getDay() ? "00:00:00" : ele?.LogoutTime)
+                      : ele?.LogoutTime,
                   "Time Difference": `${isNaN(diffHrs) ? "00" : diffHrs}:${isNaN(diffMin) ? "00" : diffMin}:${isNaN(diffSec) ? "00" : diffSec}`,
                 };
               })}

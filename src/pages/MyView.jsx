@@ -182,22 +182,6 @@ const MyView = () => {
         POC2: String(""),
         POC3: String(""),
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "RoleID",
-      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-      //   ),
-      //   form.append("ProjectID", value ?? ""),
-      //   form.append("VerticalID", ""),
-      //   form.append("TeamID", ""),
-      //   form.append("WingID", ""),
-      //   form.append("POC1", ""),
-      //   form.append("POC2", ""),
-      //   form.append("POC3", ""),
-      //   form.append("StatusCode", code ? code : "");
-      // axios
-      //   .post(apiUrls?.AutobackupSearch, form, { headers })
       .then((res) => {
         let arr = [];
         if (res?.data?.data?.length > 0) {
@@ -231,12 +215,7 @@ const MyView = () => {
   const getAssignewdToMe = (url, type, ProjectID) => {
     axiosInstances
       .post(url, {
-        // EmployeeID: Number(formData?.AssignedTo),
-        // SearchType: String(code ? code : "0"),
-        // Date: String(formatDate(formData?.FromDate)),
-        // ManagerID: Number(formData?.ReportingTo),
         ProjectID: Number(ProjectID ? ProjectID : "0"),
-        // StatusCode: String(code ? code : "0"),
       })
       .then((res) => {
         if (type == "assign") {

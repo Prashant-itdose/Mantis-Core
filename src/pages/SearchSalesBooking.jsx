@@ -182,7 +182,6 @@ const SearchSalesBooking = ({ data }) => {
       })
       .then((res) => {
         const data = res.data.data;
-        console.log("SearchSalesBooking", data);
         if (res?.data.success === true) {
           setDynamicFilter(data);
         } else {

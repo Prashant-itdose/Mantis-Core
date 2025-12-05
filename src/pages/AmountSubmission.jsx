@@ -356,10 +356,22 @@ const AmountSubmission = ({ data }) => {
     const payload = {
       ProjectID: String(formData?.Project || ""),
       ProjectName: String(getlabel(formData?.Project, project) || ""),
+      BillingCompanyID: String(""),
+      BillingCompanyName: String(""),
+      BillingCompanyAddress: String(""),
+      BillingState: String(""),
+      GSTNo: String(""),
+      PanCardNo: String(""),
+      ShippingCompanyID: String(""),
+      ShippingCompanyName: String(""),
+      ShippingCompanyAddress: String(""),
+      ShippingState: String(""),
+      ShippingGSTNo: String(""),
+      ShippingPanCardNo: String(""),
       ReceivedDate: formatDate(formData?.ReceiveDate) || "",
-      ReceivedBy: String(formData?.ReceivedBy || ""),
       PaymentMode: actionType === 1 ? "TDS" : String(formData?.PaymentMode),
       Amount: String(formData?.Amount || ""),
+      ReceivedBy: String(formData?.ReceivedBy || ""),
       Remark: String(formData?.Remarks || ""),
       UtrNo: String(formData?.UTRNO || ""),
       BankName:
@@ -399,8 +411,9 @@ const AmountSubmission = ({ data }) => {
             SelectFile: "",
             Document_Base64: "",
             FileExtension: "",
-            PINumberDropdown: "",
+            PINumberDropdown:""
           });
+          setPiSaleDetail([]);
           handleSearch(formData?.Project);
         } else {
           toast.error(res?.data?.message);
@@ -439,19 +452,7 @@ const AmountSubmission = ({ data }) => {
       reader.readAsDataURL(file);
     }
   };
-  const handleCheckBox = (e) => {
-    const { name, value, checked, type } = e?.target;
-    if (name == "Picheckbox") {
-      setVisible({
-        showVisible: true,
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: type === "checkbox" ? (checked ? 1 : 0) : value,
-      });
-    }
-  };
+
   const [visible, setVisible] = useState({
     showVisible: false,
 
@@ -467,11 +468,12 @@ const AmountSubmission = ({ data }) => {
     0
   );
   const PITotal2Per = (PIAmountCal * 2) / 100;
-
+ 
   const PITotal10Per = (PIAmountCal * 10) / 100;
-
+ 
   const Total2Percent = PIPendingCal.toFixed(2) == PITotal2Per.toFixed(2);
   const Total10Percent = PIPendingCal.toFixed(2) == PITotal10Per.toFixed(2);
+
 
   const handleOpenPI_SelectPINo = (value) => {
     axiosInstances
@@ -480,6 +482,7 @@ const AmountSubmission = ({ data }) => {
       })
       .then((res) => {
         setPiSaleDetail(res.data.data);
+  
       })
       .catch((err) => {
         console.log(err);
@@ -771,7 +774,7 @@ const AmountSubmission = ({ data }) => {
           /> */}
           <div className="col-sm-3 d-flex mt-2">
             <BrowseButton handleImageChange={handleImageChange} />
-
+          
             {loading ? (
               <Loading />
             ) : (
