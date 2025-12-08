@@ -777,6 +777,13 @@ const allRoutes = {
       component: lazy(() => import("@app/pages/OverseasExpenseManagement.jsx")),
       exact: true,
     },
+    {
+      Guard: Authenticated,
+      layout: Layout,
+      path: "/OverseasExpenseManagementSearch",
+      component: lazy(() => import("@app/pages/OverseasExpenseManagementSearch.jsx")),
+      exact: true,
+    },
    
     {
       Guard: Authenticated,

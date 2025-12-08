@@ -1068,7 +1068,7 @@ const SearchEmployeeMaster = () => {
               handleChange={handleDeliveryChange}
             />
           )}
-          <div className="col-3 d-flex">
+          <div className="col-2 d-flex">
             {loading ? (
               <Loading />
             ) : (

@@ -8,6 +8,7 @@ import { axiosInstances } from "../networkServices/axiosInstance";
 import { apiUrls } from "../networkServices/apiEndpoints";
 import BrowseInvoiceButton from "../components/formComponent/BrowseInvoiceButton";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const OverseasExpenseManagement = () => {
   const [t] = useTranslation();
@@ -24,8 +25,8 @@ const OverseasExpenseManagement = () => {
   });
 
   const transformData = (data) => {
-    const headers = data[0]; // First array is the header
-    const rows = data.slice(1); // Remaining arrays are the data rows
+    const headers = data[0];
+    const rows = data.slice(1);
 
     return rows.map((row) => {
       let obj = {};
@@ -37,9 +38,8 @@ const OverseasExpenseManagement = () => {
   };
   const [tableData, setTableData] = useState([]);
   const getReportNote = (event) => {
-    const file = event?.target?.files[0]; // Get the uploaded file
+    const file = event?.target?.files[0];
     const reader = new FileReader();
-    // console.log("reader", reader);
 
     reader.onload = (e) => {
       const data = new Uint8Array(e.target.result);
@@ -48,6 +48,12 @@ const OverseasExpenseManagement = () => {
       // Assuming the first sheet is the one you want
       const firstSheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[firstSheetName];
+
+      // Get the sheet headers (first row)
+      const sheetHeaders = XLSX.utils.sheet_to_json(worksheet, {
+        header: 1,
+        defval: "",
+      })[0]; // Get first row as headers
 
       // Convert the sheet to JSON
       const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
@@ -78,7 +84,12 @@ const OverseasExpenseManagement = () => {
           ClosingBalanceInINR: ele?.ClosingBalanceInINR,
         };
       });
-      setTableData(mappedData);
+
+      // Store both the data and headers in state
+      setTableData({
+        headers: sheetHeaders,
+        data: mappedData,
+      });
       event.target.value = null;
     };
     reader.readAsArrayBuffer(file);
@@ -127,12 +138,17 @@ const OverseasExpenseManagement = () => {
     }
   };
   const handleSave = () => {
+    // Prepare payload with both headers and data
+    const payload = {
+      FileExtension: String(formData?.FileExtension || ""),
+      Document_Base64: String(formData?.Document_Base64 || ""),
+      ExcelHeaders: tableData?.headers || [], // Send Excel headers
+      ExcelData: tableData?.data || [], // Send the mapped data
+      OriginalFileName: "", // Optional: include original file name
+    };
+
     axiosInstances
-      .post(apiUrls.AssignTo_Select, {
-        FileExtension: String(formData?.FileExtension || ""),
-        Document_Base64: String(formData?.Document_Base64 || ""),
-        XLSXData: tableData,
-      })
+      .post(apiUrls.AssignTo_Select, payload)
       .then((res) => {
         if (res.data.success === true) {
           toast.success(res.data.message);
@@ -150,7 +166,16 @@ const OverseasExpenseManagement = () => {
   return (
     <>
       <div className="card">
-        <Heading isBreadcrumb={true} />
+        <Heading
+          isBreadcrumb={true}
+          secondTitle={
+            <div style={{ fontWeight: "bold" }}>
+              <Link to="/OverseasExpenseManagementSearch" className="ml-3">
+                Back to List
+              </Link>
+            </div>
+          }
+        />
         <div className="row m-2">
           {/* <ReactSelect
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
