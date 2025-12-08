@@ -97,7 +97,7 @@ const ViewExpense = () => {
   };
 
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 20;
+  const rowsPerPage = 10;
   const totalPages = Math.ceil(tableData?.length / rowsPerPage);
   const currentData = tableData?.slice(
     (currentPage - 1) * rowsPerPage,
@@ -199,17 +199,6 @@ const ViewExpense = () => {
     });
   };
 
-  // const handleMonthYearChange = (name, e) => {
-  //   const { value } = e.target;
-  //   const date = new Date(value);
-  //   setFormData({
-  //     ...formData,
-  //     currentMonth: date.getMonth() + 1,
-  //     currentYear: date.getFullYear(),
-  //   });
-  //   setTableData([]);
-  // };
-
   const handleMonthYearChange = (name, e) => {
     const { value } = e.target;
     const date = new Date(value);
@@ -220,8 +209,9 @@ const ViewExpense = () => {
       currentMonth: date.getMonth() + 1,
       currentYear: date.getFullYear(),
     }));
-
     setTableData([]);
+    setFilteredData([]);
+    setCurrentPage(1);
   };
 
   const handleFilter = (filterValue) => {

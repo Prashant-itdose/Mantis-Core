@@ -295,14 +295,6 @@ const SearchEmployeeMaster = () => {
     handleDotnetMantis(checked, ele);
   };
 
-  const ValidationForm = (formData) => {
-    let err = "";
-    if (formData?.Name === "") {
-      err = { ...err, Name: "Please Enter Employee Name." };
-    }
-    return err;
-  };
-
   const handleDotnetMantis = (isActive, ele, index) => {
     let form = new FormData();
     form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
