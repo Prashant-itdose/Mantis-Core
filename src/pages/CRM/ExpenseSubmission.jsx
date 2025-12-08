@@ -686,7 +686,7 @@ const ExpenseSubmission = () => {
         ExpenseDate: String(formatDateToLocal(check)),
       })
       .then((res) => {
-        const response = res?.data?.data?.dt[0];
+        const response = res?.data?.data?.dt?.[0];
         const datecheck = response?.Date;
         const filetd = response?.FileURL;
         setFiledta(filetd);

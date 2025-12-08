@@ -166,7 +166,6 @@ const Header = React.memo(() => {
   };
 
   const handleIssueSearch = () => {
-   
     axiosInstances
       .post(apiUrls.ViewTicket, {
         TicketID: Number(formData?.issuesearch),
@@ -216,18 +215,15 @@ const Header = React.memo(() => {
         roleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
       })
     );
-    
   }, []);
 
   const BindRoleWiseMenu = async (RoleID) => {
     dispatch(GetRoleListByEmployeeIDAndCentreID({ roleID: Number(RoleID) }));
- 
+
     navigate("/dashboard");
   };
   const { memberID } = useSelector((state) => state?.loadingSlice);
   const [project, setProject] = useState([]);
-
-
 
   const handleHeaderCount = () => {
     axiosInstances
@@ -291,7 +287,6 @@ const Header = React.memo(() => {
         VerticalID: Number("0"),
       })
       .then((res) => {
-    
         const poc3s = res?.data.data.map((item) => {
           return { label: item?.Project, value: item?.ProjectId };
         });
@@ -810,7 +805,6 @@ const Header = React.memo(() => {
             </li>
           )}
 
-        
           <li className="nav-item position-relative  d-md-flex mr-1">
             <Themedropdown />
           </li>
