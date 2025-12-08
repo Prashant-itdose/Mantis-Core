@@ -347,11 +347,11 @@ const LoginDetailModal = () => {
               // color: tableData[0]?.LogoutTime > "09:00:00" ? "red" : "black",
             }}
           >
-            Logout Time:{" "}
+            Logout Time:
             {tableData?.[0]?.LogoutTime
               ? tableData?.[0]?.LogoutTime
               : "00:00:00"}
-          </span>{" "}
+          </span>
         </div>
       </div>
       <Heading
@@ -392,8 +392,11 @@ const LoginDetailModal = () => {
                     : "",
                   IN: ele?.LoginTime,
                   OUT:
-                    tableData?.length == index + 1 
-                      ? (Number(ele?.LogDate?.split('-')?.[2]) == new Date().getDay() ? "00:00:00" : ele?.LogoutTime)
+                    tableData?.length == index + 1
+                      ? Number(ele?.LogDate?.split("-")?.[2]) ==
+                        new Date().getDay()
+                        ? "00:00:00"
+                        : ele?.LogoutTime
                       : ele?.LogoutTime,
                   "Time Difference": `${isNaN(diffHrs) ? "00" : diffHrs}:${isNaN(diffMin) ? "00" : diffMin}:${isNaN(diffSec) ? "00" : diffSec}`,
                 };

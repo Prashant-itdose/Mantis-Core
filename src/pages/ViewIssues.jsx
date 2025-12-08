@@ -118,7 +118,7 @@ const ViewIssues = ({ data }) => {
   });
   const [formData, setFormData] = useState({
     PageNo: "",
-    PageSize: 50,
+    PageSize: 200,
     SubmitDate: "",
     Incharge: [],
     DeliveryDate:
