@@ -256,7 +256,7 @@ const AdvanceRequest = () => {
         <Heading
           isBreadcrumb={true}
           secondTitle={
-            <div style={{ fontWeight: "bold" }}>
+            <div className="font-weight-bold">
               <Link to="/AdvanceRequestView" className="ml-3">
                 Advance Request View
               </Link>
@@ -342,7 +342,7 @@ const AdvanceRequest = () => {
           {tableData1?.length > 0 && (
             <div className="card mt-3" style={{ width: "400px" }}>
               <Heading
-                title={<span style={{ fontWeight: "bold" }}>EMI Details</span>}
+                title={<span className="font-weight-bold">EMI Details</span>}
               />
               <div className=" m-0">
                 <Tables

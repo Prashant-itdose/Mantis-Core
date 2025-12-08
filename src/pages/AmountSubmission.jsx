@@ -411,7 +411,7 @@ const AmountSubmission = ({ data }) => {
             SelectFile: "",
             Document_Base64: "",
             FileExtension: "",
-            PINumberDropdown:""
+            PINumberDropdown: "",
           });
           setPiSaleDetail([]);
           handleSearch(formData?.Project);
@@ -468,12 +468,11 @@ const AmountSubmission = ({ data }) => {
     0
   );
   const PITotal2Per = (PIAmountCal * 2) / 100;
- 
+
   const PITotal10Per = (PIAmountCal * 10) / 100;
- 
+
   const Total2Percent = PIPendingCal.toFixed(2) == PITotal2Per.toFixed(2);
   const Total10Percent = PIPendingCal.toFixed(2) == PITotal10Per.toFixed(2);
-
 
   const handleOpenPI_SelectPINo = (value) => {
     axiosInstances
@@ -482,7 +481,6 @@ const AmountSubmission = ({ data }) => {
       })
       .then((res) => {
         setPiSaleDetail(res.data.data);
-  
       })
       .catch((err) => {
         console.log(err);
@@ -565,52 +563,6 @@ const AmountSubmission = ({ data }) => {
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
             handleChange={searchHandleChange}
           />
-          {/* <div className="d-flex">
-            <label>Type :</label>
-            <div
-              className="search-col"
-              style={{
-                marginLeft: "8px",
-                display: "flex",
-                marginRight: "auto",
-              }}
-            >
-              {[
-                { name: "Deposit", label: "Deposit" },
-                { name: "CreditNote", label: "CreditNote" },
-                { name: "DebitNote", label: "DebitNote" },
-                { name: "TDS", label: "TDS" },
-              ].map((item, idx) => (
-                <div
-                  key={idx}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    marginLeft: idx !== 0 ? "28px" : "0px",
-                  }}
-                >
-                  <label className="switch" style={{ marginTop: "3px" }}>
-                    <input
-                      type="checkbox"
-                      name={item.name}
-                      checked={formData[item.name] === "1"}
-                      onChange={handleSelectChange}
-                    />
-                    <span className="slider"></span>
-                  </label>
-                  <span
-                    style={{
-                      marginLeft: "3px",
-                      marginRight: "5px",
-                      fontSize: "12px",
-                    }}
-                  >
-                    {item.label}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div> */}
 
           <ReactSelect
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
@@ -663,26 +615,6 @@ const AmountSubmission = ({ data }) => {
           )}
           {formData?.PaymentMode == "NEFT" && (
             <>
-              {/* <Input
-                type="text"
-                className="form-control"
-                id="DepositedBy"
-                name="DepositedBy"
-                lable="Deposited By"
-                onChange={handleSelectChange}
-                value={formData?.DepositedBy}
-                respclass="col-xl-2 col-md-3 col-sm-4 col-12"
-              /> */}
-              {/* <Input
-                type="text"
-                className="form-control required-fields"
-                id="ReceivedBy"
-                name="ReceivedBy"
-                lable="ReceivedBy"
-                onChange={handleSelectChange}
-                value={formData?.ReceivedBy}
-                respclass="col-xl-2 col-md-3 col-sm-4 col-12"
-              /> */}
               <Input
                 type="text"
                 className="form-control"
@@ -710,16 +642,6 @@ const AmountSubmission = ({ data }) => {
           )}
           {formData?.PaymentMode == "Cheque" && (
             <>
-              {/* <Input
-                type="text"
-                className="form-control required-fields"
-                id="ReceivedBy"
-                name="ReceivedBy"
-                lable="ReceivedBy"
-                onChange={handleSelectChange}
-                value={formData?.ReceivedBy}
-                respclass="col-xl-2 col-md-3 col-sm-4 col-12"
-              /> */}
               <Input
                 type="text"
                 className="form-control"
@@ -774,7 +696,7 @@ const AmountSubmission = ({ data }) => {
           /> */}
           <div className="col-sm-3 d-flex mt-2">
             <BrowseButton handleImageChange={handleImageChange} />
-          
+
             {loading ? (
               <Loading />
             ) : (

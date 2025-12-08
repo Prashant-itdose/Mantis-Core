@@ -51,10 +51,16 @@ const PurchaseOrderSearch = () => {
     <>
       <div className="card">
         <Heading
-          title="Purchase Order Search"
+          title={
+            <span className="font-weight-bold">Purchase Order Search</span>
+          }
           secondTitle={
             <div>
-              <Link to="/PurchaseOrder" className="ml-3" title="Click to View">
+              <Link
+                to="/PurchaseOrder"
+                className="ml-3 font-weight-bold"
+                title="Click to View"
+              >
                 Create Purchase Order
               </Link>
             </div>
@@ -66,7 +72,7 @@ const PurchaseOrderSearch = () => {
             className="form-control"
             id="PurchaseOrder"
             name="PurchaseOrder"
-            lable="Search Purchase Order"
+            lable="Purchase Order"
             placeholder=""
             onChange={handleSelectChange}
             value={formData?.PurchaseOrder}
@@ -105,10 +111,16 @@ const PurchaseOrderSearch = () => {
             onKeyDown={Tabfunctionality}
             tabIndex="1"
           />
+          <button
+            className="btn btn-sm btn-primary ml-2"
+            // onClick={ handleViewSearch}
+          >
+            <i className="fa fa-search mr-1" aria-hidden="true"></i> Search
+          </button>
         </div>
       </div>
       <div className="card mt-2">
-        <Heading title={"Search Details"}/>
+        <Heading title={"Search Details"} />
         <Tables
           thead={purchaseOrderTHEAD}
           tbody={tableData?.map((ele, index) => ({

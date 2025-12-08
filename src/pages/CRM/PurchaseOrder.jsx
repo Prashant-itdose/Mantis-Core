@@ -92,9 +92,12 @@ const PurchaseOrder = () => {
   };
   const getProject = () => {
     let form = new FormData();
-    
+
     form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname") ),
+      form.append(
+        "LoginName",
+        useCryptoLocalStorage("user_Data", "get", "realname")
+      ),
       axios
         .post(apiUrls?.ProjectSelect, form, { headers })
         .then((res) => {
@@ -206,12 +209,12 @@ const PurchaseOrder = () => {
       <div className="card">
         <Heading
           title="Create Purchase Order"
+          isBreadcrumb={true}
           secondTitle={
             <div>
-              {" "}
               <Link
                 to="/PurchaseOrderSearch"
-                className="ml-3"
+                className="ml-3 font-weight-bold"
                 title="Click to View"
               >
                 Search Purchase Order
@@ -321,10 +324,10 @@ const PurchaseOrder = () => {
             name="Items"
             placeholderName="Item"
             dynamicOptions={[
-              {label:"AMC",value:"1"},
-              {label:"Api Integration",value:"2"},
-              {label:"Bio Chemistry",value:"3"},
-              {label:"B2B MobileApp",value:"4"},
+              { label: "AMC", value: "1" },
+              { label: "Api Integration", value: "2" },
+              { label: "Bio Chemistry", value: "3" },
+              { label: "B2B MobileApp", value: "4" },
             ]}
             className="Items"
             handleChange={handleDeliveryChange}
