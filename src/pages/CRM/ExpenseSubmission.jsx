@@ -25,6 +25,7 @@ const currentYear = currentDate.getFullYear();
 const ExpenseSubmission = () => {
   const location = useLocation();
   const { state } = location;
+  console.log("state edit chck", state?.givenData?.EmpID);
   const ReportingManager = useCryptoLocalStorage(
     "user_Data",
     "get",
@@ -516,7 +517,7 @@ const ExpenseSubmission = () => {
     });
     setLoading(true);
     const payload = {
-      EmpID: Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),
+      EmpID: state?.givenData?.EmpID,
       GeneralDetails: [
         {
           Date: moment(formData?.FromDate).format("YYYY-MM-DD"),
@@ -677,12 +678,7 @@ const ExpenseSubmission = () => {
 
     axiosInstances
       .post(apiUrls.IsExpenseExists, {
-        ExpenseEmployeeID:
-          state?.length > 0
-            ? Number(state.givenData?.EmpID)
-            : Number(
-                useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-              ),
+        ExpenseEmployeeID: Number(state?.givenData?.EmpID),
         ExpenseDate: String(formatDateToLocal(check)),
       })
       .then((res) => {

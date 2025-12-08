@@ -209,7 +209,7 @@ const LoginDetailModal = () => {
           </div>
         </div>
       )}
-      <div className="card mt-2">
+      <div className="card mt-0">
         <div className="row">
           {ReportingManager == 1 ? (
             <ReactSelect

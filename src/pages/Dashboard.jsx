@@ -358,6 +358,7 @@ const Dashboard = () => {
       });
   };
 
+
   useEffect(() => {
     handleFirstDashboardCount(memberID);
     const today = new Date();
@@ -369,11 +370,8 @@ const Dashboard = () => {
     handleHeightOfBirthDaycardApi();
     handleFirstDashboardCount();
     handleNews();
-
-    // handleCircularRead();
-
-    // handleMultiChart()
   }, []);
+
 
   // useEffect(() => {
   //   const today = new Date();

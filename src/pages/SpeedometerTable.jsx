@@ -57,14 +57,7 @@ const SpeedometerTable = () => {
   const TotalRecords = (
     <div style={{ textAlign: "left" }}>{Math.round(valueId / 100)}</div>
   );
-  // const TotalLabel = (
-  //   <div style={{ textAlign: "end" }}>
-  //     <label>
-  //       Total Records:
-  //       <br /> Performance:
-  //     </label>{" "}
-  //   </div>
-  // );
+
 
   return (
     <>
