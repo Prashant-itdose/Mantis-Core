@@ -43,7 +43,6 @@ const EmployeeMaster = () => {
   const { VITE_DATE_FORMAT } = import.meta.env;
   const [vertical, setVertical] = useState([]);
   const [team, setTeam] = useState([]);
-  const [errors, setErros] = useState({});
   const [project, setProject] = useState([]);
   const [reporter, setReporter] = useState([]);
   const [designation, setDesignation] = useState([]);
@@ -1081,101 +1080,7 @@ const EmployeeMaster = () => {
                 value={formData?.GovtIDNo}
                 respclass="col-xl-2 col-md-4 col-sm-4 col-12"
               />
-              {/* {formData?.GovtID == "Aadhar Card" && (
-                <Input
-                  type="text"
-                  className="form-control mt-1"
-                  id="GovtIDNo"
-                  name="GovtIDNo"
-                  lable="Aadhar Card"
-                  placeholder=""
-                  onChange={(e) => {
-                    inputBoxValidation(
-                      AADHARCARD_VALIDATION_REGX,
-                      e,
-                      handleSelectChange
-                    );
-                  }}
-                  value={formData?.GovtIDNo}
-                  respclass="col-xl-2 col-md-4 col-sm-4 col-12"
-                />
-              )}
-              {formData?.GovtID == "Pan Card" && (
-                <Input
-                  type="text"
-                  className="form-control mt-1"
-                  id="GovtIDNo"
-                  name="GovtIDNo"
-                  lable="Pan Card"
-                  placeholder=""
-                  onChange={(e) => {
-                    inputBoxValidation(
-                      PANCARD_VALIDATION_REGX,
-                      e,
-                      handleSelectChange
-                    );
-                  }}
-                  value={formData?.GovtIDNo}
-                  respclass="col-xl-2 col-md-4 col-sm-4 col-12"
-                />
-              )}
-              {formData?.GovtID == "Driving License" && (
-                <Input
-                  type="text"
-                  className="form-control mt-1"
-                  id="GovtIDNo"
-                  name="GovtIDNo"
-                  lable="Driving License"
-                  placeholder=""
-                  onChange={(e) => {
-                    inputBoxValidation(
-                      DRIVINGLICENSE_VALIDATION_REGX,
-                      e,
-                      handleSelectChange
-                    );
-                  }}
-                  value={formData?.GovtIDNo}
-                  respclass="col-xl-2 col-md-4 col-sm-4 col-12"
-                />
-              )}
-              {formData?.GovtID == "VoterID Card" && (
-                <Input
-                  type="text"
-                  className="form-control mt-1"
-                  id="GovtIDNo"
-                  name="GovtIDNo"
-                  lable="VoterID Card"
-                  placeholder=""
-                  onChange={(e) => {
-                    inputBoxValidation(
-                      VOTER_VALIDATION_REGX,
-                      e,
-                      handleSelectChange
-                    );
-                  }}
-                  value={formData?.GovtIDNo}
-                  respclass="col-xl-2 col-md-4 col-sm-4 col-12"
-                />
-              )}
-              {formData?.GovtID == "Passport" && (
-                <Input
-                  type="text"
-                  className="form-control mt-1"
-                  id="GovtIDNo"
-                  name="GovtIDNo"
-                  lable="Passport"
-                  placeholder=""
-                  onChange={(e) => {
-                    inputBoxValidation(
-                      PASSPORT_VALIDATION_REGX,
-                      e,
-                      handleSelectChange
-                    );
-                  }}
-                  value={formData?.GovtIDNo}
-                  respclass="col-xl-2 col-md-4 col-sm-4 col-12"
-                />
-              )} */}
+             
               <DatePicker
                 className="custom-calendar"
                 id="DOB"
@@ -1610,7 +1515,6 @@ const EmployeeMaster = () => {
                 onChange={handleSelectChange}
                 value={formData?.ContactEmail}
                 respclass="col-xl-2 col-md-4 col-sm-4 col-12"
-                error={errors?.ContactEmail ? errors?.ContactEmail : ""}
               />
               <Input
                 type="number"
@@ -1628,7 +1532,6 @@ const EmployeeMaster = () => {
                 }}
                 value={formData?.ContactMobile}
                 respclass="col-xl-2 col-md-4 col-sm-4 col-12"
-                error={errors?.ContactMobile ? errors?.ContactMobile : ""}
               />
               <Input
                 type="number"
@@ -1646,7 +1549,6 @@ const EmployeeMaster = () => {
                 }}
                 value={formData?.AlternateMobile}
                 respclass="col-xl-2 col-md-4 col-sm-4 col-12"
-                error={errors?.AlternateMobile ? errors?.AlternateMobile : ""}
               />
               <Input
                 type="number"
@@ -1776,7 +1678,6 @@ const EmployeeMaster = () => {
                 }}
                 value={formData?.CurrentPinCode}
                 respclass="col-xl-2 col-md-4 col-sm-4 col-12"
-                error={errors?.CurrentPinCode ? errors?.CurrentPinCode : ""}
               />
             </div>
           </>
@@ -1850,7 +1751,6 @@ const EmployeeMaster = () => {
                 value={formData?.PermanentAddress}
                 respclass="col-xl-2 col-md-4 col-sm-4 col-12"
                 disabled={formData?.SameAsCurrent == "1"}
-                error={errors?.PermanentAddress ? errors?.PermanentAddress : ""}
               />
               <Input
                 type="text"
@@ -1902,7 +1802,6 @@ const EmployeeMaster = () => {
                 }}
                 value={formData?.PermanentPinCode}
                 respclass="col-xl-2 col-md-4 col-sm-4 col-12"
-                error={errors?.PermanentPinCode ? errors?.PermanentPinCode : ""}
               />
             </div>
           </>
@@ -2004,7 +1903,6 @@ const EmployeeMaster = () => {
                 onChange={handleSelectChange}
                 value={formData?.EmployeeCode}
                 respclass="col-xl-2 col-md-4 col-sm-4 col-12"
-                error={errors?.EmployeeCode ? errors?.EmployeeCode : ""}
               />
               <ReactSelect
                 name="Grade"
@@ -2049,116 +1947,7 @@ const EmployeeMaster = () => {
                 value={formData?.EmployeeEmail}
                 respclass="col-xl-2 col-md-4 col-sm-4 col-12"
               />
-              {/* <Input
-                type="number"
-                className="form-control required-fields"
-                id="Salary"
-                name="Salary"
-                lable="Salary"
-                placeholder=" "
-                onChange={handleSelectChange}
-                value={formData?.Salary}
-                respclass="col-xl-2 col-md-4 col-sm-4 col-12"
-              /> */}
-              {/* <ReactSelect
-                name="SalaryAccountBank"
-                respclass="col-xl-2 col-md-4 col-sm-6 col-12"
-                placeholderName="Salary A/c Bank"
-                dynamicOptions={[
-                  { label: "Kotak", value: "Kotak" },
-                  { label: "ICICI", value: "ICICI" },
-                  { label: "Delta", value: "Cash" },
-                ]}
-                value={formData?.SalaryAccountBank}
-                handleChange={handleDeliveryChange}
-                requiredClassName="required-fields"
-              /> */}
-              {/* <Input
-                type="number"
-                className="form-control required-fields"
-                id="SalaryAccountNumber"
-                name="SalaryAccountNumber"
-                lable="Salary A/c No."
-                placeholder=" "
-                onChange={handleSelectChange}
-                value={formData?.SalaryAccountNumber}
-                respclass="col-xl-2 col-md-4 col-sm-4 col-12"
-                error={
-                  errors?.SalaryAccountNumber ? errors?.SalaryAccountNumber : ""
-                }
-              /> */}
-              {/* <div className="search-col" style={{ marginLeft: "5px" }}>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <label className="switch" style={{ marginTop: "7px" }}>
-                    <input
-                      type="checkbox"
-                      name="RegisteredSalesEnquiry"
-                      checked={
-                        formData?.RegisteredSalesEnquiry == "1" ? true : false
-                      }
-                      onChange={handleSelectChange}
-                    />
-                    <span className="slider"></span>
-                  </label>
-                  <span
-                    style={{
-                      marginLeft: "3px",
-                      marginRight: "5px",
-                      fontSize: "12px",
-                    }}
-                  >
-                    Registered Sales Enquiry
-                  </span>
-                </div>
-              </div>
-              <div className="search-col" style={{ marginLeft: "5px" }}>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <label className="switch" style={{ marginTop: "7px" }}>
-                    <input
-                      type="checkbox"
-                      name="IsSalesTeamMember"
-                      checked={
-                        formData?.IsSalesTeamMember == "1" ? true : false
-                      }
-                      onChange={handleSelectChange}
-                    />
-                    <span className="slider"></span>
-                  </label>
-                  <span
-                    style={{
-                      marginLeft: "3px",
-                      marginRight: "5px",
-                      fontSize: "12px",
-                    }}
-                  >
-                    Is Sales Team Member
-                  </span>
-                </div>
-              </div>
-              <div className="search-col" style={{ marginLeft: "5px" }}>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <label className="switch" style={{ marginTop: "7px" }}>
-                    <input
-                      type="checkbox"
-                      name="ApproveLeaveRequest"
-                      checked={
-                        formData?.ApproveLeaveRequest == "1" ? true : false
-                      }
-                      onChange={handleSelectChange}
-                    />
-                    <span className="slider"></span>
-                  </label>
-                  <span
-                    style={{
-                      marginLeft: "3px",
-                      marginRight: "5px",
-                      fontSize: "12px",
-                    }}
-                  >
-                    Approve Leave Request
-                  </span>
-                </div>
-              </div> */}
+           
               <ReactSelect
                 name="MaximumWeekoffs"
                 respclass="col-xl-2 col-md-4 col-sm-6 col-12"
@@ -2185,33 +1974,7 @@ const EmployeeMaster = () => {
                 handleChange={handleDeliveryChange}
                 requiredClassName="required-fields"
               />
-              {/* <Input
-                type="number"
-                className="form-control required-fields"
-                id="WorkingDays"
-                name="WorkingDays"
-                lable="Working Days"
-                placeholder=" "
-                onChange={handleSelectChange}
-                value={formData?.WorkingDays}
-                respclass="col-xl-2 col-md-4 col-sm-4 col-12"
-              /> */}
-              {/* <Input
-                type="number"
-                className="form-control required-fields mt-1"
-                id="BiometricEmployeeCode"
-                name="BiometricEmployeeCode"
-                lable="Biometric Employee Code"
-                placeholder=" "
-                onChange={handleSelectChange}
-                value={formData?.BiometricEmployeeCode}
-                respclass="col-xl-2 col-md-4 col-sm-4 col-12"
-                error={
-                  errors?.BiometricEmployeeCode
-                    ? errors?.BiometricEmployeeCode
-                    : ""
-                }
-              /> */}
+             
             </div>
           </>
         )}

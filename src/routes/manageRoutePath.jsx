@@ -58,16 +58,7 @@ function manageRoutePath() {
       component: lazy(() => import("@app/pages/Summary.jsx")),
       exact: true,
     },
-    // {
-    //   Guard: Authenticated,
-    //   layout: Layout,
-    //   path: "/reportissue",
-    //   component: lazy(
-    //     () =>
-    //       import("@app/pages/ReportIssue.jsx")
-    //   ),
-    //   exact: true,
-    // },
+
     {
       Guard: Authenticated,
       layout: Layout,
@@ -294,6 +285,27 @@ function manageRoutePath() {
       layout: Layout,
       path: "/AdvanceRequest",
       component: lazy(() => import("@app/pages/CRM/AdvanceRequest.jsx")),
+      exact: true,
+    },
+    {
+      Guard: Authenticated,
+      layout: Layout,
+      path: "/SupplierMaster",
+      component: lazy(() => import("@app/pages/Inventory/SupplierMaster.jsx")),
+      exact: true,
+    },
+    {
+      Guard: Authenticated,
+      layout: Layout,
+      path: "/ItemMaster",
+      component: lazy(() => import("@app/pages/Inventory/ItemMaster.jsx")),
+      exact: true,
+    },
+    {
+      Guard: Authenticated,
+      layout: Layout,
+      path: "/GRN",
+      component: lazy(() => import("@app/pages/Inventory/GRN.jsx")),
       exact: true,
     },
     {

@@ -6,11 +6,10 @@ import { apiUrls } from "../networkServices/apiEndpoints";
 import BrowseInvoiceButton from "../components/formComponent/BrowseInvoiceButton";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import ExcelPreviewHandler from "./ExcelImport/ExcelPreviewHandler";
 
-const OverseasExpenseManagement = () => {
+const PurchaseInvoiceManagement = () => {
   const [t] = useTranslation();
-  const [excelData, setExcelData] = useState([]);
+  const [tableData, setTableData] = useState([]);
   const [formData, setFormData] = useState({
     FromDate: "",
     ToDate: "",
@@ -43,15 +42,13 @@ const OverseasExpenseManagement = () => {
       reader.readAsDataURL(file);
     }
   };
-
   const handleSave = () => {
     const payload = {
       FileExtension: String(formData?.FileExtension || ""),
       Document_Base64: String(formData?.Document_Base64 || ""),
-      OverseasExcelData: excelData,
     };
     axiosInstances
-      .post(apiUrls.OverseasExcelInsert, payload)
+      .post(apiUrls.AssignTo_Select, payload)
       .then((res) => {
         if (res.data.success === true) {
           toast.success(res.data.message);
@@ -64,10 +61,6 @@ const OverseasExpenseManagement = () => {
       });
   };
 
-  const handleCancel = () => {
-    setExcelData([]);
-  };
-
   return (
     <>
       <div className="card">
@@ -75,31 +68,16 @@ const OverseasExpenseManagement = () => {
           isBreadcrumb={true}
           secondTitle={
             <div style={{ fontWeight: "bold" }}>
-              <Link to="/OverseasExpenseManagementSearch" className="ml-3">
+              <Link to="/PurchaseInvoiceManagementSearch" className="ml-3">
                 Back to List
               </Link>
             </div>
           }
         />
         <div className="row m-2">
-          <div className="ml-2">
-            <ExcelPreviewHandler setCallBackState={setExcelData} />
-          </div>
-
-          {excelData?.length > 0 && (
-            <i
-              className="fa fa-retweet ml-3 mt-2 "
-              aria-hidden="true"
-              onClick={handleCancel}
-              title="Click to Refresh Excel Sheet."
-              style={{ cursor: "pointer" }}
-            ></i>
-          )}
-
           <div className="ml-4">
             <BrowseInvoiceButton handleImageChange={handleImageChange} />
           </div>
-
           <button
             className="btn btn-sm btn-primary ml-4 mt-0"
             onClick={handleSave}
@@ -111,4 +89,4 @@ const OverseasExpenseManagement = () => {
     </>
   );
 };
-export default OverseasExpenseManagement;
+export default PurchaseInvoiceManagement;

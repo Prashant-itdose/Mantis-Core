@@ -131,6 +131,32 @@ const initialState = {
       ],
     },
     {
+      menuName: "Inventory",
+      menuOrder: "224",
+      menuID: "851",
+      menuIcon: "fas fa-tachometer-alt",
+      children: [
+        {
+          childrenName: "SupplierMaster",
+          url: "/SupplierMaster",
+          childrenOrder: "1",
+          breadcrumb: "Inventory / SupplierMaster",
+        },
+        {
+          childrenName: "ItemMaster",
+          url: "/ItemMaster",
+          childrenOrder: "2",
+          breadcrumb: "Inventory / Item Master",
+        },
+        {
+          childrenName: "GRN",
+          url: "/GRN",
+          childrenOrder: "3",
+          breadcrumb: "Inventory / GRN",
+        },
+      ],
+    },
+    {
       menuName: "Feedback",
       menuOrder: "22",
       menuID: "89",
@@ -530,6 +556,18 @@ const initialState = {
           url: "/OverseasExpenseManagementSearch",
           childrenOrder: "8",
           breadcrumb: "Accounts / OverseasExpenseManagementSearch",
+        },
+        {
+          childrenName: "PurchaseInvoiceManagement",
+          url: "/PurchaseInvoiceManagement",
+          childrenOrder: "9",
+          breadcrumb: "Accounts / PurchaseInvoiceManagement",
+        },
+        {
+          childrenName: "PurchaseInvoiceManagementSearch",
+          url: "/PurchaseInvoiceManagementSearch",
+          childrenOrder: "10",
+          breadcrumb: "Accounts / PurchaseInvoiceManagementSearch",
         },
       ],
     },

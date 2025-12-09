@@ -119,6 +119,8 @@ export const apiUrls = {
     "/CRMCOREAPI/api/Accounts/AmountSubmissionByAccountsSearch",
   AmountSubmission_ByAccounts_IsCancel:
     "/CRMCOREAPI/api/Accounts/AmountSubmission_ByAccounts_IsCancel",
+  OverseasExcelInsert:
+    "/CRMCOREAPI/api/Accounts/OverseasExcelInsert",
 
   //Query Master Api;s
   Query_Insert: "/CRMCOREAPI/api/QueryVsResult/Query_Insert",

@@ -138,7 +138,30 @@ export const MENU = {
         },
       ],
     },
-
+    {
+      name: i18n.t("Inventory"),
+      icon: "fas fa-regular fa-users",
+      children: [
+        {
+          name: "SupplierMaster",
+          icon: "fas fa-regular fa-user",
+          path: "/SupplierMaster",
+          breadcrumb: "Inventory / Supplier Master",
+        },
+        {
+          name: "ItemMaster",
+          icon: "fas fa-regular fa-user",
+          path: "/ItemMaster",
+          breadcrumb: "Inventory / Item Master",
+        },
+        {
+          name: "GRN",
+          icon: "fas fa-regular fa-user",
+          path: "/GRN",
+          breadcrumb: "Inventory / GRN",
+        },
+      ],
+    },
     {
       name: i18n.t("Master"),
       icon: "fas fa-regular fa-users",
@@ -217,7 +240,7 @@ export const MENU = {
           path: "/ImplementationStepMaster",
           breadcrumb: "Master / ImplementationStepMaster",
         },
-         {
+        {
           name: "ModuleMaster",
           icon: "fas fa-regular fa-user",
           path: "/ModuleMaster",
@@ -271,7 +294,7 @@ export const MENU = {
           path: "/MorningWish",
           breadcrumb: "Tools / Morning Wish",
         },
-          {
+        {
           name: "FestivalWish",
           icon: "fas fa-regular fa-user",
           path: "/FestivalWish",
@@ -517,6 +540,18 @@ export const MENU = {
           path: "/OverseasExpenseManagementSearch ",
           breadcrumb: "Accounts / OverseasExpenseManagementSearch",
         },
+        {
+          name: "PurchaseInvoiceManagement",
+          icon: "fas fa-regular fa-user",
+          path: "/PurchaseInvoiceManagement ",
+          breadcrumb: "Accounts / PurchaseInvoiceManagement",
+        },
+        {
+          name: "PurchaseInvoiceManagementSearch",
+          icon: "fas fa-regular fa-user",
+          path: "/PurchaseInvoiceManagementSearch ",
+          breadcrumb: "Accounts / PurchaseInvoiceManagementSearch",
+        },
       ],
     },
   ],
@@ -608,7 +643,7 @@ const MenuSidebar = () => {
       //     RoleID: value,
       //   })
       // );
-  
+
       navigate("/dashboard");
     } catch (error) {
       console.error("Error occurred:", error);

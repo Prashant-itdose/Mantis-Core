@@ -7,6 +7,7 @@ import ReactSelect from "../components/formComponent/ReactSelect";
 import Input from "../components/formComponent/Input";
 import Loading from "../components/loader/Loading";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../networkServices/axiosInstance";
 const LocalityUpdateTab = ({ data }) => {
   const [country, setCountry] = useState([]);
   const [state, setState] = useState([]);
@@ -60,70 +61,64 @@ const LocalityUpdateTab = ({ data }) => {
     });
   };
 
-  const getCountry = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.GetCountry, form, { headers })
-        .then((res) => {
-          const countrys = res?.data.data.map((item) => {
-            return { label: item?.NAME, value: item?.CountryID };
-          });
-          setCountry(countrys);
-        })
-        .catch((err) => {
-          console.log(err);
+   const getCountry = () => {
+     axiosInstances
+       .post(apiUrls?.GetCountry, {})
+       .then((res) => {
+         const countrys = res?.data.data.map((item) => {
+           return { label: item?.NAME, value: item?.CountryID };
+         });
+         setCountry(countrys);
+       })
+       .catch((err) => {
+         console.log(err);
+       });
+   };
+ const getState = (value) => {
+    axiosInstances
+      .post(apiUrls?.GetState, { CountryID: String(value || "14") })
+      .then((res) => {
+        const states = res?.data.data.map((item) => {
+          return { label: item?.StateName, value: item?.StateID };
         });
-  };
-  const getState = (value) => {
-    let form = new FormData();
-    form.append("CountryID", value),
-      axios
-        .post(apiUrls?.GetState, form, { headers })
-        .then((res) => {
-          const states = res?.data.data.map((item) => {
-            return { label: item?.StateName, value: item?.StateID };
-          });
-          setState(states);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        setState(states);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getDistrict = (country, state) => {
-    let form = new FormData();
-    form.append("CountryID", formData?.Country ? formData?.Country : country),
-      form.append("StateID", state),
-      axios
-        .post(apiUrls?.GetDistrict, form, { headers })
-        .then((res) => {
-          const states = res?.data.data.map((item) => {
-            return { label: item?.District, value: item?.DistrictID };
-          });
-          setDistrict(states);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls?.GetDistrict, {
+        CountryID: String(formData?.Country ? formData?.Country : country),
+        StateID: String(state),
+      })
+      .then((res) => {
+        const states = res?.data.data.map((item) => {
+          return { label: item?.District, value: item?.DistrictID };
         });
+        setDistrict(states);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getCity = (country, state, district) => {
-    let form = new FormData();
-    form.append("CountryID", formData?.Country ? formData?.Country : country),
-      form.append("StateID", formData?.State ? formData?.State : state),
-      form.append("DistrictID", district),
-      axios
-        .post(apiUrls?.GetCity, form, {
-          headers,
-        })
-        .then((res) => {
-          const states = res?.data.data.map((item) => {
-            return { label: item?.City, value: item?.ID };
-          });
-          setCity(states);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls?.GetCity, {
+        CountryID: String(formData?.Country ? formData?.Country : country),
+        StateID: String(formData?.State ? formData?.State : state),
+        DistrictID: String(district),
+      })
+      .then((res) => {
+        const states = res?.data.data.map((item) => {
+          return { label: item?.City, value: item?.CityID };
         });
+        setCity(states);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getProduct = (value) => {
     let form = new FormData();

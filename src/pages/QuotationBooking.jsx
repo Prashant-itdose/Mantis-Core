@@ -1452,7 +1452,6 @@ const QuotationBooking = ({ data }) => {
       .post(apiUrls.GetState, {
         CountryID: "14",
       })
-    
       .then((res) => {
         const states = res?.data.data.map((item) => {
           return { label: item?.StateName, value: item?.StateID };
