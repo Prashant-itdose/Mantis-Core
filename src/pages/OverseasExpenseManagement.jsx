@@ -7,6 +7,8 @@ import { apiUrls } from "../networkServices/apiEndpoints";
 import BrowseInvoiceButton from "../components/formComponent/BrowseInvoiceButton";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import ImportExcelToUpload from "./ExcelImport/ImportExcelToUpload";
+import ExcelPreviewHandler from "./ExcelImport/ExcelPreviewHandler";
 
 const OverseasExpenseManagement = () => {
   const [t] = useTranslation();
@@ -97,6 +99,9 @@ const OverseasExpenseManagement = () => {
           {/* <div className="ml-2">
             <ImportExcelToUpload />
           </div> */}
+          <div className="ml-2">
+              <ExcelPreviewHandler />
+          </div>
 
           {/* <div className="ml-2">
             <BrowseExcelButton

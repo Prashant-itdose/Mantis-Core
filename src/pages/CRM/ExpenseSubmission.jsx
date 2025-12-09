@@ -14,18 +14,21 @@ import other from "../../assets/image/other.png";
 import Tables from "../../components/UI/customTable";
 import { apiUrls } from "../../networkServices/apiEndpoints";
 import { toast } from "react-toastify";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import moment from "moment";
+
 import BrowseInput from "../../components/formComponent/BrowseInput";
 import { useCryptoLocalStorage } from "../../utils/hooks/useCryptoLocalStorage";
 import { axiosInstances } from "../../networkServices/axiosInstance";
+import { use } from "react";
 const currentDate = new Date();
 const currentMonth = currentDate.getMonth() + 1; // Months are 0-indexed, so add 1
 const currentYear = currentDate.getFullYear();
 const ExpenseSubmission = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const { state } = location;
-  console.log("state edit chck", state?.givenData?.EmpID);
+  // console.log("state edit chck", state?.givenData?.EmpID);
   const ReportingManager = useCryptoLocalStorage(
     "user_Data",
     "get",
@@ -630,6 +633,8 @@ const ExpenseSubmission = () => {
           ]);
 
           setRowHandler(rowConst);
+
+          navigate("/ViewExpense");
         } else {
           toast.error(res?.data?.message);
           setLoading(false);
@@ -678,7 +683,9 @@ const ExpenseSubmission = () => {
 
     axiosInstances
       .post(apiUrls.IsExpenseExists, {
-        ExpenseEmployeeID: Number(state?.givenData?.EmpID),
+        ExpenseEmployeeID:
+          Number(state?.givenData?.EmpID) ||
+          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID"),
         ExpenseDate: String(formatDateToLocal(check)),
       })
       .then((res) => {
@@ -823,6 +830,7 @@ const ExpenseSubmission = () => {
       currentYear: date.getFullYear(),
     });
   };
+
   const hasCalledRef = useRef(false);
 
   useEffect(() => {
