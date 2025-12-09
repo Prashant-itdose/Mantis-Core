@@ -89,12 +89,6 @@ const ExpenseSubmission = () => {
     currentMonth: currentMonth,
     currentYear: currentYear,
   });
-  // console.log("update", formData);
-  // useEffect(() => {
-  //   if (state?.edit) {
-  //     handleIsExpenseExists(state?.data);
-  //   }
-  // }, []);
 
   const handleHotelClear = () => {
     setFormData({
@@ -753,7 +747,7 @@ const ExpenseSubmission = () => {
             TravelTo: ele?.tavling_to,
             TravelAmount: ele?.traveling_amount,
             TravelDescription: ele?.traveling_description,
-            ExpenseReportMasterId: ele?.expense_report_master_Id,
+            ExpenseReportMasterId: ele?.traveling_master_ID,
           }));
           setRows(updatedData);
 
@@ -764,7 +758,7 @@ const ExpenseSubmission = () => {
             IntercityTo: ele?.tavling_to,
             IntercityAmount: ele?.traveling_amount,
             IntercityDescription: ele?.traveling_description,
-            ExpenseReportMasterId: ele?.expense_report_master_Id,
+            ExpenseReportMasterId: ele?.traveling_master_ID,
           }));
           setRows1(updatedData1);
 
@@ -876,32 +870,23 @@ const ExpenseSubmission = () => {
 
   const TwelthdayCurrentMonthSelected = () => {
     const today = new Date();
-    const currentMonth = today.getMonth() + 1; // months are 0-based
+    const currentMonth = today.getMonth() + 1;
     const currentYear = today.getFullYear();
-
-    // Previous month and year logic
     const prevMonth = currentMonth === 1 ? 12 : currentMonth - 1;
     const prevMonthYear = currentMonth === 1 ? currentYear - 1 : currentYear;
-
     const isCurrentMonth =
       formData.currentMonth === currentMonth &&
       formData.currentYear === currentYear;
-
     const isPreviousMonth =
       formData.currentMonth === prevMonth &&
       formData.currentYear === prevMonthYear;
-
-    // Check if today is within the first 5 days of the month
     const isWithinFirst5Days = today.getDate() <= 12;
-
-    // Allow previous month only for first 5 days
     if (isPreviousMonth && isWithinFirst5Days) {
-      return true; // enabled
+      return true;
     } else if (isPreviousMonth && !isWithinFirst5Days) {
-      return false; // disabled
+      return false;
     }
-
-    return isCurrentMonth; // normal current month behavior
+    return isCurrentMonth;
   };
 
   return (
