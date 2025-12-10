@@ -86,7 +86,7 @@ const OverseasExpenseManagement = () => {
             <ExcelPreviewHandler setCallBackState={setExcelData} />
           </div>
 
-          {excelData?.length > 0 && (
+          {/* {excelData?.length > 0 && (
             <i
               className="fa fa-retweet ml-3 mt-2 "
               aria-hidden="true"
@@ -94,7 +94,7 @@ const OverseasExpenseManagement = () => {
               title="Click to Refresh Excel Sheet."
               style={{ cursor: "pointer" }}
             ></i>
-          )}
+          )} */}
 
           <div className="ml-4">
             <BrowseInvoiceButton handleImageChange={handleImageChange} />

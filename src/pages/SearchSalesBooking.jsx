@@ -306,7 +306,7 @@ const SearchSalesBooking = ({ data }) => {
     // SaveTableFilter();
     // SaveFilter();
   }, []);
-  ///////////////////////////////////
+
   const ModalComponent = (name, component) => {
     // console.log("name component sale..", name, component);
     setListVisible(true);
@@ -767,18 +767,22 @@ const SearchSalesBooking = ({ data }) => {
     "Project Name",
     "POC",
     "Team",
+
     "Sales No.",
     "Item Name",
     "Sales Date",
     "Remark",
+
     "PaymentMode",
     "Net Amount",
     "Print",
     "PI",
+
     "PO",
     "Tax",
     "Entry Date",
     "EmailStatus",
+
     "Email",
     "Edit",
     "Cancel",
@@ -831,7 +835,12 @@ const SearchSalesBooking = ({ data }) => {
           setVisible={setVisible}
           Header="PO Details"
         >
-          <PoSalesModal visible={visible} setVisible={setVisible} edit={true} handleSearch={handleSearch}/>
+          <PoSalesModal
+            visible={visible}
+            setVisible={setVisible}
+            edit={true}
+            handleSearch={handleSearch}
+          />
         </Modal>
       )}
       {data?.type === "LedgerStatus" && (

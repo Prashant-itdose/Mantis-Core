@@ -8,9 +8,6 @@ import UploadFile from "../utils/UploadFile";
 import Loading from "../components/loader/Loading";
 import { toast } from "react-toastify";
 import { apiUrls } from "../networkServices/apiEndpoints";
-import axios from "axios";
-import { headers } from "../utils/apitools";
-import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import "./MorningWish.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { axiosInstances } from "../networkServices/axiosInstance";
@@ -170,21 +167,6 @@ const MorningWish = () => {
     // }
 
     setLoading(true);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("Day", formData?.SelectDate),
-    //   form.append(
-    //     "Content",
-    //     formData.Description ? removeHtmlTags(formData.Description) : ""
-    //   ),
-    //   form.append("Image_Base64", formData?.Document_Base64),
-    //   form.append("FileFormat_Base64", formData?.FileExtension),
-    //   axios
-    //     .post(apiUrls?.MorningWishSave, form, {
     axiosInstances
       .post(apiUrls.MorningWishSave, {
         Day: formData?.SelectDate,
@@ -235,24 +217,7 @@ const MorningWish = () => {
     //   return;
     // }
     setLoading(true);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("Day", formData?.SelectDate),
-    //   form.append(
-    //     "Content",
-    //     formData.Description ? removeHtmlTags(formData.Description) : ""
-    //   ),
-    //   form.append("Image_Base64", formData?.Document_Base64),
-    //   form.append("FileFormat_Base64", formData?.FileExtension),
-    //   form.append("WishID", formData?.WishID),
-    //   axios
-    //     .post(apiUrls?.UpdateMorningWish, form, {
-    //       headers,
-    //     })
+
     axiosInstances
       .post(apiUrls.UpdateMorningWish, {
         Day: formData?.SelectDate,
@@ -298,7 +263,7 @@ const MorningWish = () => {
       })
       .then((res) => {
         const datas = res?.data?.data;
-     
+
         setFormData({
           ...formData,
           SelectDate: datas?.Day,

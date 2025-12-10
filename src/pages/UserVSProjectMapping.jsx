@@ -27,13 +27,11 @@ const UserVSProjectMapping = () => {
     Password: "",
     User: "",
     Project: [],
-    // Project: "",
     AccessType: "90",
     remove: "",
   });
   const [t] = useTranslation();
   const getReporter = () => {
-   
     axiosInstances
       .post(apiUrls.Reporter_Select, {
         ID: useCryptoLocalStorage("user_Data", "get", "ID"),
@@ -234,6 +232,7 @@ const UserVSProjectMapping = () => {
     axiosInstances
       .post(apiUrls.Remove_UserVsProjectMapping, {
         ProjectIDs: selectedIds?.length > 0 ? selectedIds : [0],
+        TargetUserId: formData?.User || "",
       })
       .then((res) => {
         if (res?.data?.success) {

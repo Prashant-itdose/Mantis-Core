@@ -22,10 +22,19 @@ const LoginDetailModal = () => {
   const { VITE_DATE_FORMAT } = import.meta.env;
   const [t] = useTranslation();
   const [tableData, setTableData] = useState([]);
+  {
+    console.log("tabledata tabledata", tableData);
+  }
   const [breakData, setBreakData] = useState([]);
   const [loading, setLoading] = useState(false);
   const loginTHEAD = ["S.No.", "BreakIn", "BreakOut", "BreakDuration"];
-  const transTHEAD = ["S.No.", "Date", "IN", "OUT", "Time Difference"];
+  const transTHEAD = [
+    "S.No.",
+    "Date",
+    "IN",
+    "OUT",
+    "Time Difference",
+  ];
   const [formData, setFormData] = useState({
     FromDate: new Date(),
     AssignedTo: useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
@@ -134,15 +143,12 @@ const LoginDetailModal = () => {
         console.log(err);
       });
   };
-
-  // Function to convert HH:mm:ss to seconds
+  //////////////////////current time diplay code////////////////////////
   const timeToSeconds = (timeStr) => {
     if (!timeStr) return 0;
     const [hrs, mins, secs] = timeStr.split(":").map(Number);
     return (hrs || 0) * 3600 + (mins || 0) * 60 + (secs || 0);
   };
-
-  // Function to convert total seconds to HH:mm:ss
   const secondsToTime = (totalSeconds) => {
     const hrs = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
     const mins = String(Math.floor((totalSeconds % 3600) / 60)).padStart(
@@ -156,8 +162,6 @@ const LoginDetailModal = () => {
   const totalBreakSeconds = breakData?.reduce((acc, ele) => {
     return acc + timeToSeconds(ele?.BreakDuration);
   }, 0);
-
-  // Convert to HH:mm:ss
   const totalBreakTime = secondsToTime(totalBreakSeconds);
   const getCurrentTempLogoutTime = () => {
     const now = new Date();
@@ -168,21 +172,15 @@ const LoginDetailModal = () => {
   };
   const totalDiffMs =
     tableData?.reduce((acc, ele) => {
-      // ignore rows that are missing times
       if (!ele?.LogoutTime) {
         ele.LogoutTime = getCurrentTempLogoutTime();
       }
       if (!ele?.LoginTime || !ele?.LogoutTime) return acc;
-
       const login = new Date(`${ele.LogDate}T${ele.LoginTime}`);
       const logout = new Date(`${ele.LogDate}T${ele.LogoutTime}`);
-
-      const diff = logout - login; // ms
-
-      return acc + (isNaN(diff) ? 0 : diff); // guard against bad dates
+      const diff = logout - login;
+      return acc + (isNaN(diff) ? 0 : diff);
     }, 0) ?? 0;
-
-  // 2️⃣  — convert ms → hh:mm:ss
   const totalHrs = String(Math.floor(totalDiffMs / 3_600_000)).padStart(2, "0");
   const totalMin = String(
     Math.floor((totalDiffMs % 3_600_000) / 60_000)
@@ -191,9 +189,8 @@ const LoginDetailModal = () => {
     2,
     "0"
   );
-
   const totalWorkingTime = `${totalHrs}:${totalMin}:${totalSec}`;
-
+  //////////////////////////////////////////////////////////////////////
   useEffect(() => {
     handleEmployeeAverage();
     getAssignTo();

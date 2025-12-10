@@ -119,8 +119,7 @@ export const apiUrls = {
     "/CRMCOREAPI/api/Accounts/AmountSubmissionByAccountsSearch",
   AmountSubmission_ByAccounts_IsCancel:
     "/CRMCOREAPI/api/Accounts/AmountSubmission_ByAccounts_IsCancel",
-  OverseasExcelInsert:
-    "/CRMCOREAPI/api/Accounts/OverseasExcelInsert",
+  OverseasExcelInsert: "/CRMCOREAPI/api/ManageExpense/OverseasExcelInsert",
 
   //Query Master Api;s
   Query_Insert: "/CRMCOREAPI/api/QueryVsResult/Query_Insert",
@@ -546,6 +545,8 @@ export const apiUrls = {
     "/CRMCOREAPI/api/AccountsPaymentInstallment/ProjectRateListUpdate",
   OpenPI_Select: "/CRMCOREAPI/api/AdvanceAmount/OpenPI_Select",
   OpenPI_SelectPINo: "/CRMCOREAPI/api/AdvanceAmount/OpenPI_SelectPINo",
-  POAttachementUpload: "/CRMCOREAPI/api/AccountsPaymentInstallment/POAttachementUpload",
-   ViewExpenseListSummary: "/CRMCOREAPI/api/ManageExpense/ViewExpenseListSummary",
+  POAttachementUpload:
+    "/CRMCOREAPI/api/AccountsPaymentInstallment/POAttachementUpload",
+  ViewExpenseListSummary:
+    "/CRMCOREAPI/api/ManageExpense/ViewExpenseListSummary",
 };

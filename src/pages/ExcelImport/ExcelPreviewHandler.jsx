@@ -168,7 +168,6 @@ const ExcelPreviewHandler = ({
 
   const handleUploadButtonClick = () => uploadRef.current?.click();
 
-  /** Convert Excel serial number → DD-MM-YYYY */
   const convertExcelDate = (serial) => {
     if (typeof serial !== "number") return serial;
 
@@ -181,7 +180,20 @@ const ExcelPreviewHandler = ({
     )}-20${String(date.y).slice(-2)}`;
   };
 
+  //   const convertExcelDate = (serial) => {
+  //   if (typeof serial !== "number") return serial;
+
+  //   const date = XLSX.SSF.parse_date_code(serial);
+  //   if (!date) return serial;
+
+  //   const month = String(date.m).padStart(2, "0");
+  //   const year = String(date.y); // full year already returned by XLSX
+
+  //   return `${month}/${year}`;
+  // };
+
   /** Process selected Excel file */
+  
   const processFile = (file) => {
     const reader = new FileReader();
 
@@ -214,7 +226,7 @@ const ExcelPreviewHandler = ({
       });
 
       /** Preview fix (convert date serials in table view) */
-      const previewFixed = jsonData.map((row) =>
+      const previewFixed = jsonData?.map((row) =>
         row.map((cell) => {
           if (typeof cell === "number" && cell > 40000 && cell < 60000)
             return convertExcelDate(cell);
@@ -222,12 +234,10 @@ const ExcelPreviewHandler = ({
           return cell;
         })
       );
-
+      console.log("excelJsonData excelJsonData", previewFixed);
       setPreviewData(previewFixed);
-      setCallBackState(jsonArrayNew);
+      setCallBackState(previewFixed);
       setCampPayload({ uploadFile: file });
-
-      console.log("Final JSON:", jsonArrayNew);
     };
 
     reader.readAsArrayBuffer(file);
@@ -243,7 +253,6 @@ const ExcelPreviewHandler = ({
       alert(t("Only Excel files are allowed."));
       return;
     }
-
     processFile(file);
   };
 

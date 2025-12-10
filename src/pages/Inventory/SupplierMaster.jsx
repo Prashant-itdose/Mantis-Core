@@ -6,9 +6,15 @@ import ReactSelect from "../../components/formComponent/ReactSelect";
 import { axiosInstances } from "../../networkServices/axiosInstance";
 import { apiUrls } from "../../networkServices/apiEndpoints";
 import { Contact, Pin } from "lucide-react";
+import Tables from "../../components/UI/customTable";
 
 const SupplierMaster = () => {
   const [t] = useTranslation();
+  const [tableData, setTableData] = useState([
+    {
+      SupplierType: "Local",
+    },
+  ]);
   const [formData, setFormData] = useState({
     SupplierType: "",
     Category: "",
@@ -38,7 +44,26 @@ const SupplierMaster = () => {
     IsAsset: "",
     IsInsuranceProvider: "",
   });
-    const handleCheckBox = (e) => {
+  const supplierTHEAD = [
+    "S.No.",
+    "Supplier Type",
+    "Category",
+
+    "Supplier Name",
+    "GstNo",
+    "Address1",
+
+    "Address2",
+    "Address3",
+    "Country",
+
+    "City",
+    "Mobile Number",
+    "Email",
+    "Edit",
+  ];
+
+  const handleCheckBox = (e) => {
     const { name, value, checked, type } = e?.target;
     setFormData({
       ...formData,
@@ -157,6 +182,8 @@ const SupplierMaster = () => {
       [name]: type === "checkbox" ? (checked ? 1 : 0) : value,
     });
   };
+
+  const handleEdit = () => {};
 
   useEffect(() => {
     getCountry();
@@ -404,7 +431,7 @@ const SupplierMaster = () => {
           <ReactSelect
             respclass="col-xl-2 col-md-4 col-sm-4 col-12 mt-2"
             name="SupplierCurrency"
-            placeholderName="SupplierCurrency"
+            placeholderName="Supplier Currency"
             dynamicOptions={[
               { value: "INR", label: "INR" },
               { value: "USD", label: "USD" },
@@ -420,7 +447,7 @@ const SupplierMaster = () => {
             handleChange={handleDeliveryChange}
             value={formData.TermsCondition}
           />
-           <div className="search-col" style={{ marginLeft: "8px" }}>
+          <div className="search-col" style={{ marginLeft: "8px" }}>
             <div style={{ display: "flex", alignItems: "center" }}>
               <label className="switch" style={{ marginTop: "7px" }}>
                 <input
@@ -442,7 +469,7 @@ const SupplierMaster = () => {
               </span>
             </div>
           </div>
-             <div className="search-col" style={{ marginLeft: "8px" }}>
+          <div className="search-col" style={{ marginLeft: "8px" }}>
             <div style={{ display: "flex", alignItems: "center" }}>
               <label className="switch" style={{ marginTop: "7px" }}>
                 <input
@@ -466,6 +493,33 @@ const SupplierMaster = () => {
           </div>
           <button className="btn btn-sm btn-success ml-3 mt-2">Save</button>
         </div>
+      </div>
+      <div className="card mt-2">
+        <Heading
+          title={<span className="font-weight-bold">Supplier Details</span>}
+        />
+        <Tables
+          thead={supplierTHEAD}
+          tbody={tableData?.map((ele, index) => ({
+            "S.No.": index + 1,
+            "Supplier Type": ele?.SupplierType,
+            Category: ele?.Category,
+
+            "Supplier Name": ele?.SupplierName,
+            GSTNO: ele?.GSTNO,
+            Address1: ele?.Address1,
+
+            Address2: ele?.Address2,
+            Address3: ele?.Address3,
+            Country: ele?.Country,
+
+            City: ele?.City,
+            "Mobile Number": ele?.MobileNumber,
+            Email: ele?.Email,
+            Edit: <i className="fa fa-edit" onClick={handleEdit}></i>,
+          }))}
+          tableHeight={"tableHeight"}
+        />
       </div>
     </>
   );

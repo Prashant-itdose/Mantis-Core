@@ -33,12 +33,7 @@ const ProjectMappingModal = (ele) => {
   };
 
   const getProject = () => {
-    // let form = new FormData();
-    // form.append("ID",  useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-    //   form.append("IsMaster", "1"),
-    //   axios
-    //     .post(apiUrls?.ProjectSelect, form, { headers })
+ 
     axiosInstances
       .post(apiUrls?.ProjectSelect, {
         ProjectID: 0,
@@ -58,17 +53,7 @@ const ProjectMappingModal = (ele) => {
       });
   };
   const handleSearch = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append(
-    //   "LoginName",
-    //   useCryptoLocalStorage("user_Data", "get", "realname")
-    // );
-    // form.append("UserID", ele?.visible?.showData?.id);
-    // axios
-    //   .post(apiUrls?.UserVsProject_Select, form, {
-    //     headers,
-    //   })
+  
     axiosInstances
       .post(apiUrls?.UserVsProject_Select, {
         UserID: Number(ele?.visible?.showData?.id),
@@ -201,16 +186,7 @@ const ProjectMappingModal = (ele) => {
       setLoading(false);
       return;
     }
-    // const form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("UserID", ele?.visible?.showData?.id),
-    //   form.append("ProjectID", selectedIds.join(",")),
-    //   axios
-    //     .post(apiUrls?.Remove_UserVsProjectMapping, form, { headers })
+   
     axiosInstances
       .post(apiUrls?.Remove_UserVsProjectMapping, {
         ProjectIDs: selectedIds.map((id) => Number(id)),

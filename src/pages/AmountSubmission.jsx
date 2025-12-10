@@ -386,7 +386,7 @@ const AmountSubmission = ({ data }) => {
       Document_FormatType: String(formData?.FileExtension || ""),
       VoucherNo: String(formData?.VoucherNo || ""),
       RecoveryTeam: String(formData?.RecoveryTeam),
-      PIID: String(formData?.PINumberDropdown),
+      PIID: String(formData?.PINumberDropdown) || "0",
     };
     axiosInstances
       .post(apiUrls.AmountSubmission_ByAccounts, payload)

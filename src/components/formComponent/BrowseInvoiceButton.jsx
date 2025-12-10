@@ -13,7 +13,7 @@ export default function BrowseInvoiceButton({ handleImageChange, accept }) {
       />
       <button className="btn btn-sm">
         <label htmlFor="fileInput" className="text-white file-type-browse">
-          Select Invoice
+          Select Excel Sheet
         </label>
       </button>
     </>
