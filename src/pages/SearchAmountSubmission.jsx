@@ -28,19 +28,12 @@ import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import SearchLotusFilter from "./SearchLotusFilter";
 import { axiosInstances } from "../networkServices/axiosInstance";
 const SearchAmountSubmission = ({ data }) => {
-
   const [t] = useTranslation();
   const AmountCancel = useCryptoLocalStorage(
     "user_Data",
     "get",
     "AllowAmountSubmissionCancel"
   );
-  // console.log("amoiunt", AmountCancel);
-
-  // useEffect(() => {
-  //   if (data) {
-  //   }
-  // }, []);
 
   const { VITE_DATE_FORMAT } = import.meta.env;
   const [vertical, setVertical] = useState([]);
@@ -77,7 +70,7 @@ const SearchAmountSubmission = ({ data }) => {
     RecoveryTeam: "",
   });
 
-  console.log("formdata,kamal",formData)
+  console.log("formdata,kamal", formData);
   const handleMultiSelectChange = (name, selectedOptions) => {
     const selectedValues = selectedOptions.map((option) => option.code);
     setFormData((prev) => ({
@@ -119,26 +112,7 @@ const SearchAmountSubmission = ({ data }) => {
         FilterData: JSON.stringify(filterData),
         PageName: "SearchAmountSubmission",
       })
-      // let form = new FormData();
 
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-      // form.append(
-      //   "CrmEmpID",
-      //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      // );
-      // form.append(
-      //   "LoginName",
-      //   useCryptoLocalStorage("user_Data", "get", "realname")
-      // );
-      // form.append("PageName", "SearchAmountSubmission");
-
-      // // Example FilterData array
-
-      // // Append stringified FilterData
-      // form.append("FilterData", JSON.stringify(filterData));
-
-      // axios
-      //   .post(apiUrls?.SaveFilterTableReprintData, form, { headers })
       .then((res) => {
         console.log(res.data.message);
       })
@@ -176,26 +150,7 @@ const SearchAmountSubmission = ({ data }) => {
         FilterData: JSON.stringify(filterData),
         PageName: "SearchAmountSubmissionTable",
       })
-      // let form = new FormData();
 
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-      // form.append(
-      //   "CrmEmpID",
-      //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      // );
-      // form.append(
-      //   "LoginName",
-      //   useCryptoLocalStorage("user_Data", "get", "realname")
-      // );
-      // form.append("PageName", "SearchAmountSubmissionTable");
-
-      // // Example FilterData array
-
-      // // Append stringified FilterData
-      // form.append("FilterData", JSON.stringify(filterData));
-
-      // axios
-      //   .post(apiUrls?.SaveFilterTableReprintData, form, { headers })
       .then((res) => {
         console.log(res.data.message);
       })
@@ -213,19 +168,7 @@ const SearchAmountSubmission = ({ data }) => {
           useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "CrmEmpID",
-      //     useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      //   ),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("PageName", "SearchAmountSubmission"),
-      //   axios
-      //     .post(apiUrls?.GetFilterTableReprintData, form, { headers })
+
       .then((res) => {
         const data = res.data.data;
         if (res?.data.success === true) {
@@ -246,19 +189,7 @@ const SearchAmountSubmission = ({ data }) => {
           useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "CrmEmpID",
-      //     useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      //   ),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("PageName", "SearchAmountSubmissionTable"),
-      //   axios
-      //     .post(apiUrls?.GetFilterTableReprintData, form, { headers })
+
       .then((res) => {
         const data = res.data.data;
         if (res?.data.success === true) {
@@ -284,31 +215,6 @@ const SearchAmountSubmission = ({ data }) => {
     // SaveTableFilter();
     // SaveFilter();
   }, []);
-
-  // const handleDeliveryChange = (name, e, index) => {
-  //   const { value } = e;
-  //   const details = tableData[index];
-
-  //   // setFormData({
-  //   //   ...formData,
-  //   //   [name]: value,
-  //   // });
-  //   console.log("detailsvalue", value);
-  //   // Update tableData for the corresponding row
-  //   const updatedTableData = [...tableData];
-  //   updatedTableData[index] = {
-  //     ...updatedTableData[index],
-  //     PaymentMode: value,
-  //   };
-  //   setTableData(updatedTableData);
-
-  //   if (name == "PaymentMode") {
-  //     updatePaymentMode(details, value);
-  //   }
-  //   if (name == "BankName") {
-  //     updateBankName(details, value);
-  //   }
-  // };
 
   const handleDeliveryChange = (name, e, index) => {
     const value = e?.value || e; // Support both controlled and native events
@@ -386,7 +292,7 @@ const SearchAmountSubmission = ({ data }) => {
         ReceivedDate: "",
         PaymentMode: "",
         VoucherNo: "",
-        BankName:""
+        BankName: "",
       })
       .then((res) => {
         if (res?.data?.success === true) {
@@ -456,14 +362,7 @@ const SearchAmountSubmission = ({ data }) => {
         TeamID: 0,
         WingID: 0,
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   axios
-      //     .post(apiUrls?.ProjectSelect, form, { headers })
+
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return { name: item?.Project, code: item?.ProjectId };
@@ -477,10 +376,7 @@ const SearchAmountSubmission = ({ data }) => {
   const getVertical = () => {
     axiosInstances
       .post(apiUrls.Vertical_Select, {})
-      // let form = new FormData();
-      // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.Vertical_Select, form, { headers })
+
       .then((res) => {
         const verticals = res?.data.data.map((item) => {
           return { name: item?.Vertical, code: item?.VerticalID };
@@ -494,10 +390,7 @@ const SearchAmountSubmission = ({ data }) => {
   const getTeam = () => {
     axiosInstances
       .post(apiUrls.Team_Select, {})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.Team_Select, form, { headers })
+
       .then((res) => {
         const teams = res?.data.data.map((item) => {
           return { name: item?.Team, code: item?.TeamID };
@@ -511,10 +404,7 @@ const SearchAmountSubmission = ({ data }) => {
   const getWing = () => {
     axiosInstances
       .post(apiUrls.Wing_Select, {})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.Wing_Select, form, { headers })
+
       .then((res) => {
         const wings = res?.data.data.map((item) => {
           return { name: item?.Wing, code: item?.WingID };
@@ -528,10 +418,7 @@ const SearchAmountSubmission = ({ data }) => {
   const getPOC1 = () => {
     axiosInstances
       .post(apiUrls.POC_1_Select, {})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.POC_1_Select, form, { headers })
+
       .then((res) => {
         const poc1s = res?.data.data.map((item) => {
           return { name: item?.POC_1_Name, code: item?.POC_1_ID };
@@ -545,10 +432,7 @@ const SearchAmountSubmission = ({ data }) => {
   const getPOC2 = () => {
     axiosInstances
       .post(apiUrls.POC_2_Select, {})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.POC_2_Select, form, { headers })
+
       .then((res) => {
         const poc2s = res?.data.data.map((item) => {
           return { name: item?.POC_2_Name, code: item?.POC_2_ID };
@@ -562,10 +446,7 @@ const SearchAmountSubmission = ({ data }) => {
   const getPOC3 = () => {
     axiosInstances
       .post(apiUrls.POC_3_Select, {})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.POC_3_Select, form, { headers })
+
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return { name: item?.POC_3_Name, code: item?.POC_3_ID };
@@ -623,35 +504,7 @@ const SearchAmountSubmission = ({ data }) => {
 
       axiosInstances
         .post(apiUrls.AmountSubmission_ByAccounts_Search, payload)
-        // let form = new FormData();
-        // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        //   form.append(
-        //     "LoginName",
-        //     useCryptoLocalStorage("user_Data", "get", "realname")
-        //   ),
-        //   form.append("ProjectID", formData?.ProjectID),
-        //   form.append("VerticalID", formData?.VerticalID),
-        //   form.append("TeamID", formData?.TeamID),
-        //   form.append("WingID", formData?.WingID),
-        //   form.append("POC1", formData?.POC1),
-        //   form.append("POC2", formData?.POC2),
-        //   form.append("POC3", formData?.POC3),
-        //   form.append("Status", formData?.Status),
-        //   form.append("BankName", formData?.BankName),
-        //   form.append("DateType", formData?.DateType),
-        //   form.append(
-        //     "RecoveryTeam",
-        //     formData?.RecoveryTeam ? formData?.RecoveryTeam : "All"
-        //   ),
-        //   form.append("FromDate", formatDate(formData?.FromDate)),
-        //   form.append("ToDate", formatDate(formData?.ToDate)),
-        //   form.append("SearchType", "OnScreen"),
-        //   form.append("rowColor", code ? code : ""),
-        //   form.append("PageSize", formData?.PageSize),
-        //   form.append("PageNo", page ?? currentPage - 1),
-        //   // form.append("colorcode", code ? String(code) : ""),
-        //   axios
-        //     .post(apiUrls?.AmountSubmission_ByAccounts_Search, form, { headers })
+
         .then((res) => {
           const datas = res?.data?.data?.map((val) => {
             val.isShow = false;
@@ -693,28 +546,7 @@ const SearchAmountSubmission = ({ data }) => {
 
     axiosInstances
       .post(apiUrls.AmountSubmission_ByAccounts_Search, payload)
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("ProjectID", formData?.ProjectID),
-      //   form.append("VerticalID", formData?.VerticalID),
-      //   form.append("TeamID", formData?.TeamID),
-      //   form.append("WingID", formData?.WingID),
-      //   form.append("POC1", formData?.POC1),
-      //   form.append("POC2", formData?.POC2),
-      //   form.append("POC3", formData?.POC3),
-      //   form.append("Status", formData?.Status),
-      //   form.append("BankName", formData?.BankName),
-      //   form.append("DateType", formData?.DateType),
-      //   form.append("FromDate", formatDate(formData?.FromDate)),
-      //   form.append("ToDate", formatDate(formData?.ToDate)),
-      //   form.append("SearchType", "Excel"),
-      //   // form.append("colorcode", code ? String(code) : ""),
-      //   axios
-      //     .post(apiUrls?.AmountSubmission_ByAccounts_Search, form, { headers })
+
       .then((res) => {
         setExcelData(res?.data?.data);
       })
@@ -746,28 +578,7 @@ const SearchAmountSubmission = ({ data }) => {
 
     axiosInstances
       .post(apiUrls.AmountSubmission_ByAccounts_Search, payload)
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-      // form.append(
-      //   "LoginName",
-      //   useCryptoLocalStorage("user_Data", "get", "realname")
-      // );
-      // form.append("ProjectID", formData?.ProjectID);
-      // form.append("VerticalID", formData?.VerticalID);
-      // form.append("TeamID", formData?.TeamID);
-      // form.append("WingID", formData?.WingID);
-      // form.append("POC1", formData?.POC1);
-      // form.append("POC2", formData?.POC2);
-      // form.append("POC3", formData?.POC3);
-      // form.append("Status", formData?.Status);
-      // form.append("BankName", formData?.BankName);
-      // form.append("DateType", formData?.DateType);
-      // form.append("FromDate", formatDate(formData?.FromDate));
-      // form.append("ToDate", formatDate(formData?.ToDate));
-      // form.append("SearchType", "Excel");
 
-      // axios
-      //   .post(apiUrls?.AmountSubmission_ByAccounts_Search, form, { headers })
       .then((res) => {
         const datas = res?.data?.data;
 
@@ -841,27 +652,7 @@ const SearchAmountSubmission = ({ data }) => {
 
     axiosInstances
       .post(apiUrls.AmountSubmission_ByAccounts_Search, payload)
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("ProjectID", formData?.ProjectID),
-      //   form.append("VerticalID", formData?.VerticalID),
-      //   form.append("TeamID", formData?.TeamID),
-      //   form.append("WingID", formData?.WingID),
-      //   form.append("POC1", formData?.POC1),
-      //   form.append("POC2", formData?.POC2),
-      //   form.append("POC3", formData?.POC3),
-      //   form.append("Status", formData?.Status),
-      //   form.append("BankName", formData?.BankName),
-      //   form.append("DateType", formData?.DateType),
-      //   form.append("FromDate", formatDate(formData?.FromDate)),
-      //   form.append("ToDate", formatDate(formData?.ToDate)),
-      //   form.append("SearchType", "CancelExcel"),
-      //   axios
-      //     .post(apiUrls?.AmountSubmission_ByAccounts_Search, form, { headers })
+
       .then((res) => {
         const datas = res?.data?.data;
         toast.success(datas);
@@ -915,25 +706,6 @@ const SearchAmountSubmission = ({ data }) => {
           : t(header)
       ),
   ];
-
-  //   const amountTHEAD = [
-  //   ...staticHeaders.map((header) => ({
-  //     name: t(header),
-  //     width: header === "S.No." ? "2%" : undefined,
-  //   })),
-
-  //   ...allHeaders
-  //     .filter((header) => isTableVisible(header))
-  //     .map((header) =>
-  //       ["Settlement", "Print"].includes(header)
-  //         ? { name: t(header), width: "2%" }
-  //         : { name: t(header) }
-  //     ),
-
-  //   ...(AmountCancel == 1
-  //     ? [{ name: t("Cancel"), width: "2%" }]
-  //     : []),
-  // ];
 
   const getThead = () => {
     if (AmountCancel == 1) {
@@ -1004,12 +776,7 @@ const SearchAmountSubmission = ({ data }) => {
         Type: "AmountSubmission",
         FilterData: String(savedData),
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append("Type", "AmountSubmission"),
-      //   form.append("FilterData", savedData),
-      //   axios
-      //     .post(apiUrls?.SaveFilterDataSubmission, form, { headers })
+
       .then((res) => {
         toast.success(res?.data?.message);
         setFormData({
@@ -1040,53 +807,8 @@ const SearchAmountSubmission = ({ data }) => {
       .catch((err) => {
         console.log(err);
       });
-
-    // console.log("save data", formData);
   };
 
-  // const handleSearchFilter = () => {
-  //   let form = new FormData();
-  //   form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-  //     form.append("Type", "AmountSubmission"),
-  //     // form.append("FilterData", savedData),
-  //     axios
-  //       .post(apiUrls?.SearchFilterDataSubmission, form, { headers })
-  //       .then((res) => {
-  //         setFormData({
-  //           ...formData,
-  //           ProjectID: res?.data?.ProjectID || [],
-  //           VerticalID: res?.data?.VerticalID || [],
-  //           TeamID: res?.data?.TeamID || [],
-  //           WingID: res?.data?.WingID || [],
-  //           POC1: res?.data?.POC1 || [],
-  //           POC2: res?.data?.POC2 || [],
-  //           POC3: res?.data?.POC3 || [],
-  //           Status: res?.data?.Status || "All",
-  //           BankName: res?.data?.BankName || "",
-  //           DateType: res?.data?.DateType || "ReceivedDate",
-  //           FromDate: new Date(res?.data?.FromDate),
-  //           ToDate: new Date(res?.data?.ToDate),
-  //           ReceivedDate: res?.data?.ReceivedDate || "",
-  //           PaymentMode: res?.data?.PaymentMode || "",
-  //           BankName: res?.data?.BankName || "",
-  //           Remark: res?.data?.Remark || "",
-  //           EntryDate: res?.data?.EntryDate || "",
-  //           PageSize: res?.data?.PageSize || 50,
-  //           PageNo: res?.data?.PageNo || "",
-  //         });
-
-  //         // if (res?.data) {
-  //         //   console.log("kamaldata:", res?.data);
-  //         // } else {
-  //         //   console.error("No data found in the response.");
-  //         // }
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-
-  //   // console.log("save data", formData);
-  // };
   useEffect(() => {
     getProject();
     getVertical();
@@ -1103,6 +825,49 @@ const SearchAmountSubmission = ({ data }) => {
     }
   }, []);
 
+  const handlePrint2 = (ele) => {
+    axiosInstances
+      .post(apiUrls.AmountSubmissionPrintOutPrintOut, {
+        receiptId: Number(ele?.OnAccount_Req_ID),
+        signatureCode: String(""),
+      })
+      .then((res) => {
+        if (!res?.data?.success) {
+          console.error("Invalid PDF response");
+          return;
+        }
+
+        const base64 = res?.data?.data; // Base64 string
+
+        // Convert Base64 to byte array
+        const byteCharacters = atob(base64);
+        const byteNumbers = new Array(byteCharacters.length);
+
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+
+        const byteArray = new Uint8Array(byteNumbers);
+
+        // Convert to PDF blob
+        const blob = new Blob([byteArray], { type: "application/pdf" });
+
+        const url = window.URL.createObjectURL(blob);
+
+        // Create download link
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `${ele?.ProjectName || "SalesConnector"}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        window.URL.revokeObjectURL(url);
+      })
+      .catch((err) => {
+        console.error("Error downloading PDF:", err);
+      });
+  };
   return (
     <>
       {visible?.gmailVisible && (
@@ -1190,22 +955,7 @@ const SearchAmountSubmission = ({ data }) => {
             </Link>
           }
         />
-        {/* <Accordion
-          defaultValue={true}
-          notOpen={true}
-          title={
-            <div className="d-flex">
-              <span className="mt-1"> {t("Search Filter Details")} </span>
-              <span className="header ml-1" style={{ cursor: "pointer" }}>
-                <SearchLotusFilter
-                  columnConfig={dynamicFilter}
-                  setColumnConfig={setDynamicFilter}
-                  PageName="SearchAmountSubmission"
-                />
-              </span>
-            </div>
-          }
-        /> */}
+
         <div className="row g-4 m-2">
           {isVisible("ProjectID") && (
             <MultiSelectComp
@@ -1922,9 +1672,10 @@ const SearchAmountSubmission = ({ data }) => {
                         borderRadius: "3px",
                       }}
                       title="Click here to Print."
-                      onClick={() =>
-                        window.open(ele?.AmountSubmissionUrl, "_blank")
-                      }
+                      // onClick={() =>
+                      //   window.open(ele?.AmountSubmissionUrl, "_blank")
+                      // }
+                      onClick={() => handlePrint2(ele)}
                     />
                   );
               }

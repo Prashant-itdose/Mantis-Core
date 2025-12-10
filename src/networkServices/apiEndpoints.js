@@ -111,6 +111,7 @@ export const apiUrls = {
   DocumentType_Select: "/CRMCOREAPI/api/ManageDocument/DocumentType_Select",
   UploadDocument_Search: "/CRMCOREAPI/api/ManageDocument/UploadDocument_Search",
   UploadDocument: "/CRMCOREAPI/api/ManageDocument/UploadDocument",
+  AmountSubmissionPrintOutPrintOut: "/CRMCOREAPI/api/Reports/AmountSubmissionPrintOutPrintOut",
 
   //Amount Submission Page Api's
   AmountSubmission_ByAccounts:
