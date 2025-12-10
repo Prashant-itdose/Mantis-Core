@@ -7,29 +7,40 @@ import MultiSelectComp from "../components/formComponent/MultiSelectComp";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import Tables from "../components/UI/customTable";
+import Input from "../components/formComponent/Input";
+import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
+import { toast } from "react-toastify";
+import moment from "moment";
+import NoRecordFound from "../components/formComponent/NoRecordFound";
+import Tooltip from "./Tooltip";
 
 const OverseasExpenseManagementSearch = () => {
   const [t] = useTranslation();
   const { VITE_DATE_FORMAT } = import.meta.env;
   const [assignto, setAssignedto] = useState([]);
   const [formData, setFormData] = useState({
-    FromDate: new Date(),
+    FromDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
     ToDate: new Date(),
     Employee: [],
+    InvoiceNo: "",
   });
-  const [tableData, setTableData] = useState([{ Month: "December" }]);
+  const [tableData, setTableData] = useState([]);
   const searchHandleChange = (e, index) => {
     const { name, value } = e?.target;
     setFormData({ ...formData, [name]: value });
   };
   const getAssignTo = () => {
     axiosInstances
-      .post(apiUrls.AssignTo_Select, {
-        ProjectID: 0,
+      .post(apiUrls.EmployeeFeebackBind, {
+        CrmEmployeeID: Number(
+          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+        ),
+        RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
       })
+
       .then((res) => {
-        const assigntos = res?.data?.data?.map((item) => {
-          return { name: item?.Name, code: item?.ID };
+        const assigntos = res?.data.data.map((item) => {
+          return { name: item?.EmployeeName, code: item?.EmployeeCode };
         });
         setAssignedto(assigntos);
       })
@@ -44,6 +55,16 @@ const OverseasExpenseManagementSearch = () => {
       [`${name}`]: selectedValues,
     }));
   };
+  const handleSelectChange = (e) => {
+    const { name, value, checked, type } = e?.target;
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? (checked ? 1 : 0) : value,
+    });
+  };
+  const shortenNamesummary = (name) => {
+    return name?.length > 40 ? name?.substring(0, 35) + "..." : name;
+  };
   const overseasThead = [
     "S.No.",
     "Month",
@@ -51,21 +72,47 @@ const OverseasExpenseManagementSearch = () => {
     "Employee Name",
     "Employee Code",
     "Invoice No.",
+    "Category",
     "Description",
     "Local Currency Symbol",
+
     "DR Local Currency Payment",
-    "DR Local Conversion Rate",
-    "DR Local Converted Dollar",
-    "DR Local Conversion Rate INR",
-    "DR Local Converted INR",
-    "CR Local Currency Payment",
-    "CR Local Conversion Rate",
-    "CR Local Converted Dollar",
-    "CR Local Conversion Rate INR",
-    "CR Local Converted INR",
-    "Closing Balance In Dollar",
-    "Closing Balance In INR",
+    "DR Conversion Rate",
+    "DR Converted in Dollar ($)",
+    "DR Conversion Rate in INR (₹)",
+    "DR Converted in INR (₹)",
+
+    "CR Local Currency Received",
+    "CR Conversion Rate",
+    "CR Converted in Dollar ($)",
+    "CR Conversion Rate in INR (₹)",
+    "CR Converted in INR (₹)",
+
+    "Closing Balance In Dollar ($)",
+    "Closing Balance In INR (₹)",
+    "Print",
   ];
+
+  const handleViewSearch = () => {
+    axiosInstances
+      .post(apiUrls.SearchDollarExpense, {
+        EmployeeCode: String(formData?.AssignedTo || ""),
+        InvoiceNo: String(formData?.InvoiceNo || ""),
+        FromDate: String(moment(formData?.FromDate).format("DD/MM/YYYY")),
+        ToDate: String(moment(formData?.ToDate).format("DD/MM/YYYY")),
+      })
+
+      .then((res) => {
+        if (res?.data?.success === true) {
+          setTableData(res?.data?.data);
+        } else {
+          toast.error("No Record Found.");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   useEffect(() => {
     getAssignTo();
   }, []);
@@ -73,6 +120,7 @@ const OverseasExpenseManagementSearch = () => {
     <>
       <div className="card">
         <Heading
+          isBreadcrumb={true}
           title={
             <span className="font-weight-bold">
               Overseas Expense Management Search
@@ -102,6 +150,17 @@ const OverseasExpenseManagementSearch = () => {
                 : []
             }
           />
+          <Input
+            type="text"
+            className="form-control"
+            id="InvoiceNo"
+            name="InvoiceNo"
+            lable="Invoice No."
+            placeholder=" "
+            onChange={handleSelectChange}
+            value={formData?.InvoiceNo}
+            respclass="col-xl-2 col-md-4 col-sm-4 col-12"
+          />
           <DatePicker
             className="custom-calendar"
             id="FromDate"
@@ -124,50 +183,101 @@ const OverseasExpenseManagementSearch = () => {
           />
           <button
             className="btn btn-sm btn-primary ml-2 mt-0"
-            // onClick={() => handleViewSearch()}
+            onClick={handleViewSearch}
           >
             <i className="fa fa-search mr-1" aria-hidden="true"></i> Search
           </button>
         </div>
       </div>
+      {tableData?.length > 0 ? (
+        <div className="card mt-2">
+          <Heading
+            title={<span className="font-weight-bold">Search Details</span>}
+          />
+          {tableData?.length > 0 ? (
+            <div className="table-responsive">
+              <Tables
+                thead={overseasThead}
+                tbody={tableData?.map((ele, index) => ({
+                  "S.No.": index + 1,
+                  Month:
+                    [
+                      "Jan",
+                      "Feb",
+                      "Mar",
+                      "Apr",
+                      "May",
+                      "Jun",
+                      "Jul",
+                      "Aug",
+                      "Sep",
+                      "Oct",
+                      "Nov",
+                      "Dec",
+                    ][ele?.MONTH.split("-")[1] - 1] +
+                    "-" +
+                    ele?.MONTH.split("-")[2].slice(-2),
+                  Period: ele?.PERIOD,
+                  "Employee Name": ele?.Employee_Name,
+                  "Employee Code": ele?.Employee_Code,
+                  "Invoice No.": ele?.Invoice_No,
+                  Category: ele?.Category,
+                  Description: (
+                    <Tooltip label={ele?.DESCRIPTION}>
+                      <span
+                        id={`DESCRIPTION-${index}`}
+                        targrt={`DESCRIPTION-${index}`}
+                        style={{ textAlign: "center" }}
+                      >
+                        {shortenNamesummary(ele?.DESCRIPTION)}
+                      </span>
+                    </Tooltip>
+                  ),
+                  "Local Currency Symbol": ele?.Local_Currency_Symbol,
 
-      <div className="card mt-2">
-        <Heading
-          title={<span className="font-weight-bold">Search Details</span>}
-        />
-        {tableData?.length > 0 ? (
-          <div className="table-responsive">
-            <Tables
-              thead={overseasThead}
-              tbody={tableData?.map((ele, index) => ({
-                "S.No.": index + 1,
-                Month: ele?.Month,
-                Period: ele?.tavling_from,
-                "Employee Name": ele?.tavling_to,
-                "Employee Code": ele?.traveling,
-                "Invoice No.": ele?.InvoiceNo,
-                Description: ele?.Description,
-                "Local Currency Symbol": ele?.LocalCurrencySymbol,
-                "DR Local Currency Payment": ele?.DrLocalCurrencyPayment,
-                "DR Local Conversion Rate": ele?.DrLocalConversionRate,
-                "DR Local Converted Dollar": ele?.DrLocalConvertedDollar,
-                "DR Local Conversion Rate INR": ele?.DrLocalConversionRateINR,
-                "DR Local Converted INR": ele?.DrLocalConvertedINR,
-                "CR Local Currency Payment": ele?.CrLocalCurrencyPayment,
-                "CR Local Conversion Rate": ele?.CrLocalConversionRate,
-                "CR Local Converted Dollar": ele?.CrLocalConvertedDollar,
-                "CR Local Conversion Rate INR": ele?.CrLocalConversionRateINR,
-                "CR Local Converted INR": ele?.CrLocalConvertedINR,
-                "Closing Balance In Dollar": ele?.ClosingBalanceInDollar,
-                "Closing Balance In INR": ele?.ClosingBalanceInINR,
-              }))}
-              tableHeight={"tableHeight"}
-            />
-          </div>
-        ) : (
-          <span className="text-align-center text-black ">No Data Found</span>
-        )}
-      </div>
+                  "DR Local Currency Payment": ele?.Local_Currency_Payment,
+                  "DR Conversion Rate": ele?.Conversion_rate_Dollar,
+                  "DR Converted in Dollar ($)": ele?.Converted_in_Dollar,
+                  "DR Conversion Rate in INR (₹)": ele?.Conversion_rate_in_INR,
+                  "DR Converted in INR (₹)": ele?.Converted_in_INR,
+
+                  "CR Local Currency Received": ele?.Local_Currency_Received,
+                  "CR Conversion Rate": ele?.Conversion_rate_Dollar_CR,
+                  "CR Converted in Dollar ($)":
+                    ele?.Converted_in_Dollar_Dollar_CR,
+                  "CR Conversion Rate in INR (₹)":
+                    ele?.Conversion_rate_in_INR_CR,
+                  "CR Converted in INR (₹)": ele?.Converted_in_INR_CR,
+
+                  "Closing Balance In Dollar ($)":
+                    ele?.Closing_Balance_in_Dollar,
+                  "Closing Balance In INR (₹)": ele?.Closing_Balance_in_INR,
+                  Print: ele?.File_Url !== null && (
+                    <i
+                      className="fa fa-print"
+                      style={{
+                        marginLeft: "5px",
+                        cursor: "pointer",
+                        color: "black",
+                        padding: "2px",
+                        borderRadius: "3px",
+                      }}
+                      title="Click here to Print."
+                      onClick={() => window.open(ele?.File_Url, "_blank")}
+                      // onClick={() => handlePrint2(ele)}
+                    />
+                  ),
+                }))}
+                tableHeight={"tableHeight"}
+              />
+            </div>
+          ) : (
+            <span className="text-align-center text-black ">No Data Found</span>
+          )}
+        </div>
+      ) : (
+        <NoRecordFound />
+      )}
     </>
   );
 };

@@ -112,6 +112,7 @@ export const apiUrls = {
   UploadDocument_Search: "/CRMCOREAPI/api/ManageDocument/UploadDocument_Search",
   UploadDocument: "/CRMCOREAPI/api/ManageDocument/UploadDocument",
   AmountSubmissionPrintOutPrintOut: "/CRMCOREAPI/api/Reports/AmountSubmissionPrintOutPrintOut",
+  SearchDollarExpense: "/CRMCOREAPI/api/ManageExpense/SearchDollarExpense",
 
   //Amount Submission Page Api's
   AmountSubmission_ByAccounts:
