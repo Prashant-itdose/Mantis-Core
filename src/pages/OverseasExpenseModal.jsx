@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { axiosInstances } from "../networkServices/axiosInstance";
 import { apiUrls } from "../networkServices/apiEndpoints";
 import BrowseInput from "../components/formComponent/BrowseInput";
-import Heading from "../components/UI/Heading";
-import Tables from "../components/UI/customTable";
-import NoRecordFound from "../components/formComponent/NoRecordFound";
 
 const OverseasExpenseModal = ({ visible, setVisible, handleViewSearch }) => {
+  //   console.log("view issue", visible);
   const [formData, setFormData] = useState({
     DocumentType: "",
     SelectFile: "",
@@ -53,7 +51,9 @@ const OverseasExpenseModal = ({ visible, setVisible, handleViewSearch }) => {
         console.log(err);
       });
   };
-
+  const handleView = () => {
+    window.open(visible?.showData?.Invoice_File_Url, "_blank");
+  };
   return (
     <>
       <div className="card p-2">
@@ -61,6 +61,16 @@ const OverseasExpenseModal = ({ visible, setVisible, handleViewSearch }) => {
           Employee Name:- {visible?.showData?.Employee_Name}&nbsp; &nbsp;
           Invoice No.:- {visible?.showData?.Invoice_No}&nbsp; &nbsp; Expense
           No.:- {visible?.showData?.Expense_No}
+        </span>
+      </div>
+      <div className="card p-2">
+        <span style={{ fontWeight: "bold" }}>
+          <i
+            className="fa fa-eye"
+            onClick={handleView}
+            style={{ cursor: "pointer" }}
+          ></i>{" "}
+          <span className="ml-3">View Previous Invoice</span>
         </span>
       </div>
       <div className="card">
