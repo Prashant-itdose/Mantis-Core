@@ -5,10 +5,11 @@ import { axiosInstances } from "../networkServices/axiosInstance";
 import { apiUrls } from "../networkServices/apiEndpoints";
 import BrowseInvoiceButton from "../components/formComponent/BrowseInvoiceButton";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ExcelPreviewHandler from "./ExcelImport/ExcelPreviewHandler";
 
 const OverseasExpenseManagement = () => {
+   const navigate = useNavigate();
   const [t] = useTranslation();
   const [excelData, setExcelData] = useState([]);
   const [formData, setFormData] = useState({
@@ -65,7 +66,7 @@ const OverseasExpenseManagement = () => {
   };
 
   const handleCancel = () => {
-    setExcelData([]);
+   navigate("/OverseasExpenseManagement");
   };
 
   return (
@@ -86,7 +87,7 @@ const OverseasExpenseManagement = () => {
             <ExcelPreviewHandler setCallBackState={setExcelData} />
           </div>
 
-          {/* {excelData?.length > 0 && (
+          {excelData?.length > 0 && (
             <i
               className="fa fa-retweet ml-3 mt-2 "
               aria-hidden="true"
@@ -94,7 +95,7 @@ const OverseasExpenseManagement = () => {
               title="Click to Refresh Excel Sheet."
               style={{ cursor: "pointer" }}
             ></i>
-          )} */}
+          )}
 
           <div className="ml-4">
             <BrowseInvoiceButton handleImageChange={handleImageChange} />
