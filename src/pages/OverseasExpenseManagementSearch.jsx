@@ -13,6 +13,8 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import NoRecordFound from "../components/formComponent/NoRecordFound";
 import Tooltip from "./Tooltip";
+import Modal from "../components/modalComponent/Modal";
+import OverseasExpenseModal from "./OverseasExpenseModal";
 
 const OverseasExpenseManagementSearch = () => {
   const [t] = useTranslation();
@@ -90,7 +92,8 @@ const OverseasExpenseManagementSearch = () => {
 
     "Closing Balance In Dollar ($)",
     "Closing Balance In INR (₹)",
-    "Print",
+    "Excel Print",
+    "Invoice Print",
   ];
 
   const handleViewSearch = () => {
@@ -113,11 +116,29 @@ const OverseasExpenseManagementSearch = () => {
         console.log(err);
       });
   };
+  const [visible, setVisible] = useState({
+    attachVisible: false,
+    showData: {},
+  });
   useEffect(() => {
     getAssignTo();
   }, []);
   return (
     <>
+      {visible?.attachVisible && (
+        <Modal
+          modalWidth={"800px"}
+          visible={visible}
+          setVisible={setVisible}
+          Header="Upload Invoice"
+        >
+          <OverseasExpenseModal
+            visible={visible}
+            setVisible={setVisible}
+            handleViewSearch={handleViewSearch}
+          />
+        </Modal>
+      )}
       <div className="card">
         <Heading
           isBreadcrumb={true}
@@ -252,7 +273,7 @@ const OverseasExpenseManagementSearch = () => {
                   "Closing Balance In Dollar ($)":
                     ele?.Closing_Balance_in_Dollar,
                   "Closing Balance In INR (₹)": ele?.Closing_Balance_in_INR,
-                  Print: ele?.File_Url !== null && (
+                  "Excel Print": ele?.File_Url !== null && (
                     <i
                       className="fa fa-print"
                       style={{
@@ -266,6 +287,40 @@ const OverseasExpenseManagementSearch = () => {
                       onClick={() => window.open(ele?.File_Url, "_blank")}
                       // onClick={() => handlePrint2(ele)}
                     />
+                  ),
+                  "Invoice Print": ele?.Invoice_File_Url !== null && (
+                    <>
+                      <i
+                        className="fa fa-print"
+                        style={{
+                          marginLeft: "5px",
+                          cursor: "pointer",
+                          padding: "2px",
+                          borderRadius: "3px",
+                        }}
+                        title="Click here to Print."
+                        onClick={() =>
+                          window.open(ele?.Invoice_File_Url, "_blank")
+                        }
+                        // onClick={() => handlePrint2(ele)}
+                      />
+                      <i
+                        className="fa fa-upload ml-4"
+                        onClick={() => {
+                          setVisible({
+                            attachVisible: true,
+                            showData: ele,
+                          });
+                        }}
+                        style={{
+                          cursor: "pointer",
+                          color: "black",
+                          marginLeft: "2px",
+                          color: "green",
+                        }}
+                        title="Upload Invoice"
+                      ></i>
+                    </>
                   ),
                 }))}
                 tableHeight={"tableHeight"}

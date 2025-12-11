@@ -3,70 +3,100 @@ import Heading from "../components/UI/Heading";
 import { useTranslation } from "react-i18next";
 import { axiosInstances } from "../networkServices/axiosInstance";
 import { apiUrls } from "../networkServices/apiEndpoints";
-import BrowseInvoiceButton from "../components/formComponent/BrowseInvoiceButton";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import ExcelPreviewHandler from "./ExcelImport/ExcelPreviewHandler";
+import BrowseExcelButton from "../components/formComponent/BrowseExcelButton";
+import BrowseInvoiceButton from "../components/formComponent/BrowseInvoiceButton";
+
+const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB
 
 const OverseasExpenseManagement = () => {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const [t] = useTranslation();
   const [excelData, setExcelData] = useState([]);
+
   const [formData, setFormData] = useState({
     FromDate: "",
     ToDate: "",
     Employee: "",
-    DocumentType: "",
     SelectFile: "",
+    SelectFileInvoice: "",
     Document_Base64: "",
     FileExtension: "",
+    InvoiceSheet: "",
+    InvoiceFileExtension: "",
   });
 
-  const handleImageChange = (e) => {
-    const file = e?.target?.files[0];
-    if (file) {
-      const maxSize = 1 * 1024 * 1024;
-      if (file.size > maxSize) {
-        alert("File size exceeds 1MB. Please choose a smaller file.");
-        return;
-      }
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader?.result.split(",")[1];
-        const fileExtension = file?.name.split(".").pop();
-        setFormData({
-          ...formData,
-          SelectFile: file,
-          Document_Base64: base64String,
-          FileExtension: fileExtension,
-        });
-      };
-      reader.readAsDataURL(file);
+  // ---------- COMMON FILE TO BASE64 FUNCTION ----------
+  const convertFileToBase64 = (file, fileKey, base64Key, extensionKey) => {
+    if (!file) return;
+
+    if (file.size > MAX_FILE_SIZE) {
+      alert("File size exceeds 1MB. Please choose a smaller file.");
+      return;
     }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64String = reader.result.split(",")[1];
+      const fileExtension = file.name.split(".").pop();
+
+      setFormData((prev) => ({
+        ...prev,
+        [fileKey]: file,
+        [base64Key]: base64String,
+        [extensionKey]: fileExtension,
+      }));
+
+      console.log("Saved Base64:", base64String);
+      console.log("Saved EXT:", fileExtension);
+    };
+
+    reader.readAsDataURL(file);
   };
 
+  // Excel File
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    convertFileToBase64(file, "SelectFile", "Document_Base64", "FileExtension");
+  };
+
+  // Invoice File
+  const handleImageChange1 = (e) => {
+    const file = e.target.files[0];
+    convertFileToBase64(
+      file,
+      "SelectFileInvoice",
+      "InvoiceSheet",
+      "InvoiceFileExtension"
+    );
+  };
+
+  // ---------- SAVE ----------
   const handleSave = () => {
     const payload = {
-      FileExtension: String(formData?.FileExtension || ""),
-      Document_Base64: String(formData?.Document_Base64 || ""),
+      FileExtension: String(formData.FileExtension ?? ""),
+      Document_Base64: String(formData.Document_Base64 ?? ""),
       OverseasExcelData: excelData,
+      InvoiceSheet: String(formData.InvoiceSheet ?? ""),
+      InvoiceFileExtension: String(formData.InvoiceFileExtension ?? ""),
     };
+
+    console.log("Final Payload:", payload);
+
     axiosInstances
       .post(apiUrls.OverseasExcelInsert, payload)
       .then((res) => {
-        if (res.data.success === true) {
-          toast.success(res.data.message);
-        } else {
-          toast.error(res.data.message);
-        }
+        res.data.success
+          ? toast.success(res.data.message)
+          : toast.error(res.data.message);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => console.log(err));
   };
 
   const handleCancel = () => {
-   navigate("/OverseasExpenseManagement");
+    window.location.reload();
   };
 
   return (
@@ -82,34 +112,40 @@ const OverseasExpenseManagement = () => {
             </div>
           }
         />
+
         <div className="row m-2">
           <div className="ml-2">
             <ExcelPreviewHandler setCallBackState={setExcelData} />
           </div>
 
-          {excelData?.length > 0 && (
+          {excelData.length > 0 && (
             <i
-              className="fa fa-retweet ml-3 mt-2 "
+              className="fa fa-retweet ml-3 mt-2"
               aria-hidden="true"
               onClick={handleCancel}
-              title="Click to Refresh Excel Sheet."
+              title="Click to remove select Excel Sheet"
               style={{ cursor: "pointer" }}
             ></i>
           )}
 
           <div className="ml-4">
-            <BrowseInvoiceButton handleImageChange={handleImageChange} />
+            <BrowseExcelButton handleImageChange={handleImageChange} />
+          </div>
+
+          <div className="ml-4">
+            <BrowseInvoiceButton handleImageChange={handleImageChange1} />
           </div>
 
           <button
             className="btn btn-sm btn-primary ml-4 mt-0"
             onClick={handleSave}
           >
-            <i className="fa fa-upload mr-1" aria-hidden="true"></i> Upload
+            <i className="fa fa-upload mr-1"></i> Upload
           </button>
         </div>
       </div>
     </>
   );
 };
+
 export default OverseasExpenseManagement;

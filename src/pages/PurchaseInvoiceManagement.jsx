@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 import ReactSelect from "../components/formComponent/ReactSelect";
 import Input from "../components/formComponent/Input";
 import DatePicker from "../components/formComponent/DatePicker";
-import BrowseButton from "../components/formComponent/BrowseButton";
 
 const PurchaseInvoiceManagement = () => {
   const [t] = useTranslation();
@@ -25,7 +24,7 @@ const PurchaseInvoiceManagement = () => {
     FileExtension: "",
     SupplierType: "",
     InvoiceNo: "",
-    FromDate: new Date(),
+    FromDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
     ToDate: new Date(),
     DueDate: new Date(),
     Amount: "",
@@ -284,7 +283,7 @@ const PurchaseInvoiceManagement = () => {
           )}
           <button
             className="btn btn-sm btn-primary ml-2 mt-2"
-            onClick={handleSave}
+            // onClick={handleSave}
           >
             Save
           </button>

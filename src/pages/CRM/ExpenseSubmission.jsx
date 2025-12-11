@@ -2035,7 +2035,9 @@ const ExpenseSubmission = () => {
             <button
               className="btn btn-sm btn-info ml-2"
               onClick={handleSave}
-              disabled={isCurrentMonthSelected() === false}
+              disabled={
+                isCurrentMonthSelected() === false || GrandTotalExpense <= 0
+              }
               title={
                 isCurrentMonthSelected() === false
                   ? "Expenses can be submitted only on the 5th of the previous month"

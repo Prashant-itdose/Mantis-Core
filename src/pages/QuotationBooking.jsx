@@ -373,7 +373,7 @@ const QuotationBooking = ({ data }) => {
         TeamID: 0,
         WingID: 0,
       })
-     
+
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
           return { label: item?.Project, value: item?.ProjectId };
@@ -781,12 +781,12 @@ const QuotationBooking = ({ data }) => {
       ShippingCompanyName: String(
         getlabel(formData?.ShippingCompany, shippingcompany) || ""
       ),
-        dtSales: formData?.SalesDate
-          ? String(moment(formData.SalesDate).format("YYYY-MM-DD"))
-          : "",
-        ExpiryDate: formData?.ExpiryDate
-          ? String(moment(formData.ExpiryDate).format("YYYY-MM-DD"))
-          : "",
+      dtSales: formData?.SalesDate
+        ? String(moment(formData.SalesDate).format("YYYY-MM-DD"))
+        : "",
+      ExpiryDate: formData?.ExpiryDate
+        ? String(moment(formData.ExpiryDate).format("YYYY-MM-DD"))
+        : "",
 
       ShippingCompanyAddress: String(formData?.ShippingAddress || ""),
       ShippingState: String(formData?.ShippingState || ""),
@@ -952,7 +952,6 @@ const QuotationBooking = ({ data }) => {
       axiosInstances
         .post(apiUrls.Quotation_Insert, FinalPayload)
         .then((res) => {
-          console.log("handlesave", res.data.data);
           if (res?.data?.success == true) {
             toast.success(res?.data?.message);
             setLoading(false);
@@ -977,12 +976,13 @@ const QuotationBooking = ({ data }) => {
             //   ShippingPanCard: "",
             //   Terms: "",
             // });
+            // navigate("/SearchQuotationBooking")
           } else {
             toast.error(res?.data?.message);
             setLoading(false);
             setIsSubmitting(false);
           }
-          if (res.data.success ===true) {
+          if (res.data.success === true) {
             // console.log("res.status", res.status);
             localStorage.setItem("lotus", res.data.ID);
             setRecordID(res.data.ID); // Store the ID in state
@@ -1061,7 +1061,7 @@ const QuotationBooking = ({ data }) => {
 
       setLoading(true);
       setIsSubmitting(true);
-     
+
       axiosInstances
         .post(apiUrls.Quotation_Approved, {
           QuotationID: String(state?.data || recordID),
@@ -1093,6 +1093,7 @@ const QuotationBooking = ({ data }) => {
             //   ShippingPanCard: "",
             //   Terms: "",
             // });
+            // navigate("/SearchQuotationBooking")
           } else {
             toast.error(res?.data?.message);
             setLoading(false);
@@ -1260,6 +1261,7 @@ const QuotationBooking = ({ data }) => {
             //   ShippingPanCard: "",
             //   Terms: "",
             // });
+            // navigate("/SearchQuotationBooking");
           } else {
             toast.error(res?.data?.message);
             setLoading(false);
@@ -1533,7 +1535,6 @@ const QuotationBooking = ({ data }) => {
   };
 
   const fetchDatabyEdit = (id) => {
-   
     axiosInstances
       .post(apiUrls.Quotation_Load_QuotationID, {
         QuotationID: String(id),
@@ -2619,27 +2620,6 @@ const QuotationBooking = ({ data }) => {
                   {t("ResetFilter")}
                 </button>
               </div>
-
-              {/* <div className="col-2 d-flex">
-                  <div className="col-2">
-                    {state?.edit ? (
-                      <button
-                        className="btn btn-sm btn-info ml-2"
-                        onClick={handleUpdate}
-                      >
-                        Update
-                      </button>
-                    ) : (
-                      <button
-                        className="btn btn-sm btn-info ml-2"
-                        onClick={handleSave}
-                        disabled={isSubmitting === false}
-                      >
-                        Save
-                      </button>
-                    )}
-                  </div>
-                </div> */}
             </div>
           </div>
         )}
@@ -2651,7 +2631,7 @@ const QuotationBooking = ({ data }) => {
                 <button
                   className="btn btn-sm btn-success ml-2"
                   onClick={handleUpdate}
-                  // disabled={isSubmitting}
+                  disabled={isSubmitting}
                 >
                   {t("Update")}
                 </button>
@@ -2659,7 +2639,7 @@ const QuotationBooking = ({ data }) => {
                 <button
                   className="btn btn-sm btn-info ml-2"
                   onClick={handleSave}
-                  disabled={isSubmitting && recordID}
+                  disabled={isSubmitting}
                 >
                   {t("Save")}
                 </button>
@@ -2695,6 +2675,7 @@ const QuotationBooking = ({ data }) => {
               <button
                 className="btn btn-sm btn-info ml-2"
                 onClick={handleSaveApprove}
+                disabled={isSubmitting}
               >
                 {t("Save & Approve")}
               </button>
