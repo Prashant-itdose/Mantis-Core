@@ -1330,11 +1330,11 @@ const ViewExpense = () => {
                       title={
                         ReportingManager == 1
                           ? TwelthdayCurrentMonthSelected()
-                            ? "Click to Delete"
-                            : "Delete is available only on the 12th day of the current month."
+                            ? "Click to Submit"
+                            : "Submit is available only on the 12th day of the current month."
                           : isCurrentMonthSelected()
-                            ? "Click to Delete"
-                            : "Delete is available only on the 5th day of the current month."
+                            ? "Click to Submit"
+                            : "Submit is available only on the 5th day of the current month."
                       }
                     >
                       S
