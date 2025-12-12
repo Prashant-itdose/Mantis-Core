@@ -1271,28 +1271,70 @@ const ViewExpense = () => {
                         border: "1px solid orange",
                         width: "20px",
                         height: "20px",
-                        background: isCurrentMonthSelected()
-                          ? "orange"
-                          : "#cccccc",
+                        // background: isCurrentMonthSelected()
+                        //   ? "orange"
+                        //   : "#cccccc",
+                        background:
+                          ReportingManager == 1
+                            ? TwelthdayCurrentMonthSelected()
+                              ? "orange"
+                              : "#cccccc"
+                            : isCurrentMonthSelected()
+                              ? "orange"
+                              : "#cccccc",
                         borderRadius: "50%",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
                         textDecoration: "none",
-                        cursor: isCurrentMonthSelected()
-                          ? "pointer"
-                          : "not-allowed",
-                        opacity: isCurrentMonthSelected() ? 1 : 0.6,
+                        // cursor: isCurrentMonthSelected()
+                        //   ? "pointer"
+                        //   : "not-allowed",
+                        cursor:
+                          ReportingManager == 1
+                            ? TwelthdayCurrentMonthSelected()
+                              ? "pointer"
+                              : "not-allowed"
+                            : isCurrentMonthSelected()
+                              ? "pointer"
+                              : "not-allowed",
+                        // opacity: isCurrentMonthSelected() ? 1 : 0.6,
+                        opacity:
+                          ReportingManager == 1
+                            ? TwelthdayCurrentMonthSelected()
+                              ? 1
+                              : 0.6
+                            : isCurrentMonthSelected()
+                              ? 1
+                              : 0.6,
                       }}
+                      // onClick={() => {
+                      //   if (isCurrentMonthSelected()) {
+                      //     setVisible({ ShowSubmit: true, showData: ele });
+                      //   }
+                      // }}
                       onClick={() => {
-                        if (isCurrentMonthSelected()) {
-                          setVisible({ ShowSubmit: true, showData: ele });
-                        }
+                        ReportingManager == 1
+                          ? TwelthdayCurrentMonthSelected()
+                            ? setVisible({ ShowSubmit: true, showData: ele })
+                            : ""
+                          : isCurrentMonthSelected()
+                            ? setVisible({ ShowSubmit: true, showData: ele })
+                            : "";
                       }}
+                      // title={
+                      //   isCurrentMonthSelected()
+                      //     ? "Click to Submit"
+                      //     : "Submit is available only on the 5th day of the current month."
+                      // }
                       title={
-                        isCurrentMonthSelected()
-                          ? "Click to Submit"
-                          : "Submit is available only on the 5th day of the current month."
+                        ReportingManager == 1
+                          ? TwelthdayCurrentMonthSelected()
+                            ? "Click to Delete"
+                            : "Delete is available only on the 12th day of the current month."
+                          : isCurrentMonthSelected()
+                            ? "Click to Delete"
+                            : "Delete is available only on the 5th day of the current month."
                       }
                     >
                       S
