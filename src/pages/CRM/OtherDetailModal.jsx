@@ -26,7 +26,7 @@ const OtherDetailModal = ({ visible, setVisible }) => {
           <tbody>
             <tr>
               <td>Other Amount:</td>
-              <td>{visible?.showData?.Amount}</td>
+              <td>{visible?.showData?.misc_Expense}</td>
             </tr>
 
             <tr>
