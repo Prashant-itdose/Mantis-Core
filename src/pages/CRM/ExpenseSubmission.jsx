@@ -2014,6 +2014,7 @@ const ExpenseSubmission = () => {
           )}
         </div>
       </div>
+      
       <div className="card">
         <div className="row m-2 d-flex">
           <BrowseInput handleImageChange={handleImageChange} />
