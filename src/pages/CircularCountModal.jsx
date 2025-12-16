@@ -12,20 +12,20 @@ const CircularCountModal = ({ visible }) => {
 
   const getHandle = () => {
     axiosInstances
-        .post(apiUrls?.GetFeaturesStatus, {
-          CircularID: String(visible?.showData?.ID),
-          Type:  String("Read"),
-        })
-        .then((res) => {
-          if (res.data.success === true) {
-            setTableData(res.data.data);
-          } else {
-            toast.error("No record found.");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      .post(apiUrls?.GetFeaturesStatus, {
+        CircularID: String(visible?.showData?.ID),
+        Type: String("Read"),
+      })
+      .then((res) => {
+        if (res.data.success === true) {
+          setTableData(res.data.data);
+        } else {
+          toast.error("No record found.");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {

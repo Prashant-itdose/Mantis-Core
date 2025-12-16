@@ -1,7 +1,6 @@
-import axios from "axios";
+
 import React, { useState } from "react";
 import { apiUrls } from "../../networkServices/apiEndpoints";
-import { headers } from "../../utils/apitools";
 import { toast } from "react-toastify";
 import Loading from "../../components/loader/Loading";
 import { useCryptoLocalStorage } from "../../utils/hooks/useCryptoLocalStorage";

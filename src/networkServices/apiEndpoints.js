@@ -36,6 +36,9 @@ export const apiUrls = {
   UpdateTickets: "/CRMCOREAPI/api/ViewIssue/UpdateTicket",
   //NewTicket(ReportIssue) Page Api's
   NewTicket: "/CRMCOREAPI/api/BugReport/NewTicket",
+  ManageOverseasTravelInsert: "/CRMCOREAPI/api/ManageOverseas/ManageOverseasTravelInsert",
+  SearchOverseasTravel: "/CRMCOREAPI/api/ManageOverseas/SearchOverseasTravel",
+  ApproveOrRejectOverseasTravel: "/CRMCOREAPI/api/ManageOverseas/ApproveOrRejectOverseasTravel",
 
   //AutoBackupStatusSheet  Page Api's   & MisReport Table Page
   SPOC_Update: "/CRMCOREAPI/api/Autobackup/SPOCUpdate",
