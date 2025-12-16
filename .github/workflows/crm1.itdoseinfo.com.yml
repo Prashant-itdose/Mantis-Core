@@ -1,38 +1,89 @@
-name: crm1.itdoseinfo.com 
+# name: crm1.itdoseinfo.com 
+
+# on:
+#   workflow_dispatch:
+  
+# jobs:
+#   build:
+
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v3
+
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: '18' # or your preferred version
+#       - name: Clean dependencies
+#         run:
+#           rm -rf node_modules package-lock.json
+#       - name: Install dependencies
+#         run: npm i
+
+#       - name: Build React app
+#         run: npm run build
+        
+#       - name: Copy via SSH
+#         uses: appleboy/scp-action@v0.1.7
+#         with:
+#           source: "dist/*"
+#           target: "/home/ubuntu/project/crm1.itdoseinfo.com/fe/"
+#           host: ${{ secrets.INNOPATH_HOST }}
+#           port: 22
+#           username: ${{ secrets.INNOPATH_USER }}
+#           password: ${{ secrets.INNOPATH_PASSWORD }}
+#           strip_components: 1
+#           overwrite: true
+
+name: crm1.itdoseinfo.com
 
 on:
   workflow_dispatch:
-  
+
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # 2️⃣ Setup Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' # or your preferred version
-      - name: Clean dependencies
-        run:
-          rm -rf node_modules package-lock.json
-      - name: Install dependencies
-        run: npm i
+          node-version: '18'
 
+      # 3️⃣ Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # 4️⃣ Build Vite React app
       - name: Build React app
         run: npm run build
-        
+
+      # 5️⃣ Create target directory on server
+      - name: Create target directory
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.INNOPATH_HOST }}
+          username: ${{ secrets.INNOPATH_USER }}
+          password: ${{ secrets.INNOPATH_PASSWORD }}
+          port: 22
+          script: |
+            mkdir -p /home/ubuntu/project/crm1.itdoseinfo.com/fe
+
+      # 6️⃣ Copy build files via SCP
       - name: Copy via SSH
         uses: appleboy/scp-action@v0.1.7
         with:
-          source: "dist/*"
+          source: "dist/**"
           target: "/home/ubuntu/project/crm1.itdoseinfo.com/fe/"
           host: ${{ secrets.INNOPATH_HOST }}
-          port: 22
           username: ${{ secrets.INNOPATH_USER }}
           password: ${{ secrets.INNOPATH_PASSWORD }}
-          strip_components: 1
+          port: 22
           overwrite: true
