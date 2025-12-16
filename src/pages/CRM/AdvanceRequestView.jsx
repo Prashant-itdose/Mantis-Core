@@ -110,7 +110,7 @@ const AdvanceRequestView = () => {
         RoleID: 0,
         OnlyItdose: 0,
       })
-    
+
       .then((res) => {
         const reporters = res?.data.data.map((item) => {
           return { label: item?.Name, value: item?.ID };
@@ -280,31 +280,9 @@ const AdvanceRequestView = () => {
         TeamID: Number(formData?.TeamID),
         WingID: Number(formData?.WingID),
       })
-      // let form = new FormData();
-      // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-      // form.append(
-      //   "LoginName",
-      //   useCryptoLocalStorage("user_Data", "get", "realname")
-      // );
-      // form.append(
-      //   "CrmID",
-      //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      // );
-      // form.append("Month", formData?.currentMonth),
-      //   form.append("Year", formData?.currentYear),
-      //   form.append(
-      //     "RequestedBy",
-      //     IsCEO == "1" ? "0" : useCryptoLocalStorage("user_Data", "get", "ID")
-      //   );
-      // form.append("SearchType", "");
-      // form.append("VerticalID", formData?.VerticalID);
-      // form.append("TeamID", formData?.TeamID);
-      // form.append("WingID", formData?.WingID);
 
-      // axios
-      //   .post(apiUrls?.AdvanceRequest_Search, form, { headers })
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           setTableData(res?.data?.data);
           setFilteredData(res?.data?.data);
           setLoading(false);

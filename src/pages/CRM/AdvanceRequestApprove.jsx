@@ -5,8 +5,11 @@ import { headers } from "../../utils/apitools";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useCryptoLocalStorage } from "../../utils/hooks/useCryptoLocalStorage";
-const AdvanceRequestApprove = ({ visible, setVisible ,handleSearchAdvance}) => {
-
+const AdvanceRequestApprove = ({
+  visible,
+  setVisible,
+  handleSearchAdvance,
+}) => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     Remarks: "",
@@ -22,7 +25,7 @@ const AdvanceRequestApprove = ({ visible, setVisible ,handleSearchAdvance}) => {
     setLoading(true);
     let form = new FormData();
     form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-      form.append(
+    form.append(
       "CrmID",
       useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
     );
@@ -36,11 +39,11 @@ const AdvanceRequestApprove = ({ visible, setVisible ,handleSearchAdvance}) => {
     axios
       .post(apiUrls?.AdvanceAmount_Status_Update, form, { headers })
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           setLoading(false);
           setVisible(false);
-          handleSearchAdvance()
+          handleSearchAdvance();
         } else {
           toast.error(res?.data?.message);
           setLoading(false);

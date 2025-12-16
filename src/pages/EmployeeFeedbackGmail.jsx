@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import Input from "../components/formComponent/Input";
 import { axiosInstances } from "../networkServices/axiosInstance";
 const EmployeeFeedbackGmail = (showData) => {
-  console.log("showdata", showData);
+  // console.log("showdata", showData);
   const [loading, setLoading] = useState(false);
   const [t] = useTranslation();
   const [formData, setFormData] = useState({

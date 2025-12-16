@@ -58,7 +58,7 @@ const PointwiseResolutionWeekWise = () => {
         })
       .then((res) => {
         const reporters = res?.data?.data?.map((item) => ({
-          label: item?.NAME,
+          label: item?.Name,
           value: item?.ID,
         }));
         setReporter(reporters);
@@ -84,22 +84,14 @@ const PointwiseResolutionWeekWise = () => {
   };
 
   const handleDetail = ({ month, year }) => {
-    const form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    form.append(
-      "LoginName",
-      useCryptoLocalStorage("user_Data", "get", "realname")
-    );
-    form.append("DeveloperID", formData?.Reporter);
-    form.append("Type", "3");
-    form.append("Week", formData?.SearchType);
-    form.append("Month", month);
-    form.append("Year", year);
-
-    axios
-      .post(apiUrls.WeaklyMonthlyDeveloperFreeManMinute, form, { headers })
+   axiosInstances
+        .post(apiUrls.ResolutionPointWeekwise, {
+          DeveloperID: String(formData?.Reporter),
+          Month: String(month),
+          Year: String(year),
+        })
       .then((res) => {
-        if (res.data.status === true) {
+        if (res.data.success === true) {
           const apiData = res?.data?.data || [];
           const labels = apiData.map((item) =>
             item?.Day ? item.Day.slice(0, 3) : ""

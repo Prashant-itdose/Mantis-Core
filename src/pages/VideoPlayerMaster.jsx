@@ -155,7 +155,7 @@ const VideoPlayerMaster = () => {
         VedioLinkID: formData?.VedioLinkID || 0,              
         IsActive: 1, })
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.message);
             setLoading(false);
             setFormData({ TitleName: "", VideoLink: "", VerticalID: "" });

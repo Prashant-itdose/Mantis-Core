@@ -7,6 +7,9 @@ export const calculateWindowSize = (windowWidth) => {
   if (windowWidth >= 992) {
     return "md";
   }
+  if (windowWidth >= 768 && windowWidth <= 950) {
+    return "md"; // iPad Mini or medium tablets
+  }
   if (windowWidth >= 768) {
     return "sm";
   }
@@ -45,7 +48,6 @@ export const toggleFullScreen = () => {
     }
   }
 };
-
 
 export const Tabfunctionality = (event) => {
   if (event.key === "Tab") {

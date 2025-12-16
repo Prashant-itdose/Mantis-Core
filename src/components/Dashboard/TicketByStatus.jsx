@@ -37,7 +37,7 @@ const TicketByStatus = () => {
         DeveloperID: String(memberID || "0"),
       })
       .then((res) => {
-        setCountData(res?.data?.dtPriority);
+        setCountData(res?.data?.data?.dtPriority);
       })
       .catch((err) => {
         console.log(err);

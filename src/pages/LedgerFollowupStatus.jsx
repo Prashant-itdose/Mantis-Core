@@ -15,7 +15,7 @@ import NoRecordFound from "../components/formComponent/NoRecordFound";
 import { axiosInstances } from "../networkServices/axiosInstance";
 
 const LedgerFollowupStatus = (visible) => {
-  console.log("visible visible", visible);
+  // console.log("visible visible", visible);
   // const tabledatasale=[visible?.data]
   const [loading, setLoading] = useState(false);
   const [assignto, setAssignedto] = useState([]);
@@ -121,7 +121,7 @@ const LedgerFollowupStatus = (visible) => {
     //   axios
     //     .post(apiUrls?.PaymentFollowup, form, { headers })
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.messge);
             handlePaymentFollowupSearch();
             setLoading(false);

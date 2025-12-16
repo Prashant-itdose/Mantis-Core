@@ -101,7 +101,6 @@ const initialState = {
           childrenOrder: "8",
           breadcrumb: "Tickets / Employee Task Tracker",
         },
-      
       ],
     },
 
@@ -132,6 +131,32 @@ const initialState = {
       ],
     },
     {
+      menuName: "Inventory",
+      menuOrder: "224",
+      menuID: "851",
+      menuIcon: "fas fa-tachometer-alt",
+      children: [
+        {
+          childrenName: "SupplierMaster",
+          url: "/SupplierMaster",
+          childrenOrder: "1",
+          breadcrumb: "Inventory / SupplierMaster",
+        },
+        {
+          childrenName: "ItemMaster",
+          url: "/ItemMaster",
+          childrenOrder: "2",
+          breadcrumb: "Inventory / Item Master",
+        },
+        {
+          childrenName: "GRN",
+          url: "/GRN",
+          childrenOrder: "3",
+          breadcrumb: "Inventory / GRN",
+        },
+      ],
+    },
+    {
       menuName: "Feedback",
       menuOrder: "22",
       menuID: "89",
@@ -155,7 +180,7 @@ const initialState = {
           childrenOrder: "3",
           breadcrumb: "Feedback / Emailer View",
         },
-          {
+        {
           childrenName: "Client Feedback",
           url: "/ClientFeedbackFlow",
           childrenOrder: "4",
@@ -334,6 +359,12 @@ const initialState = {
           breadcrumb: "Tools / Morning Wish",
         },
         {
+          childrenName: "FestivalWish",
+          url: "/FestivalWish",
+          childrenOrder: "10",
+          breadcrumb: "Tools / Festival Wish",
+        },
+        {
           childrenName: "BirthdayWish",
           url: "/BirthdayWish",
           childrenOrder: "9",
@@ -344,6 +375,18 @@ const initialState = {
           url: "/ImplementationStepMaster",
           childrenOrder: "7",
           breadcrumb: "Tools /Implementaion Step Master",
+        },
+        {
+          childrenName: "ModuleMaster",
+          url: "/ModuleMaster",
+          childrenOrder: "11",
+          breadcrumb: "Tools / Module Master",
+        },
+        {
+          childrenName: "OverseasFly",
+          url: "/OverseasFly",
+          childrenOrder: "12",
+          breadcrumb: "Tools / Overseas Business Travel",
         },
       ],
     },
@@ -507,6 +550,30 @@ const initialState = {
           url: "/PurchaseOrder",
           childrenOrder: "6",
           breadcrumb: "Accounts / Purchase Order",
+        },
+        {
+          childrenName: "OverseasExpenseManagement",
+          url: "/OverseasExpenseManagement",
+          childrenOrder: "7",
+          breadcrumb: "Accounts / OverseasExpenseManagement",
+        },
+        {
+          childrenName: "OverseasExpenseManagementSearch",
+          url: "/OverseasExpenseManagementSearch",
+          childrenOrder: "8",
+          breadcrumb: "Accounts / View Overseas Expense List",
+        },
+        {
+          childrenName: "PurchaseInvoiceManagement",
+          url: "/PurchaseInvoiceManagement",
+          childrenOrder: "9",
+          breadcrumb: "Accounts / PurchaseInvoiceManagement",
+        },
+        {
+          childrenName: "PurchaseInvoiceManagementSearch",
+          url: "/PurchaseInvoiceManagementSearch",
+          childrenOrder: "10",
+          breadcrumb: "Accounts / PurchaseInvoiceManagementSearch",
         },
       ],
     },

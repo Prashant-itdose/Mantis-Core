@@ -310,7 +310,7 @@ const ModuleTabModal = ({ data }) => {
       axios
         .post(apiUrls?.ProjectMasterUpdate, form, { headers })
         .then((res) => {
-          if (res?.data?.status == true) {
+          if (res?.data?.success == true) {
             toast.success(res?.data?.message);
             handleSearch();
             setEditMode(false);
@@ -456,7 +456,7 @@ const ModuleTabModal = ({ data }) => {
          axiosInstances
       .post(apiUrls?.ProjectMasterUpdate, {})
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.message);
             setLoading(false);
             handleSearch();

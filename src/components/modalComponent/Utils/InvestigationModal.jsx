@@ -17,7 +17,7 @@ const InvestigationModal = ({
   typePage,
   handleConfirmBox,
 }) => {
-  console.log("Data", data);
+ 
   const { VITE_DATE_FORMAT } = import.meta.env;
   const [t] = useTranslation();
 
@@ -274,7 +274,7 @@ const InvestigationModal = ({
   );
 
   const handleClickedDoublebaar = (data) => {
-    console.log("DOUBLECLICKDATA", data);
+  
     if (typePage === "OPDRadiologyConfirmation") {
       handleConfirmBox(data);
     } else {

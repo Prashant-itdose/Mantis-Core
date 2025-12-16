@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-
 import { apiUrls } from "../../../networkServices/apiEndpoints";
 import Loading from "../../loader/Loading";
 import { axiosInstances } from "../../../networkServices/axiosInstance";
@@ -32,7 +31,7 @@ const SummaryStatusModal = ({ visible, setVisible }) => {
 
       .then((res) => {
         if (res?.success === true) {
-          toast.success(res?.data?.Success?.Success);
+          toast.success(res?.data?.message);
           setLoading(false);
           setVisible(false);
         } else {

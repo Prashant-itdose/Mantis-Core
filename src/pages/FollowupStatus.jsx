@@ -119,7 +119,7 @@ const FollowupStatus = (visible) => {
     //   axios
     //     .post(apiUrls?.PaymentFollowup, form, { headers })
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.messge);
             handlePaymentFollowupSearch();
           } else {

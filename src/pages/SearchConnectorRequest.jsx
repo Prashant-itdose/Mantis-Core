@@ -23,8 +23,6 @@ import * as XLSX from "xlsx";
 import * as FileSaver from "file-saver";
 import Tooltip from "./Tooltip";
 import { useTranslation } from "react-i18next";
-import pdf from "../../src/assets/image/pdf.png";
-import { ExportToPDF } from "../../src/networkServices/Tools";
 import gmaillogo from "../../src/assets/image/Gmail_Logo.png";
 import GmailConnecterModal from "../components/UI/customTable/GmailConnecterModal";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
@@ -118,46 +116,46 @@ const SearchConnectorRequest = ({ data }) => {
     if (savedData) {
       setFormData(JSON.parse(savedData));
     }
-    
+
     axiosInstances
       .post(apiUrls.SaveFilterDataSubmission, {
-  "Type": "AmountSubmission",
-  "FilterData": String(savedData)
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("Type", "AmountSubmission"),
-    //   form.append("FilterData", savedData),
-    //   axios
-    //     .post(apiUrls?.SaveFilterDataSubmission, form, { headers })
-        .then((res) => {
-          toast.success(res?.data?.message);
-          setFormData({
-            ...formData,
-            ProjectID: [],
-            VerticalID: [],
-            TeamID: [],
-            WingID: [],
-            Users: [],
-            POC1: [],
-            POC2: [],
-            POC3: [],
-            Status: "All",
-            DateType: "EntryDate",
-            FromDate: new Date(
-              new Date().getFullYear(),
-              new Date().getMonth(),
-              1
-            ),
-            ToDate: new Date(),
-            ActionChange: "",
-            PageSize: "50",
-            PageNo: "",
-          });
-        })
-        .catch((err) => {
-          console.log(err);
+        Type: "AmountSubmission",
+        FilterData: String(savedData),
+      })
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append("Type", "AmountSubmission"),
+      //   form.append("FilterData", savedData),
+      //   axios
+      //     .post(apiUrls?.SaveFilterDataSubmission, form, { headers })
+      .then((res) => {
+        toast.success(res?.data?.message);
+        setFormData({
+          ...formData,
+          ProjectID: [],
+          VerticalID: [],
+          TeamID: [],
+          WingID: [],
+          Users: [],
+          POC1: [],
+          POC2: [],
+          POC3: [],
+          Status: "All",
+          DateType: "EntryDate",
+          FromDate: new Date(
+            new Date().getFullYear(),
+            new Date().getMonth(),
+            1
+          ),
+          ToDate: new Date(),
+          ActionChange: "",
+          PageSize: "50",
+          PageNo: "",
         });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     // console.log("save data", formData);
   };
@@ -165,46 +163,46 @@ const SearchConnectorRequest = ({ data }) => {
   const handleSearchFilter = () => {
     axiosInstances
       .post(apiUrls.SearchFilterDataSubmission, {
-  "Type": "AmountSubmission"
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("Type", "AmountSubmission"),
-    //   // form.append("FilterData", savedData),
-    //   axios
-    //     .post(apiUrls?.SearchFilterDataSubmission, form, { headers })
-        .then((res) => {
-          console.log("Response data:", res?.data);
+        Type: "AmountSubmission",
+      })
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append("Type", "AmountSubmission"),
+      //   // form.append("FilterData", savedData),
+      //   axios
+      //     .post(apiUrls?.SearchFilterDataSubmission, form, { headers })
+      .then((res) => {
+        console.log("Response data:", res?.data);
 
-          setFormData({
-            ProjectID: res?.data?.ProjectID || [],
-            VerticalID: res?.data?.VerticalID || [],
-            TeamID: res?.data?.TeamID || [],
-            WingID: res?.data?.WingID || [],
-            POC1: res?.data?.POC1 || [],
-            POC2: res?.data?.POC2 || [],
-            POC3: res?.data?.POC3 || [],
-            Status: res?.data?.Status || "All",
-            DateType: res?.data?.DateType || "EntryDate",
-            FromDate: new Date(res?.data?.FromDate),
-            ToDate: new Date(res?.data?.ToDate),
-            ReceivedDate: res?.data?.ReceivedDate || "",
-            PaymentMode: res?.data?.PaymentMode || "",
-            Remark: res?.data?.Remark || "",
-            EntryDate: res?.data?.EntryDate || "",
-            PageSize: res?.data?.PageSize || 50,
-            PageNo: res?.data?.PageNo || "",
-          });
-          console.log("check formdata", formData);
-          // if (res?.data) {
-          //   console.log("kamaldata:", res?.data);
-          // } else {
-          //   console.error("No data found in the response.");
-          // }
-        })
-        .catch((err) => {
-          console.log(err);
+        setFormData({
+          ProjectID: res?.data?.ProjectID || [],
+          VerticalID: res?.data?.VerticalID || [],
+          TeamID: res?.data?.TeamID || [],
+          WingID: res?.data?.WingID || [],
+          POC1: res?.data?.POC1 || [],
+          POC2: res?.data?.POC2 || [],
+          POC3: res?.data?.POC3 || [],
+          Status: res?.data?.Status || "All",
+          DateType: res?.data?.DateType || "EntryDate",
+          FromDate: new Date(res?.data?.FromDate),
+          ToDate: new Date(res?.data?.ToDate),
+          ReceivedDate: res?.data?.ReceivedDate || "",
+          PaymentMode: res?.data?.PaymentMode || "",
+          Remark: res?.data?.Remark || "",
+          EntryDate: res?.data?.EntryDate || "",
+          PageSize: res?.data?.PageSize || 50,
+          PageNo: res?.data?.PageNo || "",
         });
+        console.log("check formdata", formData);
+        // if (res?.data) {
+        //   console.log("kamaldata:", res?.data);
+        // } else {
+        //   console.error("No data found in the response.");
+        // }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     // console.log("save data", formData);
   };
@@ -225,149 +223,149 @@ const SearchConnectorRequest = ({ data }) => {
   const getMultiReporter = () => {
     axiosInstances
       .post(apiUrls.Reporter_Select, {
-  "IsMaster": 0,
-  "RoleID": 0,
-  "OnlyItdose": 0
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Reporter_Select, form, { headers })
-        .then((res) => {
-          const reporters = res?.data.data.map((item) => {
-            return { name: item?.NAME, code: item?.ID };
-          });
-          setUsers(reporters);
-        })
-        .catch((err) => {
-          console.log(err);
+        IsMaster: 0,
+        RoleID: 0,
+        OnlyItdose: 0,
+      })
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   axios
+      //     .post(apiUrls?.Reporter_Select, form, { headers })
+      .then((res) => {
+        const reporters = res?.data.data.map((item) => {
+          return { name: item?.NAME, code: item?.ID };
         });
+        setUsers(reporters);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getVertical = () => {
     axiosInstances
       .post(apiUrls.Vertical_Select, {})
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Vertical_Select, form, { headers })
-        .then((res) => {
-          const verticals = res?.data.data.map((item) => {
-            return { name: item?.Vertical, code: item?.VerticalID };
-          });
-          setVertical(verticals);
-        })
-        .catch((err) => {
-          console.log(err);
+      // let form = new FormData();
+      // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   axios
+      //     .post(apiUrls?.Vertical_Select, form, { headers })
+      .then((res) => {
+        const verticals = res?.data.data.map((item) => {
+          return { name: item?.Vertical, code: item?.VerticalID };
         });
+        setVertical(verticals);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getTeam = () => {
-        axiosInstances
+    axiosInstances
       .post(apiUrls.Team_Select, {})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Team_Select, form, { headers })
-        .then((res) => {
-          const teams = res?.data.data.map((item) => {
-            return { name: item?.Team, code: item?.TeamID };
-          });
-          setTeam(teams);
-        })
-        .catch((err) => {
-          console.log(err);
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   axios
+      //     .post(apiUrls?.Team_Select, form, { headers })
+      .then((res) => {
+        const teams = res?.data.data.map((item) => {
+          return { name: item?.Team, code: item?.TeamID };
         });
+        setTeam(teams);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getWing = () => {
-            axiosInstances
+    axiosInstances
       .post(apiUrls.Wing_Select, {})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.Wing_Select, form, { headers })
-        .then((res) => {
-          const wings = res?.data.data.map((item) => {
-            return { name: item?.Wing, code: item?.WingID };
-          });
-          setWing(wings);
-        })
-        .catch((err) => {
-          console.log(err);
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   axios
+      //     .post(apiUrls?.Wing_Select, form, { headers })
+      .then((res) => {
+        const wings = res?.data.data.map((item) => {
+          return { name: item?.Wing, code: item?.WingID };
         });
+        setWing(wings);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getPOC1 = () => {
-            axiosInstances
+    axiosInstances
       .post(apiUrls.POC_1_Select, {})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.POC_1_Select, form, { headers })
-        .then((res) => {
-          const poc1s = res?.data.data.map((item) => {
-            return { name: item?.POC_1_Name, code: item?.POC_1_ID };
-          });
-          setPoc1(poc1s);
-        })
-        .catch((err) => {
-          console.log(err);
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   axios
+      //     .post(apiUrls?.POC_1_Select, form, { headers })
+      .then((res) => {
+        const poc1s = res?.data.data.map((item) => {
+          return { name: item?.POC_1_Name, code: item?.POC_1_ID };
         });
+        setPoc1(poc1s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getPOC2 = () => {
-     axiosInstances
+    axiosInstances
       .post(apiUrls.POC_2_Select, {})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.POC_2_Select, form, { headers })
-        .then((res) => {
-          const poc2s = res?.data.data.map((item) => {
-            return { name: item?.POC_2_Name, code: item?.POC_2_ID };
-          });
-          setPoc2(poc2s);
-        })
-        .catch((err) => {
-          console.log(err);
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   axios
+      //     .post(apiUrls?.POC_2_Select, form, { headers })
+      .then((res) => {
+        const poc2s = res?.data.data.map((item) => {
+          return { name: item?.POC_2_Name, code: item?.POC_2_ID };
         });
+        setPoc2(poc2s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getPOC3 = () => {
-     axiosInstances
+    axiosInstances
       .post(apiUrls.POC_3_Select, {})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.POC_3_Select, form, { headers })
-        .then((res) => {
-          const poc3s = res?.data.data.map((item) => {
-            return { name: item?.POC_3_Name, code: item?.POC_3_ID };
-          });
-          setPoc3(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   axios
+      //     .post(apiUrls?.POC_3_Select, form, { headers })
+      .then((res) => {
+        const poc3s = res?.data.data.map((item) => {
+          return { name: item?.POC_3_Name, code: item?.POC_3_ID };
         });
+        setPoc3(poc3s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getProject = () => {
-     axiosInstances
+    axiosInstances
       .post(apiUrls.ProjectSelect, {
-  "ProjectID": 0,
-  "IsMaster": "0",
-  "VerticalID": 0,
-  "TeamID": 0,
-  "WingID": 0
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-    //   axios
-    //     .post(apiUrls?.ProjectSelect, form, { headers })
-        .then((res) => {
-          const poc3s = res?.data.data.map((item) => {
-            return { name: item?.Project, code: item?.ProjectId };
-          });
-          setProject(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
+        ProjectID: 0,
+        IsMaster: "0",
+        VerticalID: 0,
+        TeamID: 0,
+        WingID: 0,
+      })
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
+      //   axios
+      //     .post(apiUrls?.ProjectSelect, form, { headers })
+      .then((res) => {
+        const poc3s = res?.data.data.map((item) => {
+          return { name: item?.Project, code: item?.ProjectId };
         });
+        setProject(poc3s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   function formatDate(dateString) {
@@ -385,169 +383,135 @@ const SearchConnectorRequest = ({ data }) => {
       toast.error("Please Select Status.");
     } else {
       setLoading(true);
-       axiosInstances
-      .post(apiUrls.Connector_Search, {
-  "ConnectorID": 0,
-  "DateType": String(formData?.DateType),
-  "FromDate": String(formatDate(formData?.FromDate)),
-  "ToDate": String(formatDate(formData?.ToDate)),
-  "Status": String(formData?.Status),
-  "rowColor": String(code ? code : ""),
-  "PageSize": Number(formData?.PageSize),
-  "PageNo": Number(page ?? currentPage - 1),
-  "IsExcel": 0,
-  "ProjectID": String(project?.length > 0 && project !== "0" ? project : formData?.ProjectID),
-  "VerticalID": String(formData?.VerticalID),
-  "TeamID":String(formData?.TeamID),
-  "WingID": String(formData?.WingID),
-  "POC1":String(formData?.POC1),
-  "POC2": String(formData?.POC2),
-  "POC3": String(formData?.POC3),
-})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-      //   form.append(
-      //     "ProjectID",
-      //     project?.length > 0 && project !== "0" ? project : formData?.ProjectID
-      //   ),
-      //   form.append("VerticalID", formData?.VerticalID),
-      //   form.append("TeamID", formData?.TeamID),
-      //   form.append("WingID", formData?.WingID),
-      //   form.append("POC1", formData?.POC1),
-      //   form.append("POC2", formData?.POC2),
-      //   form.append("POC3", formData?.POC3),
-      //   form.append("Status", formData?.Status),
-      //   form.append("DateType", formData?.DateType),
-      //   form.append("FromDate", formatDate(formData?.FromDate)),
-      //   form.append("ToDate", formatDate(formData?.ToDate)),
-      //   form.append("ConnectorID", ""),
-      //   form.append("IsExcel", "0"),
-      //   form.append("rowColor", code ? code : ""),
-      //   form.append("PageSize", formData?.PageSize),
-      //   form.append("PageNo", page ?? currentPage - 1),
-      //   axios
-      //     .post(apiUrls?.Connector_Search, form, { headers })
-          .then((res) => {
-            const data = res?.data?.data;
-            if (data?.length == 0) {
-              setShownodata(true);
-            }
-            const updatedData = data?.map((ele, index) => {
-              return {
-                ...ele,
-                index: index,
-                edit: true,
-                url: `${res?.data.Url}${ele?.ID}`,
-                Amount25PinFemale: ele?.Amount25PinFemale,
-                Amount25PinMale: ele?.Amount25PinMale,
-                Amount9PinFemale: ele?.Amount9PinFemale,
-                Amount9PinMale: ele?.Amount9PinMale,
-                Quantity25Female: ele?.Quantity25Female,
-                Quantity25Male: ele?.Quantity25Male,
-                Quantity9Female: ele?.Quantity9Female,
-                Quantity9Male: ele?.Quantity9Male,
-              };
-            });
-            setTableData(updatedData);
-            setLoading(false);
-          })
-          .catch((err) => {
-            console.log(err);
-            setLoading(false);
+      axiosInstances
+        .post(apiUrls.Connector_Search, {
+          ConnectorID: 0,
+          DateType: String(formData?.DateType),
+          FromDate: String(formatDate(formData?.FromDate)),
+          ToDate: String(formatDate(formData?.ToDate)),
+          Status: String(formData?.Status),
+          rowColor: String(code ? code : ""),
+          PageSize: Number(formData?.PageSize),
+          PageNo: Number(page ?? currentPage - 1),
+          IsExcel: 0,
+          ProjectID: String(
+            project?.length > 0 && project !== "0"
+              ? project
+              : formData?.ProjectID
+          ),
+          VerticalID: String(formData?.VerticalID),
+          TeamID: String(formData?.TeamID),
+          WingID: String(formData?.WingID),
+          POC1: String(formData?.POC1),
+          POC2: String(formData?.POC2),
+          POC3: String(formData?.POC3),
+        })
+
+        .then((res) => {
+          const data = res?.data?.data;
+          if (data?.length == 0) {
+            setShownodata(true);
+          }
+          const updatedData = data?.map((ele, index) => {
+            return {
+              ...ele,
+              index: index,
+              edit: true,
+              url: `${res?.data.Url}${ele?.ID}`,
+              Amount25PinFemale: ele?.Amount25PinFemale,
+              Amount25PinMale: ele?.Amount25PinMale,
+              Amount9PinFemale: ele?.Amount9PinFemale,
+              Amount9PinMale: ele?.Amount9PinMale,
+              Quantity25Female: ele?.Quantity25Female,
+              Quantity25Male: ele?.Quantity25Male,
+              Quantity9Female: ele?.Quantity9Female,
+              Quantity9Male: ele?.Quantity9Male,
+            };
           });
+          setTableData(updatedData);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
     }
   };
   const handleExcel = () => {
     setLoading(true);
-     axiosInstances
+    axiosInstances
       .post(apiUrls.Connector_Search, {
-  ConnectorID: formData?.ConnectorID ? Number(formData.ConnectorID) : 0,
-  DateType: formData?.DateType ? String(formData.DateType) : "",
-  FromDate: formData?.FromDate ? String(formatDate(formData.FromDate)) : "",
-  ToDate: formData?.ToDate ? String(formatDate(formData.ToDate)) : "",
-  Status: formData?.Status ? String(formData.Status) : "",
-  rowColor: formData?.rowColor ? String(formData.rowColor) : "",
-  PageSize: formData?.PageSize ? Number(formData.PageSize) : 0,
-  PageNo: formData?.PageNo ? Number(formData.PageNo) : 0,
-  IsExcel: formData?.IsExcel ? Number(formData.IsExcel) : 0,
-  ProjectID: formData?.ProjectID ? String(formData.ProjectID) : "",
-  VerticalID: formData?.VerticalID ? String(formData.VerticalID) : "",
-  TeamID: formData?.TeamID ? String(formData.TeamID) : "",
-  WingID: formData?.WingID ? String(formData.WingID) : "",
-  POC1: formData?.POC1 ? String(formData.POC1) : "",
-  POC2: formData?.POC2 ? String(formData.POC2) : "",
-  POC3: formData?.POC3 ? String(formData.POC3) : ""
-})
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname")),
-    //   form.append("ProjectID", formData?.ProjectID),
-    //   form.append("VerticalID", formData?.VerticalID),
-    //   form.append("TeamID", formData?.TeamID),
-    //   form.append("WingID", formData?.WingID),
-    //   form.append("POC1", formData?.POC1),
-    //   form.append("POC2", formData?.POC2),
-    //   form.append("POC3", formData?.POC3),
-    //   form.append("Status", formData?.Status),
-    //   form.append("DateType", formData?.DateType),
-    //   form.append("FromDate", formatDate(formData?.FromDate)),
-    //   form.append("ToDate", formatDate(formData?.ToDate)),
-    //   form.append("ConnectorID", ""),
-    //   form.append("IsExcel", "1"),
-    //   form.append("PageSize", formData?.PageSize),
-    //   axios
-    //     .post(apiUrls?.Connector_Search, form, { headers })
-        .then((res) => {
-          console.log("dataatata", res?.data?.data);
-          const datas = res?.data?.data;
+        ConnectorID: formData?.ConnectorID ? Number(formData.ConnectorID) : 0,
+        DateType: formData?.DateType ? String(formData.DateType) : "",
+        FromDate: formData?.FromDate
+          ? String(formatDate(formData.FromDate))
+          : "",
+        ToDate: formData?.ToDate ? String(formatDate(formData.ToDate)) : "",
+        Status: formData?.Status ? String(formData.Status) : "",
+        rowColor: formData?.rowColor ? String(formData.rowColor) : "",
+        PageSize: formData?.PageSize ? Number(formData.PageSize) : 0,
+        PageNo: formData?.PageNo ? Number(formData.PageNo) : 0,
+        IsExcel: formData?.IsExcel ? Number(formData.IsExcel) : 0,
+        ProjectID: formData?.ProjectID ? String(formData.ProjectID) : "",
+        VerticalID: formData?.VerticalID ? String(formData.VerticalID) : "",
+        TeamID: formData?.TeamID ? String(formData.TeamID) : "",
+        WingID: formData?.WingID ? String(formData.WingID) : "",
+        POC1: formData?.POC1 ? String(formData.POC1) : "",
+        POC2: formData?.POC2 ? String(formData.POC2) : "",
+        POC3: formData?.POC3 ? String(formData.POC3) : "",
+      })
 
-          if (!datas || datas.length === 0) {
-            console.error("No data available for download.");
-            alert("No data available for download.");
-            setLoading(false);
-            return;
-          }
+      .then((res) => {
+        console.log("dataatata", res?.data?.data);
+        const datas = res?.data?.data;
 
-          const username = useCryptoLocalStorage("user_Data", "get", "realname") || "User";
-          const now = new Date();
-          const currentDate = now.toLocaleDateString("en-GB", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          });
-          const currentTime = now.toLocaleTimeString("en-GB", {
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-          });
-          const titleRow = [
-            { title: `${username} - ${currentDate} ${currentTime}` },
-          ];
-          const dataWithTitle = [...titleRow, ...datas];
-          const fileType =
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-          const fileExtension = ".xlsx";
-          const ws = XLSX.utils.json_to_sheet(datas, { skipHeader: false });
-          const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
-          const excelBuffer = XLSX.write(wb, {
-            bookType: "xlsx",
-            type: "array",
-          });
-          const data = new Blob([excelBuffer], { type: fileType });
-
-          // Save the file with the title as username, current date, and time
-          FileSaver.saveAs(
-            data,
-            `${username}_${currentDate}_${currentTime}` + fileExtension
-          );
+        if (!datas || datas.length === 0) {
+          console.error("No data available for download.");
+          alert("No data available for download.");
           setLoading(false);
-        })
-        .catch((err) => {
-          console.error("Error downloading the file:", err);
-          alert("Failed to download the file. Please try again.");
-          setLoading(false);
+          return;
+        }
+
+        const username =
+          useCryptoLocalStorage("user_Data", "get", "realname") || "User";
+        const now = new Date();
+        const currentDate = now.toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
         });
+        const currentTime = now.toLocaleTimeString("en-GB", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        });
+        const titleRow = [
+          { title: `${username} - ${currentDate} ${currentTime}` },
+        ];
+        const dataWithTitle = [...titleRow, ...datas];
+        const fileType =
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+        const fileExtension = ".xlsx";
+        const ws = XLSX.utils.json_to_sheet(datas, { skipHeader: false });
+        const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+        const excelBuffer = XLSX.write(wb, {
+          bookType: "xlsx",
+          type: "array",
+        });
+        const data = new Blob([excelBuffer], { type: fileType });
+
+        // Save the file with the title as username, current date, and time
+        FileSaver.saveAs(
+          data,
+          `${username}_${currentDate}_${currentTime}` + fileExtension
+        );
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error downloading the file:", err);
+        alert("Failed to download the file. Please try again.");
+        setLoading(false);
+      });
   };
   const [currentPage, setCurrentPage] = useState(1);
   const totalRecords = parseInt(tableData[0]?.TotalRecord);
@@ -682,7 +646,124 @@ const SearchConnectorRequest = ({ data }) => {
     // t("Discount"),
     // t("Edit"),
   ];
-  
+
+  // const handlePrint2 = (ele) => {
+  //   axiosInstances
+  //     .post(apiUrls.Sales_Connector_pdf, {
+  //       ConnectorId: Number(ele?.ID) || 0,
+  //       SignatureCode: "",
+  //     },
+
+  //   )
+  //     .then((res) => {
+  //       if (res?.data?.success === true) {
+  //         const base64 = res.data.data;
+  //         const byteCharacters = atob(base64);
+  //         const byteNumbers = new Array(byteCharacters.length);
+
+  //         for (let i = 0; i < byteCharacters.length; i++) {
+  //           byteNumbers[i] = byteCharacters.charCodeAt(i);
+  //         }
+
+  //         const byteArray = new Uint8Array(byteNumbers);
+
+  //         const blob = new Blob([byteArray], { type: "application/pdf" });
+
+  //         const url = URL.createObjectURL(blob);
+
+  //         // Open PDF in new tab
+  //         window.open(url, "_blank");
+
+  //         // Optional: Revoke URL later
+  //         setTimeout(() => URL.revokeObjectURL(url), 5000);
+  //       } else {
+  //         console.error("PDF generation failed");
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.error("Error:", err);
+  //     });
+  // };
+ 
+//   const handlePrint2 = (ele) => {
+//   axiosInstances.post(
+//     apiUrls.Sales_Connector_pdf,
+//     {
+//       ConnectorId: Number(ele?.ID) || 0,
+//       SignatureCode: "",
+//     },
+//     {
+//       responseType: "blob",    // ⭐ important
+//     }
+//   )
+//   .then((res) => {
+//     console.log("testing ",res)
+//     // Create blob from response
+//     const blob = new Blob([res.data], { type: "application/pdf" });
+
+//     const url = URL.createObjectURL(blob);
+
+//     // Download
+//     const link = document.createElement("a");
+//     link.href = url;
+//     link.download = `${ele?.ProjectName}.pdf`;  // SAFE when cache is disabled
+//     document.body.appendChild(link);
+//     link.click();
+//     link.remove();
+
+//     URL.revokeObjectURL(url);
+//   })
+//   .catch((err) => {
+//     console.error("Error downloading PDF:", err);
+//   });
+// };
+
+
+
+const handlePrint2 = (ele) => {
+  axiosInstances
+    .post(apiUrls.Sales_Connector_pdf, {
+      ConnectorId: Number(ele?.ID) || 0,
+      SignatureCode: "",
+    })
+    .then((res) => {
+      if (!res?.data?.success) {
+        console.error("Invalid PDF response");
+        return;
+      }
+
+      const base64 = res?.data?.data; // Base64 string
+
+      // Convert Base64 to byte array
+      const byteCharacters = atob(base64);
+      const byteNumbers = new Array(byteCharacters.length);
+
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+
+      // Convert to PDF blob
+      const blob = new Blob([byteArray], { type: "application/pdf" });
+
+      const url = window.URL.createObjectURL(blob);
+
+      // Create download link
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${ele?.ProjectName}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      window.URL.revokeObjectURL(url);
+    })
+    .catch((err) => {
+      console.error("Error downloading PDF:", err);
+    });
+};
+
   return (
     <>
       {actionChangeDetail?.gmailVisible && (
@@ -1141,7 +1222,7 @@ const SearchConnectorRequest = ({ data }) => {
               "Paid Amount": ele?.ReceivedAmount,
               "Balance Amount": ele?.TotalAmount - ele?.DiscountOnTotal,
               "Created Date": ele?.CreatedDate,
-              Print: ele?.ConnectorReceiptURL ? (
+              Print: (
                 <i
                   className="fa fa-print"
                   style={{
@@ -1153,11 +1234,9 @@ const SearchConnectorRequest = ({ data }) => {
                     background: "black",
                     borderRadius: "3px",
                   }}
-                  onClick={() =>
-                    window.open(ele?.ConnectorReceiptURL, "_blank")
-                  }
+                  onClick={() => handlePrint2(ele)}
                 ></i>
-              ) : null,
+              ),
               Email: (
                 // ele?.TaxInvoiceNo !=="" &&
                 <img

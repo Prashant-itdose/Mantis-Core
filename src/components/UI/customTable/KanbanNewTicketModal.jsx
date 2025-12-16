@@ -9,6 +9,11 @@ import {
   activityTHEAD,
   issueHistoryTHEAD,
 } from "../../modalComponent/Utils/HealperThead";
+import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorage";
+import DatePicker from "../../formComponent/DatePicker";
+import Heading from "../Heading";
+import Tooltip from "../../../pages/Tooltip";
+import { toast } from "react-toastify";
 const KanbanNewTicketModal = ({ visible, setVisible }) => {
   const [t] = useTranslation();
   const { VITE_DATE_FORMAT } = import.meta.env;
@@ -42,11 +47,51 @@ const KanbanNewTicketModal = ({ visible, setVisible }) => {
     PageName: "",
     Incharge: "",
   });
-
+  const [formDataUpdate, setFormDataUpdate] = useState({
+    TicketID: "",
+    Project: "",
+    Category: "",
+    ProjectID: "",
+    ViewStatus: "",
+    DateSubmitted: "",
+    LastUpdate: "",
+    Reporter: "",
+    AssignedTo: "",
+    Priority: "",
+    Status: "",
+    ReportedByMobile: "",
+    ReportedByName: "",
+    Summary: "",
+    Description: "",
+    DeliveryDate: "",
+    ClientDeliveryDate: "",
+    ClientManHour: "",
+    ManHour: "",
+    ReferenceCode: "",
+    Note: "",
+    HoldReason: "",
+    Reason: "",
+    ReOpen: "",
+    OtherReferenceNo: "",
+    ModuleName: "",
+    PageName: "",
+  });
   function removeHtmlTags(text) {
     return text.replace(/<[^>]*>?/gm, "");
   }
-
+  const [rowHandler, setRowHandler] = useState({
+    show: true,
+    show1: true,
+  });
+  const handlerow = (row) => {
+    let obj;
+    if (!rowHandler[row]) {
+      obj = { ...rowHandler, [row]: true };
+    } else {
+      obj = { ...rowHandler, [row]: false };
+    }
+    setRowHandler(obj);
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name == "ReferenceCode") {
@@ -54,7 +99,7 @@ const KanbanNewTicketModal = ({ visible, setVisible }) => {
     }
     setFormData({ ...formData, [name]: value });
   };
-
+  const RoleID = useCryptoLocalStorage("user_Data", "get", "RoleID");
   const handleSearchNote = () => {
     setLoading(true);
     axiosInstances
@@ -81,7 +126,9 @@ const KanbanNewTicketModal = ({ visible, setVisible }) => {
         setLoading(false);
       });
   };
-
+  const shortenNamesummary = (name) => {
+    return name?.length > 20 ? name?.substring(0, 15) + "..." : name;
+  };
   const handleSearchHistory = () => {
     axiosInstances
       .post(apiUrls.ViewHistory, {
@@ -116,7 +163,7 @@ const KanbanNewTicketModal = ({ visible, setVisible }) => {
             ViewStatus: res?.data.data[0]?.Status,
             DateSubmitted: res?.data.data[0]?.SubmittedDate,
             LastUpdate: res?.data.data[0]?.Updatedate,
-            Reporter: res?.data.data[0]?.AssignedTo,
+            Reporter: res?.data.data[0]?.ReporterName,
             AssignedTo: res?.data.data[0]?.AssignedTo,
             Priority: res?.data.data[0]?.priority,
             Status: res?.data.data[0]?.Status,
@@ -136,10 +183,47 @@ const KanbanNewTicketModal = ({ visible, setVisible }) => {
             ReferenceCode: res?.data.data[0]?.ReferenceCode,
             HoldReason: res?.data.data[0]?.HoldReason,
             ModuleName: res?.data.data[0]?.ModuleName,
-            Incharge: res?.data.data[0]?.InchargeName,
             PageName: res?.data.data[0]?.PagesName,
             ModuleID: res?.data.data[0]?.ModuleID,
             PagesID: res?.data.data[0]?.PagesID,
+            OtherReferenceNo: res?.data.data[0]?.OtherReferenceNo,
+          });
+          setFormDataUpdate({
+            TicketID: res?.data.data[0].Id,
+            Project: res?.data.data[0].Project_ID,
+            ClientDeliveryDate:
+              res?.data?.data[0]?.DeliveryDateClient !== null
+                ? new Date(res?.data?.data[0]?.DeliveryDateClient)
+                : "",
+            ClientManHour: res?.data.data[0]?.ManHoursClient,
+            Category: res?.data.data[0]?.category_id,
+            DateSubmitted: res?.data.data[0]?.SubmittedDate,
+            LastUpdate: res?.data.data[0]?.Updatedate,
+            Reporter: res?.data.data[0]?.RepoterName,
+            AssignedTo: res?.data.data[0]?.handler_id,
+            Priority: res?.data.data[0]?.priority,
+            Status: res?.data.data[0]?.StatusId,
+            ReportedByMobile: res?.data.data[0]?.RepoterMobileNo,
+            ReportedByName: res?.data.data[0]?.RepoterName,
+            Summary: res?.data.data[0]?.summary,
+            Description: res?.data.data[0]?.description,
+            // Description: removeHtmlTags(res?.data.data[0]?.description),
+            // DeliveryDate:
+            //   res?.data.data[0]?.DeliveryDate != ""
+            //     ? new Date(res?.data.data[0]?.DeliveryDate)
+            //     : "",
+            // DeliveryDate: new Date(res?.data?.data[0]?.DeliveryDate),
+            DeliveryDate:
+              res?.data?.data[0]?.DeliveryDate !== null
+                ? new Date(res?.data?.data[0]?.DeliveryDate)
+                : "",
+            ManHour: res?.data.data[0]?.ManHour,
+            ReferenceCode: res?.data.data[0]?.ReferenceCode,
+            Note: res?.data.data[0]?.Note,
+            HoldReason: res?.data.data[0]?.HoldReason,
+            ModuleName: res?.data.data[0]?.ModuleID,
+            PageName: res?.data.data[0]?.PagesID,
+            OtherReferenceNo: res?.data.data[0]?.OtherReferenceNo,
           });
         } else {
           toast.error("You are not authorised to view this ticket");
@@ -150,15 +234,72 @@ const KanbanNewTicketModal = ({ visible, setVisible }) => {
         console.log(err);
       });
   };
+  const handleDeliveryChange = (name, e) => {
+    const { value } = e;
+    setFormDataUpdate({
+      ...formDataUpdate,
+      [name]: value,
+    });
+  };
 
   const [edit, setEdit] = useState(false);
+  const handleEditUpdate = (ele) => {
+    // if (!IsUpdate) {
+    //   const data = tableData2;
+    //   data[index]["IsUpdate"] = true;
+    //   setTableData2(data);
+    // } else {
 
+    axiosInstances
+      .post(apiUrls.UpdateNote, {
+        TicketID: formDataUpdate?.TicketID,
+        NoteID: ele?.NoteId,
+        NoteText: ele.note,
+      })
+      .then((res) => {
+        if (res?.data?.success === true) {
+          toast.success(res?.data?.message);
+          handleSearchNote();
+        } else {
+          toast.error(res?.data?.message);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleDeleteNote = (id) => {
+    axiosInstances
+      .post(apiUrls.DeleteNote, {
+        TicketID: formDataUpdate?.TicketID,
+        NoteID: id,
+      })
+      .then((res) => {
+        if (res?.data?.success === true) {
+          toast.success(res?.data?.message);
+          handleSearchNote();
+        } else {
+          toast.error(res?.data?.message);
+        }
+      })
+      .catch((err) => {
+        toast.error(
+          err?.response?.data?.message
+            ? err?.response?.data?.message
+            : "Error Occurred"
+        );
+      });
+  };
+  const searchHandleChange = (e) => {
+    const { name, value } = e?.target;
+    setFormData({ ...formData, [name]: value });
+  };
   useEffect(() => {
     handleSearchNote();
     handleSearchHistory();
     handleIssueSearch();
   }, []);
-
   return (
     <>
       <div className="card">
@@ -399,9 +540,9 @@ const KanbanNewTicketModal = ({ visible, setVisible }) => {
             onChange={handleChange}
             disabled={edit == false}
           />
-          <Input
+          <textarea
             type="text"
-            className="form-control"
+            className="form-control textraeaheight"
             id="Summary"
             name="Summary"
             lable="Summary"
@@ -411,9 +552,9 @@ const KanbanNewTicketModal = ({ visible, setVisible }) => {
             onChange={handleChange}
             disabled={true}
           />
-          <Input
+          <textarea
             type="text"
-            className="form-control"
+            className="form-control textraeaheight"
             id="Description"
             name="Description"
             lable="Description"
@@ -430,7 +571,7 @@ const KanbanNewTicketModal = ({ visible, setVisible }) => {
           </div> */}
           <textarea
             type="text"
-            className="form-control mb-2 ml-2 mr-2"
+            className="form-control textraeaheight"
             id="Note"
             name="Note"
             lable="Note"

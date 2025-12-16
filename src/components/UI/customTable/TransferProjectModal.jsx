@@ -10,8 +10,7 @@ import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorag
 import { axiosInstances } from "../../../networkServices/axiosInstance";
 
 const TransferProjectModal = ({ tableData, userData, setVisible }) => {
-  console.log("tableData", tableData);
-  console.log("userData", userData);
+
   const [loading, setLoading] = useState(false);
   const [reporter, setReporter] = useState([]);
   const [targetreporter, setTargetReporter] = useState([]);

@@ -24,6 +24,7 @@ import Modal from "../components/modalComponent/Modal";
 
 import { axiosInstances } from "../networkServices/axiosInstance";
 const SalesBooking = ({ data }) => {
+  console.log("data project", data);
   const [billingcompany, setBillingCompany] = useState([]);
   const [statedata, setStatedata] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -66,11 +67,8 @@ const SalesBooking = ({ data }) => {
     ShippingPanCard: "",
     LiveDate: "",
   });
+
   const getState = (value) => {
-    // let form = new FormData();
-    // form.append("CountryID", "14"),
-    //   axios
-    //     .post(apiUrls?.GetState, form, { headers })
     axiosInstances
       .post(apiUrls?.GetState, { CountryID: "14" })
       .then((res) => {
@@ -86,6 +84,7 @@ const SalesBooking = ({ data }) => {
 
   useEffect(() => {
     getState();
+    getProject();
   }, []);
 
   const [rowHandler, setRowHandler] = useState({
@@ -112,19 +111,15 @@ const SalesBooking = ({ data }) => {
     showData: {},
   });
   const handlerefresh = () => {
-    console.log("formData.Project", formData.Project);
     getCompany(formData.Project);
   };
   const getCompany = (proj) => {
-    console.log("check project", proj);
-
     axiosInstances
       .post(apiUrls?.BillingCompany_Select, {
         ProjectID: Number(proj || formData?.Project),
         IsActive: String("1"),
       })
       .then((res) => {
-        console.log("billingcompany", res?.data?.data);
         const poc3s = res?.data.data.map((item) => {
           return { label: item?.BillingCompanyName, value: item?.BillingID };
         });
@@ -214,17 +209,6 @@ const SalesBooking = ({ data }) => {
           [name]: value,
           Items: data?.ItemName,
         });
-        // setFormData((val) => ({ ...val,
-        //   ItemName: data?.ItemName,
-        //   BillingAddress: "",
-        //   BillingState: "",
-        //   BillingGST: "",
-        //   BillingPanCard: "",
-        //   ShippingAddress: "",
-        //   ShippingState: "",
-        //   ShippingGST: "",
-        //   ShippingPanCard: "",
-        // }));
         handleGetItemRate({ label: data?.ItemName, value: "" });
       } else {
         setFormData({
@@ -233,7 +217,6 @@ const SalesBooking = ({ data }) => {
         });
       }
       handleGetItemSearch(value);
-      // getCompany(value);
       getCompany(value);
     } else if (name == "PaymentMode") {
       const updatedTableData = [...tableData];
@@ -303,20 +286,6 @@ const SalesBooking = ({ data }) => {
     });
   };
 
-  // const handleDeliveryChangeItems = (name, value) => {
-  //   if (name == "Items") {
-  //     handleGetItemRate({
-  //       label: value?.label,
-  //       value: value.value,
-  //     });
-  //   } else {
-  //     setFormData({
-  //       ...formData,
-  //       [name]: value,
-  //     });
-  //   }
-  // };
-
   const handleDeliveryChangeItems = (name, value) => {
     if (name === "Items") {
       handleGetItemRate({
@@ -336,6 +305,7 @@ const SalesBooking = ({ data }) => {
     }
   };
 
+  console.log("asif asif asif", data?.ProjectID);
   const handleGetItemRate = (value) => {
     axiosInstances
       .post(apiUrls?.Payement_Installment_Select, {
@@ -366,24 +336,16 @@ const SalesBooking = ({ data }) => {
   // console.log("tableData", tableData);
 
   const getProject = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   axios
-    //     .post(apiUrls?.ProjectSelect, form, { headers })
     axiosInstances
       .post(apiUrls?.ProjectSelect, {
         ProjectID: 0,
-        IsMaster: "string",
+        IsMaster: "0",
         VerticalID: 0,
         TeamID: 0,
         WingID: 0,
       })
       .then((res) => {
-        const poc3s = res?.data.data.map((item) => {
+        const poc3s = res?.data?.data?.map((item) => {
           return { label: item?.Project, value: item?.ProjectId };
         });
         getCategory(poc3s[0]?.value);
@@ -396,11 +358,6 @@ const SalesBooking = ({ data }) => {
   const [salesData, setSalesData] = useState([]);
 
   const getCategory = (proj) => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("ProjectID", proj),
-    //   axios
-    //     .post(apiUrls?.Category_Select, form, { headers })
     axiosInstances
       .post(apiUrls?.Category_Select, { ProjectID: proj })
       .then((res) => {
@@ -516,10 +473,8 @@ const SalesBooking = ({ data }) => {
   };
 
   useEffect(() => {
-    getProject();
-    // SalesBooking_Load_SalesID();
     getCompany(formData?.Project);
-  }, []);
+  }, [formData?.Project]);
 
   const handleGetItemSearch = (value) => {
     const payload = {
@@ -554,7 +509,7 @@ const SalesBooking = ({ data }) => {
       // console.log("valllll", val);
       payload.push({
         Installment_No: String(index),
-        Remark: String(val?.Remark),
+        Remark: String(val?.Remark == undefined ? "" : val?.Remark) || "",
         IsPaid: Number(val?.isPaid ? "1" : "0"),
         ExpectedDate: val?.ExpectedDate
           ? moment(val?.ExpectedDate).format("YYYY-MM-DD")
@@ -692,7 +647,7 @@ const SalesBooking = ({ data }) => {
       // console.log("valllll", val);
       payload.push({
         Installment_No: String(index),
-        Remark: String(val?.Remark),
+        Remark: String(val?.Remark == undefined ? "" : val?.Remark) || "",
         IsPaid: Number(val?.isPaid ? "1" : "0"),
         ExpectedDate: val?.ExpectedDate
           ? moment(val?.ExpectedDate).format("YYYY-MM-DD")
@@ -967,67 +922,73 @@ const SalesBooking = ({ data }) => {
   }, []);
 
   const fetchDatabyId = (id) => {
+    // console.log("id id id ", id);
     axiosInstances
       .post(apiUrls.SalesBooking_Load_SalesID, {
         SalesID: String(id),
       })
       .then((res) => {
-        setFormData({
-          ...formData,
-          Project: res?.data?.data?.data[0]?.ProjectID,
-          Items: res?.data?.data?.dataDetail[0]?.ItemID,
-          ItemName: res?.data?.data?.dataDetail[0]?.ItemName,
-          // ExpectedDate: res?.data?.data?.dataDetail[0]?.ExpectedDate,
-          // EndDate: res?.data?.data?.dataDetail[0]?.EndDate,
-          TaxAmount: res?.data?.data?.dataDetail[0]?.TaxAmount,
-          DiscountAmount: res?.data?.data?.dataDetail[0]?.DiscountAmount,
-          Payment_Installment_ID: res?.data?.data?.data[0]?.ID,
-          PoNumber: res?.data?.data?.data[0]?.PoNo,
-          SalesDate: new Date(res?.data?.data?.data[0]?.dtSales),
-          ExpectedDate:
-            res?.data?.dataDetail[0]?.ExpectedDate == "01-Jan-1970"
-              ? ""
-              : res?.data?.dataDetail[0]?.ExpectedDate,
-          LiveDate:
-            res?.data?.dataDetail[0]?.LiveDate == "01-Jan-1970"
-              ? ""
-              : res?.data?.dataDetail[0]?.LiveDate,
-          EndDate:
-            res?.data?.dataDetail[0]?.EndDate == "01-Jan-1970"
-              ? ""
-              : res?.data?.dataDetail[0]?.EndDate,
-          // ExpiryDate: res?.data?.data?.data[0]?.dtExpiry,
-          ExpiryDate: new Date(res?.data?.data?.data[0]?.dtExpiry),
-          BillingCompany: res?.data?.data?.data[0]?.BillingCompanyID,
-          ShippingCompany: res?.data?.data?.data[0]?.ShippingCompanyID,
-          BillingState: res?.data?.data?.data[0]?.BillingState,
-          ShippingState: res?.data?.data?.data[0]?.ShippingState,
-          BillingGST: res?.data?.data?.data[0]?.GSTNo,
-          ShippingGST: res?.data?.data?.data[0]?.GSTNo,
-          BillingPanCard: res?.data?.data?.data[0]?.PanCardNo,
-          ShippingPanCard: res?.data?.data?.data[0]?.PanCardNo,
-        });
-        const updatedData = res?.data?.data?.dataDetail.map((ele) => ({
-          ...ele,
-          label: ele?.service?.label || "",
-          // ExpectedDate: ele?.ExpectedDate,
-          ExpectedDate:
-            ele?.ExpectedDate == "01-Jan-1970" ? "" : ele?.ExpectedDate,
-          LiveDate: ele?.LiveDate == "01-Jan-1970" ? "" : ele?.LiveDate,
-          EndDate: ele?.EndDate == "01-Jan-1970" ? "" : ele?.EndDate,
-          TaxPercent: ele?.TaxPrecentage,
-          Discount: ele?.DiscountAmount,
-          DiscountPercent: ele?.DiscountPercent,
-          IsPaid: ele?.IsPaid,
-        }));
+        // console.log("check success", res.data.data.data[0].ProjectID);
+        if (res.data.success === true) {
+          setFormData({
+            ...formData,
+            Project: res.data.data.data[0].ProjectID,
+            Items: res?.data?.data?.dataDetail[0]?.ItemID,
+            ItemName: res?.data?.data?.dataDetail[0]?.ItemName,
+            // ExpectedDate: res?.data?.data?.dataDetail[0]?.ExpectedDate,
+            // EndDate: res?.data?.data?.dataDetail[0]?.EndDate,
+            TaxAmount: res?.data?.data?.dataDetail[0]?.TaxAmount,
+            DiscountAmount: res?.data?.data?.dataDetail[0]?.DiscountAmount,
+            Payment_Installment_ID: res?.data?.data?.data[0]?.ID,
+            PoNumber: res?.data?.data?.data[0]?.PoNo,
+            SalesDate: new Date(res?.data?.data?.data[0]?.dtSales),
+            ExpectedDate:
+              res?.data?.data?.dataDetail?.[0]?.ExpectedDate == "01-Jan-1970"
+                ? ""
+                : res?.data?.data?.dataDetail?.[0]?.ExpectedDate,
+            LiveDate:
+              res?.data?.data?.dataDetail?.[0]?.LiveDate == "01-Jan-1970"
+                ? ""
+                : res?.data?.data?.dataDetail?.[0]?.LiveDate,
+            EndDate:
+              res?.data?.data?.dataDetail[0]?.EndDate == "01-Jan-1970"
+                ? ""
+                : res?.data?.data?.dataDetail[0]?.EndDate,
+            // ExpiryDate: res?.data?.data?.data[0]?.dtExpiry,
+            ExpiryDate: new Date(res?.data?.data?.data[0]?.dtExpiry),
+            BillingCompany: res?.data?.data?.data[0]?.BillingCompanyID,
+            ShippingCompany: res?.data?.data?.data[0]?.ShippingCompanyID,
+            BillingState: res?.data?.data?.data[0]?.BillingState,
+            ShippingState: res?.data?.data?.data[0]?.ShippingState,
+            BillingGST: res?.data?.data?.data[0]?.GSTNo,
+            ShippingGST: res?.data?.data?.data[0]?.GSTNo,
+            BillingPanCard: res?.data?.data?.data[0]?.PanCardNo,
+            ShippingPanCard: res?.data?.data?.data[0]?.PanCardNo,
+          });
+          const updatedData = res?.data?.data?.dataDetail?.map((ele) => ({
+            ...ele,
+            label: ele?.service?.label || "",
+            // ExpectedDate: ele?.ExpectedDate,
+            ExpectedDate:
+              ele?.ExpectedDate == "01-Jan-1970" ? "" : ele?.ExpectedDate,
+            LiveDate: ele?.LiveDate == "01-Jan-1970" ? "" : ele?.LiveDate,
+            EndDate: ele?.EndDate == "01-Jan-1970" ? "" : ele?.EndDate,
+            TaxPercent: ele?.TaxPrecentage,
+            Discount: ele?.DiscountAmount,
+            DiscountPercent: ele?.DiscountPercent,
+            IsPaid: ele?.IsPaid,
+          }));
 
-        // console.log(updatedData);
-        setTableData(updatedData);
-        // setTableData(res?.data?.data?.dataDetail);
-        if (res?.data?.data?.data[0]?.ProjectID > 0) {
-          handleGetItemSearch(res?.data?.data?.data[0]?.ProjectID);
+          // console.log(updatedData);
+          setTableData(updatedData);
+          // setTableData(res?.data?.data?.dataDetail);
+          if (res.data.data.data[0].ProjectID > 0) {
+            handleGetItemSearch(res.data.data.data[0].ProjectID);
 
-          // handleGetItemRate(res?.data?.data?.dataDetail[0])
+            // handleGetItemRate(res?.data?.data?.dataDetail[0])
+          }
+        } else {
+          toast.error("No record Found");
         }
       })
       .catch((err) => {
@@ -1094,8 +1055,6 @@ const SalesBooking = ({ data }) => {
           }
         />
         <div className="row g-4 m-2">
-          {/* {console.log("formDATAA?.Project", formData?.Project)}
-          {console.log("project project", project)} */}
           {state?.edit ? (
             <ReactSelect
               respclass="col-xl-2 col-md-4 col-sm-6 col-12"
@@ -1105,7 +1064,6 @@ const SalesBooking = ({ data }) => {
               className="Project"
               handleChange={handleDeliveryChange}
               value={formData.Project}
-              // requiredClassName={"required-fields"}
               isDisabled={true}
             />
           ) : (
@@ -1141,7 +1099,7 @@ const SalesBooking = ({ data }) => {
             handleChange={searchHandleChange}
           />
           <Input
-            type="number"
+            type="text"
             className="form-control"
             id="PoNumber"
             name="PoNumber"

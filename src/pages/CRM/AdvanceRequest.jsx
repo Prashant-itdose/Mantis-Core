@@ -4,10 +4,7 @@ import ReactSelect from "../../components/formComponent/ReactSelect";
 import Input from "../../components/formComponent/Input";
 import Heading from "../../components/UI/Heading";
 import { toast } from "react-toastify";
-import { headers } from "../../utils/apitools";
-import axios from "axios";
 import { apiUrls } from "../../networkServices/apiEndpoints";
-import { useCryptoLocalStorage } from "../../utils/hooks/useCryptoLocalStorage";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Tables from "../../components/UI/customTable";
@@ -23,7 +20,6 @@ const AdvanceRequest = () => {
   const { VITE_DATE_FORMAT } = import.meta.env;
   const [dragActive, setDragActive] = useState(false);
   const [advanceType, setAdvanceType] = useState([]);
-  const [inhandType, setInHandType] = useState([]);
   const [formData, setFormData] = useState({
     AdvanceType: "",
     AdvanceAmountRequired: "",
@@ -42,11 +38,22 @@ const AdvanceRequest = () => {
   });
   const handleDeliveryChange = (name, e) => {
     const { value } = e;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    if (name === "AdvanceType") {
+      setFormData({
+        ...formData,
+        [name]: value,
+        EMIType: "",
+      });
+      setTableData1([]);
+      setTotalAmount(0);
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
+  
   const searchHandleChange = (e) => {
     const { name, value, checked, type } = e?.target;
     setFormData({
@@ -54,18 +61,10 @@ const AdvanceRequest = () => {
       [name]: type === "checkbox" ? (checked ? "1" : "0") : value,
     });
   };
-  function formatDate(dateString) {
-    let date = new Date(dateString);
-    let year = date.getFullYear();
-    let month = (date.getMonth() + 1).toString().padStart(2, "0");
-    let day = date.getDate().toString().padStart(2, "0");
-    return `${year}/${month}/${day}`;
-  }
 
   const handleSave = () => {
     let termsPayload = [];
     tableData1?.map((val, index) => {
-      // console.log("val", val);
       termsPayload?.push({
         "S.No.": index,
         Month: val?.Month,
@@ -73,12 +72,7 @@ const AdvanceRequest = () => {
         Amount: val?.Amount,
       });
     });
-    const ImageJson = JSON.stringify([
-      {
-        Document_Base64: formData?.Document_Base64,
-        FileExtension: formData?.FileExtension,
-      },
-    ]);
+
     if (!formData?.AdvanceType) {
       toast.error("Please Select AdvanceType.");
       return;
@@ -94,36 +88,19 @@ const AdvanceRequest = () => {
     setLoading(true);
     axiosInstances
       .post(apiUrls.AdvanceAmount_Requset, {
-  "AdvanceType": String(formData?.AdvanceType),
-  "AmountRequired": Number(totalAmount),
-  "PurposeofAdvance": String(formData?.PurposeOfAdvance),
-  "ExpectedDate": new Date(formData.AdvanceExpectedDate).toISOString(),
-  "EMIDetails": termsPayload,
-  "DocumentDetails": [
-    {
-        Document_Base64: formData?.Document_Base64,
-        FileExtension: formData?.FileExtension,
-      }
-  ]
-})
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append(
-    //   "LoginName",
-    //   useCryptoLocalStorage("user_Data", "get", "realname")
-    // );
-    // form.append(
-    //   "CrmID",
-    //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-    // );
-    // form.append("ExpectedDate", formatDate(formData?.AdvanceExpectedDate));
-    // form.append("AmountRequired", totalAmount);
-    // form.append("PurposeofAdvance", formData?.PurposeOfAdvance);
-    // form.append("AdvanceType", formData?.AdvanceType);
-    // form.append("DocumentDetails", ImageJson);
-    // form.append("EMIDetails", JSON.stringify(termsPayload));
-    // axios
-    //   .post(apiUrls?.AdvanceAmount_Requset, form, { headers })
+        AdvanceType: String(formData?.AdvanceType),
+        AmountRequired: Number(totalAmount),
+        PurposeofAdvance: String(formData?.PurposeOfAdvance),
+        ExpectedDate: new Date(formData.AdvanceExpectedDate).toISOString(),
+        EMIDetails: termsPayload,
+        DocumentDetails: [
+          {
+            Document_Base64: formData?.Document_Base64,
+            FileExtension: formData?.FileExtension,
+          },
+        ],
+      })
+
       .then((res) => {
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);
@@ -203,17 +180,9 @@ const AdvanceRequest = () => {
   const getAdvanceType = () => {
     axiosInstances
       .post(apiUrls.AdvaceAmount_Select, {
-        SearchType : "AdvanceType"
+        SearchType: String("AdvanceType"),
       })
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append(
-    //   "LoginName",
-    //   useCryptoLocalStorage("user_Data", "get", "realname")
-    // );
-    // form.append("SearchType", "AdvanceType");
-    // axios
-    //   .post(apiUrls?.AdvaceAmount_Select, form, { headers })
+
       .then((res) => {
         const poc3s = res?.data?.data?.map((item) => {
           return { label: item?.AdvanceType, value: item?.AdvanceTypeID };
@@ -224,26 +193,6 @@ const AdvanceRequest = () => {
         console.log(err);
       });
   };
-  // const getInhandChildEmployee = () => {
-  //   let form = new FormData();
-  //   form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-  //   form.append(
-  //     "LoginName",
-  //     useCryptoLocalStorage("user_Data", "get", "realname")
-  //   );
-  //   form.append("SearchType", "InHand");
-  //   axios
-  //     .post(apiUrls?.AdvaceAmount_Select, form, { headers })
-  //     .then((res) => {
-  //       const poc3s = res?.data.data.map((item) => {
-  //         return { label: item?.AdvanceType, value: item?.AdvanceTypeID };
-  //       });
-  //       setInHandType(poc3s);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
 
   const [rowHandler, setRowHandler] = useState({
     ButtonShow: false,
@@ -300,7 +249,6 @@ const AdvanceRequest = () => {
   };
   useEffect(() => {
     getAdvanceType();
-    // getInhandChildEmployee();
   }, []);
   return (
     <>
@@ -308,7 +256,7 @@ const AdvanceRequest = () => {
         <Heading
           isBreadcrumb={true}
           secondTitle={
-            <div style={{ fontWeight: "bold" }}>
+            <div className="font-weight-bold">
               <Link to="/AdvanceRequestView" className="ml-3">
                 Advance Request View
               </Link>
@@ -324,16 +272,7 @@ const AdvanceRequest = () => {
             value={formData?.AdvanceType}
             handleChange={handleDeliveryChange}
           />
-          {/* <Input
-            type="number"
-            className="form-control"
-            id="AdvanceAmountRequired"
-            name="AdvanceAmountRequired"
-            placeholder="Advance Amount"
-            onChange={searchHandleChange}
-            value={formData?.AdvanceAmountRequired}
-            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
-          /> */}
+
           <ReactSelect
             name="EMIType"
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
@@ -403,7 +342,7 @@ const AdvanceRequest = () => {
           {tableData1?.length > 0 && (
             <div className="card mt-3" style={{ width: "400px" }}>
               <Heading
-                title={<span style={{ fontWeight: "bold" }}>EMI Details</span>}
+                title={<span className="font-weight-bold">EMI Details</span>}
               />
               <div className=" m-0">
                 <Tables

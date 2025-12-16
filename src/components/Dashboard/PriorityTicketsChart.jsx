@@ -23,23 +23,23 @@ const PriorityTicketsChart = () => {
   const [countData, setCountData] = useState([]);
 
   const handleFirstDashboardCount = () => {
-      axiosInstances
-          .post(apiUrls.DevDashboard_Summary, {
-            Title: String("Priority"),
-            DeveloperID: String(memberID || "0"),
-          })
-        .then((res) => {
-          setCountData(res?.data?.dtPriority);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    axiosInstances
+      .post(apiUrls.DevDashboard_Summary, {
+        Title: String("Priority"),
+        DeveloperID: String(memberID || "0"),
+      })
+      .then((res) => {
+        setCountData(res?.data?.data?.dtPriority);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
     handleFirstDashboardCount(memberID);
- }, [memberID]);
- 
+  }, [memberID]);
+
   useEffect(() => {
     handleFirstDashboardCount();
   }, []);

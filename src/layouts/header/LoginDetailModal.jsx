@@ -10,6 +10,7 @@ import Heading from "../../components/UI/Heading";
 import ReactSelect from "../../components/formComponent/ReactSelect";
 import Input from "../../components/formComponent/Input";
 import { axiosInstances } from "../../networkServices/axiosInstance";
+import moment from "moment";
 const LoginDetailModal = () => {
   const ReportingManager = useCryptoLocalStorage(
     "user_Data",
@@ -21,6 +22,9 @@ const LoginDetailModal = () => {
   const { VITE_DATE_FORMAT } = import.meta.env;
   const [t] = useTranslation();
   const [tableData, setTableData] = useState([]);
+  {
+    console.log("tabledata tabledata", tableData);
+  }
   const [breakData, setBreakData] = useState([]);
   const [loading, setLoading] = useState(false);
   const loginTHEAD = ["S.No.", "BreakIn", "BreakOut", "BreakDuration"];
@@ -72,8 +76,8 @@ const LoginDetailModal = () => {
       })
       .then((res) => {
         if (res?.data?.success === true) {
-          setTableData(res?.data?.transactions);
-          setBreakData(res?.data?.breaks);
+          setTableData(res?.data?.data?.transactions);
+          setBreakData(res?.data?.data?.breaks);
           setLoading(false);
         } else {
           setTableData([]);
@@ -89,15 +93,13 @@ const LoginDetailModal = () => {
     setLoading(true);
     axiosInstances
       .post(apiUrls.GetEmployeeTransactions, {
-        CrmEmpID: Number(
-          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-        ),
-        Date: String(new Date(formData?.FromDate).toISOString()),
+        CrmEmpID: Number(formData?.AssignedTo ? formData.AssignedTo : "0"),
+        Date: String(moment(formData?.FromDate).format("YYYY-MM-DD")),
       })
       .then((res) => {
         if (res?.data?.success === true) {
-          setTableData(res?.data?.transactions);
-          setBreakData(res?.data?.breaks);
+          setTableData(res?.data?.data?.transactions);
+          setBreakData(res?.data?.data?.breaks);
           setLoading(false);
         } else {
           toast.error(res?.data?.message);
@@ -117,12 +119,12 @@ const LoginDetailModal = () => {
         CrmEmpID: Number(
           useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
-        Date: String(new Date(formData?.FromDate).toISOString()),
+        Date: String(moment(formData?.FromDate).format("YYYY-MM-DD")),
       })
       .then((res) => {
         if (res?.data?.success === true) {
-          setTableData(res?.data?.transactions);
-          setBreakData(res?.data?.breaks);
+          setTableData(res?.data?.data?.transactions);
+          setBreakData(res?.data?.data?.breaks);
           setLoading(false);
         } else {
           toast.error(res?.data?.message);
@@ -135,15 +137,12 @@ const LoginDetailModal = () => {
         console.log(err);
       });
   };
-
-  // Function to convert HH:mm:ss to seconds
+  //////////////////////current time diplay code////////////////////////
   const timeToSeconds = (timeStr) => {
     if (!timeStr) return 0;
     const [hrs, mins, secs] = timeStr.split(":").map(Number);
     return (hrs || 0) * 3600 + (mins || 0) * 60 + (secs || 0);
   };
-
-  // Function to convert total seconds to HH:mm:ss
   const secondsToTime = (totalSeconds) => {
     const hrs = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
     const mins = String(Math.floor((totalSeconds % 3600) / 60)).padStart(
@@ -154,19 +153,10 @@ const LoginDetailModal = () => {
     return `${hrs}:${mins}:${secs}`;
   };
 
-  // Calculate total break duration in seconds
   const totalBreakSeconds = breakData?.reduce((acc, ele) => {
     return acc + timeToSeconds(ele?.BreakDuration);
   }, 0);
-
-  // Convert to HH:mm:ss
   const totalBreakTime = secondsToTime(totalBreakSeconds);
-
-  ///////////////////////////////////
-
-  // ⬆️ keep the rest of your component unchanged
-
-  // 1️⃣  — total up all row durations (in ms)
   const getCurrentTempLogoutTime = () => {
     const now = new Date();
     const hours = String(now.getHours()).padStart(2, "0");
@@ -176,18 +166,15 @@ const LoginDetailModal = () => {
   };
   const totalDiffMs =
     tableData?.reduce((acc, ele) => {
-      // ignore rows that are missing times
+      if (!ele?.LogoutTime) {
+        ele.LogoutTime = getCurrentTempLogoutTime();
+      }
       if (!ele?.LoginTime || !ele?.LogoutTime) return acc;
-
       const login = new Date(`${ele.LogDate}T${ele.LoginTime}`);
       const logout = new Date(`${ele.LogDate}T${ele.LogoutTime}`);
-
-      const diff = logout - login; // ms
-
-      return acc + (isNaN(diff) ? 0 : diff); // guard against bad dates
+      const diff = logout - login;
+      return acc + (isNaN(diff) ? 0 : diff);
     }, 0) ?? 0;
-
-  // 2️⃣  — convert ms → hh:mm:ss
   const totalHrs = String(Math.floor(totalDiffMs / 3_600_000)).padStart(2, "0");
   const totalMin = String(
     Math.floor((totalDiffMs % 3_600_000) / 60_000)
@@ -196,9 +183,8 @@ const LoginDetailModal = () => {
     2,
     "0"
   );
-
   const totalWorkingTime = `${totalHrs}:${totalMin}:${totalSec}`;
-
+  //////////////////////////////////////////////////////////////////////
   useEffect(() => {
     handleEmployeeAverage();
     getAssignTo();
@@ -209,12 +195,12 @@ const LoginDetailModal = () => {
         <div className="card">
           <div className="row p-2">
             <span style={{ fontWeight: "bold", marginLeft: "10px" }}>
-              Employee Code:- {tableData[0]?.EmpCode}
+              Employee Code:- {tableData[0]?.empcode}
             </span>
           </div>
         </div>
       )}
-      <div className="card mt-2">
+      <div className="card mt-0">
         <div className="row">
           {ReportingManager == 1 ? (
             <ReactSelect
@@ -342,7 +328,7 @@ const LoginDetailModal = () => {
         />
         <div className="row p-2 d-flex">
           <span style={{ fontWeight: "bold", marginLeft: "10px" }}>
-            Login Time: {tableData[0]?.LoginTime}
+            Login Time: {tableData?.[0]?.LoginTime}
           </span>
           &nbsp; &nbsp; &nbsp; &nbsp;{" "}
           <span
@@ -352,9 +338,11 @@ const LoginDetailModal = () => {
               // color: tableData[0]?.LogoutTime > "09:00:00" ? "red" : "black",
             }}
           >
-            Logout Time:{" "}
-            {tableData[0]?.LogoutTime ? tableData[0]?.LogoutTime : "00:00:00"}
-          </span>{" "}
+            Logout Time:
+            {tableData?.[0]?.LogoutTime
+              ? tableData?.[0]?.LogoutTime
+              : "00:00:00"}
+          </span>
         </div>
       </div>
       <Heading
@@ -379,7 +367,6 @@ const LoginDetailModal = () => {
                 const diffSec = String(
                   Math.floor((diffMs % (1000 * 60)) / 1000)
                 ).padStart(2, "0");
-
                 return {
                   "S.No.": index + 1,
                   Date: ele?.LogDate
@@ -395,7 +382,13 @@ const LoginDetailModal = () => {
                       })()
                     : "",
                   IN: ele?.LoginTime,
-                  OUT: ele?.LogoutTime,
+                  OUT:
+                    tableData?.length == index + 1
+                      ? Number(ele?.LogDate?.split("-")?.[2]) ==
+                        new Date().getDate()
+                        ? "00:00:00"
+                        : ele?.LogoutTime
+                      : ele?.LogoutTime,
                   "Time Difference": `${isNaN(diffHrs) ? "00" : diffHrs}:${isNaN(diffMin) ? "00" : diffMin}:${isNaN(diffSec) ? "00" : diffSec}`,
                 };
               })}

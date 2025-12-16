@@ -145,6 +145,9 @@ const QuotationChartMonth = ({ state }) => {
               legend: {
                 display: false,
               },
+              datalabels: {
+                display: false, // 👈 disables value labels on bars
+              },
               tooltip: {
                 enabled: true, // Show tooltips on hover
               },

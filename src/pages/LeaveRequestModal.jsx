@@ -15,14 +15,20 @@ const LeaveRequestModal = ({
   data,
   handleLeaveRequest_BindCalender,
 }) => {
-
-
   const [loading, setLoading] = useState(false);
-  const leaveData = visible?.CalenderDetails?.Table1?.find(
-    (val) =>
-      String(val?.Day) ===
-      moment(visible?.data).format("DD-MMM-YYYY").split("-")[0]
+
+  // const leaveData = visible?.CalenderDetails?.[1]?.find(
+  //   (val) =>
+  //     String(val?.Day) ===
+  //     moment(visible?.data).format("DD-MMM-YYYY").split("-")[0]
+  // );
+
+  const leaveData = visible?.CalenderDetails?.[1]?.find(
+    (val) => String(val?.Day) === moment(visible?.data).format("D")
   );
+  console.log("leavedata", leaveData);
+  console.log("visible", visible);
+  console.log("visible [1]", visible?.CalenderDetails?.[1]);
 
   const [OLTypeWise, setOLTypeWise] = useState([]);
   const [WOTypeWise, setWOTypeWise] = useState([]);
@@ -89,7 +95,7 @@ const LeaveRequestModal = ({
         LeaveType: Number(1),
       })
       .then((res) => {
-        const verticals = res?.data?.dtOL?.map((item) => {
+        const verticals = res?.data?.data?.map((item) => {
           return { label: item?.Day, value: item?.Day };
         });
         setOLTypeWise(verticals);
@@ -112,7 +118,8 @@ const LeaveRequestModal = ({
         LeaveType: Number(2),
       })
       .then((res) => {
-        const verticals = res?.data?.dtSunday?.map((item) => {
+        // console.log("kasjaksjkajs", res?.data?.data[0]);
+        const verticals = res?.data?.data?.map((item) => {
           return { label: item?.Day, value: item?.Day };
         });
         setWOTypeWise(verticals);
@@ -136,7 +143,7 @@ const LeaveRequestModal = ({
         LeaveType: Number(3),
       })
       .then((res) => {
-        const verticals = res?.data?.dtHoly?.map((item) => {
+        const verticals = res?.data?.data?.map((item) => {
           return { label: item?.Day, value: item?.Day };
         });
         setHLTypeWise(verticals);
@@ -149,7 +156,8 @@ const LeaveRequestModal = ({
     const { name, value } = e?.target;
     setFormData({ ...formData, [name]: value });
   };
-  const leaveDataFilter = visible?.CalenderDetails?.Table || [];
+
+  const leaveDataFilter = visible?.CalenderDetails?.[0] || [];
   const getLeaveAvailable = (leaveType) => {
     const leave = leaveDataFilter.find((item) => item?.LeaveType === leaveType);
     return leave ? leave.Available : "0";
@@ -184,7 +192,8 @@ const LeaveRequestModal = ({
       .post(apiUrls.LeaveRequest_Save, {
         FromDate: String(moment(visible?.data).format("YYYY-MM-DD")),
         CrmEmpID: Number(
-          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+          data?.EmployeeId ||
+            useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
         LeaveType: String(formData?.LeaveType),
         Description: String(formData?.Description),
@@ -206,45 +215,6 @@ const LeaveRequestModal = ({
         setLoading(false);
       });
   };
-  const handleLeaveRequest_Update = () => {
-    setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append(
-        "CRMEmpID",
-        useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      ),
-      form.append("FromDate", moment(visible?.data).format("YYYY-MM-DD")),
-      form.append("LeaveType", formData?.LeaveType),
-      form.append("OptionalType", formData?.OptionalType || ""),
-      form.append("Description", formData?.Description),
-      form.append("StatusType", "Update"),
-      form.append(
-        "LeaveTypeDateValue",
-        formData?.woType || formData?.OlType || formData?.hlType
-      ),
-      axios
-        .post(apiUrls?.LeaveRequest_Save, form, { headers })
-        .then((res) => {
-          if (res?.data?.status === true) {
-            toast.success(res?.data?.message);
-            setLoading(false);
-            setVisible(false);
-            handleLeaveRequest_BindCalender();
-          } else {
-            toast.error(res?.data?.message);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          setLoading(false);
-        });
-  };
 
   const handleLeaveRequest_Approve = () => {
     setLoading(true);
@@ -252,7 +222,8 @@ const LeaveRequestModal = ({
       .post(apiUrls.LeaveRequest_Save, {
         FromDate: String(moment(visible?.data).format("YYYY-MM-DD")),
         CrmEmpID: Number(
-          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+          data?.EmployeeId ||
+            useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
         LeaveType: String(formData?.LeaveType),
         Description: String(formData?.Description),
@@ -281,14 +252,15 @@ const LeaveRequestModal = ({
       .post(apiUrls.LeaveRequest_Save, {
         FromDate: String(moment(visible?.data).format("YYYY-MM-DD")),
         CrmEmpID: Number(
-          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+          data?.EmployeeId ||
+            useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
         LeaveType: String(formData?.LeaveType),
         Description: String(formData?.Description),
         StatusType: String("Delete"),
       })
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           setLoading(false);
           handleLeaveRequest_BindCalender();
@@ -315,19 +287,20 @@ const LeaveRequestModal = ({
     { label: "SL", value: "SL" },
     { label: "Week Off", value: "WO" },
     { label: "Comp Off", value: "COMP-Off" },
-    // { label: "CL/CIR", value: "CL/CIR" },
-    // { label: "SL/CIR", value: "SL/CIR" },
     { label: "Optional Leave", value: "OL" },
     { label: "Leave Without Pay", value: "LWP" },
   ];
 
-  const filteredLeaveOptions = leaveOptions?.filter((opt) => {
-    if (["CL", "SL", "OL", "WO"].includes(opt.value)) {
-      return getLeaveAvailable(opt.value) > 0;
-    }
-    // keep all others always
-    return true;
-  });
+  const filteredLeaveOptions =
+    ReportingManager == "1"
+      ? leaveOptions // show all if ReportingManager is "1"
+      : leaveOptions.filter((opt) => {
+          if (["CL", "SL", "OL", "WO"].includes(opt.value)) {
+            return getLeaveAvailable(opt.value) > 0;
+          }
+          return true;
+        });
+
   return (
     <>
       <div className="">

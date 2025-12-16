@@ -8,9 +8,6 @@ import UploadFile from "../utils/UploadFile";
 import Loading from "../components/loader/Loading";
 import { toast } from "react-toastify";
 import { apiUrls } from "../networkServices/apiEndpoints";
-import axios from "axios";
-import { headers } from "../utils/apitools";
-import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import "./MorningWish.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { axiosInstances } from "../networkServices/axiosInstance";
@@ -170,21 +167,6 @@ const MorningWish = () => {
     // }
 
     setLoading(true);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("Day", formData?.SelectDate),
-    //   form.append(
-    //     "Content",
-    //     formData.Description ? removeHtmlTags(formData.Description) : ""
-    //   ),
-    //   form.append("Image_Base64", formData?.Document_Base64),
-    //   form.append("FileFormat_Base64", formData?.FileExtension),
-    //   axios
-    //     .post(apiUrls?.MorningWishSave, form, {
     axiosInstances
       .post(apiUrls.MorningWishSave, {
         Day: formData?.SelectDate,
@@ -195,7 +177,7 @@ const MorningWish = () => {
         FileFormat_Base64: formData?.FileExtension,
       })
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           setLoading(false);
           setFormData({
@@ -235,25 +217,8 @@ const MorningWish = () => {
     //   return;
     // }
     setLoading(true);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("Day", formData?.SelectDate),
-    //   form.append(
-    //     "Content",
-    //     formData.Description ? removeHtmlTags(formData.Description) : ""
-    //   ),
-    //   form.append("Image_Base64", formData?.Document_Base64),
-    //   form.append("FileFormat_Base64", formData?.FileExtension),
-    //   form.append("WishID", formData?.WishID),
-    //   axios
-    //     .post(apiUrls?.UpdateMorningWish, form, {
-    //       headers,
-    //     })
-      axiosInstances
+
+    axiosInstances
       .post(apiUrls.UpdateMorningWish, {
         Day: formData?.SelectDate,
         Content: formData.Description
@@ -262,33 +227,33 @@ const MorningWish = () => {
         Image_Base64: formData?.Document_Base64,
         FileFormat_Base64: formData?.FileExtension,
       })
-        .then((res) => {
-          if (res?.data?.success === true) {
-            toast.success(res?.data?.message);
-            setLoading(false);
-            setFormData({
-              ...formData,
-              SelectDate: "",
-              Description: "",
-              DocumentType: "",
-              SelectFile: "",
-              Document_Base64: "",
-              FileExtension: "",
-              WishID: "",
-            });
-            setRowHandler({});
-            navigate("/MorningWishSearch");
-          } else {
-            toast.error(res?.data?.message);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => {
-          setLoading(false); // ✅ always stop loader
-        });
+      .then((res) => {
+        if (res?.data?.success === true) {
+          toast.success(res?.data?.message);
+          setLoading(false);
+          setFormData({
+            ...formData,
+            SelectDate: "",
+            Description: "",
+            DocumentType: "",
+            SelectFile: "",
+            Document_Base64: "",
+            FileExtension: "",
+            WishID: "",
+          });
+          setRowHandler({});
+          navigate("/MorningWishSearch");
+        } else {
+          toast.error(res?.data?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false); // ✅ always stop loader
+      });
   };
 
   const EditMorningWish = (id) => {
@@ -298,7 +263,7 @@ const MorningWish = () => {
       })
       .then((res) => {
         const datas = res?.data?.data;
-        console.log("dataas", datas);
+
         setFormData({
           ...formData,
           SelectDate: datas?.Day,
@@ -322,6 +287,17 @@ const MorningWish = () => {
       EditMorningWish(state?.data);
     }
   }, []);
+
+  const [selected, setSelected] = React.useState("yes");
+
+  const handleRadioChange = (value) => {
+    setSelected(value);
+    if (value === "yes") {
+      navigate("/MorningWish");
+    } else if (value === "no") {
+      navigate("/FestivalWish");
+    }
+  };
   return (
     <>
       <Modal
@@ -339,12 +315,35 @@ const MorningWish = () => {
       </Modal>
       <div className="card">
         <Heading
+          title={<span style={{ fontWeight: "bold" }}>Morning Wish</span>}
           isBreadcrumb={true}
           secondTitle={
-            <div style={{ fontWeight: "bold" }}>
-              <Link to="/MorningWishSearch" className="ml-3">
-                Morning Wish Search
-              </Link>
+            <div className="d-flex" style={{ justifyContent: "space-between" }}>
+              <label>
+                <input
+                  className="ml-1"
+                  type="radio"
+                  name="option"
+                  value="yes"
+                  checked={selected === "yes"}
+                  onChange={() => handleRadioChange("yes")}
+                  style={{ cursor: "pointer" }}
+                />
+                <span className="mb-2 ml-1">Morning Wish</span>
+              </label>
+
+              <label className="ml-4">
+                <input
+                  className="ml-1"
+                  type="radio"
+                  name="option"
+                  value="no"
+                  checked={selected === "no"}
+                  style={{ cursor: "pointer" }}
+                  onChange={() => handleRadioChange("no")}
+                />
+                <span className="mb-2 ml-1">Festival Wish</span>
+              </label>
             </div>
           }
         />
@@ -553,6 +552,12 @@ const MorningWish = () => {
               )}
             </div>
           )}
+          <div
+            className="col d-flex justify-content-end"
+            style={{ fontWeight: "bold" }}
+          >
+            <Link to="/MorningWishSearch">Morning Wish Search</Link>
+          </div>
         </div>
       </div>
     </>

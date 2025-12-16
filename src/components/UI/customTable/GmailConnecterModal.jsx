@@ -34,7 +34,7 @@ const GmailConnecterModal = (visible) => {
       })
 
       .then((res) => {
-        console.log("email log", res);
+       
         setTableData(res?.data?.data);
       })
       .catch((err) => {

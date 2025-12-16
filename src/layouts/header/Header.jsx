@@ -5,7 +5,6 @@ import { toggleSidebarMenu } from "@app/store/reducers/ui";
 import LanguagesDropdown from "@app/layouts/header/languages-dropdown/LanguagesDropdown";
 import Themedropdown from "@app/layouts/header/Theme-dropdown";
 import { toggleFullScreen } from "../../utils/helpers";
-import SubMenuDropdown from "@app/layouts/header/submenu-dropdown/SubMenuDropdown";
 import { useNavigate } from "react-router-dom";
 import UserDropdown from "./user-dropdown/UserDropdown";
 import ReactSelectHead from "../../components/formComponent/ReactSelectHead";
@@ -166,7 +165,6 @@ const Header = React.memo(() => {
   };
 
   const handleIssueSearch = () => {
-   
     axiosInstances
       .post(apiUrls.ViewTicket, {
         TicketID: Number(formData?.issuesearch),
@@ -216,18 +214,15 @@ const Header = React.memo(() => {
         roleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
       })
     );
-    
   }, []);
 
   const BindRoleWiseMenu = async (RoleID) => {
     dispatch(GetRoleListByEmployeeIDAndCentreID({ roleID: Number(RoleID) }));
- 
+
     navigate("/dashboard");
   };
   const { memberID } = useSelector((state) => state?.loadingSlice);
   const [project, setProject] = useState([]);
-
-
 
   const handleHeaderCount = () => {
     axiosInstances
@@ -236,7 +231,7 @@ const Header = React.memo(() => {
         developerID: String(""),
       })
       .then((res) => {
-        setHeaderCount(res?.data?.dtSummary?.[0] || {});
+        setHeaderCount(res?.data?.data?.dtSummary?.[0] || {});
       })
       .catch((err) => {
         toast.error(err?.response?.data?.message || "Something went wrong");
@@ -291,13 +286,13 @@ const Header = React.memo(() => {
         VerticalID: Number("0"),
       })
       .then((res) => {
-        const poc3s = res?.data.data.map((item) => {
+        const poc3s = res?.data?.data?.map((item) => {
           return { label: item?.Project, value: item?.ProjectId };
         });
         setProject(poc3s);
       })
       .catch((err) => {
-        // localStorage.clear();
+        localStorage.clear();
         navigate("/login");
       });
   };
@@ -314,15 +309,6 @@ const Header = React.memo(() => {
     footer: null,
   });
 
-  const handleModalState = () => {
-    setModalHandlerState({
-      show: true,
-      header: "Crm Login",
-      size: "20vw",
-      component: <LoginModal />,
-      footer: <></>,
-    });
-  };
   const LoginLogoutButton = () => {
     axiosInstances
       .post(apiUrls.Attendence_Select, {
@@ -809,7 +795,6 @@ const Header = React.memo(() => {
             </li>
           )}
 
-        
           <li className="nav-item position-relative  d-md-flex mr-1">
             <Themedropdown />
           </li>

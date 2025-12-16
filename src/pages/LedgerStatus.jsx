@@ -3,8 +3,6 @@ import Heading from "../components/UI/Heading";
 import MultiSelectComp from "../components/formComponent/MultiSelectComp";
 import ReactSelect from "../components/formComponent/ReactSelect";
 import { apiUrls } from "../networkServices/apiEndpoints";
-import { headers } from "../utils/apitools";
-import axios from "axios";
 import Tables from "../components/UI/customTable";
 import Modal from "../components/modalComponent/Modal";
 import UnlockClientLedgerStatus from "../components/UI/customTable/UnlockClientLedgerStatus";
@@ -68,7 +66,7 @@ const LedgerStatus = () => {
   ];
   const { VITE_DATE_FORMAT } = import.meta.env;
   const [tableData, setTableData] = useState([]);
-  console.log("tableDta", tableData);
+  // console.log("tableDta", tableData);
   const [vertical, setVertical] = useState([]);
   const [project, setProject] = useState([]);
   const [loading, setLoading] = useState(false);

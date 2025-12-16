@@ -140,7 +140,7 @@ const ReportIssue = ({ visibleTicket }) => {
     axiosInstances
       .post(apiUrls.ProjectSelect, {
         ProjectID: 0,
-        IsMaster: "string",
+        IsMaster: "0",
         VerticalID: 0,
         TeamID: 0,
         WingID: 0,
@@ -196,7 +196,7 @@ const ReportIssue = ({ visibleTicket }) => {
   const getIncharge = (value) => {
     axiosInstances
       .post(apiUrls.Reporter_Select_Module_Wise, {
-        ID: value || "",
+        ID: value || "0",
       })
       .then((res) => {
         const options = res?.data?.data?.map((item) => ({
@@ -357,8 +357,8 @@ const ReportIssue = ({ visibleTicket }) => {
         ModuleName: String(getlabel(formData?.ModuleName, moduleName) || ""),
         PagesID: String(formData.PageName || "0"),
         PagesName: String(getlabel(formData?.PageName, pageName) || ""),
-        ReferenceTicketID: String(visibleTicket?.showData?.TicketID || ""),
-        InchargeID: String(formData.Incharge || ""),
+        ReferenceTicketID: visibleTicket?.showData?.TicketID || 0,
+        InchargeID: formData.Incharge || 0,
         InchargeName: getlabel(formData?.Incharge, incharge) || "",
         ImageDetails: [
           {
@@ -370,7 +370,7 @@ const ReportIssue = ({ visibleTicket }) => {
 
       toast.success(response?.data?.message);
 
-      if (response?.data?.status) {
+      if (response?.data?.success) {
         setticketid(response.data.TicketID);
         if (formData?.IsActive === "1") {
           setVisible({ showVisible: true, visible: response.data.data });

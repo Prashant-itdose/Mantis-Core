@@ -37,7 +37,7 @@ const LoginModal = ({
   };
 
   const locationOptions = [
-    { label: "Noida Office", value: "Noida Office" },
+    // { label: "Noida Office", value: "Noida Office" },
     { label: "Client Site", value: "Client Site" },
     { label: "Work From Home", value: "Work From Home" },
     { label: "Office+Client", value: "Office+Client" },
@@ -78,14 +78,13 @@ const LoginModal = ({
   };
   const [tableData, setTableData] = useState([]);
   const handleTableSearch = () => {
-    
-       axiosInstances
-          .post(apiUrls.Attendence_Search, {
-            EmployeeID: Number(0),
-            SearchType: String("0"),
-            Date: String(new Date().toISOString().split("T")[0]),
-            ManagerID: Number("0"),
-          })
+    axiosInstances
+      .post(apiUrls.Attendence_Search, {
+        EmployeeID: Number(0),
+        SearchType: String("0"),
+        Date: String(new Date().toISOString().split("T")[0]),
+        ManagerID: Number("0"),
+      })
       .then((res) => {
         setTableData(res?.data?.data);
       })
@@ -101,8 +100,6 @@ const LoginModal = ({
           Latitude: currentLocation.split(",")[0].split(":")[1].trim(),
           Longitude: currentLocation.split(",")[1].split(":")[1].trim(),
         }));
-
-        console.log("Current Location:", currentLocation);
       })
       .catch((error) => {
         console.error("Error fetching location:", error);
@@ -111,7 +108,6 @@ const LoginModal = ({
   const [notFound, setNotFound] = useState("");
 
   const LoginLogoutButton = () => {
-   
     axiosInstances
       .post(apiUrls.Attendence_Select, {
         EmailID: String(useCryptoLocalStorage("user_Data", "get", "EmailId")),
@@ -141,18 +137,17 @@ const LoginModal = ({
   }, []);
 
   const handleLogin = async () => {
- 
     setLoading(true);
 
-      try {
-          const res = await axiosInstances.post(apiUrls.Attendence_Login, {
-            CrmEmpID: Number(CRMID),
-            Location: String(formData?.LocationID || ""),
-            Latitude: String(formData?.Latitude || ""),
-            Longitude: String(formData?.Longitude || ""),
-            Remarks: String(formData?.Remarks || ""),
-            StatusType: String("LogIn"),
-          });
+    try {
+      const res = await axiosInstances.post(apiUrls.Attendence_Login, {
+        CrmEmpID: Number(CRMID),
+        Location: String(formData?.LocationID || ""),
+        Latitude: String(formData?.Latitude || ""),
+        Longitude: String(formData?.Longitude || ""),
+        Remarks: String(formData?.Remarks || ""),
+        StatusType: String("LogIn"),
+      });
       if (res?.data?.success === true) {
         toast.success(res?.data?.message);
         setIsLogin(true);
@@ -176,10 +171,9 @@ const LoginModal = ({
   };
 
   const handleLogout = async () => {
-  
     setLoading(true);
-   
-      try {
+
+    try {
       const res = await axiosInstances.post(apiUrls.Attendence_Login, {
         CrmEmpID: Number(CRMID),
         Location: String(formData?.LocationID || ""),
@@ -188,7 +182,7 @@ const LoginModal = ({
         Remarks: String(formData?.Remarks || ""),
         StatusType: String("LogOut"),
       });
-      if (res?.data?.status === true) {
+      if (res?.data?.success === true) {
         toast.success(res?.data?.message);
         setIsLogin(false);
         localStorage.setItem("isLogin", "false");

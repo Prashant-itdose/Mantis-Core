@@ -262,10 +262,9 @@ const NewTicketClient = () => {
         ReporterMobileNo: String(formData.ReportedMobile),
         ReporterName: String(formData.ReportedMobile),
         Description: formData.Description ? String(formData.Description) : "",
-        ModuleID: "0",
-        ModuleName: String(formData.ModuleName),
-        PagesID: "0",
         PagesName: String(formData.PageName),
+        OtherReferenceNo: formData?.OtherReferenceNo,
+        ModuleName: String(formData.ModuleName),
         ImageDetails: [
           {
             Document_Base64: formData?.Document_Base64,

@@ -531,6 +531,7 @@ const ViewIssues = ({ data }) => {
       : tabledynamicOptions;
 
   const handleResolve = () => {
+    setLoading(true);
     const filterdata = tableData?.filter((item) => item.IsActive == true);
     const ticketIDs = filterdata.map((item) => item.TicketID).join(",");
     if (ticketIDs == "") {
@@ -570,9 +571,11 @@ const ViewIssues = ({ data }) => {
             ManHours: "",
           });
           handleViewSearch();
+          setLoading(true);
         })
         .catch((err) => {
           console.log(err);
+          setLoading(true);
         });
     }
   };
@@ -603,7 +606,7 @@ const ViewIssues = ({ data }) => {
           ReOpenReasonID: "",
           ReOpenReason: "",
         })
-      
+
         .then((res) => {
           toast.success(res?.data?.message);
           setFormData({
@@ -679,7 +682,7 @@ const ViewIssues = ({ data }) => {
         ProjectID: 0,
         IsActive: 1,
         IsMaster: 2,
-        InchargeID: value || "",
+        InchargeID: String(value || ""),
       })
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {
@@ -902,7 +905,7 @@ const ViewIssues = ({ data }) => {
         ReOpenReasonID: "",
         ReOpenReason: "",
       })
-     
+
       .then((res) => {
         toast.success(res?.data?.message);
         setFormData({
@@ -941,9 +944,9 @@ const ViewIssues = ({ data }) => {
           ReOpenReasonID: "",
           ReOpenReason: "",
         })
-     
+
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.message);
             setFormData({
               ...formData,
@@ -1035,7 +1038,7 @@ const ViewIssues = ({ data }) => {
           ReOpenReasonID: "",
           ReOpenReason: "",
         })
-      
+
         .then((res) => {
           toast.success(res?.data?.message);
           setFormData({
@@ -1071,7 +1074,7 @@ const ViewIssues = ({ data }) => {
           ReOpenReasonID: "",
           ReOpenReason: "",
         })
-      
+
         .then((res) => {
           toast.success(res?.data?.message);
           handleViewSearch();
@@ -2050,7 +2053,7 @@ const ViewIssues = ({ data }) => {
         ReOpenReason: String(data?.label),
       })
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           handleViewSearch();
         } else {
@@ -2081,18 +2084,7 @@ const ViewIssues = ({ data }) => {
         ReOpenReasonID: String(data?.value),
         ReOpenReason: String(data?.label),
       })
-      // console.log("check latest", data);
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("TicketIDs", tableData[index]?.TicketID),
-      //   form.append("ActionText", data?.label),
-      //   form.append("ActionId", data?.value),
-      //   axios
-      //     .post(apiUrls?.ApplyAction, form, { headers })
+
       .then((res) => {
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);
@@ -2248,135 +2240,10 @@ const ViewIssues = ({ data }) => {
     if (formData?.HideStatus == "") {
       toast.error("Please Select HideStatus.");
     } else {
-      // setLoading(true)
+      setLoading(true);
       axiosInstances
         .post(apiUrls.ViewIssueSearch, paylaod)
-        // let form = new FormData();
-        // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-        //   form.append(
-        //     "RoleID",
-        //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-        //   ),
-        //   form.append(
-        //     "LoginName",
-        //     useCryptoLocalStorage("user_Data", "get", "realname")
-        //   ),
-        //   form.append("ProjectID", ProjectID),
-        //   form.append("PageSize", formData?.PageSize),
-        //   form.append("Ticket", formData?.Ticket ?? ""),
-        //   form.append("VerticalID", formData?.VerticalID),
-        //   form.append("TeamID", formData?.TeamID),
-        //   form.append("IsExcel", formData?.SearhType),
-        //   form.append("WingID", formData?.WingID),
-        //   form.append("POC1", formData?.POC1),
-        //   form.append("POC2", formData?.POC2),
-        //   form.append("POC3", formData?.POC3),
-        //   form.append("ReporterId", Reporter),
-        //   form.append("ModuleID", formData?.ModuleName),
-        //   form.append("PagesID", formData?.PagesName),
-        //   form.append("AssignToID", AssignedTo),
-        //   form.append("PriorityId", Priority),
-        //   form.append("CategoryID", CategoryID),
-        //   form.append("OnlyReOpen", formData?.OnlyReOpen),
-        //   form.append("OnlyDeliveryDateChange", formData?.OnlyDeliveryDateChange),
-        //   form.append("HideStatusId", HideStatusId),
-        //   form.append("StatusId", StatusID),
-        //   form.append("SubmittedDateStatus", formData?.SubmitDate),
-        //   form.append(
-        //     "DateFromSubmitted",
-        //     formatDate(formData?.SubmitDateBefore)
-        //       ? formatDate(formData?.SubmitDateBefore)
-        //       : ""
-        //   );
-        // form.append(
-        //   "DateToSubmitted",
-        //   formatDate(formData?.SubmitDateAfter)
-        //     ? formatDate(formData?.SubmitDateAfter)
-        //     : ""
-        // ),
-        //   form.append("DeliveryDateStatus", formData?.DeliveryDate),
-        //   form.append("ClientDeliveryDateStatus", formData?.ClientDeliveryDate),
-        //   form.append("AssignedDateStatus", formData?.AssignedDate),
-        //   form.append("ManHourStatus", formData?.ManHourDropdown),
-        //   form.append("ClientManHourStatus", formData?.ClientManHourDropdown),
-        //   form.append(
-        //     "DeliveryFromDate",
-        //     formatDate(deliveryDate || formData?.DeliveryDateBefore)
-        //   ),
-        //   form.append(
-        //     "ClientDeliveryFromDate",
-        //     formatDate(deliveryDate || formData?.ClientDeliveryDateBefore)
-        //   ),
-        //   form.append(
-        //     "AssignedFromDate",
-        //     formatDate(deliveryDate || formData?.AssignedDateBefore)
-        //   ),
-        //   form.append("FromManHour", formData?.ManHourBefore),
-        //   form.append("ClientFromManHour", formData?.ClientManHourBefore),
-        //   form.append(
-        //     "Deliverytodate",
-        //     formatDate(formData?.DeliveryDateAfter)
-        //       ? formatDate(formData?.DeliveryDateAfter)
-        //       : ""
-        //   ),
-        //   form.append(
-        //     "Assignedtodate",
-        //     formatDate(formData?.AssignedDateAfter)
-        //       ? formatDate(formData?.AssignedDateAfter)
-        //       : ""
-        //   ),
-        //   form.append(
-        //     "ClientDeliverytodate",
-        //     formatDate(formData?.ClientDeliveryDateAfter)
-        //       ? formatDate(formData?.ClientDeliveryDateAfter)
-        //       : ""
-        //   ),
-        //   form.append("ToManHour", formData?.ManHourAfter),
-        //   form.append("ClientToManHour", formData?.ClientManHourAfter),
-        //   form.append("ClosedDateStatus", formData?.CloseDate),
-        //   form.append(
-        //     "ClosedFromDate",
-        //     formatDate(formData?.CloseDateBefore)
-        //       ? formatDate(formData?.CloseDateBefore)
-        //       : ""
-        //   ),
-        //   form.append(
-        //     "Closedtodate",
-        //     formatDate(formData?.CloseDateAfter)
-        //       ? formatDate(formData?.CloseDateAfter)
-        //       : ""
-        //   ),
-        //   form.append("LastUpdateDateStatus", formData?.UpadteDate),
-        //   form.append(
-        //     "LastUpdatedFromDate",
-        //     formatDate(formData?.UpadteDateBefore)
-        //       ? formatDate(formData?.UpadteDateBefore)
-        //       : ""
-        //   ),
-        //   form.append(
-        //     "LastUpdatedToDate",
-        //     formatDate(formData?.UpadteDateAfter)
-        //       ? formatDate(formData?.UpadteDateAfter)
-        //       : ""
-        //   ),
-        //   form.append("ResolveDateStatus", formData?.ResolveDate || ""),
-        //   form.append(
-        //     "ResolveFromDate",
-        //     formatDate(formData?.ResolveDateBefore)
-        //       ? formatDate(formData?.ResolveDateBefore)
-        //       : ""
-        //   ),
-        //   form.append(
-        //     "Resolvetodate",
-        //     formatDate(formData?.ResolveDateAfter)
-        //       ? formatDate(formData?.ResolveDateAfter)
-        //       : ""
-        //   ),
-        //   form.append("rowColor", code ? code : ""),
-        //   form.append("PageNo", page ?? currentPage - 1);
-        // setLoading(true);
-        // await axios
-        //   .post(apiUrls?.ViewIssueSearch, form, { headers })
+
         .then((res) => {
           setLoading(false);
           const data = res?.data?.data;
@@ -3509,21 +3376,6 @@ const ViewIssues = ({ data }) => {
                 ></button>
               </div>
             </div>
-            // <div style={{ marginRight: "0px" }}>
-            // <button
-            //   className={`fa ${rowHandler.show ? "fa-arrow-up" : "fa-arrow-down"}`}
-            //   onClick={() => {
-            //     handlerow("show");
-            //   }}
-            //   style={{
-            //     cursor: "pointer",
-            //     border: "none",
-            //     color: "black",
-            //     borderRadius: "2px",
-            //     background: "none",
-            //   }}
-            // ></button>
-            // </div>
           }
         />
 
@@ -3541,10 +3393,6 @@ const ViewIssues = ({ data }) => {
                   optionLabel="VerticalID"
                   className="VerticalID"
                   handleChange={handleMultiSelectChange}
-                  // value={formData?.VerticalID?.map((code) => ({
-                  //   code,
-                  //   name: vertical.find((item) => item.code === code)?.name,
-                  // }))}
                   value={
                     Array.isArray(formData?.VerticalID)
                       ? formData.VerticalID.map((code) => ({
@@ -3584,10 +3432,6 @@ const ViewIssues = ({ data }) => {
                   placeholderName={t("Wing")}
                   dynamicOptions={wing}
                   handleChange={handleMultiSelectChange}
-                  // value={formData?.WingID?.map((code) => ({
-                  //   code,
-                  //   name: wing.find((item) => item.code === code)?.name,
-                  // }))}
                   value={
                     Array.isArray(formData?.WingID)
                       ? formData.WingID.map((code) => ({
@@ -3607,10 +3451,6 @@ const ViewIssues = ({ data }) => {
                   placeholderName={t("POC-I")}
                   dynamicOptions={poc1}
                   handleChange={handleMultiSelectChange}
-                  // value={formData?.POC1?.map((code) => ({
-                  //   code,
-                  //   name: poc1.find((item) => item.code === code)?.name,
-                  // }))}
                   value={
                     Array.isArray(formData?.POC1)
                       ? formData.POC1.map((code) => ({
@@ -3630,10 +3470,6 @@ const ViewIssues = ({ data }) => {
                   placeholderName={t("POC-II")}
                   dynamicOptions={poc2}
                   handleChange={handleMultiSelectChange}
-                  // value={formData?.POC2?.map((code) => ({
-                  //   code,
-                  //   name: poc2.find((item) => item.code === code)?.name,
-                  // }))}
                   value={
                     Array.isArray(formData?.POC2)
                       ? formData.POC2.map((code) => ({
@@ -3653,10 +3489,6 @@ const ViewIssues = ({ data }) => {
                   placeholderName={t("POC-III")}
                   dynamicOptions={poc3}
                   handleChange={handleMultiSelectChange}
-                  // value={formData?.POC3?.map((code) => ({
-                  //   code,
-                  //   name: poc3.find((item) => item.code === code)?.name,
-                  // }))}
                   value={
                     Array.isArray(formData?.POC3)
                       ? formData.POC3.map((code) => ({
@@ -3674,11 +3506,6 @@ const ViewIssues = ({ data }) => {
                 placeholderName={t("Project")}
                 dynamicOptions={project}
                 handleChange={handleMultiSelectChange}
-                // value={[641]}
-                // value={formData?.ProjectID?.map((code) => ({
-                //   code,
-                //   name: project.find((item) => item.code === code)?.name,
-                // }))}
                 value={
                   Array.isArray(formData?.ProjectID)
                     ? formData.ProjectID.map((code) => ({
@@ -3697,10 +3524,6 @@ const ViewIssues = ({ data }) => {
                   placeholderName={t("Reporter")}
                   dynamicOptions={reporter}
                   handleChange={handleMultiSelectChange}
-                  // value={formData?.Reporter?.map((code) => ({
-                  //   code,
-                  //   name: reporter.find((item) => item.code === code)?.name,
-                  // }))}
                   value={
                     Array.isArray(formData?.Reporter)
                       ? formData.Reporter?.map((code) => ({
@@ -3718,10 +3541,6 @@ const ViewIssues = ({ data }) => {
                 placeholderName={t("AssignedTo")}
                 dynamicOptions={assignto}
                 handleChange={handleMultiSelectChange}
-                // value={formData?.AssignedTo?.map((code) => ({
-                //   code,
-                //   name: assignto?.find((item) => item?.code === code)?.name,
-                // }))}
                 value={
                   Array.isArray(formData?.AssignedTo)
                     ? formData.AssignedTo.map((code) => ({
@@ -3745,10 +3564,6 @@ const ViewIssues = ({ data }) => {
                 placeholderName={t("Category")}
                 dynamicOptions={category}
                 handleChange={handleMultiSelectChange}
-                // value={formData?.Category?.map((code) => ({
-                //   code,
-                //   name: category.find((item) => item.code === code)?.name,
-                // }))}
                 value={
                   Array.isArray(formData?.Category)
                     ? formData.Category.map((code) => ({
@@ -3768,14 +3583,7 @@ const ViewIssues = ({ data }) => {
                 handleChange={handleDeliveryChange}
                 requiredClassName={"required-fields"}
               />
-              {/* <ReactSelect
-                respclass="col-xl-2 col-md-4 col-sm-6 col-12"
-                name="Status"
-                placeholderName={t("Status")}
-                dynamicOptions={status}
-                value={formData?.Status}
-                handleChange={handleDeliveryChange}
-              /> */}
+
               <MultiSelectComp
                 respclass="col-xl-2 col-md-4 col-sm-6 col-12"
                 name="Status"
@@ -4510,129 +4318,134 @@ const ViewIssues = ({ data }) => {
               />
 
               {/* <div className="col-xl-8 col-md-5 col-sm-6 col-12 mt-1 d-flex"> */}
-                {/* <div className="d-flex"> */}
-                <div className="search-col" style={{ marginLeft: "8px" }}>
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <label className="switch" style={{ marginTop: "7px" }}>
-                      <input
-                        type="checkbox"
-                        name="OnlyReOpen"
-                        checked={formData?.OnlyReOpen ? 1 : 0}
-                        onChange={handleCheckBox}
-                      />
-                      <span className="slider"></span>
-                    </label>
-                    <span
-                      style={{
-                        marginLeft: "3px",
-                        marginRight: "5px",
-                        fontSize: "12px",
-                      }}
-                    >
-                      {t("OnlyReOpen")}
-                    </span>
-                  </div>
+              {/* <div className="d-flex"> */}
+              <div className="search-col" style={{ marginLeft: "8px" }}>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <label className="switch" style={{ marginTop: "7px" }}>
+                    <input
+                      type="checkbox"
+                      name="OnlyReOpen"
+                      checked={formData?.OnlyReOpen ? 1 : 0}
+                      onChange={handleCheckBox}
+                    />
+                    <span className="slider"></span>
+                  </label>
+                  <span
+                    style={{
+                      marginLeft: "3px",
+                      marginRight: "5px",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {t("OnlyReOpen")}
+                  </span>
                 </div>
-                <div className="search-col" style={{ marginLeft: "8px" }}>
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <label className="switch" style={{ marginTop: "7px" }}>
-                      <input
-                        type="checkbox"
-                        name="OnlyDeliveryDateChange"
-                        checked={formData?.OnlyDeliveryDateChange ? 1 : 0}
-                        onChange={handleCheckBox}
-                      />
-                      <span className="slider"></span>
-                    </label>
-                    <span
-                      style={{
-                        marginLeft: "3px",
-                        marginRight: "5px",
-                        fontSize: "12px",
-                      }}
-                    >
-                      {t("ChangeDeliveryDate")}
-                    </span>
-                  </div>
+              </div>
+              <div className="search-col" style={{ marginLeft: "8px" }}>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <label className="switch" style={{ marginTop: "7px" }}>
+                    <input
+                      type="checkbox"
+                      name="OnlyDeliveryDateChange"
+                      checked={formData?.OnlyDeliveryDateChange ? 1 : 0}
+                      onChange={handleCheckBox}
+                    />
+                    <span className="slider"></span>
+                  </label>
+                  <span
+                    style={{
+                      marginLeft: "3px",
+                      marginRight: "5px",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {t("ChangeDeliveryDate")}
+                  </span>
                 </div>
-                <div className="search-col" style={{ marginLeft: "8px" }}>
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <label className="switch" style={{ marginTop: "7px" }}>
-                      <input
-                        type="checkbox"
-                        name="DelayedTicket"
-                        checked={formData?.DelayedTicket ? 1 : 0}
-                        onChange={handleDelayCheckBox}
-                      />
-                      <span className="slider"></span>
-                    </label>
-                    <span
-                      style={{
-                        marginLeft: "3px",
-                        marginRight: "5px",
-                        fontSize: "12px",
-                      }}
-                    >
-                      {t("DelayedTicket")}
-                    </span>
-                  </div>
+              </div>
+              <div className="search-col" style={{ marginLeft: "8px" }}>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <label className="switch" style={{ marginTop: "7px" }}>
+                    <input
+                      type="checkbox"
+                      name="DelayedTicket"
+                      checked={formData?.DelayedTicket ? 1 : 0}
+                      onChange={handleDelayCheckBox}
+                    />
+                    <span className="slider"></span>
+                  </label>
+                  <span
+                    style={{
+                      marginLeft: "3px",
+                      marginRight: "5px",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {t("DelayedTicket")}
+                  </span>
                 </div>
-                {formData?.DelayedTicket == "1" ? (
-                  <ReactSelect
-                    respclass="col-xl-2 col-md-4 col-sm-6 col-12"
-                    name="DelayedTicketType"
-                    placeholderName={t("Delayed Type")}
-                    dynamicOptions={[
-                      {
-                        label: "Select",
-                        value: "0",
-                      },
-                      {
-                        label: "1 Day Delay",
-                        value: "1",
-                      },
-                      {
-                        label: "1 Week Delay",
-                        value: "2",
-                      },
-                      {
-                        label: "1 Month Delay",
-                        value: "3",
-                      },
-                    ]}
-                    value={formData?.DelayedTicketType}
-                    handleChange={handleDeliveryChange}
-                  />
-                ) : (
-                  ""
-                )}
+              </div>
+              {formData?.DelayedTicket == "1" ? (
+                <ReactSelect
+                  respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+                  name="DelayedTicketType"
+                  placeholderName={t("Delayed Type")}
+                  dynamicOptions={[
+                    {
+                      label: "Select",
+                      value: "0",
+                    },
+                    {
+                      label: "1 Day Delay",
+                      value: "1",
+                    },
+                    {
+                      label: "1 Week Delay",
+                      value: "2",
+                    },
+                    {
+                      label: "1 Month Delay",
+                      value: "3",
+                    },
+                  ]}
+                  value={formData?.DelayedTicketType}
+                  handleChange={handleDeliveryChange}
+                />
+              ) : (
+                ""
+              )}
+              {loading ? (
+                <Loading />
+              ) : (
                 <button
-                  className="btn btn-sm btn-success ml-3"
+                  className="btn btn-sm btn-primary ml-2 mt-0"
                   onClick={() => handleViewSearch(undefined, "0")}
                 >
-                  {t("Apply Filter")}
+                  <i className="fa fa-search mr-1" aria-hidden="true"></i>{" "}
+                  Search
                 </button>
-                <button
-                  className="btn btn-sm btn-danger ml-2"
-                  onClick={handleReset}
-                >
-                  {t("Reset Filter")}
-                </button>
-                {/* {tableData?.length > 0 && ( */}
+              )}
+              <button
+                className="btn btn-sm btn-danger ml-2"
+                onClick={handleReset}
+              >
+                {t("Reset Filter")}
+              </button>
+              {/* {tableData?.length > 0 && ( */}
 
-                {/* )} */}
-                <button
-                  className="btn btn-sm btn-danger ml-2"
-                  onClick={handleSaveFilter}
-                >
-                  {t("Save Filter")}
-                </button>
-                <button
-                  className="btn btn-sm btn-danger ml-2 d-none"
-                  onClick={handleGetFilter}
-                >
-                  {t("Search Filter")}
-                </button>
+              {/* )} */}
+              <button
+                className="btn btn-sm btn-danger ml-2"
+                onClick={handleSaveFilter}
+              >
+                {t("Save Filter")}
+              </button>
+              <button
+                className="btn btn-sm btn-danger ml-2 d-none"
+                onClick={handleGetFilter}
+              >
+                {t("Search Filter")}
+              </button>
               {/* </div> */}
               {/* </div> */}
             </div>
@@ -5266,7 +5079,7 @@ const ViewIssues = ({ data }) => {
                         </div>
                       </>
                     ),
-                    Status: ele?.Status,
+                    Status: ele?.STATUS,
                     "Date Submitted": ele?.TicketRaisedDate,
                     "Delivery Date": (
                       // clientId === 7 ? (
@@ -5883,12 +5696,16 @@ const ViewIssues = ({ data }) => {
                               respclass="width100px"
                               onChange={handleChange}
                             />
-                            <button
-                              className="btn btn-sm btn-info ml-5"
-                              onClick={handleResolve}
-                            >
-                              Resolve
-                            </button>
+                            {loading ? (
+                              <Loading />
+                            ) : (
+                              <button
+                                className="btn btn-sm btn-info ml-5"
+                                onClick={handleResolve}
+                              >
+                                Resolve
+                              </button>
+                            )}
                           </div>
                         </>
                       )}

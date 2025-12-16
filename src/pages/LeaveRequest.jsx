@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Heading from "../components/UI/Heading";
 import DatePickerMonth from "../components/formComponent/DatePickerMonth";
 import Modal from "../components/modalComponent/Modal";
@@ -10,8 +10,10 @@ import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import LeaveRequestModal from "./LeaveRequestModal";
 import Loading from "../components/loader/Loading";
 import { axiosInstances } from "../networkServices/axiosInstance";
+import "./LeaveRequest.css";
 import ReactSelect from "../components/formComponent/ReactSelect";
-import MultiSelectComp from "../components/formComponent/MultiSelectComp";
+import Input from "../components/formComponent/Input";
+
 const getDaysInMonth = (year, month) => {
   return new Array(new Date(year, month, 0).getDate())
     .fill(null)
@@ -30,16 +32,25 @@ const currentYear = currentDate.getFullYear();
 
 const LeaveRequest = ({ data }) => {
   // console.log("data check", data);
+
+  const dataMonth = data?.MonthYear;
+  const jsDate = new Date(`${dataMonth?.replace("-", " ")} 1`);
+  // console.log("data?.MonthYear", data?.MonthYear);
+  // console.log("js date", jsDate);
   const CRMID = useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID");
   const LoginUserName = useCryptoLocalStorage("user_Data", "get", "realname");
   const [employee, setEmployee] = useState([]);
   const [formData, setFormData] = useState({
-    Month: new Date(),
+    Month: dataMonth == undefined ? new Date() : jsDate,
+    // Month: new Date(),
     Year: "",
     currentMonth: currentMonth,
     currentYear: currentYear,
-    Employee: [],
+    Employee: useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+      ? useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+      : "",
   });
+  console.log("data formdata", useCryptoLocalStorage("user_Data", "get", "ID"));
   const ReportingManager = useCryptoLocalStorage(
     "user_Data",
     "get",
@@ -62,7 +73,7 @@ const LeaveRequest = ({ data }) => {
 
   const getReporter = () => {
     axiosInstances
-      .post(apiUrls.EmployeeEmail, {
+      .post(apiUrls.EmployeeBind, {
         CrmEmployeeID: Number(
           useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
@@ -78,14 +89,13 @@ const LeaveRequest = ({ data }) => {
         console.log(err);
       });
   };
-
   const handleDeliveryChange = (name, e) => {
+    const { value } = e;
     setFormData({
       ...formData,
-      [name]: e?.value,
+      [name]: value,
     });
   };
-
   const handleMonthYearChange = (name, e) => {
     const { value } = e.target;
     const date = new Date(value);
@@ -100,6 +110,24 @@ const LeaveRequest = ({ data }) => {
       [name]: value,
     });
   };
+
+  const apiCalledRef = useRef(false);
+
+  useEffect(() => {
+    if (apiCalledRef.current) return;
+    if (data?.MonthYear) {
+      apiCalledRef.current = true;
+      const jsDate = new Date(`${data?.MonthYear?.replace("-", " ")} 1`);
+      const selectedYear = jsDate.getFullYear();
+      const selectedMonth = jsDate.getMonth() + 1;
+      handleLeaveRequest_BindCalender({
+        year: selectedYear,
+        month: selectedMonth,
+      });
+    } else {
+      handleLeaveRequest_BindCalender();
+    }
+  }, [data?.MonthYear]);
 
   const getStatusClass = (day, table1Data) => {
     const Table1LeaveList = table1Data?.find((d) => d.Day === day);
@@ -165,54 +193,6 @@ const LeaveRequest = ({ data }) => {
     return "missing-attendance";
   };
 
-  // const renderDay = (day, index, today, table1Data) => {
-  //   const { date, status } = day;
-  //   const todayMidnight = new Date(today);
-  //   todayMidnight.setHours(0, 0, 0, 0);
-  //   const [month, dayOfMonth] = date.split("/").map(Number);
-  //   const dayDate = new Date(today.getFullYear(), month - 1, dayOfMonth);
-  //   // const isBeforeToday = dayDate < todayMidnight;
-  //   const currentMonth = today.getMonth();
-  //   const targetMonth = month - 1;
-  //   const isBeforeToday = targetMonth < currentMonth;
-
-  //   const formattedDate = dayDate?.toLocaleDateString("en-US", {
-  //     month: "short",
-  //     day: "numeric",
-  //   });
-  //   const dayDetails = table1Data?.find((d) => d?.Day === dayOfMonth);
-
-  //   return (
-  //     <td
-  //       key={index}
-  //       // className={`verticalTable ${isBeforeToday ? "disabled-day" : "active-day"} ${getStatusClass}`}
-  //       className={`verticalTable ${isBeforeToday ? "disabled-day" : "active-day"} ${getStatusClass(dayOfMonth, table1Data)}`}
-  //       onClick={() => {
-  //         if (isBeforeToday) return;
-  //         setVisible({
-  //           showVisible: true,
-  //           data: dayDate,
-  //           CalenderDetails: CalenderDetails,
-  //         });
-  //         setclickeddate(dayDate);
-  //       }}
-  //       style={{
-  //         cursor: isBeforeToday ? "not-allowed" : "pointer",
-  //         pointerEvents: isBeforeToday ? "none" : "auto",
-  //       }}
-  //     >
-  //       <label className="formattedDate">{formattedDate}</label>
-  //       {status && <div className="day-status">{status}</div>}
-  //       {dayDetails && (
-  //         <div
-  //           className="day-details"
-  //           dangerouslySetInnerHTML={{ __html: dayDetails.Holiday }}
-  //         />
-  //       )}
-  //     </td>
-  //   );
-  // };
-
   const renderDay = (day, index, today, table1Data) => {
     const { date, status } = day;
     const [month, dayOfMonth] = date.split("/").map(Number);
@@ -264,17 +244,39 @@ const LeaveRequest = ({ data }) => {
 
     const dayDetails = table1Data?.find((d) => d?.Day === dayOfMonth);
 
+    const getWorkHourFromString = (text) => {
+      const match = text.match(
+        /Work Hour:\s*<span[^>]*>(\d{2}:\d{2})<\/span>/i
+      );
+      return match ? match[1] : null;
+    };
+
+    // console.log("xxxxxx", getWorkHourFromString("Login:11:08 AM</br>Logout:08:06 PM</br>Work Hour: <span class=red>08:58</span>"));
+
     return (
       <td
         key={index}
         className={`verticalTable ${isDisabled ? "disabled-day" : "active-day"} ${getStatusClass(dayOfMonth, table1Data)}`}
         onClick={() => {
           if (isDisabled) return;
-          setVisible({
-            showVisible: true,
-            data: dayDate,
-            CalenderDetails: CalenderDetails,
-          });
+          let isDisabledPopUpTime = 0;
+          if (dayDetails?.Holiday) {
+            isDisabledPopUpTime = Number(
+              getWorkHourFromString(dayDetails?.Holiday)?.split(":")?.[0]
+            );
+          }
+          if (
+            isDisabledPopUpTime <= 7 ||
+            (!dayDetails?.Holiday?.includes("Logout") &&
+              dayDetails?.HasLeave != "GZ")
+          ) {
+            setVisible({
+              showVisible: true,
+              data: dayDate,
+              CalenderDetails: CalenderDetails,
+            });
+          }
+
           setclickeddate(dayDate);
         }}
         style={{
@@ -284,6 +286,7 @@ const LeaveRequest = ({ data }) => {
       >
         <label className="formattedDate">{formattedDate}</label>
         {status && <div className="day-status">{status}</div>}
+
         {dayDetails && (
           <div
             className="day-details"
@@ -338,32 +341,20 @@ const LeaveRequest = ({ data }) => {
 
   const handleLeaveRequest_BindCalender = (details) => {
     setLoading(true);
-    // let form = new FormData();
-    // form.append(
-    //   "ID",
-    //   data?.EmployeeId ||
-    //     data?.Employee_Id ||
-    //     useCryptoLocalStorage("user_Data", "get", "ID")
-    // );
-
-    // form.append(
-    //   "LoginName",
-    //   data ? data?.Name : useCryptoLocalStorage("user_Data", "get", "realname")
-    // ),
-    //   form.append("CrmEmpID", data?.Employee_Id || data?.EmployeeId || CRMID),
-    //   form.append("Month", details ? details?.month : currentMonth),
-    //   form.append("Year", details ? details?.year : currentYear),
-    //   axios
-    //     .post(apiUrls?.LeaveRequest_BindCalender, form, { headers })
     axiosInstances
       .post(apiUrls.LeaveRequest_BindCalender, {
-        CrmEmpID: Number(data?.Employee_Id || data?.EmployeeId || CRMID),
-        Year: Number(details ? details?.year : currentYear),
-        Month: Number(details ? details?.month : currentMonth),
+        CrmEmpID: Number(
+          data?.Employee_Id || data?.EmployeeId || formData?.Employee
+        ),
+        Year:
+          Number(details ? details?.year : currentYear) ||
+          formData?.currentYear,
+        Month:
+          Number(details ? details?.month : currentMonth) ||
+          formData?.currentMonth,
       })
       .then((res) => {
         setCalenderDetails(res?.data?.data);
-
         setLoading(false);
       })
       .catch((err) => {
@@ -381,7 +372,6 @@ const LeaveRequest = ({ data }) => {
   };
 
   useEffect(() => {
-    handleLeaveRequest_BindCalender();
     getReporter();
   }, []);
 
@@ -407,7 +397,7 @@ const LeaveRequest = ({ data }) => {
       axios
         .post(apiUrls?.LeaveRequest_Save, form, { headers })
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.message);
             setLoading(false);
           } else {
@@ -420,7 +410,7 @@ const LeaveRequest = ({ data }) => {
           setLoading(false);
         });
   };
-
+  // console.log("check", CalenderDetails);
   return (
     <>
       {visible?.showVisible && (
@@ -446,13 +436,11 @@ const LeaveRequest = ({ data }) => {
         <div className="card">
           <Heading title={"Attendance Calendar"} isBreadcrumb={true} />
           <div className="row g-4 m-2">
-            {/* <div className="col-sm-2 "> */}
-            {/* <div className="d-flex"> */}
-            {/* <label className="mr-2">Name :</label>
-                <span style={{ textAlign: "right" }}>
-                  {data ? data?.Name : LoginUserName}
-                </span> */}
-            {ReportingManager == 1 ? (
+            <label className="mr-2">Name :</label>
+            <span style={{ textAlign: "right" }}>
+              {data ? data?.Name : LoginUserName}
+            </span>
+            {/* {ReportingManager == 1 ? (
               <ReactSelect
                 respclass="col-xl-2 col-md-4 col-sm-6 col-12"
                 name="Employee"
@@ -471,14 +459,12 @@ const LeaveRequest = ({ data }) => {
                 id="Employee"
                 name="Employee"
                 value={IsEmployee}
-                // onChange={handleChange}
                 disabled={true}
               />
-            )}
-            {/* </div> */}
-            {/* </div> */}
+            )} */}
+
             <div className="col-sm-4 d-flex">
-              <div className="">
+              <div className="ml-4">
                 <label>Leave Month/Year :</label>
               </div>
               <div className="cl-sm-4">
@@ -493,9 +479,14 @@ const LeaveRequest = ({ data }) => {
                   handleChange={(e) => handleMonthYearChange("Month", e)}
                 />
               </div>
+              {/* <button
+                className="btn btn-sm btn-info ml-3"
+                onClick={handleLeaveRequest_BindCalender}
+              >
+                Search
+              </button> */}
             </div>
             <div className="col-sm-2"></div>
-
             <div className="col-sm-4">
               <div className="d-flex flex-wrap">
                 <label className="mr-5">Available </label>

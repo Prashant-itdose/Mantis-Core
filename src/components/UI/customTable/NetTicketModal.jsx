@@ -96,7 +96,7 @@ const NewTicketModal = ({ visible, setVisible }) => {
   };
 
   const handleIssueSearch = (ticket) => {
-    console.log("ticket", ticket);
+
     axiosInstances
       .post(apiUrls.ViewTicket, {
         TicketID: Number(visible?.visible?.TicketID),

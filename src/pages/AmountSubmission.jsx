@@ -17,13 +17,17 @@ import { useTranslation } from "react-i18next";
 import moment from "moment";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import { axiosInstances } from "../networkServices/axiosInstance";
+import Modal from "../components/modalComponent/Modal";
+import TDSDiscountModal from "../components/UI/customTable/TDSDiscountModal";
+import { set } from "lodash";
 const AmountSubmission = ({ data }) => {
   const [t] = useTranslation();
   const [loading, setLoading] = useState(false);
   const { VITE_DATE_FORMAT } = import.meta.env;
   const [project, setProject] = useState([]);
-
+  const [pisaledetail, setPiSaleDetail] = useState([]);
   const [tableData, setTableData] = useState([]);
+  const [pinum, setPiNum] = useState([]);
   const [formData, setFormData] = useState({
     Project: "",
     ReceiveDate: new Date(),
@@ -44,39 +48,67 @@ const AmountSubmission = ({ data }) => {
     DepositedBy: "",
     VoucherNo: "",
     RecoveryTeam: "",
+
+    PINumberDropdown: "",
+    PiNumber: "",
+    PiDate: "",
+    PiAmount: "",
+    PiReceiveAmount: "",
+    PiPendingAmount: "",
+    Picheckbox: "",
+    PoNumber: "",
   });
-  // const handleDeliveryChange = (name, e) => {
-  //   const { value } = e;
-  //   setFormData({
-  //     ...formData,
-  //     [name]: value,
-  //     ...(value === "NEFT" || value === "Cheque"
-  //       ? { ReceivedBy: "" }
-  //       : { ReceivedBy: "Jai Guru Dev" }),
-  //   });
 
-  //   if (name === "Project") {
-  //     handleSearch(value);
-  //   }
-  // };
-
+  const piTHEAD = [
+    "S.No.",
+    "PI No.",
+    "PO No.",
+    "PI Date",
+    "PI Amount",
+    "Received Amount",
+    "Pending Amount",
+  ];
+  const handleOpenPI_Select = (value) => {
+    axiosInstances
+      .post(apiUrls.OpenPI_Select, { ProjectId: value })
+      .then((res) => {
+        const pics = res?.data?.data?.map((item) => {
+          return {
+            label: item?.SalesNo,
+            value: item?.id,
+          };
+        });
+        setPiNum(pics);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const handleDeliveryChange = (name, e) => {
     const { value, fullData } = e;
 
     if (name === "Project") {
       const isSupport = fullData?.IsSupport === 1;
-
       setFormData((prev) => ({
         ...prev,
-        [name]: value, // value = ProjectId
+        [name]: value,
         ReceivedBy:
           prev.ReceivedBy === "NEFT" || prev.ReceivedBy === "Cheque"
             ? ""
             : "Jai Guru Dev",
-        RecoveryTeam: isSupport ? "Support" : "", // Clear unless IsSupport === 1
+        RecoveryTeam: isSupport ? "Support" : "",
+        PINumberDropdown: "",
+      }));
+      setPiSaleDetail([]);
+      handleSearch(value);
+      handleOpenPI_Select(value);
+    } else if (name == "PINumberDropdown") {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
       }));
 
-      handleSearch(value); // Call search with ProjectId
+      handleOpenPI_SelectPINo(e.label);
     } else {
       setFormData((prev) => ({
         ...prev,
@@ -311,7 +343,10 @@ const AmountSubmission = ({ data }) => {
     t("Entry Date"),
   ];
 
-  const handleSave = () => {
+  const handleSave = (actionType = "") => {
+    setVisible({
+      showVisible: false,
+    });
     const { error, message } = handleValidation(formData);
     if (error) {
       toast.error(message);
@@ -334,7 +369,7 @@ const AmountSubmission = ({ data }) => {
       ShippingGSTNo: String(""),
       ShippingPanCardNo: String(""),
       ReceivedDate: formatDate(formData?.ReceiveDate) || "",
-      PaymentMode: String(formData?.PaymentMode || ""),
+      PaymentMode: actionType === 1 ? "TDS" : String(formData?.PaymentMode),
       Amount: String(formData?.Amount || ""),
       ReceivedBy: String(formData?.ReceivedBy || ""),
       Remark: String(formData?.Remarks || ""),
@@ -351,6 +386,7 @@ const AmountSubmission = ({ data }) => {
       Document_FormatType: String(formData?.FileExtension || ""),
       VoucherNo: String(formData?.VoucherNo || ""),
       RecoveryTeam: String(formData?.RecoveryTeam),
+      PIID: String(formData?.PINumberDropdown) || "0",
     };
     axiosInstances
       .post(apiUrls.AmountSubmission_ByAccounts, payload)
@@ -375,7 +411,9 @@ const AmountSubmission = ({ data }) => {
             SelectFile: "",
             Document_Base64: "",
             FileExtension: "",
+            PINumberDropdown: "",
           });
+          setPiSaleDetail([]);
           handleSearch(formData?.Project);
         } else {
           toast.error(res?.data?.message);
@@ -411,15 +449,69 @@ const AmountSubmission = ({ data }) => {
           FileExtension: fileExtension,
         });
       };
-      reader.readAsDataURL(file); 
+      reader.readAsDataURL(file);
     }
   };
 
+  const [visible, setVisible] = useState({
+    showVisible: false,
+
+    showData: {},
+  });
+
+  const PIPendingCal = pisaledetail?.reduce(
+    (acc, item) => acc + Number(item.PendingAmount || 0),
+    0
+  );
+  const PIAmountCal = pisaledetail?.reduce(
+    (acc, item) => acc + Number(item.PIAmount || 0),
+    0
+  );
+  const PITotal2Per = (PIAmountCal * 2) / 100;
+
+  const PITotal10Per = (PIAmountCal * 10) / 100;
+
+  const Total2Percent = PIPendingCal.toFixed(2) == PITotal2Per.toFixed(2);
+  const Total10Percent = PIPendingCal.toFixed(2) == PITotal10Per.toFixed(2);
+
+  const handleOpenPI_SelectPINo = (value) => {
+    axiosInstances
+      .post(apiUrls.OpenPI_SelectPINo, {
+        PINo: String(value),
+      })
+      .then((res) => {
+        setPiSaleDetail(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handleCallbackAction = () => {
+    if (!(Total2Percent || Total10Percent)) {
+      handleSave("");
+      return;
+    }
+    setVisible((prev) => ({ ...prev, showVisible: true }));
+  };
   useEffect(() => {
     getProject();
   }, []);
   return (
     <>
+      {visible?.showVisible && (
+        <Modal
+          modalWidth={"500px"}
+          visible={visible}
+          setVisible={setVisible}
+          Header="TDS Amount Details"
+        >
+          <TDSDiscountModal
+            visible={visible}
+            setVisible={setVisible}
+            handleSave={handleSave}
+          />
+        </Modal>
+      )}
       <div className="card">
         <Heading
           title={
@@ -437,7 +529,15 @@ const AmountSubmission = ({ data }) => {
             value={project.find((p) => p.value === formData.Project)}
             requiredClassName={"required-fields"}
           />
-
+          <ReactSelect
+            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+            name="PINumberDropdown"
+            placeholderName={t("PI No.")}
+            dynamicOptions={[{ label: "Select", value: "0" }, ...pinum]}
+            handleChange={handleDeliveryChange}
+            value={formData.PINumberDropdown}
+            isDisabled={!formData?.Project}
+          />
           <ReactSelect
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
             name="RecoveryTeam"
@@ -463,52 +563,6 @@ const AmountSubmission = ({ data }) => {
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
             handleChange={searchHandleChange}
           />
-          {/* <div className="d-flex">
-            <label>Type :</label>
-            <div
-              className="search-col"
-              style={{
-                marginLeft: "8px",
-                display: "flex",
-                marginRight: "auto",
-              }}
-            >
-              {[
-                { name: "Deposit", label: "Deposit" },
-                { name: "CreditNote", label: "CreditNote" },
-                { name: "DebitNote", label: "DebitNote" },
-                { name: "TDS", label: "TDS" },
-              ].map((item, idx) => (
-                <div
-                  key={idx}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    marginLeft: idx !== 0 ? "28px" : "0px",
-                  }}
-                >
-                  <label className="switch" style={{ marginTop: "3px" }}>
-                    <input
-                      type="checkbox"
-                      name={item.name}
-                      checked={formData[item.name] === "1"}
-                      onChange={handleSelectChange}
-                    />
-                    <span className="slider"></span>
-                  </label>
-                  <span
-                    style={{
-                      marginLeft: "3px",
-                      marginRight: "5px",
-                      fontSize: "12px",
-                    }}
-                  >
-                    {item.label}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div> */}
 
           <ReactSelect
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
@@ -532,7 +586,8 @@ const AmountSubmission = ({ data }) => {
             lable={t("Amount")}
             onChange={handleSelectChange}
             value={formData?.Amount}
-            respclass="col-xl-2 col-md-3 col-sm-4 col-12"
+            respclass="col-xl-2 col-md-3 col-sm-4 col-12 mt-1"
+            disabled={!formData?.Project}
           />
           {formData?.PaymentMode == "Cash" && (
             <>
@@ -560,26 +615,6 @@ const AmountSubmission = ({ data }) => {
           )}
           {formData?.PaymentMode == "NEFT" && (
             <>
-              {/* <Input
-                type="text"
-                className="form-control"
-                id="DepositedBy"
-                name="DepositedBy"
-                lable="Deposited By"
-                onChange={handleSelectChange}
-                value={formData?.DepositedBy}
-                respclass="col-xl-2 col-md-3 col-sm-4 col-12"
-              /> */}
-              {/* <Input
-                type="text"
-                className="form-control required-fields"
-                id="ReceivedBy"
-                name="ReceivedBy"
-                lable="ReceivedBy"
-                onChange={handleSelectChange}
-                value={formData?.ReceivedBy}
-                respclass="col-xl-2 col-md-3 col-sm-4 col-12"
-              /> */}
               <Input
                 type="text"
                 className="form-control"
@@ -607,16 +642,6 @@ const AmountSubmission = ({ data }) => {
           )}
           {formData?.PaymentMode == "Cheque" && (
             <>
-              {/* <Input
-                type="text"
-                className="form-control required-fields"
-                id="ReceivedBy"
-                name="ReceivedBy"
-                lable="ReceivedBy"
-                onChange={handleSelectChange}
-                value={formData?.ReceivedBy}
-                respclass="col-xl-2 col-md-3 col-sm-4 col-12"
-              /> */}
               <Input
                 type="text"
                 className="form-control"
@@ -659,6 +684,7 @@ const AmountSubmission = ({ data }) => {
             onChange={handleSelectChange}
             value={formData?.Remarks}
             respclass="col-xl-2 col-md-4 col-sm-4 col-12 mt-1"
+            disabled={!formData?.Project}
           />
           {/* <Input
             type="file"
@@ -674,12 +700,14 @@ const AmountSubmission = ({ data }) => {
             {loading ? (
               <Loading />
             ) : (
-              <button
-                className="btn btn-sm btn-success ml-3"
-                onClick={handleSave}
-              >
-                {t("Save")}
-              </button>
+              <>
+                <button
+                  className="btn btn-sm btn-success ml-3"
+                  onClick={handleCallbackAction}
+                >
+                  {t("Save")}
+                </button>
+              </>
             )}
 
             <Link
@@ -690,8 +718,40 @@ const AmountSubmission = ({ data }) => {
               {t("Back to List")}
             </Link>
           </div>
+          {pisaledetail?.length > 0 && (
+            <>
+              <div
+                className="col-sm-6"
+                style={{
+                  background: "#c3e1e3",
+                  padding: "5px",
+                  borderRadius: "5px",
+                  marginTop: "0px",
+                }}
+              >
+                {/* <span>PI Details</span> */}
+                <div className="card mt-2">
+                  {/* <Heading title={t("PI Details")} /> */}
+                  <Tables
+                    thead={piTHEAD}
+                    tbody={pisaledetail?.map((ele, index) => ({
+                      "S.No.": index + 1,
+                      "PI No.": ele?.PINo,
+                      "PO No.": ele?.PoNo,
+                      "PI Date": ele?.PIDate,
+                      "PI Amount": ele?.PIAmount,
+                      "Received Amount": ele?.ReceivedAmt,
+                      "Pending Amount": ele?.PendingAmount,
+                    }))}
+                    tableHeight={"tableHeight"}
+                  />
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
+
       {tableData?.length > 0 && (
         <div className="card mt-2">
           <Heading

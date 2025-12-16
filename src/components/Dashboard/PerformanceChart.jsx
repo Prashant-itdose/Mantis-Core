@@ -37,7 +37,7 @@ const PerformanceChart = () => {
         Title: String("MonthlyDeveloperPerformance"),
         DeveloperID: String(memberID || "0"),
       });
-      const rawData = response?.data?.dtOverAllMonthlyPerformance || [];
+      const rawData = response?.data?.data?.dtOverAllMonthlyPerformance || [];
       // Filter out null values and sort months correctly
       const validData = rawData.filter(
         (item) => item.Month && item.Values !== null

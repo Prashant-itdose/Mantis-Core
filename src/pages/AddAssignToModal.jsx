@@ -144,7 +144,7 @@ const AddAssignToModal = ({ visible, setVisible }) => {
       axios
         .post(apiUrls?.DeleteEmployeeModule, form, { headers })
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.message);
             setLoading(false);
             getAssignToSearch();

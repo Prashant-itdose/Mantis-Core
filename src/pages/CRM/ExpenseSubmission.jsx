@@ -14,18 +14,26 @@ import other from "../../assets/image/other.png";
 import Tables from "../../components/UI/customTable";
 import { apiUrls } from "../../networkServices/apiEndpoints";
 import { toast } from "react-toastify";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import moment from "moment";
+
 import BrowseInput from "../../components/formComponent/BrowseInput";
 import { useCryptoLocalStorage } from "../../utils/hooks/useCryptoLocalStorage";
 import { axiosInstances } from "../../networkServices/axiosInstance";
+import { use } from "react";
 const currentDate = new Date();
 const currentMonth = currentDate.getMonth() + 1; // Months are 0-indexed, so add 1
 const currentYear = currentDate.getFullYear();
 const ExpenseSubmission = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const { state } = location;
-
+  // console.log("state edit chck", state?.givenData?.EmpID);
+  const ReportingManager = useCryptoLocalStorage(
+    "user_Data",
+    "get",
+    "IsReportingManager"
+  );
   const { VITE_DATE_FORMAT } = import.meta.env;
   const [states, setState] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -81,12 +89,6 @@ const ExpenseSubmission = () => {
     currentMonth: currentMonth,
     currentYear: currentYear,
   });
-  // console.log("update", formData);
-  // useEffect(() => {
-  //   if (state?.edit) {
-  //     handleIsExpenseExists(state?.data);
-  //   }
-  // }, []);
 
   const handleHotelClear = () => {
     setFormData({
@@ -126,10 +128,7 @@ const ExpenseSubmission = () => {
       .post(apiUrls.GetState, {
         CountryID: "14",
       })
-      // let form = new FormData();
-      // form.append("CountryID", "14"),
-      //   axios
-      //     .post(apiUrls?.GetState, form, { headers })
+
       .then((res) => {
         const states = res?.data.data.map((item) => {
           return { label: item?.StateName, value: item?.StateID };
@@ -155,12 +154,6 @@ const ExpenseSubmission = () => {
       [name]: type === "checkbox" ? (checked ? 1 : 0) : value,
     });
   };
-
-  // useEffect(() => {
-  //   if (formData?.FromDate) {
-  //     handleIsExpenseExists(formData?.FromDate);
-  //   }
-  // }, [formData?.FromDate]);
 
   const rowConst = {
     show: false,
@@ -315,33 +308,6 @@ const ExpenseSubmission = () => {
       toast.error("Please Select Expense Type");
       return;
     }
-
-    const GeneralDetailsJson = [
-      {
-        Date: moment(formData?.FromDate).format("YYYY-MM-DD"),
-        TripName: formData?.TripName,
-        // State: getlabel(formData?.State, states),
-        stateID: formData?.State,
-        City: formData?.City,
-        Locality: formData?.Locality,
-        ClientName: formData?.ClientName,
-        other_employees: formData?.OtherTeammate,
-        ExpenseType: formData?.ExpenseType,
-        HotelAmount: formData?.HotelAmount || "0",
-        HotelName: formData?.HotelName,
-        HotelDesc: formData?.HotelDescription,
-        BreakfastAmount: formData?.BreakfastAmount || "0",
-        LunchAmount: formData?.LunchAmount || "0",
-        DinnerAmount: formData?.DinnerAmount || "0",
-        mealsDesc: formData?.MealDescription,
-        PhoneAmount: formData?.PhoneAmount || "0",
-        phoneDesc: formData?.PhoneDescription,
-        Client_Enterment_Amount: formData?.EntertainmentAmount || "0",
-        Client_Enterment_Desc: formData?.EntertainmentDescription,
-        amount: formData?.OtherAmount || "0",
-        Other_Desc: formData?.OtherDescription,
-      },
-    ];
     let LocalTravelpayload = [];
     rows?.map((val, index) => {
       LocalTravelpayload.push({
@@ -523,37 +489,7 @@ const ExpenseSubmission = () => {
       toast.error("Please Select Expense Type");
       return;
     }
-    // if (!formData?.SelectFile) {
-    //   toast.error("Please Choose File");
-    //   return;
-    // }
 
-    const GeneralDetailsJson = JSON.stringify([
-      {
-        Date: moment(formData?.FromDate).format("YYYY-MM-DD"),
-        TripName: formData?.TripName,
-        // State: getlabel(formData?.State, states),
-        stateID: formData?.State,
-        City: formData?.City,
-        Locality: formData?.Locality,
-        ClientName: formData?.ClientName,
-        other_employees: formData?.OtherTeammate,
-        ExpenseType: formData?.ExpenseType,
-        HotelAmount: formData?.HotelAmount || "0",
-        HotelName: formData?.HotelName,
-        HotelDesc: formData?.HotelDescription,
-        BreakfastAmount: formData?.BreakfastAmount || "0",
-        LunchAmount: formData?.LunchAmount || "0",
-        DinnerAmount: formData?.DinnerAmount || "0",
-        mealsDesc: formData?.MealDescription,
-        PhoneAmount: formData?.PhoneAmount || "0",
-        phoneDesc: formData?.PhoneDescription,
-        Client_Enterment_Amount: formData?.EntertainmentAmount || "0",
-        Client_Enterment_Desc: formData?.EntertainmentDescription,
-        amount: formData?.OtherAmount || "0",
-        Other_Desc: formData?.OtherDescription,
-      },
-    ]);
     let LocalTravelpayload = [];
     rows?.map((val, index) => {
       LocalTravelpayload.push({
@@ -578,7 +514,7 @@ const ExpenseSubmission = () => {
     });
     setLoading(true);
     const payload = {
-      EmpID: Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),
+      EmpID: state?.givenData?.EmpID,
       GeneralDetails: [
         {
           Date: moment(formData?.FromDate).format("YYYY-MM-DD"),
@@ -616,7 +552,7 @@ const ExpenseSubmission = () => {
     axiosInstances
       .post(apiUrls.ManageExpense_Insert, payload)
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           setLoading(false);
 
@@ -691,6 +627,8 @@ const ExpenseSubmission = () => {
           ]);
 
           setRowHandler(rowConst);
+
+          navigate("/ViewExpense");
         } else {
           toast.error(res?.data?.message);
           setLoading(false);
@@ -722,6 +660,7 @@ const ExpenseSubmission = () => {
       reader.readAsDataURL(file);
     }
   };
+
   const [checkdataa, setcheckdataa] = useState("");
   const [filedtaa, setFiledta] = useState("");
 
@@ -729,7 +668,7 @@ const ExpenseSubmission = () => {
 
   const handleIsExpenseExists = (check) => {
     const formatDateToLocal = (date) => {
-      const d = new Date(date?.Value);
+      const d = new Date(date);
       const year = d.getFullYear();
       const month = String(d.getMonth() + 1).padStart(2, "0");
       const day = String(d.getDate()).padStart(2, "0");
@@ -739,15 +678,12 @@ const ExpenseSubmission = () => {
     axiosInstances
       .post(apiUrls.IsExpenseExists, {
         ExpenseEmployeeID:
-          state?.length > 0
-            ? Number(state.givenData?.EmpID)
-            : Number(
-                useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-              ),
+          Number(state?.givenData?.EmpID) ||
+          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID"),
         ExpenseDate: String(formatDateToLocal(check)),
       })
       .then((res) => {
-        const response = res?.data?.data?.data?.dt[0];
+        const response = res?.data?.data?.dt?.[0];
         const datecheck = response?.Date;
         const filetd = response?.FileURL;
         setFiledta(filetd);
@@ -804,30 +740,26 @@ const ExpenseSubmission = () => {
             Locality: response?.locality,
           }));
 
-          const updatedData = res?.data?.data?.data?.dtDetailLocal?.map(
-            (ele) => ({
-              ...ele,
-              TravelType: ele?.traveling_by,
-              TravelFrom: ele?.tavling_from,
-              TravelTo: ele?.tavling_to,
-              TravelAmount: ele?.traveling_amount,
-              TravelDescription: ele?.traveling_description,
-              ExpenseReportMasterId: ele?.expense_report_master_Id,
-            })
-          );
+          const updatedData = res?.data?.data?.dtDetailLocal?.map((ele) => ({
+            ...ele,
+            TravelType: ele?.traveling_by,
+            TravelFrom: ele?.tavling_from,
+            TravelTo: ele?.tavling_to,
+            TravelAmount: ele?.traveling_amount,
+            TravelDescription: ele?.traveling_description,
+            ExpenseReportMasterId: ele?.traveling_master_ID,
+          }));
           setRows(updatedData);
 
-          const updatedData1 = res?.data?.data?.data?.dtDetailCity?.map(
-            (ele) => ({
-              ...ele,
-              InterTravelType: ele?.traveling_by,
-              IntercityFrom: ele?.tavling_from,
-              IntercityTo: ele?.tavling_to,
-              IntercityAmount: ele?.traveling_amount,
-              IntercityDescription: ele?.traveling_description,
-              ExpenseReportMasterId: ele?.expense_report_master_Id,
-            })
-          );
+          const updatedData1 = res?.data?.data?.dtDetailCity?.map((ele) => ({
+            ...ele,
+            InterTravelType: ele?.traveling_by,
+            IntercityFrom: ele?.tavling_from,
+            IntercityTo: ele?.tavling_to,
+            IntercityAmount: ele?.traveling_amount,
+            IntercityDescription: ele?.traveling_description,
+            ExpenseReportMasterId: ele?.traveling_master_ID,
+          }));
           setRows1(updatedData1);
 
           setRowHandler((prev) => ({
@@ -884,7 +816,13 @@ const ExpenseSubmission = () => {
 
   const searchHandleChange = (e) => {
     const { name, value } = e?.target;
-    setFormData({ ...formData, [name]: value });
+    const date = new Date(value);
+    setFormData({
+      ...formData,
+      [name]: value,
+      currentMonth: date.getMonth() + 1,
+      currentYear: date.getFullYear(),
+    });
   };
 
   const hasCalledRef = useRef(false);
@@ -903,7 +841,7 @@ const ExpenseSubmission = () => {
     }
   }, [formData?.FromDate]);
 
-   const isCurrentMonthSelected = () => {
+  const isCurrentMonthSelected = () => {
     const today = new Date();
     const currentMonth = today.getMonth() + 1; // months are 0-based
     const currentYear = today.getFullYear();
@@ -929,6 +867,28 @@ const ExpenseSubmission = () => {
 
     return isCurrentMonth; // normal current month behavior
   };
+
+  const TwelthdayCurrentMonthSelected = () => {
+    const today = new Date();
+    const currentMonth = today.getMonth() + 1;
+    const currentYear = today.getFullYear();
+    const prevMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+    const prevMonthYear = currentMonth === 1 ? currentYear - 1 : currentYear;
+    const isCurrentMonth =
+      formData.currentMonth === currentMonth &&
+      formData.currentYear === currentYear;
+    const isPreviousMonth =
+      formData.currentMonth === prevMonth &&
+      formData.currentYear === prevMonthYear;
+    const isWithinFirst5Days = today.getDate() <= 12;
+    if (isPreviousMonth && isWithinFirst5Days) {
+      return true;
+    } else if (isPreviousMonth && !isWithinFirst5Days) {
+      return false;
+    }
+    return isCurrentMonth;
+  };
+
   return (
     <>
       <div className="card">
@@ -973,7 +933,7 @@ const ExpenseSubmission = () => {
             respclass="col-xl-2 col-md-4 col-sm-4 col-12"
             onKeyDown={Tabfunctionality}
             tabIndex="1"
-            disabled={state?.edit}
+            // disabled={state?.edit}
           />
 
           <ReactSelect
@@ -985,7 +945,7 @@ const ExpenseSubmission = () => {
             value={formData.State}
             onKeyDown={Tabfunctionality}
             tabIndex="1"
-            isDisabled={state?.edit}
+            // isDisabled={state?.edit}
           />
           <Input
             type="text"
@@ -999,7 +959,7 @@ const ExpenseSubmission = () => {
             respclass="col-xl-2 col-md-4 col-sm-4 col-12"
             onKeyDown={Tabfunctionality}
             tabIndex="1"
-            disabled={state?.edit}
+            // disabled={state?.edit}
           />
           <Input
             type="text"
@@ -1013,7 +973,7 @@ const ExpenseSubmission = () => {
             respclass="col-xl-2 col-md-4 col-sm-4 col-12"
             onKeyDown={Tabfunctionality}
             tabIndex="1"
-            disabled={state?.edit}
+            // disabled={state?.edit}
           />
           <Input
             type="text"
@@ -1027,7 +987,7 @@ const ExpenseSubmission = () => {
             respclass="col-xl-2 col-md-4 col-sm-4 col-12"
             onKeyDown={Tabfunctionality}
             tabIndex="1"
-            disabled={state?.edit}
+            // disabled={state?.edit}
           />
           <Input
             type="text"
@@ -1041,7 +1001,7 @@ const ExpenseSubmission = () => {
             respclass="col-xl-2 col-md-4 col-sm-4 col-12"
             onKeyDown={Tabfunctionality}
             tabIndex="1"
-            disabled={state?.edit}
+            // disabled={state?.edit}
           />
           <ReactSelect
             className="form-control"
@@ -1057,7 +1017,7 @@ const ExpenseSubmission = () => {
             handleChange={handleDeliveryChange}
             onKeyDown={Tabfunctionality}
             tabIndex="1"
-            isDisabled={state?.edit}
+            // isDisabled={state?.edit}
           />
         </div>
       </div>
@@ -1152,7 +1112,7 @@ const ExpenseSubmission = () => {
                     respclass="col-xl-2 col-md-4 col-sm-4 col-12"
                     onKeyDown={Tabfunctionality}
                     tabIndex="1"
-                    disabled={state?.edit}
+                    // disabled={state?.edit}
                   />
                   <Input
                     type="text"
@@ -1166,7 +1126,7 @@ const ExpenseSubmission = () => {
                     respclass="col-xl-2 col-md-4 col-sm-4 col-12"
                     onKeyDown={Tabfunctionality}
                     tabIndex="1"
-                    disabled={state?.edit}
+                    // disabled={state?.edit}
                   />
                   <Input
                     type="text"
@@ -1180,7 +1140,7 @@ const ExpenseSubmission = () => {
                     respclass="col-xl-2 col-md-4 col-sm-4 col-12"
                     onKeyDown={Tabfunctionality}
                     tabIndex="1"
-                    disabled={state?.edit}
+                    // disabled={state?.edit}
                   />
                   <div className="col-2">
                     <button
@@ -1191,7 +1151,7 @@ const ExpenseSubmission = () => {
                         color: "white",
                       }}
                       onClick={handleHotelClear}
-                      disabled={state?.edit}
+                      // disabled={state?.edit}
                     >
                       Clear
                     </button>
@@ -1282,7 +1242,7 @@ const ExpenseSubmission = () => {
                   respclass="col-xl-2 col-md-4 col-sm-4 col-12"
                   onKeyDown={Tabfunctionality}
                   tabIndex="1"
-                  disabled={state?.edit}
+                  // disabled={state?.edit}
                 />
                 <Input
                   type="number"
@@ -1296,7 +1256,7 @@ const ExpenseSubmission = () => {
                   respclass="col-xl-2 col-md-4 col-sm-4 col-12"
                   onKeyDown={Tabfunctionality}
                   tabIndex="1"
-                  disabled={state?.edit}
+                  // disabled={state?.edit}
                 />
                 <Input
                   type="number"
@@ -1310,7 +1270,7 @@ const ExpenseSubmission = () => {
                   respclass="col-xl-2 col-md-4 col-sm-4 col-12"
                   onKeyDown={Tabfunctionality}
                   tabIndex="1"
-                  disabled={state?.edit}
+                  // disabled={state?.edit}
                 />
                 <Input
                   type="text"
@@ -1324,7 +1284,7 @@ const ExpenseSubmission = () => {
                   respclass="col-xl-2 col-md-4 col-sm-4 col-12"
                   onKeyDown={Tabfunctionality}
                   tabIndex="1"
-                  disabled={state?.edit}
+                  // disabled={state?.edit}
                 />
                 <div className="col-2">
                   <button
@@ -1335,7 +1295,7 @@ const ExpenseSubmission = () => {
                       color: "white",
                     }}
                     onClick={handleMealClear}
-                    disabled={state?.edit}
+                    // disabled={state?.edit}
                   >
                     Clear
                   </button>
@@ -1430,7 +1390,7 @@ const ExpenseSubmission = () => {
                         placeholder="TravelType"
                         onKeyDown={Tabfunctionality}
                         tabIndex="1"
-                        isDisabled={state?.edit}
+                        // isDisabled={state?.edit}
                       />
                     ),
                     From: (
@@ -1445,7 +1405,7 @@ const ExpenseSubmission = () => {
                         }
                         onKeyDown={Tabfunctionality}
                         tabIndex="1"
-                        disabled={state?.edit}
+                        // disabled={state?.edit}
                       />
                     ),
                     To: (
@@ -1460,7 +1420,7 @@ const ExpenseSubmission = () => {
                         }
                         onKeyDown={Tabfunctionality}
                         tabIndex="1"
-                        disabled={state?.edit}
+                        // disabled={state?.edit}
                       />
                     ),
                     Amount: (
@@ -1475,7 +1435,7 @@ const ExpenseSubmission = () => {
                         }
                         onKeyDown={Tabfunctionality}
                         tabIndex="1"
-                        disabled={state?.edit}
+                        // disabled={state?.edit}
                       />
                     ),
                     Description: (
@@ -1490,7 +1450,7 @@ const ExpenseSubmission = () => {
                         }
                         onKeyDown={Tabfunctionality}
                         tabIndex="1"
-                        disabled={state?.edit}
+                        // disabled={state?.edit}
                       />
                     ),
                     "Add/Remove": (
@@ -1608,7 +1568,7 @@ const ExpenseSubmission = () => {
                         placeholder="TravelType"
                         onKeyDown={Tabfunctionality}
                         tabIndex="1"
-                        isDisabled={state?.edit}
+                        // isDisabled={state?.edit}
                       />
                     ),
                     From: (
@@ -1623,7 +1583,7 @@ const ExpenseSubmission = () => {
                         }
                         onKeyDown={Tabfunctionality}
                         tabIndex="1"
-                        disabled={state?.edit}
+                        // disabled={state?.edit}
                       />
                     ),
                     To: (
@@ -1638,7 +1598,7 @@ const ExpenseSubmission = () => {
                         }
                         onKeyDown={Tabfunctionality}
                         tabIndex="1"
-                        disabled={state?.edit}
+                        // disabled={state?.edit}
                       />
                     ),
                     Amount: (
@@ -1653,7 +1613,7 @@ const ExpenseSubmission = () => {
                         }
                         onKeyDown={Tabfunctionality}
                         tabIndex="1"
-                        disabled={state?.edit}
+                        // disabled={state?.edit}
                       />
                     ),
                     Description: (
@@ -1668,7 +1628,7 @@ const ExpenseSubmission = () => {
                         }
                         onKeyDown={Tabfunctionality}
                         tabIndex="1"
-                        disabled={state?.edit}
+                        // disabled={state?.edit}
                       />
                     ),
                     "Add/Remove": (
@@ -1784,7 +1744,7 @@ const ExpenseSubmission = () => {
                   respclass="col-xl-2 col-md-4 col-sm-4 col-12"
                   onKeyDown={Tabfunctionality}
                   tabIndex="1"
-                  disabled={state?.edit}
+                  // disabled={state?.edit}
                 />
                 <Input
                   type="text"
@@ -1798,7 +1758,7 @@ const ExpenseSubmission = () => {
                   respclass="col-xl-2 col-md-4 col-sm-4 col-12"
                   onKeyDown={Tabfunctionality}
                   tabIndex="1"
-                  disabled={state?.edit}
+                  // disabled={state?.edit}
                 />
                 <div className="col-2">
                   <button
@@ -1809,7 +1769,7 @@ const ExpenseSubmission = () => {
                       color: "white",
                     }}
                     onClick={handlePhoneClear}
-                    disabled={state?.edit}
+                    // disabled={state?.edit}
                   >
                     Clear
                   </button>
@@ -1903,7 +1863,7 @@ const ExpenseSubmission = () => {
                   respclass="col-xl-2 col-md-4 col-sm-4 col-12"
                   onKeyDown={Tabfunctionality}
                   tabIndex="1"
-                  disabled={state?.edit}
+                  // disabled={state?.edit}
                 />
                 <Input
                   type="text"
@@ -1917,7 +1877,7 @@ const ExpenseSubmission = () => {
                   respclass="col-xl-2 col-md-4 col-sm-4 col-12"
                   onKeyDown={Tabfunctionality}
                   tabIndex="1"
-                  disabled={state?.edit}
+                  // disabled={state?.edit}
                 />
                 <div className="col-2">
                   <button
@@ -1928,7 +1888,7 @@ const ExpenseSubmission = () => {
                       color: "white",
                     }}
                     onClick={handleClientClear}
-                    disabled={state?.edit}
+                    // disabled={state?.edit}
                   >
                     Clear
                   </button>
@@ -2019,7 +1979,7 @@ const ExpenseSubmission = () => {
                   respclass="col-xl-2 col-md-4 col-sm-4 col-12"
                   onKeyDown={Tabfunctionality}
                   tabIndex="1"
-                  disabled={state?.edit}
+                  // disabled={state?.edit}
                 />
                 <Input
                   type="text"
@@ -2033,7 +1993,7 @@ const ExpenseSubmission = () => {
                   respclass="col-xl-2 col-md-4 col-sm-4 col-12"
                   onKeyDown={Tabfunctionality}
                   tabIndex="1"
-                  disabled={state?.edit}
+                  // disabled={state?.edit}
                 />
                 <div className="col-2">
                   <button
@@ -2044,7 +2004,7 @@ const ExpenseSubmission = () => {
                       color: "white",
                     }}
                     onClick={handleOtherClear}
-                    disabled={state?.edit}
+                    // disabled={state?.edit}
                   >
                     Clear
                   </button>
@@ -2054,6 +2014,7 @@ const ExpenseSubmission = () => {
           )}
         </div>
       </div>
+      
       <div className="card">
         <div className="row m-2 d-flex">
           <BrowseInput handleImageChange={handleImageChange} />
@@ -2106,7 +2067,13 @@ const ExpenseSubmission = () => {
             <button
               className="btn btn-sm btn-info ml-2"
               onClick={handleUpdate}
-              disabled={state?.edit}
+              // disabled={state?.edit}
+              disabled={
+                !(
+                  TwelthdayCurrentMonthSelected() === true &&
+                  ReportingManager === 1
+                )
+              }
             >
               Update
             </button>
@@ -2115,7 +2082,9 @@ const ExpenseSubmission = () => {
             <button
               className="btn btn-sm btn-info ml-2"
               onClick={handleSave}
-              disabled={isCurrentMonthSelected() === false}
+              disabled={
+                isCurrentMonthSelected() === false || GrandTotalExpense <= 0
+              }
               title={
                 isCurrentMonthSelected() === false
                   ? "Expenses can be submitted only on the 5th of the previous month"

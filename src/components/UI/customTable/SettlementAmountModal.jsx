@@ -119,7 +119,7 @@ const SettlementAmountModal = (visible, edit) => {
         setTableData([res?.data?.data?.dtOnAccountDetail[0]]);
 
         const dataID = res?.data?.Sales[0];
-        console.log("restst", dataID);
+        // console.log("restst", dataID);
         setFormData((prevState) => ({
           ...prevState, // Retain any existing values in formData
           Sale: dataID?.SalesID || "", // Set default value if null or undefined
@@ -144,7 +144,7 @@ const SettlementAmountModal = (visible, edit) => {
     axiosInstances
       .post(apiUrls?.Settlement_Select, payload)
       .then((res) => {
-        console.log("restst", res);
+        // console.log("restst", res);
         setTableData([res?.data?.dtOnAccount_Req_ID[0]]);
       })
       .catch((err) => {

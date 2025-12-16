@@ -21,7 +21,7 @@ const MachineDeleteModal = ({ visible, setVisible }) => {
       axios
         .post(apiUrls?.ProjectMasterUpdate, form, { headers })
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.message);
             setLoading(false);
             setVisible(false);

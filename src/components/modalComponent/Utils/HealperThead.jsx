@@ -801,7 +801,7 @@ export const gmailQuotationTHEAD = [
   { name: "S.No.", width: "7%" },
   "EmailTo",
   "EmailCC",
-  // "Email Status",
-  // "Entry Date",
+  "Email Status",
+  "Entry Date",
   "Send Date",
 ];

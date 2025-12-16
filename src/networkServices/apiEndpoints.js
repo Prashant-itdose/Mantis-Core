@@ -36,6 +36,9 @@ export const apiUrls = {
   UpdateTickets: "/CRMCOREAPI/api/ViewIssue/UpdateTicket",
   //NewTicket(ReportIssue) Page Api's
   NewTicket: "/CRMCOREAPI/api/BugReport/NewTicket",
+  ManageOverseasTravelInsert: "/CRMCOREAPI/api/ManageOverseas/ManageOverseasTravelInsert",
+  SearchOverseasTravel: "/CRMCOREAPI/api/ManageOverseas/SearchOverseasTravel",
+  ApproveOrRejectOverseasTravel: "/CRMCOREAPI/api/ManageOverseas/ApproveOrRejectOverseasTravel",
 
   //AutoBackupStatusSheet  Page Api's   & MisReport Table Page
   SPOC_Update: "/CRMCOREAPI/api/Autobackup/SPOCUpdate",
@@ -111,6 +114,9 @@ export const apiUrls = {
   DocumentType_Select: "/CRMCOREAPI/api/ManageDocument/DocumentType_Select",
   UploadDocument_Search: "/CRMCOREAPI/api/ManageDocument/UploadDocument_Search",
   UploadDocument: "/CRMCOREAPI/api/ManageDocument/UploadDocument",
+  AmountSubmissionPrintOutPrintOut: "/CRMCOREAPI/api/Reports/AmountSubmissionPrintOutPrintOut",
+  SearchDollarExpense: "/CRMCOREAPI/api/ManageExpense/SearchDollarExpense",
+  OverseasInvoiceInsert: "/CRMCOREAPI/api/ManageExpense/OverseasInvoiceInsert",
 
   //Amount Submission Page Api's
   AmountSubmission_ByAccounts:
@@ -119,6 +125,7 @@ export const apiUrls = {
     "/CRMCOREAPI/api/Accounts/AmountSubmissionByAccountsSearch",
   AmountSubmission_ByAccounts_IsCancel:
     "/CRMCOREAPI/api/Accounts/AmountSubmission_ByAccounts_IsCancel",
+  OverseasExcelInsert: "/CRMCOREAPI/api/ManageExpense/OverseasExcelInsert",
 
   //Query Master Api;s
   Query_Insert: "/CRMCOREAPI/api/QueryVsResult/Query_Insert",
@@ -187,6 +194,9 @@ export const apiUrls = {
 
   // Access right
   CreateRole: "/CRMCOREAPI/api/AccessRight/CreateRole",
+  QuotationPrintOut: "/CRMCOREAPI/api/Reports/QuotationPrintOut",
+  GeneratePIPDF: "/CRMCOREAPI/api/Reports/GeneratePIPDF",
+  Sales_Connector_pdf: "/CRMCOREAPI/api/Reports/Sales_Connector_pdf",
   SearchRole: "/CRMCOREAPI/api/AccessRight/SearchRole",
   UpdateRole: "/CRMCOREAPI/api/AccessRight/UpdateRole",
   EmployeeView: "/CRMCOREAPI/api/AccessRight/EmployeeView",
@@ -226,15 +236,12 @@ export const apiUrls = {
   Settlement_Select: "/CRMCOREAPI/api/Accounts/SettlementSelect",
   UpdateProfile: "/CRMCOREAPI/api/EmployeeMaster/UpdateProfile",
   SaveSettlement: "/CRMCOREAPI/api/Accounts/SaveSettlement",
-  // ForgetPassword_ValdiateEmailMobile:'/CRMCOREAPI/api/EmployeeMaster/ForgetPassword_ValdiateEmailMobile',
   ForgetPassword_ValdiateEmailMobile:
-    "/CRMCOREAPI/api/LoginAPIDynamic/ForgetPassword_ValdiateEmailMobile",
-  // ForgetPassword_ValdiateOTP:'/CRMCOREAPI/api/EmployeeMaster/ForgetPassword_ValdiateOTP',
+    "/CRMCOREAPI/api/EmployeeMaster/ForgetPassword_ValidateEmailMobile",
   ForgetPassword_ValdiateOTP:
-    "/CRMCOREAPI/api/LoginAPIDynamic/ForgetPassword_ValdiateOTP",
-  // ForgetPassword_ChangePassword:'/CRMCOREAPI/api/EmployeeMaster/ForgetPassword_ChangePassword',
+    "/CRMCOREAPI/api/EmployeeMaster/ForgetPassword_ValidateOTP",
   ForgetPassword_ChangePassword:
-    "/CRMCOREAPI/api/LoginAPIDynamic/ForgetPassword_ChangePassword",
+    "/CRMCOREAPI/api/EmployeeMaster/ForgetPassword_ChangePassword",
   LedgerStatus: "/CRMCOREAPI/api/Accounts/LedgerStatusFromForm",
   LedgerStatus_LockUnLock: "/CRMCOREAPI/api/Accounts/LedgerStatusLockUnLock",
   LedgerStatus_LockUnLock_Log:
@@ -304,6 +311,7 @@ export const apiUrls = {
   Module_Select: "/CRMCOREAPI/api/MasterBind/Module_Select",
   Pages_Select: "/CRMCOREAPI/api/MasterBind/Pages_Select",
   CreateModule: "/CRMCOREAPI/api/MasterBind/CreateModule",
+  UpdateModule: "/CRMCOREAPI/api/MasterBind/UpdateModule",
   CreatePages: "/CRMCOREAPI/api/MasterBind/CreatePages",
   UpdatePages: "/CRMCOREAPI/api/MasterBind/UpdatePages",
   UpdateModule: "/CRMCOREAPI/api/MasterBind/UpdateModule",
@@ -361,6 +369,7 @@ export const apiUrls = {
     "/CRMCOREAPI/api/CoordinatorDashboard/CoorDashboardAgeingSheetPendingRecovery",
   CentreRemoveProject:
     "/CRMCOREAPI/api/ProjectMasterUpdate/CentreRemoveProject",
+  Module_Search: "/CRMCOREAPI/api/MasterBind/Module_Search",
   BulkNoteInsert: "/CRMCOREAPI/api/BugReport/BulkNoteInsert",
   CreateEmployeeModule: "/CRMCOREAPI/api/EmployeeMaster/CreateEmployeeModule",
   GetEmployeeModule: "/CRMCOREAPI/api/EmployeeMaster/GetEmployeeModule",
@@ -540,4 +549,10 @@ export const apiUrls = {
     "/CRMCOREAPI/api/AccountsPaymentInstallment/EditProjectRateList",
   ProjectRateListUpdate:
     "/CRMCOREAPI/api/AccountsPaymentInstallment/ProjectRateListUpdate",
+  OpenPI_Select: "/CRMCOREAPI/api/AdvanceAmount/OpenPI_Select",
+  OpenPI_SelectPINo: "/CRMCOREAPI/api/AdvanceAmount/OpenPI_SelectPINo",
+  POAttachementUpload:
+    "/CRMCOREAPI/api/AccountsPaymentInstallment/POAttachementUpload",
+  ViewExpenseListSummary:
+    "/CRMCOREAPI/api/ManageExpense/ViewExpenseListSummary",
 };

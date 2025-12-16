@@ -28,7 +28,7 @@ const ClientViewIssueModal = ({
   setVisible,
   handleViewSearch,
 }) => {
-  console.log("visible kamal", visible);
+
 
   const AllowDeliveryDateEdit = useCryptoLocalStorage(
     "user_Data",
@@ -262,7 +262,7 @@ const ClientViewIssueModal = ({
         TicketID: Number(ticket || visible.showData.TicketID),
       })
       .then((res) => {
-        console.log("res kamal", res);
+        // console.log("res kamal", res);
 
         setFormData({
           TicketID: res?.data.data[0].Id,
@@ -404,6 +404,7 @@ const ClientViewIssueModal = ({
         IsReOpen: Number("1"),
         ReOpenReasonID: Number(formDataUpdate?.ReOpen) || 0,
         ReOpenReason: getlabel(formDataUpdate?.ReOpen, reopen) || "",
+        OtherReferenceNo:String(formDataUpdate?.OtherReferenceNo)||"",
       };
 
       axiosInstances
@@ -569,7 +570,7 @@ const ClientViewIssueModal = ({
         ProjectID: Number(0),
       })
       .then((res) => {
-        console.log("get assign to", res.data.data);
+       
         const assigntos = res?.data?.data?.map((item) => {
           return { label: item?.Name, value: item?.ID };
         });

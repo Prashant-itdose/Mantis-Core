@@ -538,6 +538,27 @@ const allRoutes = {
     {
       Guard: Authenticated,
       layout: Layout,
+      path: "/FestivalWish",
+      component: lazy(() => import("@app/pages/FestivalWish.jsx")),
+      exact: true,
+    },
+    {
+      Guard: Authenticated,
+      layout: Layout,
+      path: "/ModuleMaster",
+      component: lazy(() => import("@app/pages/ModuleMaster.jsx")),
+      exact: true,
+    },
+    {
+      Guard: Authenticated,
+      layout: Layout,
+      path: "/FestivalWishSearch",
+      component: lazy(() => import("@app/pages/FestivalWishSearch.jsx")),
+      exact: true,
+    },
+    {
+      Guard: Authenticated,
+      layout: Layout,
       path: "/TaxInvoiceRequest",
       component: lazy(() => import("@app/pages/TaxInvoiceRequest.jsx")),
       exact: true,
@@ -634,6 +655,7 @@ const allRoutes = {
       component: lazy(() => import("@app/pages/CRM/ExpenseSubmission.jsx")),
       exact: true,
     },
+
     {
       Guard: Authenticated,
       layout: Layout,
@@ -674,6 +696,28 @@ const allRoutes = {
       layout: Layout,
       path: "/UserVSProjectMapping",
       component: lazy(() => import("@app/pages/UserVSProjectMapping.jsx")),
+      exact: true,
+    },
+
+    {
+      Guard: Authenticated,
+      layout: Layout,
+      path: "/SupplierMaster",
+      component: lazy(() => import("@app/pages/Inventory/SupplierMaster.jsx")),
+      exact: true,
+    },
+    {
+      Guard: Authenticated,
+      layout: Layout,
+      path: "/ItemMaster",
+      component: lazy(() => import("@app/pages/Inventory/ItemMaster.jsx")),
+      exact: true,
+    },
+    {
+      Guard: Authenticated,
+      layout: Layout,
+      path: "/GRN",
+      component: lazy(() => import("@app/pages/Inventory/GRN.jsx")),
       exact: true,
     },
     {
@@ -749,6 +793,53 @@ const allRoutes = {
     {
       Guard: Authenticated,
       layout: Layout,
+      path: "/OverseasExpenseManagement",
+      component: lazy(() => import("@app/pages/OverseasExpenseManagement.jsx")),
+      exact: true,
+    },
+    {
+      Guard: Authenticated,
+      layout: Layout,
+      path: "/OverseasFly",
+      component: lazy(() => import("@app/pages/OverseasFly.jsx")),
+      exact: true,
+    },
+    {
+      Guard: Authenticated,
+      layout: Layout,
+      path: "/OverseasFlySearch",
+      component: lazy(() => import("@app/pages/OverseasFlySearch.jsx")),
+      exact: true,
+    },
+    {
+      Guard: Authenticated,
+      layout: Layout,
+      path: "/PurchaseInvoiceManagement",
+      component: lazy(() => import("@app/pages/PurchaseInvoiceManagement.jsx")),
+      exact: true,
+    },
+    {
+      Guard: Authenticated,
+      layout: Layout,
+      path: "/PurchaseInvoiceManagementSearch",
+      component: lazy(
+        () => import("@app/pages/PurchaseInvoiceManagementSearch.jsx")
+      ),
+      exact: true,
+    },
+    {
+      Guard: Authenticated,
+      layout: Layout,
+      path: "/OverseasExpenseManagementSearch",
+      component: lazy(
+        () => import("@app/pages/OverseasExpenseManagementSearch.jsx")
+      ),
+      exact: true,
+    },
+
+    {
+      Guard: Authenticated,
+      layout: Layout,
       path: "/LedgerStatus",
       component: lazy(() => import("@app/pages/LedgerStatus.jsx")),
       exact: true,
@@ -774,11 +865,13 @@ const allRoutes = {
       component: lazy(() => import("@app/pages/UploadDocument.jsx")),
       exact: true,
     },
-   {
+    {
       Guard: Authenticated,
       layout: Layout,
       path: "/AdvanceRequestSettlement",
-      component: lazy(() => import("@app/pages/CRM/AdvanceRequestSettlement.jsx")),
+      component: lazy(
+        () => import("@app/pages/CRM/AdvanceRequestSettlement.jsx")
+      ),
       exact: true,
     },
     {

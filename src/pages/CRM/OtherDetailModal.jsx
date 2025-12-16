@@ -1,7 +1,7 @@
 import React from "react";
 
 const OtherDetailModal = ({ visible, setVisible }) => {
-  console.log("visible", visible);
+  // console.log("visible", visible);
   return (
     <>
       {/* <div className="card p-2">
@@ -26,7 +26,7 @@ const OtherDetailModal = ({ visible, setVisible }) => {
           <tbody>
             <tr>
               <td>Other Amount:</td>
-              <td>{visible?.showData?.Amount}</td>
+              <td>{visible?.showData?.misc_Expense}</td>
             </tr>
 
             <tr>

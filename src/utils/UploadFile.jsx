@@ -117,7 +117,7 @@ const UploadFile = ({ tableData, setVisible }) => {
         FileExtension: formData.FileExtension,
       })
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           setFormData({
             DocumentType: "",

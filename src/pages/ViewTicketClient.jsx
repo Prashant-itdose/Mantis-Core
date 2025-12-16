@@ -128,16 +128,6 @@ const ViewTicketClient = () => {
     "get",
     "AllowDeleteTicket"
   );
-  // const tdRefs = useRef([]);
-  // useEffect(() => {
-  //   if (tdRefs?.current[selectedRowIndex]) {
-  //     tdRefs?.current[selectedRowIndex]?.scrollIntoView({
-  //       behavior: "smooth",
-  //       block: "center",
-  //       inline: "nearest",
-  //     });
-  //   }
-  // }, [selectedRowIndex]);
 
   const handleSaveFilter = () => {
     localStorage.setItem("formData", JSON.stringify(formData));
@@ -147,7 +137,7 @@ const ViewTicketClient = () => {
     }
     axiosInstances
       .post(apiUrls.SaveFilterData, {
-        FilterData: String(savedData),
+        FiterData: savedData,
         Type: String(""),
       })
       .then((res) => {
@@ -162,40 +152,16 @@ const ViewTicketClient = () => {
   const handleGetFilter = () => {
     axiosInstances
       .post(apiUrls.SearchFilterData, {
-        Type: String(""),
+        ID: String(useCryptoLocalStorage("user_Data", "get", "ID")),
       })
       .then((res) => {
-        if (res?.data) {
-          let data = res?.data;
+        if (res?.data?.success === true) {
+          const data = res?.data?.data;
 
-          setFormData((val) => ({
-            ...val,
-            VerticalID: res?.data?.VerticalID,
-            TeamID: data?.TeamID || "",
-            ProjectID: data?.ProjectID || "",
-            WingID: data?.WingID || "",
-            PageSize: data?.PageSize || "",
-            POC1: data?.POC1 || "",
-            POC2: data?.POC2 || "",
-            POC3: data?.POC3 || "",
-            Reporter: data?.Reporter || "",
-            AssignedTo: data?.AssignedTo || "",
-            Category: data?.Category || "",
-            Priority: data?.Priority || "",
-            HideStatus: data?.HideStatus || "",
-            Status: data?.Status || "",
-            SearhType: data?.SearhType || "",
-            OnlyReOpen: data?.OnlyReOpen || "",
-            OnlyDelay: data?.OnlyDelay || "",
-            ClientManHourDropdown: data?.ClientManHourDropdown || "",
-            ManHourDropdown: data?.ManHourDropdown || "",
-            ClientDeliveryDate: data?.ClientDeliveryDate || "",
-            SubmitDate: data?.SubmitDate || "",
-            DeliveryDate: data?.DeliveryDate || "",
-            ResolveDate: data?.ResolveDate || "",
-            CloseDate: data?.CloseDate || "",
-            UpadteDate: data?.UpadteDate || "",
-            Ticket: data?.Ticket || "",
+          // Auto-map everything returned by backend
+          setFormData((prev) => ({
+            ...prev,
+            ...data,
           }));
         } else {
           console.error("No data found in the response.");
@@ -371,6 +337,7 @@ const ViewTicketClient = () => {
   };
 
   const handleViewSearch = (code, page) => {
+    setLoading(true);
     axiosInstances
       .post(apiUrls.ViewIssueSearchClient, {
         RoleID:
@@ -903,7 +870,7 @@ const ViewTicketClient = () => {
     getProject();
     getAssignTo();
     getReopen();
-    // handleGetFilter();
+    handleGetFilter();
   }, []);
   return (
     <>
@@ -928,7 +895,7 @@ const ViewTicketClient = () => {
 
       {visible?.docVisible && (
         <Modal
-          modalWidth={"400px"}
+          modalWidth={"600px"}
           visible={visible}
           setVisible={setVisible}
           Header="Upload Documents"
@@ -1394,9 +1361,9 @@ const ViewTicketClient = () => {
                   className="custom-calendar"
                   id="SubmitDateBefore"
                   name="SubmitDateBefore"
-                  // lable={"Before"}
+                  lable={"From Date"}
                   placeholder={VITE_DATE_FORMAT}
-                  // respclass="col-xl-2.5 col-md-3 col-sm-6 col-12"
+                  respclass="mt-2"
                   value={formData?.SubmitDateBefore}
                   handleChange={searchHandleChange}
                 />
@@ -1404,9 +1371,9 @@ const ViewTicketClient = () => {
                   className="custom-calendar"
                   id="SubmitDateAfter"
                   name="SubmitDateAfter"
-                  // lable={"After"}
+                  lable={"To Date"}
                   placeholder={VITE_DATE_FORMAT}
-                  // respclass="col-xl-2.5 col-md-3 col-sm-6 col-12"
+                  respclass="mt-2"
                   value={formData?.SubmitDateAfter}
                   handleChange={searchHandleChange}
                 />
@@ -1422,9 +1389,9 @@ const ViewTicketClient = () => {
                 className="custom-calendar"
                 id="SubmitDateBefore"
                 name="SubmitDateBefore"
-                // lable={"Current"}
+                lable={"Select Date"}
                 placeholder={VITE_DATE_FORMAT}
-                // respclass={"col-xl-2 col-md-4 col-sm-6 col-12"}
+                respclass="mt-2"
                 value={formData?.SubmitDateBefore}
                 handleChange={searchHandleChange}
               />
@@ -1462,18 +1429,19 @@ const ViewTicketClient = () => {
                   className="custom-calendar"
                   id="ClientDeliveryDateBefore"
                   name="ClientDeliveryDateBefore"
-                  // lable={"Before"}
+                  lable={"From Date"}
                   placeholder={VITE_DATE_FORMAT}
                   value={formData?.ClientDeliveryDateBefore}
                   handleChange={searchHandleChange}
+                  respclass="mt-2"
                 />
                 <DatePicker
                   className="custom-calendar"
                   id="ClientDeliveryDateAfter"
                   name="ClientDeliveryDateAfter"
-                  // lable={"After"}
+                  lable={"To Date"}
                   placeholder={VITE_DATE_FORMAT}
-                  // respclass="col-xl-2.5 col-md-3 col-sm-6 col-12"
+                  respclass="mt-2"
                   value={formData?.ClientDeliveryDateAfter}
                   handleChange={searchHandleChange}
                 />
@@ -1484,10 +1452,10 @@ const ViewTicketClient = () => {
                 className="custom-calendar"
                 id="ClientDeliveryDateBefore"
                 name="ClientDeliveryDateBefore"
-                // lable={"Current"}
+                lable={"Select Date"}
                 placeholder={VITE_DATE_FORMAT}
-                // respclass={"col-xl-2 col-md-4 col-sm-6 col-12"}
-                value={new Date(formData?.ClientDeliveryDateBefore)}
+                respclass="mt-2"
+                value={formData?.ClientDeliveryDateBefore}
                 handleChange={searchHandleChange}
               />
             ) : (
@@ -1523,18 +1491,21 @@ const ViewTicketClient = () => {
                   className="custom-calendar"
                   id="UpadteDateBefore"
                   name="UpadteDateBefore"
+                  lable={"From Date"}
                   placeholder={VITE_DATE_FORMAT}
                   value={formData?.UpadteDateBefore}
                   handleChange={searchHandleChange}
+                  respclass="mt-2"
                 />
                 <DatePicker
                   className="custom-calendar"
                   id="UpadteDateAfter"
                   name="UpadteDateAfter"
-                  // lable={"UpadteDateAfter"}
+                  lable={"To Date"}
                   placeholder={VITE_DATE_FORMAT}
                   value={formData?.UpadteDateAfter}
                   handleChange={searchHandleChange}
+                  respclass="mt-2"
                 />
               </>
             )}
@@ -1548,9 +1519,9 @@ const ViewTicketClient = () => {
                 className="custom-calendar"
                 id="UpadteDateBefore"
                 name="UpadteDateBefore"
-                // lable={"Current"}
+                lable={"Select Date"}
                 placeholder={VITE_DATE_FORMAT}
-                // respclass={"col-xl-2 col-md-4 col-sm-6 col-12"}
+                respclass="mt-2"
                 value={formData?.UpadteDateBefore}
                 handleChange={searchHandleChange}
               />
@@ -1589,9 +1560,9 @@ const ViewTicketClient = () => {
                   className="custom-calendar"
                   id="CloseDateBefore"
                   name="CloseDateBefore"
-                  // lable={"Before"}
+                  lable={"From Date"}
                   placeholder={VITE_DATE_FORMAT}
-                  // respclass="col-xl-2.5 col-md-3 col-sm-6 col-12"
+                  respclass="mt-2"
                   value={formData?.CloseDateBefore}
                   handleChange={searchHandleChange}
                 />
@@ -1599,9 +1570,9 @@ const ViewTicketClient = () => {
                   className="custom-calendar"
                   id="CloseDateAfter"
                   name="CloseDateAfter"
-                  // lable={"After"}
+                  lable={"To Date"}
                   placeholder={VITE_DATE_FORMAT}
-                  // respclass="col-xl-2.5 col-md-3 col-sm-6 col-12"
+                  respclass="mt-2"
                   value={formData?.CloseDateAfter}
                   handleChange={searchHandleChange}
                 />
@@ -1617,9 +1588,9 @@ const ViewTicketClient = () => {
                 className="custom-calendar"
                 id="CloseDateBefore"
                 name="CloseDateBefore"
-                // lable={"Current"}
+                lable={"Select Date"}
                 placeholder={VITE_DATE_FORMAT}
-                // respclass={"col-xl-2 col-md-4 col-sm-6 col-12"}
+                respclass="mt-2"
                 value={formData?.CloseDateBefore}
                 handleChange={searchHandleChange}
               />
@@ -1710,23 +1681,25 @@ const ViewTicketClient = () => {
               </div>
             </div>
           </div>
-          <button
-            className="btn btn-sm btn-success ml-4"
-            onClick={() => handleViewSearch(undefined, "0")}
-          >
-            {t("Apply Filter")}
-          </button>
-          <button className="btn btn-sm btn-danger ml-3" onClick={handleReset}>
-            {t("Reset Filter")}
-          </button>
-          {/* {tableData?.length > 0 && ( */}
+          {loading ? (
+            <Loading />
+          ) : (
+            <button
+              className="btn btn-sm btn-primary ml-4 mt-0"
+              onClick={() => handleViewSearch(undefined, "0")}
+            >
+              <i className="fa fa-search mr-1" aria-hidden="true"></i> Search
+            </button>
+          )}
 
-          {/* )} */}
           <button
-            className="btn btn-sm btn-danger ml-2"
+            className="btn btn-sm btn-danger ml-3"
             onClick={handleSaveFilter}
           >
             {t("Save Filter")}
+          </button>
+          <button className="btn btn-sm btn-danger ml-3" onClick={handleReset}>
+            {t("Reset Filter")}
           </button>
           <button
             className="btn btn-sm btn-danger ml-2 d-none"

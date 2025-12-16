@@ -295,14 +295,6 @@ const SearchEmployeeMaster = () => {
     handleDotnetMantis(checked, ele);
   };
 
-  const ValidationForm = (formData) => {
-    let err = "";
-    if (formData?.Name === "") {
-      err = { ...err, Name: "Please Enter Employee Name." };
-    }
-    return err;
-  };
-
   const handleDotnetMantis = (isActive, ele, index) => {
     let form = new FormData();
     form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
@@ -369,7 +361,8 @@ const SearchEmployeeMaster = () => {
         .then((res) => {
           ///for employee error message
           if (!res?.data?.success) {
-            notify(res?.data?.message, "error");
+            toast.error(res.data.message);
+            setLoading(true);
           }
 
           const data = res?.data?.data;
@@ -1067,7 +1060,7 @@ const SearchEmployeeMaster = () => {
               handleChange={handleDeliveryChange}
             />
           )}
-          <div className="col-3 d-flex">
+          <div className="col-2 d-flex">
             {loading ? (
               <Loading />
             ) : (
@@ -1172,7 +1165,7 @@ const SearchEmployeeMaster = () => {
               MantisID: ele?.CrmEmployeeID,
               "User Name": ele?.username,
               "Real Name": ele?.realname,
-              "BloodGroup": ele?.BloodGroup,
+              BloodGroup: ele?.BloodGroup,
               Email: ele?.email,
               Address: ele?.Address,
               "Mobile No.": ele?.mobileno,
@@ -1309,8 +1302,8 @@ const SearchEmployeeMaster = () => {
                     style={{ width: "100%" }}
                     name="TableStatus"
                     id="TableStatus"
-                    respclass="width100px"
-                    placeholderName="Apply Action"
+                    respclass="width80px"
+                    placeholderName="Select"
                     dynamicOptions={[
                       { label: "Flag", value: "Flag" },
                       { label: "Role", value: "Role" },

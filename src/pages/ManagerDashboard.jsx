@@ -127,13 +127,6 @@ const ManagerDashboard = () => {
   };
 
   const handleFirstDashboardCount = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("Title", "Heads"),
-    //   form.append("DeveloperID", memberID || 0),
-    // axios
-    //   .post(apiUrls?.DevDashboard_Summary, form, { headers })
-
     const payload = {
       ID: useCryptoLocalStorage("user_Data", "get", "ID"),
       Title: "Heads",
@@ -262,7 +255,7 @@ const ManagerDashboard = () => {
           headers,
         })
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             toast.success(res?.data?.message);
             setIsClicked(true);
             handleHeightOfBirthDaycardApi();

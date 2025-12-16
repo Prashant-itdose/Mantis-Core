@@ -35,7 +35,7 @@ const SpeedometerTable = () => {
         DeveloperID: String(memberID || 0),
       })
       .then((res) => {
-        setTableData(res?.data?.dtCal);
+        setTableData(res?.data?.data?.performance?.dtCal);
         setLoading(false);
       })
       .catch((err) => {
@@ -57,14 +57,7 @@ const SpeedometerTable = () => {
   const TotalRecords = (
     <div style={{ textAlign: "left" }}>{Math.round(valueId / 100)}</div>
   );
-  // const TotalLabel = (
-  //   <div style={{ textAlign: "end" }}>
-  //     <label>
-  //       Total Records:
-  //       <br /> Performance:
-  //     </label>{" "}
-  //   </div>
-  // );
+
 
   return (
     <>

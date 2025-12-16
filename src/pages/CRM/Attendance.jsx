@@ -56,7 +56,7 @@ const Attendance = () => {
   });
 
   const locationOptions = [
-    { label: "Noida Office", value: "Noida Office" },
+    // { label: "Noida Office", value: "Noida Office" },
     { label: "Client Site", value: "Client Site" },
     { label: "Work From Home", value: "Work From Home" },
     { label: "Office+Client", value: "Office+Client" },
@@ -88,9 +88,9 @@ const Attendance = () => {
         SearchType: String("LogInStatus"),
       })
       .then((res) => {
-        console.log("data data data", res?.data?.message);
-        const data = res?.data?.data;
-        // console.log("data data", data);
+        // console.log("data data data", res?.data?.message);
+        const data = res?.data?.data?.[0];
+       
         // setNotFound(res?.data?.message == "Found");
         if (data?.IsLoggedIn === 1 && data?.IsLogout === 0) {
           setIsLogin(true);
@@ -759,7 +759,7 @@ const Attendance = () => {
                   </th>
                   <th style={{ textAlign: "left" }}>Login</th>
                   <th style={{ textAlign: "left" }}>Location</th>
-                  <th style={{ textAlign: "left" }}> Logout</th>
+                  <th style={{ textAlign: "left" }}>Logout</th>
                   <th style={{ textAlign: "left" }}>Location</th>
                   <th style={{ textAlign: "left" }}>Leave</th>
                   <th style={{ textAlign: "left" }}>Status</th>
@@ -793,10 +793,10 @@ const Attendance = () => {
                     </td>
                     <td style={{ textAlign: "left" }}>{member?.Location}</td>
                     <td style={{ textAlign: "left" }}>
-                      {member?.LogoutLocation}
+                      {member?.LogoutTime}
                     </td>
                     <td style={{ textAlign: "left" }}>
-                      {member?.LogoutTime || " "}
+                      {member?.LogoutLocation}
                     </td>
                     <td style={{ textAlign: "left" }}>
                       <div>

@@ -114,26 +114,7 @@ const SearchQuotationBooking = ({ data }) => {
         FilterData: JSON.stringify(filterData),
         PageName: "SearchQuotationBooking",
       })
-      // let form = new FormData();
 
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-      // form.append(
-      //   "CrmEmpID",
-      //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      // );
-      // form.append(
-      //   "LoginName",
-      //   useCryptoLocalStorage("user_Data", "get", "realname")
-      // );
-      // form.append("PageName", "SearchQuotationBooking");
-
-      // // Example FilterData array
-
-      // // Append stringified FilterData
-      // form.append("FilterData", JSON.stringify(filterData));
-
-      // axios
-      //   .post(apiUrls?.SaveFilterTableReprintData, form, { headers })
       .then((res) => {
         console.log(res.data.message);
       })
@@ -176,23 +157,7 @@ const SearchQuotationBooking = ({ data }) => {
         FilterData: JSON.stringify(filterData),
         PageName: "SearchQuotationBookingTable",
       })
-      // let form = new FormData();
 
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-      // form.append(
-      //   "CrmEmpID",
-      //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      // );
-      // form.append(
-      //   "LoginName",
-      //   useCryptoLocalStorage("user_Data", "get", "realname")
-      // );
-      // form.append("PageName", "SearchQuotationBookingTable");
-
-      // // Example FilterData array
-
-      // axios
-      //   .post(apiUrls?.SaveFilterTableReprintData, form, { headers })
       .then((res) => {
         console.log(res.data.message);
       })
@@ -210,19 +175,7 @@ const SearchQuotationBooking = ({ data }) => {
           useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "CrmEmpID",
-      //     useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      //   ),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("PageName", "SearchQuotationBooking"),
-      //   axios
-      //     .post(apiUrls?.GetFilterTableReprintData, form, { headers })
+
       .then((res) => {
         const data = res.data.data;
         if (res?.data.success === true) {
@@ -235,6 +188,119 @@ const SearchQuotationBooking = ({ data }) => {
         console.log(err);
       });
   };
+
+  // const handlePrint1 = (ele) => {
+  //   axiosInstances
+  //     .post(apiUrls.QuotationPrintOut, {
+  //       QuoteID: Number(ele?.ID) || 0,
+  //       SignatureCode: "",
+  //     })
+  //     .then((res) => {
+  //       if (res?.data?.success === true) {
+  //         const base64 = res.data.data;
+  //         const byteCharacters = atob(base64);
+  //         const byteNumbers = new Array(byteCharacters.length);
+  //         for (let i = 0; i < byteCharacters.length; i++) {
+  //           byteNumbers[i] = byteCharacters.charCodeAt(i);
+  //         }
+  //         const byteArray = new Uint8Array(byteNumbers);
+  //         const blob = new Blob([byteArray], { type: "application/pdf" });
+  //         const url = URL.createObjectURL(blob);
+  //         window.open(url, "_blank");
+  //         setTimeout(() => URL.revokeObjectURL(url), 5000);
+  //       } else {
+  //         console.error("PDF generation failed");
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.error("Error:", err);
+  //     });
+  // };
+
+const handlePrint1 = (ele) => {
+  axiosInstances
+    .post(apiUrls.QuotationPrintOut, {
+      QuoteID: Number(ele?.ID) || 0,
+        SignatureCode: "",
+    })
+    .then((res) => {
+      if (!res?.data?.success) {
+        console.error("Invalid PDF response");
+        return;
+      }
+
+      const base64 = res?.data?.data;
+      const byteCharacters = atob(base64);
+      const byteNumbers = new Array(byteCharacters.length);
+
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+
+      const blob = new Blob([byteArray], { type: "application/pdf" });
+
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${ele?.ProjectName || "SalesConnector"}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      window.URL.revokeObjectURL(url);
+    })
+    .catch((err) => {
+      console.error("Error downloading PDF:", err);
+    });
+};
+
+  const handlePrint2 = (ele) => {
+    axiosInstances
+      .post(apiUrls.GeneratePIPDF, {
+        PINo: String(ele?.ActualPINo),
+        // SignatureCode: "",
+      })
+      .then((res) => {
+        if (!res?.data?.success) {
+          console.error("Invalid PDF response");
+          return;
+        }
+  
+        const base64 = res?.data?.data; // Base64 string
+  
+        // Convert Base64 to byte array
+        const byteCharacters = atob(base64);
+        const byteNumbers = new Array(byteCharacters.length);
+  
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+  
+        const byteArray = new Uint8Array(byteNumbers);
+  
+        // Convert to PDF blob
+        const blob = new Blob([byteArray], { type: "application/pdf" });
+  
+        const url = window.URL.createObjectURL(blob);
+  
+        // Create download link
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `${ele?.ProjectName || "SalesConnector"}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+  
+        window.URL.revokeObjectURL(url);
+      })
+      .catch((err) => {
+        console.error("Error downloading PDF:", err);
+      });
+  };
+
   const SearchAmountSubmissionTableFilter = () => {
     axiosInstances
       .post(apiUrls.GetFilterTableReprintData, {
@@ -243,22 +309,10 @@ const SearchQuotationBooking = ({ data }) => {
           useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
       })
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "CrmEmpID",
-      //     useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      //   ),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("PageName", "SearchQuotationBookingTable"),
-      //   axios
-      //     .post(apiUrls?.GetFilterTableReprintData, form, { headers })
+
       .then((res) => {
         const data = res.data.data;
-        if (res?.data.status === true) {
+        if (res?.data.success === true) {
           setColumnConfig(data);
         } else {
           SaveTableFilter();
@@ -700,52 +754,52 @@ const SearchQuotationBooking = ({ data }) => {
   const handleExcel = (page) => {
     setLoading(true);
     const payloadData = {
-  DateType: formData?.DateType || "",
-  FromDate: formatDate(formData?.FromDate) || "",
-  ToDate: formatDate(formData?.ToDate) || "",
-  Status: formData?.Status || "",
-  SearchType: "OnScreen", // fixed value
-  PageSize: Number(formData?.PageSize) || 0,
-  PageNo: Number(page ?? currentPage - 1) || 0,
-  IsExcel: 1, // from your FormData
-  ProjectID: formData?.ProjectID || "",
-  VerticalID: formData?.VerticalID || "",
-  TeamID: formData?.TeamID || "",
-  WingID: formData?.WingID || "",
-  POC1: formData?.POC1 || "",
-  POC2: formData?.POC2 || "",
-  POC3: formData?.POC3 || "",
-};
+      DateType: formData?.DateType || "",
+      FromDate: formatDate(formData?.FromDate) || "",
+      ToDate: formatDate(formData?.ToDate) || "",
+      Status: formData?.Status || "",
+      SearchType: "OnScreen", // fixed value
+      PageSize: Number(formData?.PageSize) || 0,
+      PageNo: Number(page ?? currentPage - 1) || 0,
+      IsExcel: 1, // from your FormData
+      ProjectID: formData?.ProjectID || "",
+      VerticalID: formData?.VerticalID || "",
+      TeamID: formData?.TeamID || "",
+      WingID: formData?.WingID || "",
+      POC1: formData?.POC1 || "",
+      POC2: formData?.POC2 || "",
+      POC3: formData?.POC3 || "",
+    };
 
-     axiosInstances
+    axiosInstances
       .post(apiUrls.Quotation_Search, payloadData)
 
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ProjectID", formData?.ProjectID),
-    //   form.append("VerticalID", formData?.VerticalID),
-    //   form.append("TeamID", formData?.TeamID),
-    //   form.append("WingID", formData?.WingID),
-    //   form.append("POC1", formData?.POC1),
-    //   form.append("POC2", formData?.POC2),
-    //   form.append("POC3", formData?.POC3),
-    //   form.append("Status", formData?.Status),
-    //   form.append("DateType", formData?.DateType),
-    //   form.append("FromDate", formatDate(formData?.FromDate)),
-    //   form.append("ToDate", formatDate(formData?.ToDate)),
-    //   form.append("SearchType", "OnScreen"),
-    //   form.append("IsExcel", "1"),
-    //   form.append("PageSize", formData?.PageSize),
-    //   form.append("PageNo", page ?? currentPage - 1),
-    //   axios
-    //     .post(apiUrls?.Quotation_Search, form, { headers })
-        .then((res) => {
-          // console.log("dataatata", res?.data?.data);
-          const datas = res?.data?.data;
+      // let form = new FormData();
+      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
+      //   form.append(
+      //     "LoginName",
+      //     useCryptoLocalStorage("user_Data", "get", "realname")
+      //   ),
+      //   form.append("ProjectID", formData?.ProjectID),
+      //   form.append("VerticalID", formData?.VerticalID),
+      //   form.append("TeamID", formData?.TeamID),
+      //   form.append("WingID", formData?.WingID),
+      //   form.append("POC1", formData?.POC1),
+      //   form.append("POC2", formData?.POC2),
+      //   form.append("POC3", formData?.POC3),
+      //   form.append("Status", formData?.Status),
+      //   form.append("DateType", formData?.DateType),
+      //   form.append("FromDate", formatDate(formData?.FromDate)),
+      //   form.append("ToDate", formatDate(formData?.ToDate)),
+      //   form.append("SearchType", "OnScreen"),
+      //   form.append("IsExcel", "1"),
+      //   form.append("PageSize", formData?.PageSize),
+      //   form.append("PageNo", page ?? currentPage - 1),
+      //   axios
+      //     .post(apiUrls?.Quotation_Search, form, { headers })
+      .then((res) => {
+        // console.log("dataatata", res?.data?.data);
+        const datas = res?.data?.data;
 
         if (!datas || datas.length === 0) {
           console.error("No data available for download.");
@@ -1139,7 +1193,7 @@ const SearchQuotationBooking = ({ data }) => {
               placeholderName="PageSize"
               dynamicOptions={PageSize}
               value={formData?.PageSize}
-              // defaultValue={status.find((option) => option.value === "resolved")}
+              // defaultValue={success.find((option) => option.value === "resolved")}
               handleChange={handleDeliveryChange}
               requiredClassName={"required-fields"}
             />
@@ -1567,11 +1621,12 @@ const SearchQuotationBooking = ({ data }) => {
                     color: "black",
                   }}
                   title="Click here to Print."
-                  onClick={() => window.open(ele?.QuotationURL, "_blank")}
+                  // onClick={() => window.open(ele?.QuotationURL, "_blank")}
+                  onClick={() => handlePrint1(ele)}
                 ></i>
               ),
               "Print PI":
-                ele?.NoOfPI > 1 ? (
+                ele?.PINo === 0 ? (
                   <i
                     className="fa fa-eye ml-2"
                     onClick={() => {
@@ -1583,7 +1638,6 @@ const SearchQuotationBooking = ({ data }) => {
                     }}
                   ></i>
                 ) : (
-                  // ele?.NoOfPI > 0 && (
                   <i
                     className="fa fa-print"
                     style={{
@@ -1592,9 +1646,9 @@ const SearchQuotationBooking = ({ data }) => {
                       color: "black",
                     }}
                     title="Click here to Print."
-                    onClick={() => window.open(ele?.PIURL, "_blank")}
+                    // onClick={() => window.open(ele?.PIURL, "_blank")}
+                    onClick={() => handlePrint2(ele)}
                   ></i>
-                  // )
                 ),
               Action: (
                 <div>

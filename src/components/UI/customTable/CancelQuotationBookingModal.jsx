@@ -9,7 +9,7 @@ import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorag
 import Loading from "../../loader/Loading";
 import { axiosInstances } from "../../../networkServices/axiosInstance";
 const CancelQuotationBookingModal = ({ visible, setVisible, handleSearch }) => {
-  console.log(visible);
+  console.log(visible?.showData?.EncryptID ,"visisisisi");
   const [loading, setLoading] = useState(false);
   const [reason, setreason] = useState([]);
   const [formData, setFormData] = useState({
@@ -44,13 +44,13 @@ const CancelQuotationBookingModal = ({ visible, setVisible, handleSearch }) => {
    
       axiosInstances
         .post(apiUrls.Quotation_IsCancel, {
-          QuotationID: Number(visible?.showData?.EncryptID),
+          QuotationID: String(visible?.showData?.EncryptID),
           CancelReasonID: Number(formData?.CancelReason),
           CancelReason: String(getlabel(formData?.CancelReason, reason)),
           OtherCancelReason: String(formData?.OtherReason),
         })
         .then((res) => {
-          if (res?.data?.success === true) {
+          if (res?.data?.status === true) {
             toast.success(res?.data?.message);
             // setVisible((val) => ({ ...val, removeVisible: false }));
             setVisible(false);

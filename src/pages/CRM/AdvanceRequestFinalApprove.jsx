@@ -39,7 +39,7 @@ const AdvanceRequestFinalApprove = ({
     axios
       .post(apiUrls?.AdvanceAmount_Status_Update, form, { headers })
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           setLoading(false);
           setVisible(false);
@@ -58,17 +58,7 @@ const AdvanceRequestFinalApprove = ({
     <>
       <div className="">
         <div className="row p-2">
-          {/* <textarea
-            type="text"
-            respclass="col-md-12 col-12 col-sm-12"
-            className=""
-            placeholder="Remarks "
-            id={"Remarks"}
-            name="Remarks"
-            value={formData?.Remarks}
-            onChange={handleSelectChange}
-            style={{ width: "95%", marginLeft: "7.5px", height: "55px" }}
-          ></textarea> */}
+         
           <span style={{ fontWeight: "bold", marginLeft: "10px" }}>
             Do you want to Final Approve this request?
           </span>

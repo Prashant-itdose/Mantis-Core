@@ -25,7 +25,7 @@ import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import { parse } from "date-fns";
 import { axiosInstances } from "../networkServices/axiosInstance";
 const ImplementationPlan = ({ data }) => {
-  console.log("check ", data);
+  // console.log("check ", data);
   const TrackerProjectID = data?.Id || data?.ProjectID;
   const TrackerProjectName = data?.NAME || data?.ProjectName;
   const [t] = useTranslation();
@@ -92,9 +92,9 @@ const ImplementationPlan = ({ data }) => {
     console.log("check", expectedDate, actualDate);
     const [day, month, year] = expectedDate.split("-");
     const formattedExpectedDate = new Date(`${year}-${month}-${day}`);
-    console.log("formattedExpectedDate", formattedExpectedDate);
+    // console.log("formattedExpectedDate", formattedExpectedDate);
     const formattedActualDate = new Date(actualDate);
-    console.log("formattedActualDate", formattedActualDate);
+    // console.log("formattedActualDate", formattedActualDate);
     if (
       isNaN(formattedExpectedDate.getTime()) ||
       isNaN(formattedActualDate.getTime())
@@ -110,7 +110,7 @@ const ImplementationPlan = ({ data }) => {
     return diffDays;
   };
 
-  console.log("calculateDeviation", calculateDeviation);
+  // console.log("calculateDeviation", calculateDeviation);
 
   const handleExpeFromDtChange = (index, newDate) => {
     setTableData((prevData) => {

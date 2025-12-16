@@ -11,9 +11,10 @@ import { Tabfunctionality } from "../../utils/helpers";
 import Modal from "../../components/modalComponent/Modal";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import { ExportToExcel } from "../../networkServices/Tools";
+import { ExportToExcel, ExportToExcelColor } from "../../networkServices/Tools";
 import excelimg from "../../assets/image/excel.png";
 import SlideScreen from "../SlideScreen";
+import excelimgOrange from "../../assets/image/orangeExcel.png";
 import SeeMoreSlideScreen from "../../components/SearchableTable/SeeMoreSlideScreen";
 import NoRecordFound from "../../components/formComponent/NoRecordFound";
 import ViewExpenseApproveModal from "./ViewExpenseApproveModal";
@@ -72,6 +73,7 @@ const ViewExpense = () => {
     currentMonth: currentMonth,
     currentYear: currentYear,
     ExpenseType: "Both",
+    StatusType: "0",
   });
   const [tableData, setTableData] = useState([]);
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
@@ -91,39 +93,11 @@ const ViewExpense = () => {
   const [seeMore, setSeeMore] = useState([]);
   const normalizeString = (str) => str.toLowerCase().replace(/\s+/g, "").trim();
   const handleChangeComponent = (e) => {
-    console.log("e", e);
     ModalComponent(e?.label, e?.component);
-  };
-  const handleSearchTable = (event) => {
-    const rawQuery = event.target.value;
-    const query = normalizeString(rawQuery);
-
-    setSearchQuery(rawQuery);
-
-    if (query === "") {
-      setTableData(filteredData);
-      setCurrentPage(1);
-      return;
-    }
-
-    const filtered = filteredData?.filter((item) =>
-      Object.keys(item).some(
-        (key) => item[key] && normalizeString(String(item[key])).includes(query)
-      )
-    );
-
-    if (filtered.length === 0) {
-      setSearchQuery("");
-      setTableData(filteredData);
-    } else {
-      setTableData(filtered);
-    }
-
-    setCurrentPage(1);
   };
 
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 20;
+  const rowsPerPage = 30;
   const totalPages = Math.ceil(tableData?.length / rowsPerPage);
   const currentData = tableData?.slice(
     (currentPage - 1) * rowsPerPage,
@@ -138,10 +112,7 @@ const ViewExpense = () => {
   const getReporter = () => {
     axiosInstances
       .post(apiUrls.GetReportingTo_Employee, {})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.GetReportingTo_Employee, form, { headers })
+
       .then((res) => {
         const reporters = res?.data.data.map((item) => {
           return { label: item?.NAME, value: item?.Employee_ID };
@@ -161,17 +132,7 @@ const ViewExpense = () => {
         ),
         RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
       })
-      // let form = new FormData();
-      // form.append(
-      //   "CrmEmployeeID",
-      //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      // ),
-      //   form.append(
-      //     "RoleID",
-      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-      //   ),
-      //   axios
-      //     .post(apiUrls?.EmployeeBind, form, { headers })
+
       .then((res) => {
         const wings = res?.data?.data?.map((item) => {
           return { label: item?.EmployeeName, value: item?.Employee_ID };
@@ -186,10 +147,6 @@ const ViewExpense = () => {
   const getVertical = () => {
     axiosInstances
       .post(apiUrls.Vertical_Select, {})
-      // let form = new FormData();
-      // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.Vertical_Select, form, { headers })
       .then((res) => {
         const verticals = res?.data.data.map((item) => {
           return { name: item?.Vertical, code: item?.VerticalID };
@@ -203,10 +160,6 @@ const ViewExpense = () => {
   const getTeam = () => {
     axiosInstances
       .post(apiUrls.Team_Select, {})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.Team_Select, form, { headers })
       .then((res) => {
         const teams = res?.data.data.map((item) => {
           return { name: item?.Team, code: item?.TeamID };
@@ -220,10 +173,6 @@ const ViewExpense = () => {
   const getWing = () => {
     axiosInstances
       .post(apiUrls.Wing_Select, {})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.Wing_Select, form, { headers })
       .then((res) => {
         const wings = res?.data.data.map((item) => {
           return { name: item?.Wing, code: item?.WingID };
@@ -253,25 +202,67 @@ const ViewExpense = () => {
   const handleMonthYearChange = (name, e) => {
     const { value } = e.target;
     const date = new Date(value);
-    setFormData({
-      ...formData,
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value, // ← store selected value
       currentMonth: date.getMonth() + 1,
       currentYear: date.getFullYear(),
-    });
+    }));
+    setTableData([]);
+    setFilteredData([]);
+    setCurrentPage(1);
   };
+
   const handleFilter = (filterValue) => {
     const filterData = tableData?.filter((item) => item?.Name === filterValue);
     return filterData;
   };
+  const handleAccountantExcel = () => {
+    setLoading(true);
+    axiosInstances
+      .post(apiUrls.ViewExpenseListSummary, {
+        ExpenseEmployeeID: formData?.Employee ? Number(formData.Employee) : 0,
+        Month: Number(formData?.currentMonth),
+        Year: Number(formData?.currentYear),
+        Status: String(0),
+        TripName: String(""),
+        ExpenseType: String(formData?.ExpenseType),
+        VerticalID: Number(formData?.VerticalID),
+        TeamID: Number(formData?.TeamID),
+        WingID: Number(formData?.WingID),
+        CrmEmployeeID: Number(
+          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+        ),
+        IsAccountant: Number(
+          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID") == "650"
+            ? "1"
+            : "0"
+        ),
+        StatusType: Number(formData?.StatusType),
+      })
+      .then((res) => {
+        const data = res.data.data;
+        ExportToExcelColor(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  };
 
-  const handleTableSearch = () => {
+  const handleTableSearch = (kamal) => {
+    console.log("kamal kamal", kamal);
     if (formData?.ExpenseType == "") {
       toast.error("Please Select Expense Type.");
     } else {
       setLoading(true);
       axiosInstances
         .post(apiUrls.ViewExpenseList, {
-          ExpenseEmployeeID: formData?.Employee ? Number(formData.Employee) : 0,
+          ExpenseEmployeeID: formData?.Employee
+            ? Number(formData.Employee)
+            : 0 || kamal,
           Month: Number(formData?.currentMonth),
           Year: Number(formData?.currentYear),
           Status: String(0),
@@ -283,39 +274,14 @@ const ViewExpense = () => {
           CrmEmployeeID: Number(
             useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
           ),
-          IsAccountant: Number(0),
-          StatusType: Number(0),
+          IsAccountant: Number(
+            useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID") == "650"
+              ? "1"
+              : "0"
+          ),
+          StatusType: Number(formData?.StatusType),
         })
-        // let form = new FormData();
-        // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-        // form.append(
-        //   "LoginName",
-        //   useCryptoLocalStorage("user_Data", "get", "realname")
-        // );
-        // form.append(
-        //   "CrmEmployeeID",
-        //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-        // );
-        // form.append(
-        //   "ExpenseEmployeeID",
-        //   formData?.Employee ? formData.Employee : "0"
-        //   // IsManager == 1
-        //   //   ? "0"
-        //   //   : formData?.Employee
-        //   //     ? formData.Employee
-        //   //     : useCryptoLocalStorage("user_Data", "get", "ID")
-        // );
-        // form.append("Month", formData?.currentMonth),
-        //   form.append("Year", formData?.currentYear),
-        //   form.append("Status", "0");
-        // form.append("TripName", "");
-        // form.append("ExpenseType", formData?.ExpenseType);
-        // form.append("VerticalID", formData?.VerticalID);
-        // form.append("TeamID", formData?.TeamID);
-        // form.append("WingID", formData?.WingID);
 
-        // axios
-        //   .post(apiUrls?.ViewExpenseList, form, { headers })
         .then((res) => {
           if (res?.data?.success === true) {
             setTableData(res?.data?.data);
@@ -333,6 +299,15 @@ const ViewExpense = () => {
         });
     }
   };
+
+  useEffect(() => {
+    if (Number(formData?.Employee)) {
+      handleTableSearch(formData?.Employee);
+    }
+  }, [formData?.Employee]);
+
+  console.log("formdata employee", formData?.Employee);
+
   const handleTableSearchEmployee = () => {
     if (formData?.ExpenseType == "") {
       toast.error("Please Select Expense Type.");
@@ -341,7 +316,7 @@ const ViewExpense = () => {
       axiosInstances
         .post(apiUrls.ViewExpenseList, {
           ExpenseEmployeeID: Number(
-            formData?.Employee ? Number(formData.Employee) : 0
+            useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
           ),
           Month: Number(formData?.currentMonth),
           Year: Number(formData?.currentYear),
@@ -354,36 +329,16 @@ const ViewExpense = () => {
           CrmEmployeeID: Number(
             useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
           ),
-          IsAccountant: Number(0),
-          StatusType: Number(0),
+          IsAccountant: Number(
+            useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID") == "650"
+              ? "1"
+              : "0"
+          ),
+          StatusType: Number(formData?.StatusType),
         })
-        // let form = new FormData();
-        // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-        // form.append(
-        //   "CrmEmployeeID",
-        //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-        // );
-        // form.append(
-        //   "LoginName",
-        //   useCryptoLocalStorage("user_Data", "get", "realname")
-        // );
-        // form.append(
-        //   "ExpenseEmployeeID",
-        //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-        // );
-        // form.append("Month", formData?.currentMonth),
-        //   form.append("Year", formData?.currentYear),
-        //   form.append("Status", "0");
-        // form.append("TripName", "");
-        // form.append("ExpenseType", formData?.ExpenseType);
-        // form.append("VerticalID", formData?.VerticalID);
-        // form.append("TeamID", formData?.TeamID);
-        // form.append("WingID", formData?.WingID);
 
-        // axios
-        //   .post(apiUrls?.ViewExpenseList, form, { headers })
         .then((res) => {
-          if (res?.data?.status === true) {
+          if (res?.data?.success === true) {
             setTableData(res?.data?.data);
             setFilteredData(res?.data?.data);
             setLoading(false);
@@ -483,6 +438,7 @@ const ViewExpense = () => {
     return isCurrentMonth; // normal current month behavior
   };
 
+  const RoleID = useCryptoLocalStorage("user_Data", "get", "RoleID");
   return (
     <>
       {visible?.ShowApprove && (
@@ -628,7 +584,7 @@ const ViewExpense = () => {
       <div className="card">
         <Heading isBreadcrumb={true} />
         <div className="row g-4 m-2">
-          {ReportingManager == 1 ? (
+          {ReportingManager == 1 || RoleID === 4 ? (
             <ReactSelect
               name="Employee"
               respclass="col-xl-2 col-md-4 col-sm-6 col-12"
@@ -730,7 +686,24 @@ const ViewExpense = () => {
             tabIndex="1"
             requiredClassName={"required-fields"}
           />
-          {ReportingManager == 1 ? (
+          <ReactSelect
+            className="form-control"
+            name="StatusType"
+            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+            placeholderName="StatusType"
+            id="StatusType"
+            dynamicOptions={[
+              { label: "All", value: "0" },
+              { label: "Active", value: "4" },
+              { label: "Approved", value: "1" },
+              { label: "Submitted", value: "2" },
+              { label: "Rejected", value: "3" },
+            ]}
+            value={formData?.StatusType}
+            handleChange={handleDeliveryChange}
+            requiredClassName={"required-fields"}
+          />
+          {ReportingManager == 1 || RoleID === 4 ? (
             <div>
               {loading ? (
                 <Loading />
@@ -779,6 +752,22 @@ const ViewExpense = () => {
               onClick={() => ExportToExcel(tableData)}
               title="Click to download Excel"
             ></img>
+          )}
+          {useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID") ==
+            "650" && (
+            <>
+              {loading ? (
+                <Loading />
+              ) : (
+                <img
+                  src={excelimgOrange}
+                  className="ml-3"
+                  style={{ width: "34px", height: "27px", cursor: "pointer" }}
+                  onClick={handleAccountantExcel}
+                  title="Click to download Excel for Expense Summary"
+                ></img>
+              )}
+            </>
           )}
         </div>
       </div>
@@ -972,19 +961,6 @@ const ViewExpense = () => {
                   Grand Total :&nbsp;
                   {tableData?.reduce((acc, curr) => acc + (curr.Total || 0), 0)}
                 </span>
-                {/* <div style={{ padding: "0px !important", marginLeft: "10px" }}>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    id="Title"
-                    name="Title"
-                    lable="Search"
-                    placeholder=" "
-                    onChange={handleSearchTable}
-                    value={searchQuery}
-                    respclass="col-xl-12 col-md-4 col-sm-6 col-12"
-                  />
-                </div> */}
                 <span style={{ fontWeight: "bold", marginLeft: "10px" }}>
                   Total Record :&nbsp;{tableData?.length}
                 </span>
@@ -1183,273 +1159,6 @@ const ViewExpense = () => {
               ),
               Total: ele?.Total,
               Status: ele?.Status,
-              // <div>
-              //    <span className="ledger-span">
-              //         <AmountSubmissionSeeMoreList
-              //           ModalComponent={ModalComponent}
-              //           setSeeMore={setSeeMore}
-              //           data={{ ...ele, type: "LedgerStatus" }}
-              //           setVisible={() => {
-              //             setListVisible(false);
-              //           }}
-              //           handleBindFrameMenu={[
-              //             {
-              //               FileName: "ExpenseSubmission",
-              //               URL: "ExpenseSubmission",
-              //               FrameName: "ExpenseSubmission",
-              //               Description: "ExpenseSubmission",
-              //             },
-              //           ]}
-              //           isShowPatient={true}
-              //         />
-              //       </span>
-              // </div>
-
-              // Action: (
-              //   <>
-              //     &nbsp;
-              //     <div style={{ marginTop: "0px" }}>
-              //       <Link
-              //         style={{
-              //           color: "white",
-              //           fontWeight: "bold",
-              //           border: "1px solid #355ec4",
-              //           padding: "2px 9px",
-              //           background: "#355ec4",
-              //           borderRadius: "2px",
-              //         }}
-              //         to="/ExpenseSubmission"
-              //         state={{
-              //           data: ele?.DATE,
-              //           edit: true,
-              //           givenData: ele,
-              //         }}
-              //       >
-              //         View
-              //       </Link>
-
-              //       {ele?.EmpID ==
-              //       useCryptoLocalStorage(
-              //         "user_Data",
-              //         "get",
-              //         "CrmEmployeeID"
-              //       ) ? (
-              //         <button
-              //           className="btn btn-sm btn-info"
-              //           style={{
-              //             background: "green",
-              //             fontWeight: "bold",
-              //             border: "none",
-              //             marginLeft: "10px",
-              //           }}
-              //           onClick={() => {
-              //             setVisible({ ShowApprove: true, showData: ele });
-              //           }}
-              //           disabled
-              //         >
-              //           Approve
-              //         </button>
-              //       ) : (
-              //         <button
-              //           className="btn btn-sm btn-info"
-              //           style={{
-              //             background: "green",
-              //             fontWeight: "bold",
-              //             border: "none",
-              //             marginLeft: "10px",
-              //           }}
-              //           onClick={() => {
-              //             setVisible({ ShowApprove: true, showData: ele });
-              //           }}
-              //           disabled={ele?.is_approved === 1}
-              //         >
-              //           Approve
-              //         </button>
-              //       )}
-              //     </div>
-              //     <br></br>
-              //     <button
-              //       className="btn btn-sm btn-info"
-              //       style={{
-              //         background: "red",
-              //         fontWeight: "bold",
-              //         marginTop: "0px",
-              //         border: "none",
-              //       }}
-              //       onClick={() => {
-              //         setVisible({ ShowReject: true, showData: ele });
-              //       }}
-              //       disabled={ele?.is_approved === 1}
-              //     >
-              //       Reject
-              //     </button>
-              //     &nbsp;&nbsp;&nbsp;&nbsp;
-              //     <button
-              //       className="btn btn-sm btn-info"
-              //       style={{
-              //         background: "orange",
-              //         fontWeight: "bold",
-              //         marginTop: "5px",
-              //         border: "none",
-              //       }}
-              //       onClick={() => {
-              //         setVisible({ ShowSubmit: true, showData: ele });
-              //       }}
-              //       disabled={["Submitted", "Approved"].includes(ele?.Status)}
-              //     >
-              //       Submit
-              //     </button>
-              //     <br></br>
-              //     <button
-              //       className="btn btn-sm btn-info"
-              //       style={{
-              //         background: "#eb3467",
-              //         fontWeight: "bold",
-              //         marginTop: "5px",
-              //         border: "none",
-              //       }}
-              //       onClick={() => {
-              //         setVisible({ deleteShow: true, showData: ele });
-              //       }}
-              //     >
-              //       Delete
-              //     </button>
-              //   </>
-              // ),
-
-              // Action: (
-              //   <div
-              //     style={{
-              //       display: "flex",
-              //       // flexWrap: "wrap",
-              //       gap: "8px", // spacing between buttons
-              //       padding: "3px",
-              //     }}
-              //   >
-              //     <Link
-              //       style={{
-              //         color: "white",
-              //         fontWeight: "bold",
-              //         border: "1px solid #355ec4",
-              //         width: "20px",
-              //         height: "20px",
-              //         background: "#355ec4",
-              //         borderRadius: "50%",
-              //         display: "flex",
-              //         alignItems: "center",
-              //         justifyContent: "center",
-              //         textDecoration: "none",
-              //       }}
-              //       to="/ExpenseSubmission"
-              //       state={{
-              //         data: ele?.DATE,
-              //         edit: true,
-              //         givenData: ele,
-              //       }}
-              //       title="Click to View/Edit"
-              //     >
-              //       V
-              //     </Link>
-
-              //     {ele?.EmpID ==
-              //       useCryptoLocalStorage(
-              //         "user_Data",
-              //         "get",
-              //         "CrmEmployeeID"
-              //       ) || ele?.is_approved === 1 ? null : (
-              //       <span
-              //         style={{
-              //           color: "white",
-              //           fontWeight: "bold",
-              //           border: "1px solid green",
-              //           width: "20px",
-              //           height: "20px",
-              //           background: "green",
-              //           borderRadius: "50%",
-              //           display: "flex",
-              //           alignItems: "center",
-              //           justifyContent: "center",
-              //           textDecoration: "none",
-              //         }}
-              //         onClick={() => {
-              //           setVisible({ ShowApprove: true, showData: ele });
-              //         }}
-              //         title="Click to Approve"
-              //       >
-              //         A
-              //       </span>
-              //     )}
-
-              //     {ele?.is_approved !== 1 && (
-              //       <span
-              //         style={{
-              //           color: "white",
-              //           fontWeight: "bold",
-              //           border: "1px solid red",
-              //           width: "20px",
-              //           height: "20px",
-              //           background: "red",
-              //           borderRadius: "50%",
-              //           display: "flex",
-              //           alignItems: "center",
-              //           justifyContent: "center",
-              //           textDecoration: "none",
-              //         }}
-              //         onClick={() => {
-              //           setVisible({ ShowReject: true, showData: ele });
-              //         }}
-              //         title="Click to Reject"
-              //       >
-              //         R
-              //       </span>
-              //     )}
-
-              //     {!["Submitted", "Approved"].includes(ele?.Status) && (
-              //       <span
-              //         style={{
-              //           color: "white",
-              //           fontWeight: "bold",
-              //           border: "1px solid orange",
-              //           width: "20px",
-              //           height: "20px",
-              //           background: "orange",
-              //           borderRadius: "50%",
-              //           display: "flex",
-              //           alignItems: "center",
-              //           justifyContent: "center",
-              //           textDecoration: "none",
-              //         }}
-              //         onClick={() => {
-              //           setVisible({ ShowSubmit: true, showData: ele });
-              //         }}
-              //         title="Click to Submit"
-              //       >
-              //         S
-              //       </span>
-              //     )}
-
-              //     <span
-              //       style={{
-              //         color: "white",
-              //         fontWeight: "bold",
-              //         border: "1px solid #eb3467",
-              //         width: "20px",
-              //         height: "20px",
-              //         background: "#eb3467",
-              //         borderRadius: "50%",
-              //         display: "flex",
-              //         alignItems: "center",
-              //         justifyContent: "center",
-              //         textDecoration: "none",
-              //       }}
-              //       onClick={() => {
-              //         setVisible({ deleteShow: true, showData: ele });
-              //       }}
-              //     >
-              //       D
-              //     </span>
-              //   </div>
-              // ),
 
               Action: (
                 <div
@@ -1575,28 +1284,70 @@ const ViewExpense = () => {
                         border: "1px solid orange",
                         width: "20px",
                         height: "20px",
-                        background: isCurrentMonthSelected()
-                          ? "orange"
-                          : "#cccccc",
+                        // background: isCurrentMonthSelected()
+                        //   ? "orange"
+                        //   : "#cccccc",
+                        background:
+                          ReportingManager == 1
+                            ? TwelthdayCurrentMonthSelected()
+                              ? "orange"
+                              : "#cccccc"
+                            : isCurrentMonthSelected()
+                              ? "orange"
+                              : "#cccccc",
                         borderRadius: "50%",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
                         textDecoration: "none",
-                        cursor: isCurrentMonthSelected()
-                          ? "pointer"
-                          : "not-allowed",
-                        opacity: isCurrentMonthSelected() ? 1 : 0.6,
+                        // cursor: isCurrentMonthSelected()
+                        //   ? "pointer"
+                        //   : "not-allowed",
+                        cursor:
+                          ReportingManager == 1
+                            ? TwelthdayCurrentMonthSelected()
+                              ? "pointer"
+                              : "not-allowed"
+                            : isCurrentMonthSelected()
+                              ? "pointer"
+                              : "not-allowed",
+                        // opacity: isCurrentMonthSelected() ? 1 : 0.6,
+                        opacity:
+                          ReportingManager == 1
+                            ? TwelthdayCurrentMonthSelected()
+                              ? 1
+                              : 0.6
+                            : isCurrentMonthSelected()
+                              ? 1
+                              : 0.6,
                       }}
+                      // onClick={() => {
+                      //   if (isCurrentMonthSelected()) {
+                      //     setVisible({ ShowSubmit: true, showData: ele });
+                      //   }
+                      // }}
                       onClick={() => {
-                        if (isCurrentMonthSelected()) {
-                          setVisible({ ShowSubmit: true, showData: ele });
-                        }
+                        ReportingManager == 1
+                          ? TwelthdayCurrentMonthSelected()
+                            ? setVisible({ ShowSubmit: true, showData: ele })
+                            : ""
+                          : isCurrentMonthSelected()
+                            ? setVisible({ ShowSubmit: true, showData: ele })
+                            : "";
                       }}
+                      // title={
+                      //   isCurrentMonthSelected()
+                      //     ? "Click to Submit"
+                      //     : "Submit is available only on the 5th day of the current month."
+                      // }
                       title={
-                        isCurrentMonthSelected()
-                          ? "Click to Submit"
-                          : "Submit is available only on the 5th day of the current month."
+                        ReportingManager == 1
+                          ? TwelthdayCurrentMonthSelected()
+                            ? "Click to Submit"
+                            : "Submit is available only on the 12th day of the current month."
+                          : isCurrentMonthSelected()
+                            ? "Click to Submit"
+                            : "Submit is available only on the 5th day of the current month."
                       }
                     >
                       S

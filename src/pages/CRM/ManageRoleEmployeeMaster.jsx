@@ -19,12 +19,7 @@ const ManageRoleEmployeeMaster = (ele) => {
       [name]: type === "checkbox" ? (checked ? "1" : "0") : value,
     });
   };
-  const [tableData, setTableData] = useState([
-    {
-      "S.No.": 1,
-      RoleName: "Mantis",
-    },
-  ]);
+  const [tableData, setTableData] = useState([]);
 
   const newRoleTHEAD = ["S.No.", "Role Name", "Remove"];
 
@@ -83,7 +78,9 @@ const ManageRoleEmployeeMaster = (ele) => {
   };
   const handleSearch = () => {
     axiosInstances
-      .post(apiUrls?.UserVsRole_Select, {})
+      .post(apiUrls?.UserVsRole_Select, {
+        UserID: Number(ele?.visible?.showData?.id),
+      })
       .then((res) => {
         const data = res?.data?.data;
         setTableData(data);

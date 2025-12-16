@@ -57,7 +57,7 @@ export const authSlice = createSlice({
         state.success = false;
       })
       .addCase(signInAction.fulfilled, (state, { payload }) => {
-        console.log("fulfilled payload:", payload);
+        // console.log("fulfilled payload:", payload);
 
         state.user = payload?.data?.userDetails || null;
         state.loading = false;

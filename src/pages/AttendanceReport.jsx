@@ -152,21 +152,16 @@ const AttendanceReport = () => {
   );
 
   const handleExport = () => {
-    // if (!formData?.TeamID) {
-    //   toast.error("Please Select Team");
-    //   return;
-    // }
-
     axiosInstances
       .post(apiUrls.Attendence_Report, {
         Month: String(formData?.currentMonth),
         Year: String(formData?.currentYear),
-        EmployeeID: String(
-          formData?.EmployeeName?.length > 0 ? formData.EmployeeName : ""
-        ),
+        SubTeam: String(formData?.SubTeamID || ""),
         Team: String(getlabel(formData?.TeamID, team) || ""),
-        SubTeam: String(formData?.SubTeamID),
         ReportType: String("Export"),
+        EmployeeID: String(
+          formData?.EmployeeName?.length > 0 ? formData.EmployeeName : "0"
+        ),
       })
       .then((res) => {
         const htmlTable = res?.data;
@@ -213,12 +208,12 @@ const AttendanceReport = () => {
       .post(apiUrls.Attendence_Report, {
         Month: String(formData?.currentMonth),
         Year: String(formData?.currentYear),
+        SubTeam: String(""),
+        Team: String(""),
+        ReportType: String("Export"),
         EmployeeID: String(
           Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID"))
         ),
-        Team: String(""),
-        SubTeam: String(""),
-        ReportType: String("Export"),
       })
       .then((res) => {
         const htmlTable = res?.data;
@@ -260,7 +255,6 @@ const AttendanceReport = () => {
         toast.error("Export failed. Try again.");
       });
   };
-
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5;
   const totalPages = Math.ceil(filteredData?.length / rowsPerPage);
@@ -352,7 +346,7 @@ const AttendanceReport = () => {
         Team: String(getlabel(formData?.TeamID, team) || ""),
         ReportType: String(""),
         EmployeeID: String(
-          formData?.EmployeeName?.length > 0 ? formData.EmployeeName : "0"
+          formData?.EmployeeName?.length > 0 ? formData.EmployeeName : ""
         ),
         AttendanceType: Number(formData?.SearchType),
       })
@@ -360,12 +354,17 @@ const AttendanceReport = () => {
         // const leaveData = Array.isArray(res?.data?.dtMontReport)
         //   ? res.data.dtMontReport
         //   : [];
-        const leaveData = Array.isArray(res?.data?.data) ? res.data.data : [];
+
+        const leaveData = Array.isArray(res?.data?.data?.dtMontReport)
+          ? res?.data?.data?.dtMontReport
+          : [];
         // console.log("leaveData", leaveData);
         setTableData1(leaveData);
         setFilteredData1(leaveData);
         if (res?.data?.success === true) {
-          const apiData = Array.isArray(res?.data?.data) ? res.data.data : [];
+          const apiData = Array.isArray(res?.data?.data?.dtAttReport)
+            ? res?.data?.data?.dtAttReport
+            : [];
           // const apiData = Array.isArray(res?.data?.dtAttReport)
           //   ? res.data.dtAttReport
           //   : [];
@@ -484,15 +483,15 @@ const AttendanceReport = () => {
         AttendanceType: Number(formData?.SearchType),
       })
       .then((res) => {
-        const leaveData = Array.isArray(res?.data?.dtMontReport)
-          ? res.data.dtMontReport
+        const leaveData = Array.isArray(res?.data?.data?.dtMontReport)
+          ? res?.data?.data?.dtMontReport
           : [];
         // console.log("leaveData", leaveData);
         setTableData1(leaveData);
         setFilteredData1(leaveData);
-        if (res?.data?.status === true) {
-          const apiData = Array.isArray(res?.data?.dtAttReport)
-            ? res.data.dtAttReport
+        if (res?.data?.success === true) {
+          const apiData = Array.isArray(res?.data?.data?.dtAttReport)
+            ? res?.data?.data?.dtAttReport
             : [];
           // console.log("ApiData", apiData);
 
@@ -673,7 +672,8 @@ const AttendanceReport = () => {
                       {formData?.EmployeeName?.length === 1 ? (
                         <button
                           className="btn btn-sm btn-info ml-2"
-                          onClick={handleExport}
+                          // onClick={handleExport}
+                          onClick={exportToExcelReport}
                         >
                           Attendance Export
                         </button>
@@ -708,6 +708,7 @@ const AttendanceReport = () => {
                   {ReportingManager == 1 ? (
                     <button
                       className="btn btn-sm btn-info ml-2"
+                      // onClick={handleLeaveExport}
                       onClick={exportToExcelReportLeave}
                     >
                       Leave Export
@@ -715,6 +716,7 @@ const AttendanceReport = () => {
                   ) : (
                     <button
                       className="btn btn-sm btn-info ml-2"
+                      // onClick={handleLeaveExportEmployee}
                       onClick={exportToExcelReportEmployee}
                     >
                       Leave Export

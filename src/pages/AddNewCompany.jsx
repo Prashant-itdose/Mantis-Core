@@ -147,7 +147,7 @@ const AddNewCompany = (projectid, visible, getCompany) => {
     axiosInstances
       .post(apiUrls?.UpdateBilling, payload)
       .then((res) => {
-        if (res?.data?.status === true) {
+        if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           handleSearch();
         } else {

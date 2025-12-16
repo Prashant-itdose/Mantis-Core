@@ -13,7 +13,7 @@ const SubMenuDropdown = () => {
   const localData = useLocalStorage("userData", "get"); // get Data from localStorage
   const navigate = useNavigate();
   const toggleSidebar = () => {
-    console.log("sadas")
+  
     setIsSidebarOpen((prev) => !isSidebarOpen);
   };
 
