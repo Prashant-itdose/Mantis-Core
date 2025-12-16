@@ -2018,6 +2018,51 @@ const ExpenseSubmission = () => {
       <div className="card">
         <div className="row m-2 d-flex">
           <BrowseInput handleImageChange={handleImageChange} />
+<<<<<<< HEAD
+
+
+          {/* {state?.edit && state?.givenData?.FileURLs ? (
+            <div className="mr-4">
+              <span style={{ fontWeight: "bold", marginLeft: "30px" }}>
+                View Attachment:{" "}
+              </span>{" "}
+              <i
+                className="fa fa-print"
+                style={{
+                  marginLeft: "5px",
+                  cursor: "pointer",
+                  color: "black",
+                  padding: "2px",
+                  borderRadius: "3px",
+                }}
+                onClick={() =>
+                  window.open(state?.givenData?.FileURLs, "_blank")
+                }
+                title="Click to view attachment"
+              ></i>
+            </div>
+          ) : filedtaa ? (
+            <div className="mr-4">
+              <span style={{ fontWeight: "bold", marginLeft: "30px" }}>
+                View Attachment:{" "}
+              </span>{" "}
+              <i
+                className="fa fa-print"
+                style={{
+                  marginLeft: "5px",
+                  cursor: "pointer",
+                  color: "black",
+                  padding: "2px",
+                  borderRadius: "3px",
+                }}
+                onClick={() => window.open(filedtaa, "_blank")}
+                title="Click to view attachment"
+              ></i>
+            </div>
+          ) : null} */}
+
+=======
+>>>>>>> b95a713ced8b902a14804c7aa0167443b0315e94
           {state?.edit || checkdataa ? (
             <button
               className="btn btn-sm btn-info ml-2"
@@ -2032,6 +2077,7 @@ const ExpenseSubmission = () => {
             >
               Update
             </button>
+            
           ) : (
             <button
               className="btn btn-sm btn-info ml-2"
