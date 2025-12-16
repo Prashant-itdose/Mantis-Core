@@ -52,7 +52,11 @@ const OverseasExpenseModal = ({ visible, setVisible, handleViewSearch }) => {
       });
   };
   const handleView = () => {
-    window.open(visible?.showData?.Invoice_File_Url, "_blank");
+    // window.open(visible?.showData?.Invoice_File_Url, "_blank");
+    window.open(
+      `/api/secure-download/${visible?.showData?.Invoice_ID}`,
+      "_blank"
+    );
   };
   return (
     <>
@@ -69,6 +73,7 @@ const OverseasExpenseModal = ({ visible, setVisible, handleViewSearch }) => {
             className="fa fa-eye"
             onClick={handleView}
             style={{ cursor: "pointer" }}
+            title="Click to View Invoice."
           ></i>{" "}
           <span className="ml-3">View Previous Invoice</span>
         </span>

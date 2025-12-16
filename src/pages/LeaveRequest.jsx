@@ -10,6 +10,9 @@ import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import LeaveRequestModal from "./LeaveRequestModal";
 import Loading from "../components/loader/Loading";
 import { axiosInstances } from "../networkServices/axiosInstance";
+import "./LeaveRequest.css";
+import ReactSelect from "../components/formComponent/ReactSelect";
+import Input from "../components/formComponent/Input";
 
 const getDaysInMonth = (year, month) => {
   return new Array(new Date(year, month, 0).getDate())
@@ -43,9 +46,11 @@ const LeaveRequest = ({ data }) => {
     Year: "",
     currentMonth: currentMonth,
     currentYear: currentYear,
-    Employee: [],
+    Employee: useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+      ? useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+      : "",
   });
-  // console.log("data formdata", formData);
+  console.log("data formdata", useCryptoLocalStorage("user_Data", "get", "ID"));
   const ReportingManager = useCryptoLocalStorage(
     "user_Data",
     "get",
@@ -68,7 +73,7 @@ const LeaveRequest = ({ data }) => {
 
   const getReporter = () => {
     axiosInstances
-      .post(apiUrls.EmployeeEmail, {
+      .post(apiUrls.EmployeeBind, {
         CrmEmployeeID: Number(
           useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
@@ -84,7 +89,13 @@ const LeaveRequest = ({ data }) => {
         console.log(err);
       });
   };
-
+  const handleDeliveryChange = (name, e) => {
+    const { value } = e;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
   const handleMonthYearChange = (name, e) => {
     const { value } = e.target;
     const date = new Date(value);
@@ -101,16 +112,14 @@ const LeaveRequest = ({ data }) => {
   };
 
   const apiCalledRef = useRef(false);
+
   useEffect(() => {
     if (apiCalledRef.current) return;
-
     if (data?.MonthYear) {
-      apiCalledRef.current = true; // mark as executed once
-
+      apiCalledRef.current = true;
       const jsDate = new Date(`${data?.MonthYear?.replace("-", " ")} 1`);
       const selectedYear = jsDate.getFullYear();
       const selectedMonth = jsDate.getMonth() + 1;
-
       handleLeaveRequest_BindCalender({
         year: selectedYear,
         month: selectedMonth,
@@ -235,17 +244,39 @@ const LeaveRequest = ({ data }) => {
 
     const dayDetails = table1Data?.find((d) => d?.Day === dayOfMonth);
 
+    const getWorkHourFromString = (text) => {
+      const match = text.match(
+        /Work Hour:\s*<span[^>]*>(\d{2}:\d{2})<\/span>/i
+      );
+      return match ? match[1] : null;
+    };
+
+    // console.log("xxxxxx", getWorkHourFromString("Login:11:08 AM</br>Logout:08:06 PM</br>Work Hour: <span class=red>08:58</span>"));
+
     return (
       <td
         key={index}
         className={`verticalTable ${isDisabled ? "disabled-day" : "active-day"} ${getStatusClass(dayOfMonth, table1Data)}`}
         onClick={() => {
           if (isDisabled) return;
-          setVisible({
-            showVisible: true,
-            data: dayDate,
-            CalenderDetails: CalenderDetails,
-          });
+          let isDisabledPopUpTime = 0;
+          if (dayDetails?.Holiday) {
+            isDisabledPopUpTime = Number(
+              getWorkHourFromString(dayDetails?.Holiday)?.split(":")?.[0]
+            );
+          }
+          if (
+            isDisabledPopUpTime <= 7 ||
+            (!dayDetails?.Holiday?.includes("Logout") &&
+              dayDetails?.HasLeave != "GZ")
+          ) {
+            setVisible({
+              showVisible: true,
+              data: dayDate,
+              CalenderDetails: CalenderDetails,
+            });
+          }
+
           setclickeddate(dayDate);
         }}
         style={{
@@ -255,6 +286,7 @@ const LeaveRequest = ({ data }) => {
       >
         <label className="formattedDate">{formattedDate}</label>
         {status && <div className="day-status">{status}</div>}
+
         {dayDetails && (
           <div
             className="day-details"
@@ -311,9 +343,15 @@ const LeaveRequest = ({ data }) => {
     setLoading(true);
     axiosInstances
       .post(apiUrls.LeaveRequest_BindCalender, {
-        CrmEmpID: Number(data?.Employee_Id || data?.EmployeeId || CRMID),
-        Year: Number(details ? details?.year : currentYear),
-        Month: Number(details ? details?.month : currentMonth),
+        CrmEmpID: Number(
+          data?.Employee_Id || data?.EmployeeId || formData?.Employee
+        ),
+        Year:
+          Number(details ? details?.year : currentYear) ||
+          formData?.currentYear,
+        Month:
+          Number(details ? details?.month : currentMonth) ||
+          formData?.currentMonth,
       })
       .then((res) => {
         setCalenderDetails(res?.data?.data);
@@ -421,7 +459,6 @@ const LeaveRequest = ({ data }) => {
                 id="Employee"
                 name="Employee"
                 value={IsEmployee}
-                // onChange={handleChange}
                 disabled={true}
               />
             )} */}
@@ -442,6 +479,12 @@ const LeaveRequest = ({ data }) => {
                   handleChange={(e) => handleMonthYearChange("Month", e)}
                 />
               </div>
+              {/* <button
+                className="btn btn-sm btn-info ml-3"
+                onClick={handleLeaveRequest_BindCalender}
+              >
+                Search
+              </button> */}
             </div>
             <div className="col-sm-2"></div>
             <div className="col-sm-4">

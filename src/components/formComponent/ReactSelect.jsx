@@ -312,7 +312,7 @@ const ReactSelect = ({
             inputId={inputId}
             value={
               value
-                ? dynamicOptions?.find((option) => String(option?.value) === String(value))
+                ? [...dynamicOptions]?.find((option) => String(option?.value) === String(value))
                 : ""
             }
             styles={customStyles}

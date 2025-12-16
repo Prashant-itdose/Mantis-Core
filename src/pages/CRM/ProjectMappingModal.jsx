@@ -24,6 +24,18 @@ const ProjectMappingModal = (ele) => {
     RoleMaster: "",
     AccessType: "90",
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 1000;
+  const totalPages = Math.ceil(tableData?.length / rowsPerPage);
+  const currentData = tableData?.slice(
+    (currentPage - 1) * rowsPerPage,
+    currentPage * rowsPerPage
+  );
+  const handlePageChange = (newPage) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
   const handleDeliveryChange = (name, e) => {
     const { value } = e;
     setFormData({
@@ -33,7 +45,6 @@ const ProjectMappingModal = (ele) => {
   };
 
   const getProject = () => {
- 
     axiosInstances
       .post(apiUrls?.ProjectSelect, {
         ProjectID: 0,
@@ -43,7 +54,7 @@ const ProjectMappingModal = (ele) => {
         WingID: 0,
       })
       .then((res) => {
-        const poc3s = res?.data.data.map((item) => {
+        const poc3s = res?.data?.data?.map((item) => {
           return { name: item?.Project, code: item?.ProjectId };
         });
         setProject(poc3s);
@@ -53,7 +64,6 @@ const ProjectMappingModal = (ele) => {
       });
   };
   const handleSearch = () => {
-  
     axiosInstances
       .post(apiUrls?.UserVsProject_Select, {
         UserID: Number(ele?.visible?.showData?.id),
@@ -67,18 +77,7 @@ const ProjectMappingModal = (ele) => {
         console.log(err);
       });
   };
-  const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 1000;
-  const totalPages = Math.ceil(tableData?.length / rowsPerPage);
-  const currentData = tableData?.slice(
-    (currentPage - 1) * rowsPerPage,
-    currentPage * rowsPerPage
-  );
-  const handlePageChange = (newPage) => {
-    if (newPage > 0 && newPage <= totalPages) {
-      setCurrentPage(newPage);
-    }
-  };
+
   const handleusermapping = () => {
     setLoading(true);
     const selectedIds = tableData
@@ -186,7 +185,7 @@ const ProjectMappingModal = (ele) => {
       setLoading(false);
       return;
     }
-   
+
     axiosInstances
       .post(apiUrls?.Remove_UserVsProjectMapping, {
         ProjectIDs: selectedIds.map((id) => Number(id)),

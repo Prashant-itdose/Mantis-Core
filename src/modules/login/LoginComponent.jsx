@@ -81,7 +81,7 @@ const LoginComponent = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
- 
+
     async function getLoginDetails() {
       const loginRes = await dispatch(
         signInAction({
@@ -188,7 +188,6 @@ const LoginComponent = () => {
           MobileNo: String(values?.mobile),
         })
         .then((res) => {
-
           if (res?.data?.success == true) {
             toast.success(res?.data?.message);
             setshowotp(res?.data?.data);

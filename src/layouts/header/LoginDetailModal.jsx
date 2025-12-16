@@ -28,13 +28,7 @@ const LoginDetailModal = () => {
   const [breakData, setBreakData] = useState([]);
   const [loading, setLoading] = useState(false);
   const loginTHEAD = ["S.No.", "BreakIn", "BreakOut", "BreakDuration"];
-  const transTHEAD = [
-    "S.No.",
-    "Date",
-    "IN",
-    "OUT",
-    "Time Difference",
-  ];
+  const transTHEAD = ["S.No.", "Date", "IN", "OUT", "Time Difference"];
   const [formData, setFormData] = useState({
     FromDate: new Date(),
     AssignedTo: useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
@@ -391,7 +385,7 @@ const LoginDetailModal = () => {
                   OUT:
                     tableData?.length == index + 1
                       ? Number(ele?.LogDate?.split("-")?.[2]) ==
-                        new Date().getDay()
+                        new Date().getDate()
                         ? "00:00:00"
                         : ele?.LogoutTime
                       : ele?.LogoutTime,

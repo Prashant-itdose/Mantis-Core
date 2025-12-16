@@ -14,10 +14,15 @@ const ViewExpenseRejectModal = ({
 }) => {
   console.log(visible);
   const [loading, setLoading] = useState(false);
- const IsManager = useCryptoLocalStorage(
+  const IsManager = useCryptoLocalStorage(
     "user_Data",
     "get",
     "AllowExpenseApprove"
+  );
+  const CrmEmployeeID = useCryptoLocalStorage(
+    "user_Data",
+    "get",
+    "CrmEmployeeID"
   );
   const handleApprove = () => {
     setLoading(true);
@@ -31,9 +36,11 @@ const ViewExpenseRejectModal = ({
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           setVisible(false);
-          if (
-            IsManager == 1 ? handleTableSearch() : handleTableSearchEmployee()
-          );
+          if (IsManager === 1 || [5, 6, 7].includes(Number(CrmEmployeeID))) {
+            handleTableSearch();
+          } else {
+            handleTableSearchEmployee();
+          }
         } else {
           toast.error(res?.data?.message);
           setLoading(false);

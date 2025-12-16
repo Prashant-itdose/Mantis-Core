@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { apiUrls } from "../../networkServices/apiEndpoints";
 import { headers } from "../../utils/apitools";
 import { toast } from "react-toastify";
@@ -19,6 +19,11 @@ const ViewExpenseApproveModal = ({
     "get",
     "AllowExpenseApprove"
   );
+  const CrmEmployeeID = useCryptoLocalStorage(
+    "user_Data",
+    "get",
+    "CrmEmployeeID"
+  );
   const handleApprove = () => {
     setLoading(true);
     axiosInstances
@@ -31,9 +36,11 @@ const ViewExpenseApproveModal = ({
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           setVisible(false);
-          if (
-            IsManager == 1 ? handleTableSearch() : handleTableSearchEmployee()
-          );
+          if (IsManager === 1 || [5, 6, 7].includes(Number(CrmEmployeeID))) {
+            handleTableSearch();
+          } else {
+            handleTableSearchEmployee();
+          }
         } else {
           toast.error(res?.data?.message);
           setLoading(false);

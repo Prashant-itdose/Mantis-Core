@@ -66,7 +66,7 @@ const LedgerStatus = () => {
   ];
   const { VITE_DATE_FORMAT } = import.meta.env;
   const [tableData, setTableData] = useState([]);
-  console.log("tableDta", tableData);
+  // console.log("tableDta", tableData);
   const [vertical, setVertical] = useState([]);
   const [project, setProject] = useState([]);
   const [loading, setLoading] = useState(false);

@@ -31,3 +31,4 @@ export const useCryptoLocalStorage = (
     return objectKey ? currentData[objectKey] ?? null : currentData;
   }
 };
+

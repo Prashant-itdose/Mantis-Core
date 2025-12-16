@@ -15,7 +15,7 @@ const App = () => {
   const windowSize = useWindowSize();
   const screenSize = useSelector((state) => state.ui.screenSize);
   const loading = useSelector((state) => state.loadingSlice.loading);
- 
+
   const dispatch = useDispatch();
   const location = useLocation();
 
@@ -36,8 +36,6 @@ const App = () => {
       });
     }
   }, [location]);
-  
-
 
   return (
     <>

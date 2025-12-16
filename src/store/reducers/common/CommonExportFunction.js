@@ -324,7 +324,7 @@ export const GetBindMenu = createAsyncThunk(
                 childrenOrder: "11",
                 breadcrumb: "Master / ImplementationStepMaster",
               },
-                {
+              {
                 childrenName: "ModuleMaster",
                 url: "/ModuleMaster",
                 childrenOrder: "12",
@@ -380,7 +380,7 @@ export const GetBindMenu = createAsyncThunk(
                 childrenOrder: "15",
                 breadcrumb: "Tools / Morning Wish",
               },
-                {
+              {
                 childrenName: "FestivalWish",
                 url: "/FestivalWish",
                 childrenOrder: "17",
@@ -391,6 +391,12 @@ export const GetBindMenu = createAsyncThunk(
                 url: "/BirthdayWish",
                 childrenOrder: "16",
                 breadcrumb: "Tools / Birthday Wish",
+              },
+              {
+                childrenName: "OverseasFly",
+                url: "/OverseasFly",
+                childrenOrder: "19",
+                breadcrumb: "Tools / Overseas Business Travel",
               },
             ],
           },

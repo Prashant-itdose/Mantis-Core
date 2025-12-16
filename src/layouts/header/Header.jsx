@@ -5,7 +5,6 @@ import { toggleSidebarMenu } from "@app/store/reducers/ui";
 import LanguagesDropdown from "@app/layouts/header/languages-dropdown/LanguagesDropdown";
 import Themedropdown from "@app/layouts/header/Theme-dropdown";
 import { toggleFullScreen } from "../../utils/helpers";
-import SubMenuDropdown from "@app/layouts/header/submenu-dropdown/SubMenuDropdown";
 import { useNavigate } from "react-router-dom";
 import UserDropdown from "./user-dropdown/UserDropdown";
 import ReactSelectHead from "../../components/formComponent/ReactSelectHead";
@@ -287,7 +286,7 @@ const Header = React.memo(() => {
         VerticalID: Number("0"),
       })
       .then((res) => {
-        const poc3s = res?.data.data.map((item) => {
+        const poc3s = res?.data?.data?.map((item) => {
           return { label: item?.Project, value: item?.ProjectId };
         });
         setProject(poc3s);
@@ -310,15 +309,6 @@ const Header = React.memo(() => {
     footer: null,
   });
 
-  const handleModalState = () => {
-    setModalHandlerState({
-      show: true,
-      header: "Crm Login",
-      size: "20vw",
-      component: <LoginModal />,
-      footer: <></>,
-    });
-  };
   const LoginLogoutButton = () => {
     axiosInstances
       .post(apiUrls.Attendence_Select, {

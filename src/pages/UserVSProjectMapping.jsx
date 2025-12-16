@@ -87,8 +87,11 @@ const UserVSProjectMapping = () => {
   const getProject = () => {
     axiosInstances
       .post(apiUrls.ProjectSelect, {
-        Id: useCryptoLocalStorage("user_Data", "get", "ID"),
-        LoginName: useCryptoLocalStorage("user_Data", "get", "realname"),
+        ProjectID: 0,
+        IsMaster: "0",
+        VerticalID: 0,
+        TeamID: 0,
+        WingID: 0,
       })
       .then((res) => {
         const poc3s = res?.data.data.map((item) => {

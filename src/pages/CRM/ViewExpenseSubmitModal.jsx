@@ -18,6 +18,11 @@ const ViewExpenseSubmitModal = ({
     "get",
     "AllowExpenseApprove"
   );
+  const CrmEmployeeID = useCryptoLocalStorage(
+    "user_Data",
+    "get",
+    "CrmEmployeeID"
+  );
   const [loading, setLoading] = useState(false);
 
   const handleApprove = () => {
@@ -32,9 +37,13 @@ const ViewExpenseSubmitModal = ({
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           setVisible(false);
-          if (
-            IsManager == 1 ? handleTableSearch() : handleTableSearchEmployee()
-          );
+          if (IsManager === 1 || [5, 6, 7].includes(Number(CrmEmployeeID))) {
+            handleTableSearch();
+          } else {
+            handleTableSearchEmployee();
+          }
+
+          // handleTableSearch();
         } else {
           toast.error(res?.data?.message);
           setLoading(false);

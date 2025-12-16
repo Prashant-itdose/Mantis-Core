@@ -800,6 +800,13 @@ const allRoutes = {
     {
       Guard: Authenticated,
       layout: Layout,
+      path: "/OverseasFly",
+      component: lazy(() => import("@app/pages/OverseasFly.jsx")),
+      exact: true,
+    },
+    {
+      Guard: Authenticated,
+      layout: Layout,
       path: "/PurchaseInvoiceManagement",
       component: lazy(() => import("@app/pages/PurchaseInvoiceManagement.jsx")),
       exact: true,

@@ -4,15 +4,13 @@ import { useTranslation } from "react-i18next";
 import { axiosInstances } from "../networkServices/axiosInstance";
 import { apiUrls } from "../networkServices/apiEndpoints";
 import { toast } from "react-toastify";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ExcelPreviewHandler from "./ExcelImport/ExcelPreviewHandler";
-import BrowseExcelButton from "../components/formComponent/BrowseExcelButton";
 import BrowseInvoiceButton from "../components/formComponent/BrowseInvoiceButton";
 
 const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB
 
 const OverseasExpenseManagement = () => {
-  const navigate = useNavigate();
   const [t] = useTranslation();
   const [excelData, setExcelData] = useState([]);
 
@@ -28,29 +26,31 @@ const OverseasExpenseManagement = () => {
     InvoiceFileExtension: "",
   });
 
-  // ---------- COMMON FILE TO BASE64 FUNCTION ----------
+  const base64OverseasData = excelData;
+  const jsonString = JSON.stringify(base64OverseasData);
+  const base64DataModern = btoa(
+    String.fromCharCode.apply(
+      null,
+      new Uint8Array(new TextEncoder().encode(jsonString))
+    )
+  );
+
   const convertFileToBase64 = (file, fileKey, base64Key, extensionKey) => {
     if (!file) return;
-
     if (file.size > MAX_FILE_SIZE) {
       alert("File size exceeds 1MB. Please choose a smaller file.");
       return;
     }
-
     const reader = new FileReader();
     reader.onload = () => {
       const base64String = reader.result.split(",")[1];
       const fileExtension = file.name.split(".").pop();
-
       setFormData((prev) => ({
         ...prev,
         [fileKey]: file,
         [base64Key]: base64String,
         [extensionKey]: fileExtension,
       }));
-
-      console.log("Saved Base64:", base64String);
-      console.log("Saved EXT:", fileExtension);
     };
 
     reader.readAsDataURL(file);
@@ -73,18 +73,14 @@ const OverseasExpenseManagement = () => {
     );
   };
 
-  // ---------- SAVE ----------
   const handleSave = () => {
     const payload = {
-      FileExtension: String(formData.FileExtension ?? ""),
-      Document_Base64: String(formData.Document_Base64 ?? ""),
+      FileExtension: String("xlsx"),
+      Document_Base64: String(base64DataModern),
       OverseasExcelData: excelData,
       InvoiceSheet: String(formData.InvoiceSheet ?? ""),
       InvoiceFileExtension: String(formData.InvoiceFileExtension ?? ""),
     };
-
-    console.log("Final Payload:", payload);
-
     axiosInstances
       .post(apiUrls.OverseasExcelInsert, payload)
       .then((res) => {
@@ -128,9 +124,9 @@ const OverseasExpenseManagement = () => {
             ></i>
           )}
 
-          <div className="ml-4">
+          {/* <div className="ml-4">
             <BrowseExcelButton handleImageChange={handleImageChange} />
-          </div>
+          </div> */}
 
           <div className="ml-4">
             <BrowseInvoiceButton handleImageChange={handleImageChange1} />

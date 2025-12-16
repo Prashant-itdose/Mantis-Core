@@ -306,6 +306,12 @@ export const MENU = {
           path: "/BirthdayWish",
           breadcrumb: "Tools / Birthday Wish",
         },
+        {
+          name: "OverseasFly",
+          icon: "fas fa-regular fa-user",
+          path: "/OverseasFly",
+          breadcrumb: "Tools / Overseas Business Travel",
+        },
       ],
     },
     {

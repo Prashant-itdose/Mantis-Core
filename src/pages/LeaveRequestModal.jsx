@@ -23,10 +23,13 @@ const LeaveRequestModal = ({
   //     moment(visible?.data).format("DD-MMM-YYYY").split("-")[0]
   // );
 
-   const leaveData = visible?.CalenderDetails?.[1]?.find(
+  const leaveData = visible?.CalenderDetails?.[1]?.find(
     (val) => String(val?.Day) === moment(visible?.data).format("D")
   );
   console.log("leavedata", leaveData);
+  console.log("visible", visible);
+  console.log("visible [1]", visible?.CalenderDetails?.[1]);
+
   const [OLTypeWise, setOLTypeWise] = useState([]);
   const [WOTypeWise, setWOTypeWise] = useState([]);
   const [HLTypeWise, setHLTypeWise] = useState([]);
@@ -249,8 +252,8 @@ const LeaveRequestModal = ({
       .post(apiUrls.LeaveRequest_Save, {
         FromDate: String(moment(visible?.data).format("YYYY-MM-DD")),
         CrmEmpID: Number(
-           data?.EmployeeId ||
-          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+          data?.EmployeeId ||
+            useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
         LeaveType: String(formData?.LeaveType),
         Description: String(formData?.Description),

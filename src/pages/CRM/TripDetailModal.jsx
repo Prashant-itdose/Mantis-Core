@@ -19,35 +19,37 @@ const TripDetailModal = ({ visible, setVisible }) => {
         </span>
         </div> */}
       <div className="card">
-      <table className="table table-bordered table-sm " style={{ fontWeight: "bold", width: "" }}>
-  <tbody>
-    <tr>
-      <td>State:</td>
-      <td>{visible?.showData?.StateName}</td>
-    </tr>
-    <tr>
-      <td>City:</td>
-      <td>{visible?.showData?.City}</td>
-    </tr>
-    <tr>
-      <td>Locality:</td>
-      <td>{visible?.showData?.Locality}</td>
-    </tr>
-    <tr>
-      <td>Trip:</td>
-      <td>{visible?.showData?.tripname}</td>
-    </tr>
-    <tr>
-      <td>Clients:</td>
-      <td>{visible?.showData?.Client_name}</td>
-    </tr>
-    <tr>
-      <td>Teammates:</td>
-      <td>{visible?.showData?.OtherEmployees}</td>
-    </tr>
-  </tbody>
-</table>
-
+        <table
+          className="table table-bordered table-sm "
+          style={{ fontWeight: "bold", width: "" }}
+        >
+          <tbody>
+            <tr>
+              <td>State:</td>
+              <td>{visible?.showData?.StateName}</td>
+            </tr>
+            <tr>
+              <td>City:</td>
+              <td>{visible?.showData?.City}</td>
+            </tr>
+            <tr>
+              <td>Locality:</td>
+              <td>{visible?.showData?.Locality}</td>
+            </tr>
+            <tr>
+              <td>Trip:</td>
+              <td>{visible?.showData?.tripname}</td>
+            </tr>
+            <tr>
+              <td>Clients:</td>
+              <td>{visible?.showData?.Client_name}</td>
+            </tr>
+            <tr>
+              <td>Teammates:</td>
+              <td>{visible?.showData?.OtherEmployees}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </>
   );

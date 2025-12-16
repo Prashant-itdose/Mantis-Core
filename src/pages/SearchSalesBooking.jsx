@@ -496,6 +496,7 @@ const SearchSalesBooking = ({ data }) => {
     axiosInstances
       .post(apiUrls?.Payment_Installment_Search, payload)
       .then((res) => {
+        console.log("data data", res);
         if (res?.data?.success === true) {
           setTableData(res?.data?.data);
           // const datas = res?.data?.data?.map((val) => {

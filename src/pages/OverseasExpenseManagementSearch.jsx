@@ -70,28 +70,29 @@ const OverseasExpenseManagementSearch = () => {
   const overseasThead = [
     "S.No.",
     "Month",
-    "Period",
-    "Employee Name",
-    "Employee Code",
+    "Date/Period",
     "Invoice No.",
+    "Vendor Name",
+    "Employee Code",
+    "Employee Name",
     "Category",
     "Description",
     "Local Currency Symbol",
 
     "DR Local Currency Payment",
-    "DR Conversion Rate",
-    "DR Converted in Dollar ($)",
-    "DR Conversion Rate in INR (₹)",
-    "DR Converted in INR (₹)",
+    // "DR Conversion Rate",
+    // "DR Converted in Dollar ($)",
+    // "DR Conversion Rate in INR (₹)",
+    // "DR Converted in INR (₹)",
 
-    "CR Local Currency Received",
-    "CR Conversion Rate",
-    "CR Converted in Dollar ($)",
+    "CR Dollar Currency Received",
+    "CR Converted in Local Currency",
+    "CR Local Currency Conversion Rate",
     "CR Conversion Rate in INR (₹)",
     "CR Converted in INR (₹)",
 
-    "Closing Balance In Dollar ($)",
-    "Closing Balance In INR (₹)",
+    "Local Currency Closing Balance",
+    "Bill Amount Taxable Value INR (₹)",
     "Excel Print",
     "Invoice Print",
   ];
@@ -238,10 +239,11 @@ const OverseasExpenseManagementSearch = () => {
                     ][ele?.MONTH.split("-")[1] - 1] +
                     "-" +
                     ele?.MONTH.split("-")[2].slice(-2),
-                  Period: ele?.PERIOD,
-                  "Employee Name": ele?.Employee_Name,
-                  "Employee Code": ele?.Employee_Code,
+                  "Date/Period": ele?.PERIOD,
                   "Invoice No.": ele?.Invoice_No,
+                  "Vendor Name": ele?.Vendor_Name,
+                  "Employee Code": ele?.Employee_Code,
+                  "Employee Name": ele?.Employee_Name,
                   Category: ele?.Category,
                   Description: (
                     <Tooltip label={ele?.DESCRIPTION}>
@@ -257,22 +259,22 @@ const OverseasExpenseManagementSearch = () => {
                   "Local Currency Symbol": ele?.Local_Currency_Symbol,
 
                   "DR Local Currency Payment": ele?.Local_Currency_Payment,
-                  "DR Conversion Rate": ele?.Conversion_rate_Dollar,
-                  "DR Converted in Dollar ($)": ele?.Converted_in_Dollar,
-                  "DR Conversion Rate in INR (₹)": ele?.Conversion_rate_in_INR,
-                  "DR Converted in INR (₹)": ele?.Converted_in_INR,
+                  // "DR Conversion Rate": ele?.Conversion_rate_Dollar,
+                  // "DR Converted in Dollar ($)": ele?.Converted_in_Dollar,
+                  // "DR Conversion Rate in INR (₹)": ele?.Conversion_rate_in_INR,
+                  // "DR Converted in INR (₹)": ele?.Converted_in_INR,
 
-                  "CR Local Currency Received": ele?.Local_Currency_Received,
-                  "CR Conversion Rate": ele?.Conversion_rate_Dollar_CR,
-                  "CR Converted in Dollar ($)":
+                  "CR Dollar Currency Received": ele?.Local_Currency_Received,
+                  "CR Converted in Local Currency": ele?.Conversion_rate_Dollar_CR,
+                  "CR Local Currency Conversion Rate":
                     ele?.Converted_in_Dollar_Dollar_CR,
                   "CR Conversion Rate in INR (₹)":
                     ele?.Conversion_rate_in_INR_CR,
                   "CR Converted in INR (₹)": ele?.Converted_in_INR_CR,
 
-                  "Closing Balance In Dollar ($)":
-                    ele?.Closing_Balance_in_Dollar,
-                  "Closing Balance In INR (₹)": ele?.Closing_Balance_in_INR,
+                  "Local Currency Closing Balance":
+                    ele?.Closing_Balance,
+                  "Bill Amount Taxable Value INR (₹)": ele?.Bill_Amount_Value,
                   "Excel Print": ele?.File_Url !== null && (
                     <i
                       className="fa fa-print"

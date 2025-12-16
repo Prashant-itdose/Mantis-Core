@@ -97,7 +97,7 @@ const ViewExpense = () => {
   };
 
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 10;
+  const rowsPerPage = 30;
   const totalPages = Math.ceil(tableData?.length / rowsPerPage);
   const currentData = tableData?.slice(
     (currentPage - 1) * rowsPerPage,
@@ -251,14 +251,18 @@ const ViewExpense = () => {
         setLoading(false);
       });
   };
-  const handleTableSearch = () => {
+
+  const handleTableSearch = (kamal) => {
+    console.log("kamal kamal", kamal);
     if (formData?.ExpenseType == "") {
       toast.error("Please Select Expense Type.");
     } else {
       setLoading(true);
       axiosInstances
         .post(apiUrls.ViewExpenseList, {
-          ExpenseEmployeeID: formData?.Employee ? Number(formData.Employee) : 0,
+          ExpenseEmployeeID: formData?.Employee
+            ? Number(formData.Employee)
+            : 0 || kamal,
           Month: Number(formData?.currentMonth),
           Year: Number(formData?.currentYear),
           Status: String(0),
@@ -295,6 +299,15 @@ const ViewExpense = () => {
         });
     }
   };
+
+  useEffect(() => {
+    if (Number(formData?.Employee)) {
+      handleTableSearch(formData?.Employee);
+    }
+  }, [formData?.Employee]);
+
+  console.log("formdata employee", formData?.Employee);
+
   const handleTableSearchEmployee = () => {
     if (formData?.ExpenseType == "") {
       toast.error("Please Select Expense Type.");
