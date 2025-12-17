@@ -100,10 +100,10 @@ const OverseasFly = () => {
       toast.error("Please Select Country.");
       return;
     }
-    if (!formData?.Remark) {
-      toast.error("Please Enter Remarks.");
-      return;
-    }
+    // if (!formData?.Remark) {
+    //   toast.error("Please Enter Remarks.");
+    //   return;
+    // }
 
     setLoading(true);
     axiosInstances
@@ -217,7 +217,7 @@ const OverseasFly = () => {
           />
           <Input
             type="text"
-            className="form-control required-fields"
+            className="form-control"
             id="Remark"
             name="Remark"
             lable="Remarks"

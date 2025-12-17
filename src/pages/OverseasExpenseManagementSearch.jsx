@@ -15,8 +15,10 @@ import NoRecordFound from "../components/formComponent/NoRecordFound";
 import Tooltip from "./Tooltip";
 import Modal from "../components/modalComponent/Modal";
 import OverseasExpenseModal from "./OverseasExpenseModal";
+import Loading from "../components/loader/Loading";
 
 const OverseasExpenseManagementSearch = () => {
+  const [loading, setLoading] = useState(false);
   const [t] = useTranslation();
   const { VITE_DATE_FORMAT } = import.meta.env;
   const [assignto, setAssignedto] = useState([]);
@@ -98,6 +100,7 @@ const OverseasExpenseManagementSearch = () => {
   ];
 
   const handleViewSearch = () => {
+    setLoading(true);
     axiosInstances
       .post(apiUrls.SearchDollarExpense, {
         EmployeeCode: String(formData?.AssignedTo || ""),
@@ -109,8 +112,10 @@ const OverseasExpenseManagementSearch = () => {
       .then((res) => {
         if (res?.data?.success === true) {
           setTableData(res?.data?.data);
+          setLoading(false);
         } else {
           toast.error("No Record Found.");
+          setLoading(false);
         }
       })
       .catch((err) => {
@@ -121,9 +126,11 @@ const OverseasExpenseManagementSearch = () => {
     attachVisible: false,
     showData: {},
   });
+
   useEffect(() => {
     getAssignTo();
   }, []);
+
   return (
     <>
       {visible?.attachVisible && (
@@ -203,12 +210,16 @@ const OverseasExpenseManagementSearch = () => {
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
             handleChange={searchHandleChange}
           />
-          <button
-            className="btn btn-sm btn-primary ml-2 mt-0"
-            onClick={handleViewSearch}
-          >
-            <i className="fa fa-search mr-1" aria-hidden="true"></i> Search
-          </button>
+          {loading ? (
+            <Loading />
+          ) : (
+            <button
+              className="btn btn-sm btn-primary ml-2 mt-0"
+              onClick={handleViewSearch}
+            >
+              <i className="fa fa-search mr-1" aria-hidden="true"></i> Search
+            </button>
+          )}
         </div>
       </div>
       {tableData?.length > 0 ? (
@@ -265,15 +276,15 @@ const OverseasExpenseManagementSearch = () => {
                   // "DR Converted in INR (₹)": ele?.Converted_in_INR,
 
                   "CR Dollar Currency Received": ele?.Local_Currency_Received,
-                  "CR Converted in Local Currency": ele?.Conversion_rate_Dollar_CR,
+                  "CR Converted in Local Currency":
+                    ele?.Conversion_rate_Dollar_CR,
                   "CR Local Currency Conversion Rate":
                     ele?.Converted_in_Dollar_Dollar_CR,
                   "CR Conversion Rate in INR (₹)":
                     ele?.Conversion_rate_in_INR_CR,
                   "CR Converted in INR (₹)": ele?.Converted_in_INR_CR,
 
-                  "Local Currency Closing Balance":
-                    ele?.Closing_Balance,
+                  "Local Currency Closing Balance": ele?.Closing_Balance,
                   "Bill Amount Taxable Value INR (₹)": ele?.Bill_Amount_Value,
                   "Excel Print": ele?.File_Url !== null && (
                     <i
@@ -287,7 +298,7 @@ const OverseasExpenseManagementSearch = () => {
                       }}
                       title="Click here to Print."
                       onClick={() => window.open(ele?.File_Url, "_blank")}
-                      // onClick={() => handlePrint2(ele)}
+                      // onClick={() => handlePrint1(ele)}
                     />
                   ),
                   "Invoice Print": ele?.Invoice_File_Url !== null && (

@@ -359,10 +359,7 @@ const OverseasFlySearch = () => {
                     </span>
                   </div>
                 </div>
-                <span style={{ fontWeight: "bold", marginLeft: "10px" }}>
-                  Grand Total :&nbsp;
-                  {tableData?.reduce((acc, curr) => acc + (curr.Total || 0), 0)}
-                </span>
+
                 <span style={{ fontWeight: "bold", marginLeft: "10px" }}>
                   Total Record :&nbsp;{tableData?.length}
                 </span>
@@ -384,54 +381,63 @@ const OverseasFlySearch = () => {
                 Status: ele?.StatusText,
                 Action:
                   ele?.STATUS == 0 ? (
-                    <div className="d-flex">
-                      <span
-                        style={{
-                          color: "white",
-                          fontWeight: "bold",
-                          border: "1px solid green",
-                          width: "20px",
-                          height: "20px",
-                          background: "green",
-                          borderRadius: "50%",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          textDecoration: "none",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => {
-                          setVisible({ approveVisible: true, showData: ele });
-                        }}
-                        title={"Click to Reject"}
-                        className="ml-2"
-                      >
-                        A
-                      </span>
-                      <span
-                        style={{
-                          color: "white",
-                          fontWeight: "bold",
-                          border: "1px solid red",
-                          width: "20px",
-                          height: "20px",
-                          background: "red",
-                          borderRadius: "50%",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          textDecoration: "none",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => {
-                          setVisible({ rejectVisible: true, showData: ele });
-                        }}
-                        title={"Click to Reject"}
-                        className="ml-3"
-                      >
-                        R
-                      </span>
-                    </div>
+                    ele?.EmployeeID ===
+                    useCryptoLocalStorage(
+                      "user_Data",
+                      "get",
+                      "CrmEmployeeID"
+                    ) ? (
+                      ""
+                    ) : (
+                      <div className="d-flex">
+                        <span
+                          style={{
+                            color: "white",
+                            fontWeight: "bold",
+                            border: "1px solid green",
+                            width: "20px",
+                            height: "20px",
+                            background: "green",
+                            borderRadius: "50%",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            textDecoration: "none",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => {
+                            setVisible({ approveVisible: true, showData: ele });
+                          }}
+                          title={"Click to Reject"}
+                          className="ml-2"
+                        >
+                          A
+                        </span>
+                        <span
+                          style={{
+                            color: "white",
+                            fontWeight: "bold",
+                            border: "1px solid red",
+                            width: "20px",
+                            height: "20px",
+                            background: "red",
+                            borderRadius: "50%",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            textDecoration: "none",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => {
+                            setVisible({ rejectVisible: true, showData: ele });
+                          }}
+                          title={"Click to Reject"}
+                          className="ml-3"
+                        >
+                          R
+                        </span>
+                      </div>
+                    )
                   ) : (
                     ""
                   ),

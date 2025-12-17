@@ -20,6 +20,7 @@ import BrowseInput from "../components/formComponent/BrowseInput";
 
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import { axiosInstances } from "../networkServices/axiosInstance";
+import { Link } from "react-router-dom";
 const ReportIssue = ({ visibleTicket }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [t] = useTranslation();
@@ -542,7 +543,11 @@ const ReportIssue = ({ visibleTicket }) => {
         {visibleTicket?.subTicketVisible === true ? (
           ""
         ) : (
-          <Heading title={t("New Ticket")} isBreadcrumb={true} />
+          <Heading
+            title={t("New Ticket")}
+            isBreadcrumb={true}
+            secondTitle={<Link to="/ViewIssues" className="ml-3 font-weight-bold">View Ticket</Link>}
+          />
         )}
         <div className="row p-2">
           <ReactSelect
