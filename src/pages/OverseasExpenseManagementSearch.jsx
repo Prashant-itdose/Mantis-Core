@@ -105,8 +105,8 @@ const OverseasExpenseManagementSearch = () => {
       .post(apiUrls.SearchDollarExpense, {
         EmployeeCode: String(formData?.AssignedTo || ""),
         InvoiceNo: String(formData?.InvoiceNo || ""),
-        FromDate: String(moment(formData?.FromDate).format("DD/MM/YYYY")),
-        ToDate: String(moment(formData?.ToDate).format("DD/MM/YYYY")),
+        FromDate: String(moment(formData?.FromDate).format("YYYY/MM/DD")),
+        ToDate: String(moment(formData?.ToDate).format("YYYY/MM/DD")),
       })
 
       .then((res) => {
