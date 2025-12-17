@@ -7,7 +7,7 @@ export default ({ mode }) => {
 
   return defineConfig({
     mode: "development",
-    base:'/',
+    base: "/",
     plugins: [react()],
     resolve: {
       alias: {

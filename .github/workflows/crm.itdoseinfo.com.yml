@@ -1,4 +1,4 @@
-name: crm1.itdoseinfo.com 
+name: crm.itdoseinfo.com 
 
 on:
   workflow_dispatch:
