@@ -7,7 +7,6 @@ export default ({ mode }) => {
 
   return defineConfig({
     mode: "development",
-    base: "/",
     plugins: [react()],
     resolve: {
       alias: {
@@ -20,16 +19,11 @@ export default ({ mode }) => {
     },
     server: {
       proxy: {
-        "/CRMCOREAPI": {
+        "/api": {
           target: process.env.VITE_APP_REACT_APP_BASE_URL,
           changeOrigin: true,
           secure: false,
         },
-        // "/CRMCOREAPI": {
-        //   target: process.env.VITE_APP_REACT_APP_BASE_URL,
-        //   changeOrigin: true,
-        //   secure: false,
-        // },
       },
     },
   });

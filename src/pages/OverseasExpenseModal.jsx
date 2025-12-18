@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { axiosInstances } from "../networkServices/axiosInstance";
 import { apiUrls } from "../networkServices/apiEndpoints";
 import BrowseInput from "../components/formComponent/BrowseInput";
+import Tables from "../components/UI/customTable";
 
 const OverseasExpenseModal = ({ visible, setVisible, handleViewSearch }) => {
   //   console.log("view issue", visible);
+  const [tableData, setTableData] = useState([]);
   const [formData, setFormData] = useState({
     DocumentType: "",
     SelectFile: "",
@@ -42,7 +44,16 @@ const OverseasExpenseModal = ({ visible, setVisible, handleViewSearch }) => {
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           setVisible(false);
+          setFormData({
+            ...formData,
+            DocumentType: "",
+            SelectFile: "",
+            Document_Base64: "",
+            FileExtension: "",
+          });
+
           handleViewSearch();
+          handleSearch();
         } else {
           toast.error(res?.data?.message);
         }
@@ -51,13 +62,29 @@ const OverseasExpenseModal = ({ visible, setVisible, handleViewSearch }) => {
         console.log(err);
       });
   };
-  const handleView = () => {
-    // window.open(visible?.showData?.Invoice_File_Url, "_blank");
-    window.open(
-      `/api/secure-download/${visible?.showData?.Invoice_ID}`,
-      "_blank"
-    );
+
+  const localTHEAD = ["S.No.", "Created By", "Created Date", "View"];
+
+  const handleSearch = () => {
+    axiosInstances
+      .post(apiUrls.GetOverseasInvoiceList, {
+        Expense_No: String(visible?.showData?.Expense_No),
+      })
+      .then((res) => {
+        if (res?.data?.success === true) {
+          setTableData(res.data.data);
+        } else {
+          toast.error(res?.data?.message);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
+  useEffect(() => {
+    handleSearch();
+  }, []);
   return (
     <>
       <div className="card p-2">
@@ -67,7 +94,7 @@ const OverseasExpenseModal = ({ visible, setVisible, handleViewSearch }) => {
           No.:- {visible?.showData?.Expense_No}
         </span>
       </div>
-      <div className="card p-2">
+      {/* <div className="card p-2">
         <span style={{ fontWeight: "bold" }}>
           <i
             className="fa fa-eye"
@@ -77,7 +104,7 @@ const OverseasExpenseModal = ({ visible, setVisible, handleViewSearch }) => {
           ></i>{" "}
           <span className="ml-3">View Previous Invoice</span>
         </span>
-      </div>
+      </div> */}
       <div className="card">
         <div className="row m-2">
           <div style={{ marginLeft: "5px", marginTop: "0px" }}>
@@ -91,6 +118,26 @@ const OverseasExpenseModal = ({ visible, setVisible, handleViewSearch }) => {
             Upload
           </button>
         </div>
+      </div>
+      <div className="card">
+        <Tables
+          thead={localTHEAD}
+          tbody={tableData?.map((ele, index) => ({
+            "S.No.": index + 1,
+            "Created By": ele?.CreatedBy,
+            "Created Date": ele?.CreatedOn,
+            View: (
+              <i
+                className="fa fa-eye"
+                onClick={() => {
+                  const fileUrl = ele?.Invoice_File_Url;
+                  window.open(fileUrl, "_blank", "noreferrer");
+                }}
+              ></i>
+            ),
+          }))}
+          tableHeight={"tableHeight"}
+        />
       </div>
     </>
   );

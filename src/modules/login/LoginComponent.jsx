@@ -81,7 +81,6 @@ const LoginComponent = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     async function getLoginDetails() {
       const loginRes = await dispatch(
         signInAction({

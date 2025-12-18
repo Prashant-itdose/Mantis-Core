@@ -131,11 +131,12 @@ const OverseasExpenseManagementSearch = () => {
     getAssignTo();
   }, []);
 
+ 
   return (
     <>
       {visible?.attachVisible && (
         <Modal
-          modalWidth={"800px"}
+          modalWidth={"700px"}
           visible={visible}
           setVisible={setVisible}
           Header="Upload Invoice"
@@ -297,28 +298,22 @@ const OverseasExpenseManagementSearch = () => {
                         borderRadius: "3px",
                       }}
                       title="Click here to Print."
-                      onClick={() => window.open(ele?.File_Url, "_blank")}
+                      onClick={() => {
+                        const a = document.createElement("a");
+                        a.href = ele.File_Url;
+                        a.download = "Dollar_Expense.xlsx"; // SHORT name
+                        a.click();
+
+                        // window.open(ele?.File_Url, "_blank")
+                        // console.log('File_Url::',ele.File_Url)
+                      }}
                       // onClick={() => handlePrint1(ele)}
                     />
                   ),
-                  "Invoice Print": ele?.Invoice_File_Url !== null && (
+                  "View & Upload": index === 0 && (
                     <>
                       <i
-                        className="fa fa-print"
-                        style={{
-                          marginLeft: "5px",
-                          cursor: "pointer",
-                          padding: "2px",
-                          borderRadius: "3px",
-                        }}
-                        title="Click here to Print."
-                        onClick={() =>
-                          window.open(ele?.Invoice_File_Url, "_blank")
-                        }
-                        // onClick={() => handlePrint2(ele)}
-                      />
-                      <i
-                        className="fa fa-upload ml-4"
+                        className="fa fa-eye ml-4"
                         onClick={() => {
                           setVisible({
                             attachVisible: true,
@@ -329,9 +324,9 @@ const OverseasExpenseManagementSearch = () => {
                           cursor: "pointer",
                           color: "black",
                           marginLeft: "2px",
-                          color: "green",
+                          color: "black",
                         }}
-                        title="Upload Invoice"
+                        title="View & Upload Invoice"
                       ></i>
                     </>
                   ),
