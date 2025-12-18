@@ -55,7 +55,8 @@ const OverseasExpenseModal = ({ visible, setVisible, handleViewSearch }) => {
           handleViewSearch();
           handleSearch();
         } else {
-          toast.error(res?.data?.message);
+
+          toast?.error(res?.data?.message);
         }
       })
       .catch((err) => {
