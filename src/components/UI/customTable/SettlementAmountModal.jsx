@@ -2,13 +2,7 @@ import React, { useEffect, useState } from "react";
 import Input from "../../formComponent/Input";
 import ReactSelect from "../../formComponent/ReactSelect";
 import { apiUrls } from "../../../networkServices/apiEndpoints";
-import { headers } from "../../../utils/apitools";
-import axios from "axios";
 import { toast } from "react-toastify";
-import Tables from ".";
-import Heading from "../Heading";
-
-import { values } from "lodash";
 import { inputBoxValidation } from "../../../utils/utils";
 import { max7digit } from "../../../utils/constant";
 import Loading from "../../loader/Loading";
@@ -16,6 +10,8 @@ import { useTranslation } from "react-i18next";
 import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorage";
 import { axiosInstances } from "../../../networkServices/axiosInstance";
 const SettlementAmountModal = (visible, edit) => {
+  console.log("visible visible visible", visible);
+
   const [t] = useTranslation();
   const [tableData, setTableData] = useState([]);
   const [isEditVisible, setIsEditVisible] = useState(edit);
@@ -111,23 +107,23 @@ const SettlementAmountModal = (visible, edit) => {
     axiosInstances
       .post(apiUrls?.Settlement_Select, payload)
       .then((res) => {
-        const assigntos = res?.data?.data?.Sales?.map((item) => {
+        const assigntos = res?.data?.data?.dtSales?.map((item) => {
           return { label: item?.ItemName, value: item?.SalesID, ...item };
         });
         setSale(assigntos);
 
-        setTableData([res?.data?.data?.dtOnAccountDetail[0]]);
+        setTableData([res?.data?.data?.dtOnAccountDetail?.[0]]);
 
-        const dataID = res?.data?.Sales[0];
-        // console.log("restst", dataID);
+        const dataID = res?.data?.data?.dtSales?.[0];
+
         setFormData((prevState) => ({
-          ...prevState, // Retain any existing values in formData
-          Sale: dataID?.SalesID || "", // Set default value if null or undefined
-          NetAmount: dataID?.NetAmount || 0, // Default to 0 if not available
+          ...prevState,
+          Sale: dataID?.SalesID || "",
+          NetAmount: dataID?.NetAmount || 0,
           PendingAmount: dataID?.PendingAmount || 0,
           AdjustmentAmount: dataID?.Adjustment || 0,
           SalesNo: dataID?.SalesNo || "",
-          SalesID: "", // Explicitly set SalesID as empty string
+          SalesID: dataID?.SalesID || "",
         }));
       })
       .catch((err) => {
@@ -135,22 +131,6 @@ const SettlementAmountModal = (visible, edit) => {
       });
   };
 
-  const getsalestable = () => {
-    const payload = {
-      ProjectID: Number(visible?.visible?.showData?.ProjectID || "0"),
-      OnAccount_Req_ID: String(visible?.visible?.showData?.EncryptID || ""),
-    };
-
-    axiosInstances
-      .post(apiUrls?.Settlement_Select, payload)
-      .then((res) => {
-        // console.log("restst", res);
-        setTableData([res?.data?.dtOnAccount_Req_ID[0]]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
   const handleReset = () => {
     setFormData({
       ...formData,
@@ -221,6 +201,11 @@ const SettlementAmountModal = (visible, edit) => {
   useEffect(() => {
     getSales();
   }, []);
+
+  console.log(
+    "visible?.visible?.showData?.ProjectName",
+    visible?.visible?.showData?.ProjectName
+  );
   return (
     <>
       <div className="card p-2">
@@ -229,7 +214,7 @@ const SettlementAmountModal = (visible, edit) => {
             {t("Project")}: {visible?.visible?.showData?.ProjectName}
           </span>{" "}
           &nbsp; &nbsp; &nbsp; &nbsp;
-          <span style={{ fontWeight: "bold" }}>
+          {/* <span style={{ fontWeight: "bold" }}>
             {t("Non-Settled Amount")} : {tableData[0]?.ReceivedAmount}
           </span>{" "}
           &nbsp; &nbsp; &nbsp; &nbsp;
@@ -239,7 +224,7 @@ const SettlementAmountModal = (visible, edit) => {
           &nbsp; &nbsp; &nbsp; &nbsp;
           <span style={{ fontWeight: "bold" }}>
             {t("Pending Amount for Settlement")} : {tableData[0]?.PendingAmount}
-          </span>{" "}
+          </span>{" "} */}
           &nbsp;
         </div>
         <div className=" row mt-2">

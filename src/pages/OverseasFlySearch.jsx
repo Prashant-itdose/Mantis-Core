@@ -16,6 +16,7 @@ import MultiSelectComp from "../components/formComponent/MultiSelectComp";
 import moment from "moment";
 import Loading from "../components/loader/Loading";
 import Input from "../components/formComponent/Input";
+import OverseasFlyDelete from "./OverseasFlyDelete";
 
 const OverseasFlySearch = () => {
   const [t] = useTranslation();
@@ -83,7 +84,7 @@ const OverseasFlySearch = () => {
     setFormData({ ...formData, [name]: value });
   };
   const flyTHEAD = [
-    "S.No.",
+    { name: "S.No.", width: "6%" },
     "Name",
     "Country",
     "From",
@@ -95,6 +96,7 @@ const OverseasFlySearch = () => {
   const [visible, setVisible] = useState({
     approveVisible: false,
     rejectVisible: false,
+    deleteVisible: false,
     showData: {},
   });
   const handleMultiSelectChange = (name, selectedOptions) => {
@@ -142,7 +144,7 @@ const OverseasFlySearch = () => {
     <>
       {visible?.approveVisible && (
         <Modal
-          modalWidth={"600px"}
+          modalWidth={"400px"}
           visible={visible}
           setVisible={setVisible}
           Header="Approve Details"
@@ -163,6 +165,21 @@ const OverseasFlySearch = () => {
           Header="Reject Details"
         >
           <OverseasFlyReject
+            visible={visible}
+            setVisible={setVisible}
+            edit={true}
+            handleSearch={handleSearch}
+          />
+        </Modal>
+      )}
+      {visible?.deleteVisible && (
+        <Modal
+          modalWidth={"400px"}
+          visible={visible}
+          setVisible={setVisible}
+          Header="Delete Details"
+        >
+          <OverseasFlyDelete
             visible={visible}
             setVisible={setVisible}
             edit={true}
@@ -284,7 +301,7 @@ const OverseasFlySearch = () => {
         <Heading
           title={<span className="font-weight-bold">Search Details</span>}
           secondTitle={
-            tableData?.length > 0 && (
+            ReportingManager === 1 && (
               <div className="d-flex">
                 <div className="d-flex flex-wrap align-items-center">
                   <div
@@ -358,6 +375,42 @@ const OverseasFlySearch = () => {
                       Reject
                     </span>
                   </div>
+                  <div
+                    className="d-flex "
+                    style={{
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div
+                      className="legendcircleExpense"
+                      style={{
+                        backgroundColor: "#EB3467",
+                        cursor: "pointer",
+                        width: "16px",
+                        height: "16px",
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "white",
+                        fontWeight: "bold",
+                        marginLeft: "5px",
+                      }}
+                    >
+                      D
+                    </div>
+                    <span
+                      style={{
+                        color: "#EB3467",
+                        fontWeight: "bold",
+                        marginLeft: "4px",
+                        marginRight: "10px",
+                      }}
+                    >
+                      Delete
+                    </span>
+                  </div>
                 </div>
 
                 <span style={{ fontWeight: "bold", marginLeft: "10px" }}>
@@ -409,7 +462,7 @@ const OverseasFlySearch = () => {
                             setVisible({ approveVisible: true, showData: ele });
                           }}
                           title={"Click to Reject"}
-                          className="ml-2"
+                          className="ml-0"
                         >
                           A
                         </span>
@@ -436,10 +489,67 @@ const OverseasFlySearch = () => {
                         >
                           R
                         </span>
+                        {ReportingManager === 1 && (
+                          <span
+                            style={{
+                              color: "white",
+                              fontWeight: "bold",
+                              border: "1px solid #EB3467",
+                              width: "20px",
+                              height: "20px",
+                              background: "#EB3467",
+                              borderRadius: "50%",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              textDecoration: "none",
+                              cursor: "pointer",
+                            }}
+                            onClick={() => {
+                              setVisible({
+                                deleteVisible: true,
+                                showData: ele,
+                              });
+                            }}
+                            title={"Click to Delete"}
+                            className="ml-3"
+                          >
+                            D
+                          </span>
+                        )}
                       </div>
                     )
                   ) : (
-                    ""
+                    <>
+                      {ReportingManager === 1 && (
+                        <span
+                          style={{
+                            color: "white",
+                            fontWeight: "bold",
+                            border: "1px solid #EB3467",
+                            width: "20px",
+                            height: "20px",
+                            background: "#EB3467",
+                            borderRadius: "50%",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            textDecoration: "none",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => {
+                            setVisible({
+                              deleteVisible: true,
+                              showData: ele,
+                            });
+                          }}
+                          title={"Click to Delete"}
+                          className="ml-0"
+                        >
+                          D
+                        </span>
+                      )}
+                    </>
                   ),
               }))}
               tableHeight={"tableHeight"}

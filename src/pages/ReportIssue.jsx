@@ -178,7 +178,6 @@ const ReportIssue = ({ visibleTicket }) => {
         RoleID: 0,
         ProjectID: proj,
       })
-
       .then((res) => {
         handleReactSelectDropDownOptions(res?.data.data, "NAME", "ID");
         // const poc3s = res?.data.data.map((item) => {
@@ -253,6 +252,12 @@ const ReportIssue = ({ visibleTicket }) => {
           };
         });
         setModuleName(poc3s);
+        const singleProject = res?.data?.data?.[0]?.ID;
+        setFormData((prev) => ({
+          ...prev,
+          ModuleName: singleProject,
+        }));
+        getIncharge(singleProject);
       })
       .catch((err) => {
         console.log(err);
@@ -546,7 +551,11 @@ const ReportIssue = ({ visibleTicket }) => {
           <Heading
             title={t("New Ticket")}
             isBreadcrumb={true}
-            secondTitle={<Link to="/ViewIssues" className="ml-3 font-weight-bold">View Ticket</Link>}
+            secondTitle={
+              <Link to="/ViewIssues" className="ml-3 font-weight-bold">
+                View Ticket
+              </Link>
+            }
           />
         )}
         <div className="row p-2">

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Heading from "../components/UI/Heading";
-import axios from "axios";
 import { apiUrls } from "../networkServices/apiEndpoints";
 import { headers } from "../utils/apitools";
 import ReactSelect from "../components/formComponent/ReactSelect";
@@ -237,10 +236,6 @@ const ProjectMaster = () => {
     });
   };
   const getUserName = () => {
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.GetUserName, form, { headers })
     axiosInstances
       .post(apiUrls?.GetUserName, { Username: "" })
       .then((res) => {
@@ -254,76 +249,63 @@ const ProjectMaster = () => {
       });
   };
   const getVertical = () => {
-    let form = new FormData();
-    form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Vertical_Select, form, { headers })
-        .then((res) => {
-          const verticals = res?.data.data.map((item) => {
-            return { label: item?.Vertical, value: item?.VerticalID };
-          });
-          setVertical(verticals);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls?.Vertical_Select, {})
+      .then((res) => {
+        const verticals = res?.data.data.map((item) => {
+          return { label: item?.Vertical, value: item?.VerticalID };
         });
+        setVertical(verticals);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const getAMCTYPE = () => {
-    let form = new FormData();
-    form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      axios
-        .post(apiUrls?.AMCType_Select, form, { headers })
-        .then((res) => {
-          const verticals = res?.data.data.map((item) => {
-            return { label: item?.NAME, value: item?.ID };
-          });
-          setAmcType(verticals);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls?.AMCType_Select, {})
+      .then((res) => {
+        const verticals = res?.data.data.map((item) => {
+          return { label: item?.NAME, value: item?.ID };
         });
+        setAmcType(verticals);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getTeam = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Team_Select, form, { headers })
-        .then((res) => {
-          const teams = res?.data.data.map((item) => {
-            return { label: item?.Team, value: item?.TeamID };
-          });
-          setTeam(teams);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls?.Team_Select, {})
+      .then((res) => {
+        const teams = res?.data.data.map((item) => {
+          return { label: item?.Team, value: item?.TeamID };
         });
+        setTeam(teams);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const getWing = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Wing_Select, form, { headers })
-        .then((res) => {
-          const wings = res?.data.data.map((item) => {
-            return { label: item?.Wing, value: item?.WingID };
-          });
-          setWing(wings);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls?.Wing_Select, {})
+      .then((res) => {
+        const wings = res?.data.data.map((item) => {
+          return { label: item?.Wing, value: item?.WingID };
         });
+        setWing(wings);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getReporter = () => {
     axiosInstances
       .post(apiUrls?.Reporter_Select, {})
       .then((res) => {
-      
         const reporters = res?.data.data.map((item) => {
           return { label: item?.Name, value: item?.ID };
         });

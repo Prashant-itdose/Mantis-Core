@@ -211,31 +211,25 @@ const LeaveRequest = ({ data }) => {
     let isDisabled = false;
 
     if (ReportingManager == 1) {
-      // --- Reporting Manager Logic ---
       if (
         targetYear < currentYear ||
         (targetYear === currentYear && targetMonth < currentMonth)
       ) {
-        // Previous month logic
         const daysPassed = today.getDate();
-        isDisabled = daysPassed > 2; // enable only first 2 days of current month
+        isDisabled = daysPassed > 2;
       } else if (targetYear === currentYear && targetMonth === currentMonth) {
-        // Current month → always active
         isDisabled = false;
       } else {
-        // Future months → disabled
-        // isDisabled = true;
-        isDisabled = false; // future months enabled
+        isDisabled = false;
       }
     } else {
-      // --- Normal User Logic ---
       if (
         targetYear < currentYear ||
         (targetYear === currentYear && targetMonth < currentMonth)
       ) {
-        isDisabled = true; // past months disabled
+        isDisabled = true;
       } else if (targetYear === currentYear && targetMonth === currentMonth) {
-        isDisabled = false; // current month active
+        isDisabled = false;
       } else {
         // isDisabled = true; // future months disabled
         isDisabled = false; // future months enabled

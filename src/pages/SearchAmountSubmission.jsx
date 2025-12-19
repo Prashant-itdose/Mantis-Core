@@ -70,7 +70,6 @@ const SearchAmountSubmission = ({ data }) => {
     RecoveryTeam: "",
   });
 
-  console.log("formdata,kamal", formData);
   const handleMultiSelectChange = (name, selectedOptions) => {
     const selectedValues = selectedOptions.map((option) => option.code);
     setFormData((prev) => ({
@@ -1118,6 +1117,19 @@ const SearchAmountSubmission = ({ data }) => {
               handleChange={handleDeliveryChangefilter}
               value={formData.BankName}
             />
+            // <MultiSelectComp
+            //   respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+            //   name="BankName"
+            //   placeholderName={t("Bank Name")}
+            //   dynamicOptions={[
+            //     { label: "Select", value: "All" },
+            //     { label: "ICICI-220", value: "ICICI-220" },
+            //     { label: "ICICI-51", value: "ICICI-51" },
+            //     { label: "Kotak", value: "Kotak" },
+            //   ]}
+            //   handleChange={handleMultiSelectChange}
+            //   value={formData.BankName}
+            // />
           )}
           {isVisible("Status") && (
             <ReactSelect

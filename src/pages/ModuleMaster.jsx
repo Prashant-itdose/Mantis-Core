@@ -226,7 +226,7 @@ const ModuleMaster = () => {
         console.log(err);
       });
   };
-  const getProduct = (value) => {
+  const getProduct = () => {
     axiosInstances
       .post(apiUrls.GetProductVersion, {})
       .then((res) => {
@@ -365,7 +365,9 @@ const ModuleMaster = () => {
                 "Module Name": ele?.ModuleName,
                 Incharge: ele?.Incharge,
                 "Created By": ele?.CreatedBy,
-                "Created Date": ele?.dtEntry,
+                "Created Date": new Date(ele?.dtEntry).toLocaleDateString(
+                  "en-GB"
+                ),
                 Status: ele.IsActive == "1" ? "Active" : "DeActive",
                 Edit: (
                   <i

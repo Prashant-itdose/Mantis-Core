@@ -8,6 +8,7 @@ import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import moment from "moment/moment";
 import Loading from "../components/loader/Loading";
 import { axiosInstances } from "../networkServices/axiosInstance";
+import { format, parse } from "date-fns";
 
 const LeaveRequestModal = ({
   visible,
@@ -26,9 +27,9 @@ const LeaveRequestModal = ({
   const leaveData = visible?.CalenderDetails?.[1]?.find(
     (val) => String(val?.Day) === moment(visible?.data).format("D")
   );
-  console.log("leavedata", leaveData);
-  console.log("visible", visible);
-  console.log("visible [1]", visible?.CalenderDetails?.[1]);
+  // console.log("leavedata", leaveData);
+  // console.log("visible", visible);
+  // console.log("visible [1]", visible?.CalenderDetails?.[1]);
 
   const [OLTypeWise, setOLTypeWise] = useState([]);
   const [WOTypeWise, setWOTypeWise] = useState([]);
@@ -63,16 +64,22 @@ const LeaveRequestModal = ({
         ...formData,
         [name]: value,
       });
+      convertToISO(value);
+      console.log("wo Type value", value, convertToISO(value));
     } else if (name == "OlType") {
       setFormData({
         ...formData,
         [name]: value,
       });
+      convertToISO(value);
+      console.log("ol Type value", value, convertToISO(value));
     } else if (name == "hlType") {
       setFormData({
         ...formData,
         [name]: value,
       });
+      convertToISO(value);
+      console.log("hl Type value", value, convertToISO(value));
     } else {
       setFormData({
         ...formData,
@@ -118,7 +125,6 @@ const LeaveRequestModal = ({
         LeaveType: Number(2),
       })
       .then((res) => {
-        // console.log("kasjaksjkajs", res?.data?.data[0]);
         const verticals = res?.data?.data?.map((item) => {
           return { label: item?.Day, value: item?.Day };
         });
@@ -162,6 +168,37 @@ const LeaveRequestModal = ({
     const leave = leaveDataFilter.find((item) => item?.LeaveType === leaveType);
     return leave ? leave.Available : "0";
   };
+
+  const convertToISO = (dateStr) => {
+    console.log("datestr", dateStr);
+    const parts = dateStr?.split("-");
+
+    const day = parts[1]?.match(/\d+/)[0].padStart(2, "0"); // "9" → "09"
+    const monthName = parts[1]?.replace(/\d+/g, ""); // "August"
+    const year = `20${parts[2]}`; // "25" → "2025"
+
+    const monthMap = {
+      January: "01",
+      February: "02",
+      March: "03",
+      April: "04",
+      May: "05",
+      June: "06",
+      July: "07",
+      August: "08",
+      September: "09",
+      October: "10",
+      November: "11",
+      December: "12",
+    };
+
+    const month = monthMap[monthName];
+
+    return `${year}-${month}-${day}`;
+  };
+
+  // console.log("kamalala", convertToISO(formData?.OlType));
+
   const handleLeaveRequest_Save = () => {
     if (!formData?.LeaveType) {
       toast.error("Please Select LeaveTypee.");
@@ -196,6 +233,12 @@ const LeaveRequestModal = ({
             useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
         LeaveType: String(formData?.LeaveType),
+        LeaveTypeDateValue: String(
+          convertToISO(formData?.OlType) ||
+            convertToISO(formData?.woType) ||
+            convertToISO(formData?.hlType)
+        ),
+        OptionalType: String(formData?.OptionalType),
         Description: String(formData?.Description),
         StatusType: String("Save"),
       })

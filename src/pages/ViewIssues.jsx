@@ -4253,7 +4253,10 @@ const ViewIssues = ({ data }) => {
                   respclass="col-xl-2 col-md-4 col-sm-4 col-12 mt-1"
                   name="ProductVersion"
                   placeholderName="Product Version"
-                  dynamicOptions={productversion}
+                  dynamicOptions={[
+                    { label: "Select", value: "" },
+                    ...productversion,
+                  ]}
                   handleChange={handleDeliveryChange}
                   value={formData.ProductVersion}
                 />
@@ -4286,7 +4289,7 @@ const ViewIssues = ({ data }) => {
                   respclass="col-xl-2 col-md-4 col-sm-6 col-12 mt-1"
                   name="PagesName"
                   placeholderName={t("PageName")}
-                  dynamicOptions={pageName}
+                  dynamicOptions={[{ label: "Select", value: "" }, ...pageName]}
                   value={formData?.PagesName}
                   handleChange={handleDeliveryChange}
                   // requiredClassName={"required-fields"}

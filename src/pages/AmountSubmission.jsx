@@ -327,6 +327,7 @@ const AmountSubmission = ({ data }) => {
       message,
     };
   };
+  
   const amountSubmissionTHEAD = [
     t("S.No."),
     t("Receive Date"),

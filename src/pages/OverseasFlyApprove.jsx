@@ -53,7 +53,7 @@ const OverseasFlyApprove = ({ visible, setVisible, handleSearch }) => {
           <span style={{ fontWeight: "bold", marginLeft: "10px" }}>
             Do you want to Final Approve this request?
           </span>
-          <div className="col-sm-6">
+          <div className="col-sm-4">
             {loading ? (
               <Loading />
             ) : (

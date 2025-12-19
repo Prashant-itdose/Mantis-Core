@@ -431,7 +431,6 @@ export const ViewExpenseThead = [
   "Meals",
   "Local",
   "InterCity",
-  // "Phone",
   "Entertainment",
   "Others",
   "Total",
