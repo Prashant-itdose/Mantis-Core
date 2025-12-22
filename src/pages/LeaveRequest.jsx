@@ -50,7 +50,7 @@ const LeaveRequest = ({ data }) => {
       ? useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
       : "",
   });
-  console.log("data formdata", useCryptoLocalStorage("user_Data", "get", "ID"));
+
   const ReportingManager = useCryptoLocalStorage(
     "user_Data",
     "get",
@@ -112,26 +112,41 @@ const LeaveRequest = ({ data }) => {
   };
 
   const apiCalledRef = useRef(false);
-
   useEffect(() => {
     if (apiCalledRef.current) return;
     if (data?.MonthYear) {
       apiCalledRef.current = true;
       const jsDate = new Date(`${data?.MonthYear?.replace("-", " ")} 1`);
-      const selectedYear = jsDate.getFullYear();
-      const selectedMonth = jsDate.getMonth() + 1;
+      const selYear = jsDate.getFullYear();
+      const selMonthZeroBased = jsDate.getMonth();
+
+      setSelectedYear(selYear);
+      setSelectedMonth(selMonthZeroBased);
+      setFormData((prev) => ({
+        ...prev,
+        Month: jsDate,
+        currentYear: selYear,
+        currentMonth: selMonthZeroBased + 1,
+        Employee: data?.EmployeeId || data?.Employee_Id || prev.Employee,
+      }));
+
       handleLeaveRequest_BindCalender({
-        year: selectedYear,
-        month: selectedMonth,
+        year: selYear,
+        month: selMonthZeroBased + 1,
+        employee: data?.EmployeeId || data?.Employee_Id,
       });
     } else {
-      handleLeaveRequest_BindCalender();
+      apiCalledRef.current = true;
+      handleLeaveRequest_BindCalender({
+        year: selectedYear,
+        month: selectedMonth + 1,
+        employee: formData?.Employee,
+      });
     }
   }, [data?.MonthYear]);
 
   const getStatusClass = (day, table1Data) => {
     const Table1LeaveList = table1Data?.find((d) => d.Day === day);
-    // console.log("tablelist", Table1LeaveList);
 
     if (!Table1LeaveList) return "";
 
@@ -335,17 +350,21 @@ const LeaveRequest = ({ data }) => {
 
   const handleLeaveRequest_BindCalender = (details) => {
     setLoading(true);
+
+    const empFromForm = formData?.Employee;
+    const empFromProp = data?.Employee_Id || data?.EmployeeId;
+    const empId = Number(
+      details?.employee ?? empFromForm ?? empFromProp ?? CRMID
+    );
+
+    const year = Number(details?.year ?? selectedYear);
+    const month = Number(details?.month ?? selectedMonth + 1);
+
     axiosInstances
       .post(apiUrls.LeaveRequest_BindCalender, {
-        CrmEmpID: Number(
-          data?.Employee_Id || data?.EmployeeId || formData?.Employee
-        ),
-        Year:
-          Number(details ? details?.year : currentYear) ||
-          formData?.currentYear,
-        Month:
-          Number(details ? details?.month : currentMonth) ||
-          formData?.currentMonth,
+        CrmEmpID: empId,
+        Year: year,
+        Month: month,
       })
       .then((res) => {
         setCalenderDetails(res?.data?.data);
@@ -430,11 +449,11 @@ const LeaveRequest = ({ data }) => {
         <div className="card">
           <Heading title={"Attendance Calendar"} isBreadcrumb={true} />
           <div className="row g-4 m-2">
-            <label className="mr-2">Name :</label>
+            {/* <label className="mr-2">Name :</label>
             <span style={{ textAlign: "right" }}>
               {data ? data?.Name : LoginUserName}
-            </span>
-            {/* {ReportingManager == 1 ? (
+            </span> */}
+            {ReportingManager == 1 ? (
               <ReactSelect
                 respclass="col-xl-2 col-md-4 col-sm-6 col-12"
                 name="Employee"
@@ -455,12 +474,12 @@ const LeaveRequest = ({ data }) => {
                 value={IsEmployee}
                 disabled={true}
               />
-            )} */}
+            )}
 
             <div className="col-sm-4 d-flex">
-              <div className="ml-4">
+              {/* <div className="ml-4">
                 <label>Leave Month/Year :</label>
-              </div>
+              </div> */}
               <div className="cl-sm-4">
                 <DatePickerMonth
                   className="custom-calendar"
@@ -473,12 +492,18 @@ const LeaveRequest = ({ data }) => {
                   handleChange={(e) => handleMonthYearChange("Month", e)}
                 />
               </div>
-              {/* <button
+              <button
                 className="btn btn-sm btn-info ml-3"
-                onClick={handleLeaveRequest_BindCalender}
+                onClick={() =>
+                  handleLeaveRequest_BindCalender({
+                    year: selectedYear,
+                    month: selectedMonth + 1,
+                    employee: formData?.Employee,
+                  })
+                }
               >
                 Search
-              </button> */}
+              </button>
             </div>
             <div className="col-sm-2"></div>
             <div className="col-sm-4">

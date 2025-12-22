@@ -702,6 +702,20 @@ const allRoutes = {
     {
       Guard: Authenticated,
       layout: Layout,
+      path: "/BaseClassRegister",
+      component: lazy(() => import("@app/pages/Machine/BaseClassRegister.jsx")),
+      exact: true,
+    },
+    {
+      Guard: Authenticated,
+      layout: Layout,
+      path: "/MachineRegistration",
+      component: lazy(() => import("@app/pages/Machine/MachineRegistration.jsx")),
+      exact: true,
+    },
+    {
+      Guard: Authenticated,
+      layout: Layout,
       path: "/SupplierMaster",
       component: lazy(() => import("@app/pages/Inventory/SupplierMaster.jsx")),
       exact: true,
@@ -811,6 +825,7 @@ const allRoutes = {
       component: lazy(() => import("@app/pages/OverseasFlySearch.jsx")),
       exact: true,
     },
+    
     {
       Guard: Authenticated,
       layout: Layout,

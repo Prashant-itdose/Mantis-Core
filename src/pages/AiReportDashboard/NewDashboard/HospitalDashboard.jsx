@@ -98,6 +98,7 @@ const HospitalDashboard = () => {
     axiosInstances
       .post(apiUrls.AIClientDashboard, {
         clientCode: "REACT2025e8d7c6b5a4f3e2d1c0b",
+        Type: String(""),
       })
       .then((res) => {
         setTableData(res.data.data);
@@ -491,7 +492,7 @@ const HospitalDashboard = () => {
                     </h3>
 
                     <div className="card-metric">
-                      {type1[0]?.TotalVisit || 0}
+                      {type1?.[0]?.TotalVisit || 0}
                     </div>
                     <p className="card-description card-description-blue">
                       Total AI patient visits for today. Click to view details.
@@ -523,7 +524,7 @@ const HospitalDashboard = () => {
                       Range Period Patients in AI
                     </h3>
                     <div className="card-metric">
-                      {type2[0]?.TotalVisit || 0}
+                      {type2?.[0]?.TotalVisit || 0}
                     </div>
                     <p className="card-description card-description-blue">
                       Total AI patient visits for Range Period. Click to view
@@ -565,7 +566,7 @@ const HospitalDashboard = () => {
                       Today's Questions in AI
                     </h3>
                     <div className="card-metric">
-                      {type3[0]?.TotalVisit || 0}
+                      {type3?.[0]?.TotalVisit || 0}
                     </div>
                     <p className="card-description card-description-green">
                       Total questions asked today. Click to view details.
@@ -597,7 +598,7 @@ const HospitalDashboard = () => {
                       Range Period Questions in AI
                     </h3>
                     <div className="card-metric">
-                      {type4[0]?.TotalVisit || 0}
+                      {type4?.[0]?.TotalVisit || 0}
                     </div>
                     <p className="card-description card-description-green">
                       Total Range Period asked for yesterday. Click to view

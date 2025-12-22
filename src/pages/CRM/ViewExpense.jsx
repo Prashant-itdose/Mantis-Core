@@ -487,25 +487,25 @@ const ViewExpense = () => {
     "Others",
     "Total",
     "Status",
-    // "Action",
-    <label
-      style={{
-        display: "flex",
-        justifyContent: "flex-end",
-        
-      }}
-    >
-      {" "}
-      Select All &nbsp;
-      <input
-        type="checkbox"
-        name="selectAll"
-        checked={selectAll}
-        className="mr-2"
-        onChange={handleCheckBox}
-      />
-      &nbsp;
-    </label>,
+    "Action",
+    // <label
+    //   style={{
+    //     display: "flex",
+    //     justifyContent: "flex-end",
+
+    //   }}
+    // >
+    //   {" "}
+    //   Select All &nbsp;
+    //   <input
+    //     type="checkbox"
+    //     name="selectAll"
+    //     checked={selectAll}
+    //     className="mr-2"
+    //     onChange={handleCheckBox}
+    //   />
+    //   &nbsp;
+    // </label>,
     { name: "Attachment", width: "5%" },
   ];
   return (
@@ -1519,7 +1519,7 @@ const ViewExpense = () => {
                         D
                       </span>
                     </div>
-                    <div>
+                    {/* <div>
                       {ele?.EmpID ==
                         useCryptoLocalStorage(
                           "user_Data",
@@ -1539,7 +1539,7 @@ const ViewExpense = () => {
                           onChange={(e) => handleCheckBox(e, index)}
                         />
                       )}
-                    </div>
+                    </div> */}
                   </div>
                 </>
               ),

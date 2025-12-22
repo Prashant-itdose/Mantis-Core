@@ -281,7 +281,7 @@ const TaxInvoiceView = ({ data }) => {
         StateID: "0",
         DistrictID: "0",
       })
-     
+
       .then((res) => {
         const states = res?.data.data.map((item) => {
           return { label: item?.City, value: item?.ID };
@@ -445,7 +445,7 @@ const TaxInvoiceView = ({ data }) => {
 
       axiosInstances
         .post(apiUrls.TaxInvoice_Search, payload)
-   
+
         .then((res) => {
           if (res?.data?.success == true) {
             // toast.success(res?.data?.message);
@@ -975,7 +975,8 @@ const TaxInvoiceView = ({ data }) => {
                       targrt={`projectName-${index}`}
                       style={{ textAlign: "center" }}
                     >
-                      {capitalizeFirstLetter(shortenName(ele?.Remark))}
+                      {/* {capitalizeFirstLetter(shortenName(ele?.Remark))} */}
+                      {ele?.Remark == "undefined" ? "" : ele.Remark}
                     </span>
                   </Tooltip>
                 </>

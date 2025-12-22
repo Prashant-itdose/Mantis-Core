@@ -56,9 +56,9 @@ export const Tabfunctionality = (event) => {
     const currentIndex = inputs.findIndex((input) => input === currentInput);
 
     if (currentIndex !== -1) {
-      const nextIndex = (currentIndex + 1) % inputs.length; // Get the index of the next required input
-      inputs[nextIndex].focus(); // Focus on the next required input
-      event.preventDefault(); // Prevent the default tab behavior
+      const nextIndex = (currentIndex + 1) % inputs.length;
+      inputs[nextIndex].focus(); 
+      event.preventDefault(); 
     }
   }
 };

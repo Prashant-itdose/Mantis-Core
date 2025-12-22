@@ -171,11 +171,11 @@ const LeaveRequestModal = ({
 
   const convertToISO = (dateStr) => {
     console.log("datestr", dateStr);
-    const parts = dateStr?.split("-");
 
-    const day = parts[1]?.match(/\d+/)[0].padStart(2, "0"); // "9" → "09"
-    const monthName = parts[1]?.replace(/\d+/g, ""); // "August"
-    const year = `20${parts[2]}`; // "25" → "2025"
+    const parts = dateStr?.split("-");
+    const day = parts?.[1]?.match(/\d+/)[0].padStart(2, "0"); // "9" → "09"
+    const monthName = parts?.[1]?.replace(/\d+/g, ""); // "August"
+    const year = `20${parts?.[2]}`; // "25" → "2025"
 
     const monthMap = {
       January: "01",
@@ -197,7 +197,9 @@ const LeaveRequestModal = ({
     return `${year}-${month}-${day}`;
   };
 
-  // console.log("kamalala", convertToISO(formData?.OlType));
+  console.log("convertToISO", convertToISO(formData.OlType));
+  console.log("convertToISO", convertToISO(formData.hlType));
+  console.log("convertToISO", convertToISO(formData.woType));
 
   const handleLeaveRequest_Save = () => {
     if (!formData?.LeaveType) {
@@ -233,12 +235,16 @@ const LeaveRequestModal = ({
             useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
         LeaveType: String(formData?.LeaveType),
-        LeaveTypeDateValue: String(
-          convertToISO(formData?.OlType) ||
-            convertToISO(formData?.woType) ||
-            convertToISO(formData?.hlType)
-        ),
-        OptionalType: String(formData?.OptionalType),
+        LeaveTypeDateValue:
+          // convertToISO() == "20undefined-undefined-undefined"
+          //   ? ""
+          //   :
+          String(
+            convertToISO(formData?.OlType) ||
+              convertToISO(formData?.woType) ||
+              convertToISO(formData?.hlType)
+          ),
+        OptionalType: Number(formData?.OptionalType) || 0,
         Description: String(formData?.Description),
         StatusType: String("Save"),
       })
