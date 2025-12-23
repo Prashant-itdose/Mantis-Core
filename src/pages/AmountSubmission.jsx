@@ -819,7 +819,7 @@ const AmountSubmission = ({ data }) => {
               </span>
             </div>
           ) : (
-            ""
+            <span className="font-weight-bold" style={{color:"red"}}>Email details are not available.</span>
           )}
         </div>
       </div>

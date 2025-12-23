@@ -414,7 +414,7 @@ const EmployeeMaster = () => {
           RegisteredSalesEnquiry: "",
           IsSalesTeamMember: "",
           ApproveLeaveRequest: "",
-          MaximumWeekoffs:  datas?.MaxWeekOffs == "0" ? "0" : datas?.MaxWeekOffs,
+          MaximumWeekoffs: datas?.MaxWeekOffs == "0" ? "0" : datas?.MaxWeekOffs,
           WorkingDays: "",
           BiometricEmployeeCode: "",
           EmployeeID: "",
@@ -1080,7 +1080,7 @@ const EmployeeMaster = () => {
                 value={formData?.GovtIDNo}
                 respclass="col-xl-2 col-md-4 col-sm-4 col-12"
               />
-             
+
               <DatePicker
                 className="custom-calendar"
                 id="DOB"
@@ -1947,13 +1947,13 @@ const EmployeeMaster = () => {
                 value={formData?.EmployeeEmail}
                 respclass="col-xl-2 col-md-4 col-sm-4 col-12"
               />
-           
+
               <ReactSelect
                 name="MaximumWeekoffs"
                 respclass="col-xl-2 col-md-4 col-sm-6 col-12"
                 placeholderName="Maximum Weekoffs"
                 dynamicOptions={[
-                 {
+                  {
                     label: "None",
                     value: "0",
                   },
@@ -1974,7 +1974,6 @@ const EmployeeMaster = () => {
                 handleChange={handleDeliveryChange}
                 requiredClassName="required-fields"
               />
-             
             </div>
           </>
         )}

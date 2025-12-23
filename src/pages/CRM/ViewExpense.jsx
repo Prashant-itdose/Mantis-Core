@@ -73,6 +73,7 @@ const ViewExpense = () => {
     currentYear: currentYear,
     ExpenseType: "Both",
     StatusType: "0",
+    SearchType: "",
   });
   const [tableData, setTableData] = useState([]);
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
@@ -769,6 +770,21 @@ const ViewExpense = () => {
               { label: "Rejected", value: "3" },
             ]}
             value={formData?.StatusType}
+            handleChange={handleDeliveryChange}
+            requiredClassName={"required-fields"}
+          />
+          <ReactSelect
+            className="form-control"
+            name="SearchType"
+            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+            placeholderName="SearchType"
+            id="SearchType"
+            dynamicOptions={[
+              { label: "Select", value: "0" },
+              { label: "Type1", value: "1" },
+              { label: "Type2", value: "2" },
+            ]}
+            value={formData?.SearchType}
             handleChange={handleDeliveryChange}
             requiredClassName={"required-fields"}
           />

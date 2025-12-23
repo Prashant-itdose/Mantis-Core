@@ -1260,6 +1260,19 @@ const SearchAmountSubmission = ({ data }) => {
                       PageName="SearchAmountSubmissionTable"
                     />
                   </span>
+                  <span className="ml-1 font-weight-bold">
+                    {/* {t("Total Amount")} : &nbsp; */}
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                    &nbsp;&nbsp;
+                    {Number(tableData[0]?.TotalAmount || 0).toLocaleString(
+                      "en-IN",
+                      {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      }
+                    )}
+                  </span>
                 </div>
               </div>
             }
@@ -1443,7 +1456,7 @@ const SearchAmountSubmission = ({ data }) => {
                     </div>
                   </div>
                   {/* Total Transaction: {tableData1?.length} */}
-                  <span className="ml-5">
+                  {/* <span className="ml-5">
                     {t("Total Amount")} : &nbsp;
                     {Number(tableData[0]?.TotalAmount || 0).toLocaleString(
                       "en-IN",
@@ -1452,7 +1465,7 @@ const SearchAmountSubmission = ({ data }) => {
                         maximumFractionDigits: 2,
                       }
                     )}
-                  </span>
+                  </span> */}
                 </div>
               </>
             }
@@ -1483,12 +1496,26 @@ const SearchAmountSubmission = ({ data }) => {
 
               if (isTableVisible("Team")) rowData.Team = ele?.Team;
               if (isTableVisible("POC-I")) rowData["POC-I"] = ele?.POC_1_Name;
-              if (isTableVisible("Amount")) rowData.Amount = ele?.Amount;
+              if (isTableVisible("Amount")) {
+                rowData.Amount = Number(ele?.Amount || 0).toLocaleString(
+                  "en-IN",
+                  {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  }
+                );
+              }
 
               if (isTableVisible("PaymentMode")) {
                 rowData.PaymentMode = (
                   <div className="d-flex align-items-center justify-content-between">
-                    {!ele?.isShow && <div>{ele?.PaymentMode}</div>}
+                    {!ele?.isShow && (
+                      <div>
+                        {ele?.PaymentMode == "Cash"
+                          ? "Delta"
+                          : ele?.PaymentMode}
+                      </div>
+                    )}
                     <div className="d-flex align-items-center justify-content-between">
                       <i
                         className="fa fa-eye mr-2"

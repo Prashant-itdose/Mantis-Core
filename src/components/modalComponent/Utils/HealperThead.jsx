@@ -100,6 +100,18 @@ export const EmployeeTHEAD = [
   "Edit",
   "Action",
 ];
+
+export const EmployeeManagerTHEAD = [
+  "S.No.",
+  "Employee Name",
+  "Vertical",
+  "Team",
+  "Wing",
+  "Reporting Manager",
+  "Office Designation",
+  "Role Designation",
+  
+];
 export const userVSprojectTHEAD = [
   "S.No.",
   "ProjectID",

@@ -116,7 +116,7 @@ export const apiUrls = {
   AmountSubmission_ByAccounts_Search:
     "/Accounts/AmountSubmissionByAccountsSearch",
   AmountSubmission_ByAccounts_IsCancel:
-    "/Accounts/AmountSubmission_ByAccounts_IsCancel",
+    "/Accounts/AmountSubmissionByAccountsIsCancel",
   OverseasExcelInsert: "/ManageExpense/OverseasExcelInsert",
 
   //Query Master Api;s

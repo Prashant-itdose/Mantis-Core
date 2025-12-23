@@ -6,7 +6,10 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { headers } from "../utils/apitools";
 import Tables from "../components/UI/customTable";
-import { EmployeeTHEAD } from "../components/modalComponent/Utils/HealperThead";
+import {
+  EmployeeManagerTHEAD,
+  EmployeeTHEAD,
+} from "../components/modalComponent/Utils/HealperThead";
 import { apiUrls } from "../networkServices/apiEndpoints";
 import Modal from "../components/modalComponent/Modal";
 import ManageRoleEmployeeMaster from "./CRM/ManageRoleEmployeeMaster";
@@ -36,6 +39,7 @@ import { axiosInstances } from "../networkServices/axiosInstance";
 const SearchEmployeeMaster = () => {
   const [t] = useTranslation();
   const [tableData, setTableData] = useState([]);
+  const [tableData1, setTableData1] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [role, setRole] = useState([]);
@@ -50,6 +54,7 @@ const SearchEmployeeMaster = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dynamicFilter, setDynamicFilter] = useState([]);
   const [columnConfig, setColumnConfig] = useState([]);
+   const [designation, setDesignation] = useState([]);
   const [formData, setFormData] = useState({
     Designation: "",
     EmployeeName: "",
@@ -70,9 +75,9 @@ const SearchEmployeeMaster = () => {
     Dashboard: "",
     ImageSignature: "",
     BloodGroup: "",
+    StatusType: "",
+    OfficeDesignation:""
   });
-
-  /////////////////////////////////
 
   const SaveFilter = () => {
     const filterData = [
@@ -139,7 +144,19 @@ const SearchEmployeeMaster = () => {
         setLoading(true);
       });
   };
-
+  const getDesignation = () => {
+    axiosInstances
+      .post(apiUrls?.ViewDesignation, {})
+      .then((res) => {
+        const reporters = res?.data.data.map((item) => {
+          return { label: item?.DesignationName, value: item?.ID };
+        });
+        setDesignation(reporters);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const SearchAmountSubmissionFilter = () => {
     axiosInstances
       .post(apiUrls?.GetFilterTableReprintData, {
@@ -192,6 +209,7 @@ const SearchEmployeeMaster = () => {
     SearchAmountSubmissionTableFilter();
     SaveTableFilter();
     SaveFilter();
+    getDesignation()
   }, []);
 
   ////////////////////////////////
@@ -366,6 +384,7 @@ const SearchEmployeeMaster = () => {
           }
 
           const data = res?.data?.data;
+          setTableData1(res?.data?.data1);
           const updatedData = data?.map((ele, index) => {
             return {
               ...ele,
@@ -1026,6 +1045,16 @@ const SearchEmployeeMaster = () => {
               }))}
             />
           )}
+              <ReactSelect
+                          name="OfficeDesignation"
+                          respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+                          defaultValue={formData?.OfficeDesignation}
+                          placeholderName="Designation"
+                          dynamicOptions={designation}
+                          value={formData?.OfficeDesignation}
+                          handleChange={handleDeliveryChange}
+                        
+                        />
           <ReactSelect
             name="BloodGroup"
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
@@ -1060,6 +1089,20 @@ const SearchEmployeeMaster = () => {
               handleChange={handleDeliveryChange}
             />
           )}
+
+          <ReactSelect
+            name="StatusType"
+            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+            placeholderName="Search Type"
+            searchable={true}
+            dynamicOptions={[
+              { label: "Seelct", value: "0" },
+              { label: "Type1", value: "1" },
+              { label: "Type2", value: "2" },
+            ]}
+            value={formData?.StatusType}
+            handleChange={handleDeliveryChange}
+          />
           <div className="col-2 d-flex">
             {loading ? (
               <Loading />
@@ -1358,6 +1401,26 @@ const SearchEmployeeMaster = () => {
         </div>
       ) : (
         <NoRecordFound />
+      )}
+      {tableData1?.length > 0 && (
+        <div className="card">
+          <div className="row m-2">
+            <Tables
+              thead={EmployeeManagerTHEAD}
+              tbody={tableData1?.map((ele, index) => ({
+                "S.No.": index + 1,
+                Vertical: "",
+                Team: "",
+                Wing: "",
+                "Reporting Manager": "",
+                "Office Designation": "",
+                "Role Designation": "",
+                colorcode: ele?.rowColor,
+              }))}
+              tableHeight={"tableHeight"}
+            />
+          </div>
+        </div>
       )}
     </>
   );

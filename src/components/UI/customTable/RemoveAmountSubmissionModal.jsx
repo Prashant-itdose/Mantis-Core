@@ -36,23 +36,27 @@ const RemoveAmountSubmissionModal = ({ visible, setVisible, ele }) => {
     const ele = dropdownData.filter((item) => item.value === id);
     return ele.length > 0 ? ele[0].label : "";
   }
+
   const handleRemove = () => {
     if (formData?.CancelReason == "") {
       toast.error("Please Enter Cancel Reason.");
     } else {
-      
       const payload = {
-        OnAccount_Req_ID: String(visible?.showData?.EncryptID || ""),
+        OnAccount_Req_ID: String(visible?.showData?.EncryptID),
         CancelReason: String(getlabel(formData?.CancelReason, reason) || ""),
-        CancelReasonID: String(formData?.CancelReason || ""),
+        CancelReasonID: Number(formData?.CancelReason || ""),
         OtherCancelReason: String(formData?.OtherReason || ""),
       };
 
       axiosInstances
         .post(apiUrls?.AmountSubmission_ByAccounts_IsCancel, payload)
         .then((res) => {
-          toast.success(res?.data?.message);
-          setVisible((val) => ({ ...val, removeVisible: false }));
+          if (res.data.success === true) {
+            toast.success(res?.data?.message);
+            setVisible((val) => ({ ...val, removeVisible: false }));
+          } else {
+            toast.error(res.data.message);
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -61,7 +65,6 @@ const RemoveAmountSubmissionModal = ({ visible, setVisible, ele }) => {
   };
 
   const handleSearchReason = () => {
-  
     axiosInstances
       .post(apiUrls?.AmountSub_CancelReason_Select, {})
       .then((res) => {

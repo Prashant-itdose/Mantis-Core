@@ -691,6 +691,13 @@ const allRoutes = {
       component: lazy(() => import("@app/pages/ProjectMaster.jsx")),
       exact: true,
     },
+    // {
+    //   Guard: Authenticated,
+    //   layout: Layout,
+    //   path: "/TeamStructure",
+    //   component: lazy(() => import("@app/pages/TeamStructure.jsx")),
+    //   exact: true,
+    // },
     {
       Guard: Authenticated,
       layout: Layout,
@@ -710,7 +717,9 @@ const allRoutes = {
       Guard: Authenticated,
       layout: Layout,
       path: "/MachineRegistration",
-      component: lazy(() => import("@app/pages/Machine/MachineRegistration.jsx")),
+      component: lazy(
+        () => import("@app/pages/Machine/MachineRegistration.jsx")
+      ),
       exact: true,
     },
     {
@@ -825,7 +834,7 @@ const allRoutes = {
       component: lazy(() => import("@app/pages/OverseasFlySearch.jsx")),
       exact: true,
     },
-    
+
     {
       Guard: Authenticated,
       layout: Layout,
