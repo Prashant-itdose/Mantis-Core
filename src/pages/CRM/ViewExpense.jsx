@@ -253,7 +253,6 @@ const ViewExpense = () => {
   };
 
   const handleTableSearch = (kamal) => {
-    console.log("kamal kamal", kamal);
     if (formData?.ExpenseType == "") {
       toast.error("Please Select Expense Type.");
     } else {
@@ -306,7 +305,7 @@ const ViewExpense = () => {
     }
   }, [formData?.Employee]);
 
-  console.log("formdata employee", formData?.Employee);
+ 
 
   const handleTableSearchEmployee = () => {
     if (formData?.ExpenseType == "") {

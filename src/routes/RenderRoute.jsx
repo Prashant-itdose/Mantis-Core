@@ -404,6 +404,13 @@ const allRoutes = {
     {
       Guard: Authenticated,
       layout: Layout,
+      path: "/ManagerSearchEmployee",
+      component: lazy(() => import("@app/pages/ManagerSearchEmployee.jsx")),
+      exact: true,
+    },
+    {
+      Guard: Authenticated,
+      layout: Layout,
       path: "/SearchProjectMaster",
       component: lazy(() => import("@app/pages/SearchProjectMaster.jsx")),
       exact: true,

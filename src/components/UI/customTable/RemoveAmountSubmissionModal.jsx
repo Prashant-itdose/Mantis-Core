@@ -8,7 +8,7 @@ import ReactSelect from "../../formComponent/ReactSelect";
 import { useTranslation } from "react-i18next";
 import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorage";
 import { axiosInstances } from "../../../networkServices/axiosInstance";
-const RemoveAmountSubmissionModal = ({ visible, setVisible, ele }) => {
+const RemoveAmountSubmissionModal = ({ visible, setVisible, handleSearch }) => {
   // console.log(visible);
   const [t] = useTranslation();
   const [reason, setreason] = useState([]);
@@ -53,6 +53,7 @@ const RemoveAmountSubmissionModal = ({ visible, setVisible, ele }) => {
         .then((res) => {
           if (res.data.success === true) {
             toast.success(res?.data?.message);
+            handleSearch();
             setVisible((val) => ({ ...val, removeVisible: false }));
           } else {
             toast.error(res.data.message);

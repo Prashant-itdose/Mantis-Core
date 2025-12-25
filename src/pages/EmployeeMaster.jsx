@@ -43,7 +43,8 @@ const EmployeeMaster = () => {
   const { VITE_DATE_FORMAT } = import.meta.env;
   const [vertical, setVertical] = useState([]);
   const [team, setTeam] = useState([]);
-  const [project, setProject] = useState([]);
+  const [officedesignation, setOfficeDesignation] = useState([]);
+  const [wing, setWing] = useState([]);
   const [reporter, setReporter] = useState([]);
   const [designation, setDesignation] = useState([]);
   const [category, setCategory] = useState([]);
@@ -169,7 +170,19 @@ const EmployeeMaster = () => {
     });
   };
 
-  // Handlers
+  const getWing = () => {
+    axiosInstances
+      .post(apiUrls.Wing_Select, {})
+      .then((res) => {
+        const wings = res?.data.data.map((item) => {
+          return { label: item?.Wing, value: item?.WingID };
+        });
+        setWing(wings);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const handleFileChange = (e) => {
     const file = e?.target?.files?.[0];
     processFile(file);
@@ -363,7 +376,6 @@ const EmployeeMaster = () => {
           Username: datas?.username,
           Password: datas?.Password,
           IsActive: datas?.enabled,
-          Designation: "",
           OfficeDesignation: datas?.DesignationID,
           AccessLevel: datas?.access_level,
           Manager: datas?.TeamLeaderID,
@@ -400,9 +412,9 @@ const EmployeeMaster = () => {
           GovtID: datas?.govtIdentityType,
           GovtIDNo: datas?.govtIdentityNo,
           SameAsCurrent: "",
-          VerticalID: "",
+          VerticalID: datas?.DefaultVerticalID,
           TeamID: datas?.TeamID,
-          WingID: "",
+          WingID: datas?.DefaultWingID,
           ReporterTo: datas?.TeamLeaderID,
           JoiningDate: new Date(datas?.DOJ),
           NextAppraisalDate: new Date(datas?.appriasaldate),
@@ -437,6 +449,7 @@ const EmployeeMaster = () => {
           IsProfile: datas?.ProfileImage,
           IsSiganture: datas?.SignatureURL,
           EmployeeID: "",
+          Designation: datas?.ProfileDesignationID,
         }),
           getSubTeam(datas?.teamname);
 
@@ -495,19 +508,6 @@ const EmployeeMaster = () => {
       show4: true,
       show5: true,
     });
-    const ImageJson = JSON.stringify([
-      {
-        Document_Base64: formData?.Document_Base64,
-        FileExtension: formData?.FileExtension,
-      },
-    ]);
-
-    const SignatureJson = JSON.stringify([
-      {
-        Document_Base64: formData?.SigDocument_Base64,
-        FileExtension: formData?.FileExtensionSig,
-      },
-    ]);
 
     if (!formData?.Username) {
       toast.error("Please Enter Username.");
@@ -547,6 +547,8 @@ const EmployeeMaster = () => {
       toast.error("Please Select Permanent PinCode.");
     } else if (!formData?.OfficeDesignation) {
       toast.error("Please Select Designation.");
+    } else if (!formData?.Designation) {
+      toast.error("Please Select Profile Designation.");
     } else if (!formData?.ReporterTo) {
       toast.error("Please Select Reporting Manager.");
     } else if (!formData?.EmployeeEmail) {
@@ -560,6 +562,16 @@ const EmployeeMaster = () => {
         .post(apiUrls.CreateEmployee, {
           UserName: String(formData?.Username),
           RealName: String(formData?.Name),
+
+          DefaultVerticalID: String(formData?.VerticalID),
+          DefaultVerticalName: String(getlabel(formData?.VerticalID, vertical)),
+          DefaultWingID: String(formData?.WingID),
+          DefaultWingName: String(getlabel(formData?.WingID, wing)),
+          ProfileDesignationName: String(
+            getlabel(formData?.Designation, officedesignation)
+          ),
+          ProfileDesignationID: String(formData?.Designation),
+
           Email: String(formData?.ContactEmail),
           Password: String(formData?.Password),
           AccessLevel: String(formData?.AccessLevel),
@@ -675,6 +687,19 @@ const EmployeeMaster = () => {
         console.log(err);
       });
   };
+  const getProfileDesignation = () => {
+    axiosInstances
+      .post(apiUrls?.GetProfileDesignation, {})
+      .then((res) => {
+        const reporters = res?.data.data.map((item) => {
+          return { label: item?.NAME, value: item?.ID };
+        });
+        setOfficeDesignation(reporters);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const getSubTeam = (item) => {
     axiosInstances
       .post(apiUrls?.Old_Mantis_Sub_Team_Select, {
@@ -685,38 +710,6 @@ const EmployeeMaster = () => {
           return { label: item?.SubTeam, value: item?.ID };
         });
         setSubTeam(teams);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const getProject = () => {
-    axiosInstances
-      .post(apiUrls.ProjectSelect, {})
-      .then((res) => {
-        const poc3s = res?.data.data.map((item) => {
-          return { label: item?.Project, value: item?.ProjectId };
-        });
-        getCategory(poc3s[0]?.value);
-        setProject(poc3s);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const getCategory = (proj) => {
-    axiosInstances
-      .post(apiUrls.Category_Select, {
-        ProjectID: Number(proj),
-        RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
-      })
-      .then((res) => {
-        const poc3s = res?.data.data.map((item) => {
-          return { label: item?.NAME, value: item?.ID };
-        });
-        setCategory(poc3s);
       })
       .catch((err) => {
         console.log(err);
@@ -738,20 +731,6 @@ const EmployeeMaster = () => {
   };
 
   const handleUpdate = () => {
-    const ImageJson = JSON.stringify([
-      {
-        Document_Base64: formData?.Document_Base64,
-        FileExtension: formData?.FileExtension,
-      },
-    ]);
-
-    const SignatureJson = JSON.stringify([
-      {
-        Document_Base64: formData?.SigDocument_Base64,
-        FileExtension: formData?.FileExtensionSig,
-      },
-    ]);
-
     if (!formData?.Username) {
       toast.error("Please Enter Username.");
     } else if (!formData?.Name) {
@@ -790,6 +769,8 @@ const EmployeeMaster = () => {
       toast.error("Please Select Permanent PinCode.");
     } else if (!formData?.OfficeDesignation) {
       toast.error("Please Select Designation.");
+    } else if (!formData?.Designation) {
+      toast.error("Please Select Profile Designation.");
     } else if (!formData?.ReporterTo) {
       toast.error("Please Select Reporting Manager.");
     } else if (!formData?.EmployeeEmail) {
@@ -809,6 +790,16 @@ const EmployeeMaster = () => {
           OldMantisEmpID: String(formData?.OldMantisID),
           UserName: String(formData?.Username),
           RealName: String(formData?.Name),
+
+          DefaultVerticalID: String(formData?.VerticalID),
+          DefaultVerticalName: String(getlabel(formData?.VerticalID, vertical)),
+          DefaultWingID: String(formData?.WingID),
+          DefaultWingName: String(getlabel(formData?.WingID, wing)),
+          ProfileDesignationName: String(
+            getlabel(formData?.Designation, officedesignation)
+          ),
+          ProfileDesignationID: String(formData?.Designation),
+
           Email: String(formData?.ContactEmail),
           Enabled: String(formData?.IsActive || "0"),
           Password: String(formData?.Password),
@@ -894,13 +885,14 @@ const EmployeeMaster = () => {
   };
 
   useEffect(() => {
-    getProject();
     getAccessLevel();
     getReporter();
     getDesignation();
     getVertical();
     getTeam();
     getState();
+    getProfileDesignation();
+    getWing();
   }, []);
   return (
     <>
@@ -1835,11 +1827,29 @@ const EmployeeMaster = () => {
             <div className="row g-4 m-2">
               <ReactSelect
                 respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+                name="VerticalID"
+                placeholderName="Vertical"
+                dynamicOptions={vertical}
+                handleChange={handleDeliveryChange}
+                value={formData?.VerticalID}
+                requiredClassName="required-fields"
+              />
+              <ReactSelect
+                respclass="col-xl-2 col-md-4 col-sm-6 col-12"
                 name="TeamID"
                 placeholderName="Team"
                 dynamicOptions={team}
                 handleChange={handleDeliveryChange}
                 value={formData?.TeamID}
+                requiredClassName="required-fields"
+              />
+              <ReactSelect
+                respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+                name="WingID"
+                placeholderName="Wing"
+                dynamicOptions={wing}
+                handleChange={handleDeliveryChange}
+                value={formData?.WingID}
                 requiredClassName="required-fields"
               />
               <ReactSelect
@@ -1856,17 +1866,33 @@ const EmployeeMaster = () => {
                 respclass="col-xl-2 col-md-4 col-sm-6 col-12"
                 defaultValue={formData?.OfficeDesignation}
                 placeholderName="Designation"
-                dynamicOptions={designation}
+                dynamicOptions={[
+                  { label: "Select", value: "" },
+                  ...designation,
+                ]}
                 value={formData?.OfficeDesignation}
+                handleChange={handleDeliveryChange}
+                requiredClassName="required-fields"
+              />
+              <ReactSelect
+                name="Designation"
+                respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+                defaultValue={formData?.Designation}
+                placeholderName="Profile Designation"
+                dynamicOptions={[
+                  { label: "Select", value: "" },
+                  ...officedesignation,
+                ]}
+                value={formData?.Designation}
                 handleChange={handleDeliveryChange}
                 requiredClassName="required-fields"
               />
 
               <ReactSelect
                 name="ReporterTo"
-                respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+                respclass="col-xl-2 col-md-4 col-sm-6 col-12 mt-2"
                 placeholderName="Reporting Manager"
-                dynamicOptions={reporter}
+                dynamicOptions={[{ label: "Select", value: "" }, ...reporter]}
                 value={formData?.ReporterTo}
                 handleChange={handleDeliveryChange}
                 requiredClassName="required-fields"
@@ -1876,7 +1902,7 @@ const EmployeeMaster = () => {
                 id="JoiningDate"
                 name="JoiningDate"
                 placeholder={VITE_DATE_FORMAT}
-                respclass="col-xl-2 col-md-4 col-sm-4 col-12"
+                respclass="col-xl-2 col-md-4 col-sm-4 col-12 mt-2"
                 value={formData?.JoiningDate}
                 lable="Joining Date"
                 handleChange={handleSelectChange}
@@ -1887,7 +1913,7 @@ const EmployeeMaster = () => {
                 id="NextAppraisalDate"
                 name="NextAppraisalDate"
                 placeholder={VITE_DATE_FORMAT}
-                respclass="col-xl-2 col-md-4 col-sm-4 col-12"
+                respclass="col-xl-2 col-md-4 col-sm-4 col-12 mt-2"
                 value={formData?.NextAppraisalDate}
                 lable="Next Appraisal Date"
                 handleChange={handleSelectChange}
@@ -1902,11 +1928,11 @@ const EmployeeMaster = () => {
                 placeholder=" "
                 onChange={handleSelectChange}
                 value={formData?.EmployeeCode}
-                respclass="col-xl-2 col-md-4 col-sm-4 col-12"
+                respclass="col-xl-2 col-md-4 col-sm-4 col-12 mt-2"
               />
               <ReactSelect
                 name="Grade"
-                respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+                respclass="col-xl-2 col-md-4 col-sm-6 col-12 mt-2"
                 placeholderName="Grade"
                 dynamicOptions={[
                   { label: "Level A", value: "LevelA" },
@@ -1945,12 +1971,12 @@ const EmployeeMaster = () => {
                 placeholder=" "
                 onChange={handleSelectChange}
                 value={formData?.EmployeeEmail}
-                respclass="col-xl-2 col-md-4 col-sm-4 col-12"
+                respclass="col-xl-2 col-md-4 col-sm-4 col-12 mt-2"
               />
 
               <ReactSelect
                 name="MaximumWeekoffs"
-                respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+                respclass="col-xl-2 col-md-4 col-sm-6 col-12 mt-2"
                 placeholderName="Maximum Weekoffs"
                 dynamicOptions={[
                   {

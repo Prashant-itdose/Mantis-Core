@@ -106,16 +106,17 @@ const OverseasFlySearch = () => {
       [`${name}`]: selectedValues,
     }));
   };
+
+
+
   const handleSearch = () => {
     setLoading(true);
     axiosInstances
       .post(apiUrls?.SearchOverseasTravel, {
-        EmployeeID:
-          ReportingManager == 1
-            ? String(formData?.Employee)
-            : String(
-                useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-              ),
+        EmployeeID: String(formData?.Employee) || "",
+        CrmEmployeeID: Number(
+          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+        ),
         CountryID: String(formData?.Country) || "",
         Status: Number(formData?.Status),
         FromDate: String(moment(formData?.FromDate).format("YYYY-MM-DD")),

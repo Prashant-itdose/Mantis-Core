@@ -417,9 +417,7 @@ const AmountSubmission = ({ data }) => {
       TaxIDFlag:
         formData?.PaymentMode == "Cash" ? 0 : Number(TaxIDcheck == 0 ? 1 : 0),
       TaxInvoiceNo: String(formData?.TaxInvoiceNo) || "",
-      TaxEmail: String(
-        `${projectEmail?.[0]?.SPOC_EmailID},${projectEmail?.[0]?.Owner_Email}`
-      ),
+      TaxEmail: String(projectEmail?.[0]?.Owner_Email ?? "").trim(),
       SalesId: Number(SalesIdcheck),
     };
     axiosInstances
@@ -809,19 +807,24 @@ const AmountSubmission = ({ data }) => {
             </>
           )}
         </div>
-        <div className="row m-2">
-          {projectEmail.length > 0 ? (
-            <div>
-              <strong>Tax Email:- </strong>
-              <span className="font-weight-bold" style={{ color: "blue" }}>
-                ({projectEmail?.[0]?.SPOC_EmailID},{" "}
-                {projectEmail?.[0]?.Owner_Email})
+        {formData?.Project !== "" ? (
+          <div className="row m-2">
+            {projectEmail.length > 0 ? (
+              <div>
+                <strong>Tax Email:- </strong>
+                <span className="font-weight-bold" style={{ color: "blue" }}>
+                  ({projectEmail?.[0]?.Owner_Email})
+                </span>
+              </div>
+            ) : (
+              <span className="font-weight-bold" style={{ color: "red" }}>
+                Email details are not available.
               </span>
-            </div>
-          ) : (
-            <span className="font-weight-bold" style={{color:"red"}}>Email details are not available.</span>
-          )}
-        </div>
+            )}
+          </div>
+        ) : (
+          ""
+        )}
       </div>
 
       {tableData?.length > 0 && (
@@ -935,7 +938,8 @@ const AmountSubmission = ({ data }) => {
               "S.No.": index + 1,
               "Receive Date": ele?.ReceivedDate,
               "Recovery Team": ele?.RecoveryTeam,
-              PaymentMode: ele?.PaymentMode,
+              PaymentMode:
+                ele?.PaymentMode == "Cash" ? "Delta" : ele?.PaymentMode,
               Amount: ele?.Amount,
               "Received By": ele?.ReceivedBy,
               "UTR NO.": ele?.UtrNo,

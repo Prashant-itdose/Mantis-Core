@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Heading from "../components/UI/Heading";
 import ReactSelect from "../components/formComponent/ReactSelect";
 import Input from "../components/formComponent/Input";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { headers } from "../utils/apitools";
 import Tables from "../components/UI/customTable";
@@ -38,8 +38,8 @@ import { axiosInstances } from "../networkServices/axiosInstance";
 
 const SearchEmployeeMaster = () => {
   const [t] = useTranslation();
+  const navigate = useNavigate();
   const [tableData, setTableData] = useState([]);
-  const [tableData1, setTableData1] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [role, setRole] = useState([]);
@@ -54,7 +54,7 @@ const SearchEmployeeMaster = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dynamicFilter, setDynamicFilter] = useState([]);
   const [columnConfig, setColumnConfig] = useState([]);
-   const [designation, setDesignation] = useState([]);
+  const [designation, setDesignation] = useState([]);
   const [formData, setFormData] = useState({
     Designation: "",
     EmployeeName: "",
@@ -76,7 +76,7 @@ const SearchEmployeeMaster = () => {
     ImageSignature: "",
     BloodGroup: "",
     StatusType: "",
-    OfficeDesignation:""
+    OfficeDesignation: "",
   });
 
   const SaveFilter = () => {
@@ -209,10 +209,9 @@ const SearchEmployeeMaster = () => {
     SearchAmountSubmissionTableFilter();
     SaveTableFilter();
     SaveFilter();
-    getDesignation()
+    getDesignation();
   }, []);
 
-  ////////////////////////////////
   const getCategory = () => {
     axiosInstances
       .post(apiUrls?.Category_Select, {})
@@ -310,32 +309,8 @@ const SearchEmployeeMaster = () => {
         : item
     );
     setTableData(updatedTableData);
-    handleDotnetMantis(checked, ele);
   };
 
-  const handleDotnetMantis = (isActive, ele, index) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID"));
-    form.append(
-      "LoginName",
-      useCryptoLocalStorage("user_Data", "get", "realname")
-    );
-    form.append("UserID", ele?.id);
-    form.append("Value", isActive ? "1" : "0");
-
-    axios
-      .post(apiUrls?.DotNetMantis_EmployeeID, form, {
-        headers,
-      })
-      .then((res) => {
-        toast.success(res?.data?.message);
-        handleSearch();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
   const handleIndicator = (state) => {
     return (
       <div className="text" style={{ justifyContent: "space-between" }}>
@@ -384,7 +359,6 @@ const SearchEmployeeMaster = () => {
           }
 
           const data = res?.data?.data;
-          setTableData1(res?.data?.data1);
           const updatedData = data?.map((ele, index) => {
             return {
               ...ele,
@@ -462,6 +436,7 @@ const SearchEmployeeMaster = () => {
       setCurrentPage(newPage);
     }
   };
+
   const [visible, setVisible] = useState({
     ShowRole: false,
     ShowAction: false,
@@ -703,15 +678,6 @@ const SearchEmployeeMaster = () => {
   };
 
   const bindRole = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("RoleName", ""),
-    //   axios
-    //     .post(apiUrls?.SearchRole, form, { headers })
     axiosInstances
       .post(apiUrls?.SearchRole, { RoleName: "" })
       .then((res) => {
@@ -762,6 +728,17 @@ const SearchEmployeeMaster = () => {
     getTeam();
     getWing();
   }, []);
+
+  const [selected, setSelected] = React.useState("yes");
+
+  const handleRadioChange = (value) => {
+    setSelected(value);
+    if (value === "yes") {
+      navigate("/SearchEmployeeMaster");
+    } else if (value === "no") {
+      navigate("/ManagerSearchEmployee");
+    }
+  };
   return (
     <>
       {visible?.ShowRole && (
@@ -884,6 +861,7 @@ const SearchEmployeeMaster = () => {
           <AddDashboardModal visible={visible} setVisible={setVisible} />
         </Modal>
       )}
+
       <div className="card ViewIssues border">
         <Heading
           title={
@@ -903,15 +881,45 @@ const SearchEmployeeMaster = () => {
               </div>
             </div>
           }
-          // isBreadcrumb={true}
           secondTitle={
-            <span style={{ fontWeight: "bold" }}>
-              <Link to="/EmployeeMaster" style={{ float: "right" }}>
-                {"Create Employee"}
-              </Link>
-            </span>
+            <>
+              <div
+                className="d-flex"
+                style={{ justifyContent: "space-between" }}
+              >
+                <span className="font-weight-bold mr-4">
+                  <Link to="/EmployeeMaster" style={{ float: "right" }}>
+                    {"Create Employee"}
+                  </Link>
+                </span>
+                <label>
+                  <input
+                    className="ml-1"
+                    type="radio"
+                    name="option"
+                    value="yes"
+                    checked={selected === "yes"}
+                    onChange={() => handleRadioChange("yes")}
+                    style={{ cursor: "pointer" }}
+                  />
+                  <span className="mb-2 ml-1">Search Employee Master</span>
+                </label>
+
+                <label className="ml-4">
+                  <input
+                    className="ml-1"
+                    type="radio"
+                    name="option"
+                    value="no"
+                    checked={selected === "no"}
+                    style={{ cursor: "pointer" }}
+                    onChange={() => handleRadioChange("no")}
+                  />
+                  <span className="mb-2 ml-1">Search Manager Employee</span>
+                </label>
+              </div>
+            </>
           }
-          // style={{marginBottom:"3px"}}
         />
         <div className="row m-2">
           {isVisible("EmployeeName") && (
@@ -1045,16 +1053,15 @@ const SearchEmployeeMaster = () => {
               }))}
             />
           )}
-              <ReactSelect
-                          name="OfficeDesignation"
-                          respclass="col-xl-2 col-md-4 col-sm-6 col-12"
-                          defaultValue={formData?.OfficeDesignation}
-                          placeholderName="Designation"
-                          dynamicOptions={designation}
-                          value={formData?.OfficeDesignation}
-                          handleChange={handleDeliveryChange}
-                        
-                        />
+          <ReactSelect
+            name="OfficeDesignation"
+            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+            defaultValue={formData?.OfficeDesignation}
+            placeholderName="Designation"
+            dynamicOptions={designation}
+            value={formData?.OfficeDesignation}
+            handleChange={handleDeliveryChange}
+          />
           <ReactSelect
             name="BloodGroup"
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
@@ -1090,7 +1097,7 @@ const SearchEmployeeMaster = () => {
             />
           )}
 
-          <ReactSelect
+          {/* <ReactSelect
             name="StatusType"
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
             placeholderName="Search Type"
@@ -1102,7 +1109,7 @@ const SearchEmployeeMaster = () => {
             ]}
             value={formData?.StatusType}
             handleChange={handleDeliveryChange}
-          />
+          /> */}
           <div className="col-2 d-flex">
             {loading ? (
               <Loading />
@@ -1124,30 +1131,6 @@ const SearchEmployeeMaster = () => {
       </div>
       {tableData?.length > 0 ? (
         <div className="card mt-2">
-          {/* <Accordion
-            title={
-              <>
-                {tableData?.length === 0 ? (
-                  t("Search Result")
-                ) : (
-                  <div className="d-flex">
-                    <span className="mt-1" style={{ fontWeight: "bold" }}>
-                      {t("Click Icon To Filter Results")}
-                    </span>
-                    <span className="header ml-1" style={{ cursor: "pointer" }}>
-                      <SearchLotusFilter
-                        columnConfig={columnConfig}
-                        setColumnConfig={setColumnConfig}
-                        PageName="SearchEmployeeMasterTable"
-                      />
-                    </span>
-                  </div>
-                )}
-              </>
-            }
-            notOpen={true}
-            defaultValue={true}
-          ></Accordion> */}
           <Heading
             title={<span style={{ fontWeight: "bold" }}>Employee Details</span>}
             secondTitle={
@@ -1375,9 +1358,7 @@ const SearchEmployeeMaster = () => {
             }))}
             tableHeight={"tableHeight"}
           />
-          {/* <div className="col-2">
-            <button className="btn btn-sm btn-success">Save</button>
-          </div> */}
+
           <div
             className="pagination"
             style={{ marginLeft: "auto", marginBottom: "9px" }}
@@ -1401,26 +1382,6 @@ const SearchEmployeeMaster = () => {
         </div>
       ) : (
         <NoRecordFound />
-      )}
-      {tableData1?.length > 0 && (
-        <div className="card">
-          <div className="row m-2">
-            <Tables
-              thead={EmployeeManagerTHEAD}
-              tbody={tableData1?.map((ele, index) => ({
-                "S.No.": index + 1,
-                Vertical: "",
-                Team: "",
-                Wing: "",
-                "Reporting Manager": "",
-                "Office Designation": "",
-                "Role Designation": "",
-                colorcode: ele?.rowColor,
-              }))}
-              tableHeight={"tableHeight"}
-            />
-          </div>
-        </div>
       )}
     </>
   );

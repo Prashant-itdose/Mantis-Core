@@ -13,7 +13,6 @@ import { toast } from "react-toastify";
 import Loading from "../components/loader/Loading";
 import * as XLSX from "xlsx";
 import * as FileSaver from "file-saver";
-import RemoveAmountSubmissionModal from "../components/UI/customTable/RemoveAmountSubmissionModal";
 import Input from "../components/formComponent/Input";
 import moment from "moment";
 import NoRecordFound from "../components/formComponent/NoRecordFound";
@@ -27,6 +26,7 @@ import { useTranslation } from "react-i18next";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import SearchLotusFilter from "./SearchLotusFilter";
 import { axiosInstances } from "../networkServices/axiosInstance";
+import RemoveAmountSubmissionModal from "../components/UI/customTable/RemoveAmountSubmissionModal";
 const SearchAmountSubmission = ({ data }) => {
   const [t] = useTranslation();
   const AmountCancel = useCryptoLocalStorage(
@@ -909,6 +909,7 @@ const SearchAmountSubmission = ({ data }) => {
           <RemoveAmountSubmissionModal
             visible={visible}
             setVisible={setVisible}
+            handleSearch={handleSearch}
           />
         </Modal>
       )}

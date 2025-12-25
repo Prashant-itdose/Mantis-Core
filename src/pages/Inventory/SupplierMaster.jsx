@@ -378,7 +378,7 @@ const SupplierMaster = () => {
             name="PaymentType"
             placeholderName="PaymentType"
             dynamicOptions={[
-              { value: "Cash", label: "Cash" },
+              { value: "Delta", label: "Cash" },
               { value: "Credit", label: "Credit" },
             ]}
             handleChange={handleDeliveryChange}

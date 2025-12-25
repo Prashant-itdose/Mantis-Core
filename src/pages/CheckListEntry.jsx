@@ -56,19 +56,22 @@ const CheckListEntry = ({ data }) => {
 
   const handleCheckListSave = () => {
     const payload = tableData?.map((val, index) => ({
-      "S.No.": index + 1, // index starts at 0, so +1
-      CheckListName: val?.CheckListName,
-      ChecklistID: val?.ChecklistID,
-      Status: val?.Status,
-      Remarks: val?.Remarks,
+      // "S.No.": index + 1,
+      ProjectID: Number("0"),
+      CheckListName: String(val?.CheckListName),
+      ChecklistID: Number(val?.ChecklistID),
+      Status: String(val?.Status),
+      Remarks: String(val?.Remarks),
     }));
+
+   
     setLoading(true);
 
     axiosInstances
       .post(apiUrls?.ProjectMasterUpdate, {
         ProjectID: Number(data?.Id || data?.ProjectID),
         ActionType: "UpdateCheckList",
-        ProjectData: String(JSON.stringify(payload)),
+        ChecklistItems: payload,
       })
       .then((res) => {
         if (res?.data?.success === true) {

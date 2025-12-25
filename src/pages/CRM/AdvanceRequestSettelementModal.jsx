@@ -45,13 +45,13 @@ const AdvanceRequestSettelementModal = ({
     let form = new FormData();
     form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
       form.append(
-          "CrmID",
-          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-        );
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
+        "CrmID",
+        useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+      );
+    form.append(
+      "LoginName",
+      useCryptoLocalStorage("user_Data", "get", "realname")
+    ),
       form.append("PaymentDate", formatDate(formData?.PaymentDate)),
       form.append("AdvanceRequestID", visible?.showData?.ID),
       form.append("Remarks", formData?.Remarks),

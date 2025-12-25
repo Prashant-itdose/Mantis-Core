@@ -118,6 +118,8 @@ export const apiUrls = {
   AmountSubmission_ByAccounts_IsCancel:
     "/Accounts/AmountSubmissionByAccountsIsCancel",
   OverseasExcelInsert: "/ManageExpense/OverseasExcelInsert",
+  SearchAllEmployees: "/EmployeeMaster/SearchAllEmployees",
+  GetProfileDesignation: "/MasterBind/GetProfileDesignation",
 
   //Query Master Api;s
   Query_Insert: "/QueryVsResult/Query_Insert",
