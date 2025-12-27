@@ -731,9 +731,10 @@ const ProjectMaster = () => {
       toast.error("Please Select AgreementStatus.");
     } else if (!formData?.ProjectName) {
       toast.error("Please Enter ProjectName.");
-    } else if (!formData?.OwnerFollowup) {
-      toast.error("Please Select Followup.");
-    } else if (!formData?.FeedbackStatus) {
+    }
+    // else if (!formData?.OwnerFollowup) {
+    //   toast.error("Please Select Followup.");
+    else if (!formData?.FeedbackStatus) {
       toast.error("Please Select FeedbackStatus.");
     } else if (!formData?.ProjectDisplayName) {
       toast.error("Please Enter Display Name.");
@@ -778,11 +779,13 @@ const ProjectMaster = () => {
       toast.error("Please Select Country.");
     } else if (!formData?.State) {
       toast.error("Please Select State.");
-    } else if (!formData?.District) {
-      toast.error("Please Select District.");
-    } else if (!formData?.City) {
-      toast.error("Please Select City.");
-    } else if (!formData?.Address) {
+    }
+    // else if (!formData?.District) {
+    //   toast.error("Please Select District.");
+    // } else if (!formData?.City) {
+    //   toast.error("Please Select City.");
+    // }
+    else if (!formData?.Address) {
       toast.error("Please Enter Address.");
     } else if (!formData?.PinCode) {
       toast.error("Please Enter PinCode.");
@@ -1479,7 +1482,7 @@ const ProjectMaster = () => {
                   respclass="col-xl-3 col-md-4 col-sm-4 col-12"
                   name="Country"
                   placeholderName="Country"
-                  dynamicOptions={country}
+                  dynamicOptions={[{ label: "Select", value: "" }, ...country]}
                   handleChange={handleDeliveryChange}
                   value={formData.Country}
                 />
@@ -1487,7 +1490,7 @@ const ProjectMaster = () => {
                   respclass="col-xl-3 col-md-4 col-sm-4 col-12"
                   name="State"
                   placeholderName="State"
-                  dynamicOptions={states}
+                  dynamicOptions={[{ label: "Select", value: "" }, ...states]}
                   handleChange={handleDeliveryChange}
                   value={formData.State}
                 />
@@ -1495,7 +1498,7 @@ const ProjectMaster = () => {
                   respclass="col-xl-3 col-md-4 col-sm-4 col-12"
                   name="District"
                   placeholderName="District"
-                  dynamicOptions={district}
+                  dynamicOptions={[{ label: "Select", value: "" }, ...district]}
                   handleChange={handleDeliveryChange}
                   value={formData.District}
                 />
@@ -1503,7 +1506,7 @@ const ProjectMaster = () => {
                   respclass="col-xl-3 col-md-4 col-sm-4 col-12"
                   name="City"
                   placeholderName="City"
-                  dynamicOptions={city}
+                  dynamicOptions={[{ label: "Select", value: "" }, ...city]}
                   handleChange={handleDeliveryChange}
                   value={formData.City}
                 />

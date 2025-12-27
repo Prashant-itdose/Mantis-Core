@@ -15,6 +15,8 @@ const ManagerSearchEmployee = () => {
   const [selected, setSelected] = React.useState("no");
   const navigate = useNavigate();
   const [tableData, setTableData] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
   const [vertical, setVertical] = useState([]);
   const [team, setTeam] = useState([]);
   const [reporter, setReporter] = useState([]);
@@ -31,7 +33,7 @@ const ManagerSearchEmployee = () => {
     OfficeDesignation: [],
   });
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 10;
+  const rowsPerPage = 20;
   const totalPages = Math.ceil(tableData?.length / rowsPerPage);
   const currentData = tableData?.slice(
     (currentPage - 1) * rowsPerPage,
@@ -86,7 +88,6 @@ const ManagerSearchEmployee = () => {
   };
   const handleSearch = () => {
     setLoading(true);
-
     axiosInstances
       .post(apiUrls?.SearchAllEmployees, {
         EmployeeName: String(""),
@@ -103,11 +104,13 @@ const ManagerSearchEmployee = () => {
       .then((res) => {
         if (res?.data?.success === true) {
           setTableData(res?.data?.data);
+          setFilteredData(res?.data?.data);
           setLoading(false);
         } else {
           toast.error(res.data.message);
           setLoading(false);
           setTableData([]);
+          setFilteredData([]);
         }
       })
       .catch((err) => {
@@ -118,6 +121,7 @@ const ManagerSearchEmployee = () => {
         );
       });
   };
+  const normalizeString = (str) => str.toLowerCase().replace(/\s+/g, "").trim();
   const handleMultiSelectChange = (name, selectedOptions) => {
     const selectedValues = selectedOptions.map((option) => option.code);
     setFormData((prev) => ({
@@ -178,7 +182,28 @@ const ManagerSearchEmployee = () => {
         console.log(err);
       });
   };
-
+  const handleSearchTable = (event) => {
+    const rawQuery = event.target.value;
+    const query = normalizeString(rawQuery);
+    setSearchQuery(rawQuery);
+    if (query === "") {
+      setTableData(filteredData);
+      setCurrentPage(1);
+      return;
+    }
+    const filtered = filteredData?.filter((item) =>
+      Object.keys(item).some(
+        (key) => item[key] && normalizeString(String(item[key])).includes(query)
+      )
+    );
+    if (filtered.length === 0) {
+      setSearchQuery("");
+      setTableData(filteredData);
+    } else {
+      setTableData(filtered);
+    }
+    setCurrentPage(1);
+  };
   useEffect(() => {
     getTeam();
     getDesignation();
@@ -312,9 +337,29 @@ const ManagerSearchEmployee = () => {
       </div>
 
       {tableData?.length > 0 && (
-        <div className="card">
+        <div className="card mt-1">
           <Heading
             title={<span className="font-weight-bold">Search Details</span>}
+            secondTitle={
+              <div className="d-flex">
+                <div style={{ padding: "0px !important", marginLeft: "10px" }}>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    id="Title"
+                    name="Title"
+                    lable="Search"
+                    placeholder=" "
+                    onChange={handleSearchTable}
+                    value={searchQuery}
+                    respclass="col-xl-12 col-md-4 col-sm-6 col-12"
+                  />
+                </div>
+                <span style={{ fontWeight: "bold" }}>
+                  Total Record :&nbsp;{tableData?.length}
+                </span>
+              </div>
+            }
           />
 
           <Tables
@@ -324,17 +369,17 @@ const ManagerSearchEmployee = () => {
               Vertical: ele?.DefaultVerticalName,
               Team: ele?.TeamName,
               Wing: ele?.DefaultWingName,
-              "Reporting Manager": ele?.ManagerName,
               "Employee Name": ele?.EmployeeName,
-              Designation: ele?.Designation,
-              "Office Designation": ele?.ProfileDesignationName,
-              Experience: ele?.TotalExperienceYears,
+              "Office Designation": ele?.Designation,
+              "Profile Designation": ele?.ProfileDesignationName,
+              "Reporting Manager": ele?.ManagerName,
+              "Experience (Years)": ele?.TotalExperienceYears,
             }))}
             tableHeight={"tableHeight"}
           />
           <div
             className="pagination"
-            style={{ marginLeft: "left", marginBottom: "9px" }}
+            style={{ marginLeft: "auto", marginBottom: "9px" }}
           >
             <button
               onClick={() => handlePageChange(currentPage - 1)}

@@ -212,7 +212,7 @@ const ModuleTabModal = ({ data }) => {
         ActionType: "UpdateModule",
         ProjectModule: [
           {
-            ModulePrimaryID: 0,
+            ModulePrimaryID: formData?.ModulePrimaryID,
             ProjectID: data?.Id
               ? Number(data.Id)
               : Number(data?.ProjectID) || 0,
@@ -307,7 +307,7 @@ const ModuleTabModal = ({ data }) => {
     setFormData({ ...formData, [name]: value });
   };
   const handleBillingEdit = (ele) => {
-    // console.log("editdetails", ele);
+    console.log("editdetails", ele);
     setFormData({
       ...formData,
       ModulePrimaryID: ele?.ID,
@@ -360,16 +360,15 @@ const ModuleTabModal = ({ data }) => {
       setLoading(false);
       return;
     }
-
+    console.log("selectedIds", selectedIds);
     axiosInstances
       .post(apiUrls?.ProjectMasterUpdate, {
         ActionType: "DeleteModule",
         ProjectID: Number(data?.Id),
-        ProjectModule: [
-          {
-            ModulePrimaryID: String(selectedIds.join(",")),
-          },
-        ],
+
+        ProjectModule: selectedIds?.map((id) => ({
+          ModulePrimaryID: id,
+        })),
       })
       .then((res) => {
         if (res?.data?.success === true) {

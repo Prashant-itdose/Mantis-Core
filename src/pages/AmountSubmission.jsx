@@ -845,13 +845,22 @@ const AmountSubmission = ({ data }) => {
                         alignItems: "center",
                       }}
                     >
+                      <span className="mr-5 font-weight-bold">
+                        {Number(tableData[0]?.TotalAmount || 0).toLocaleString(
+                          "en-IN",
+                          {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          }
+                        )}
+                      </span>
                       <div
                         className="legend-circle"
                         style={{
                           backgroundColor: "#00B0F0",
                           cursor: "pointer",
                           height: "10px",
-                          width: "30px",
+                          width: "40px",
                           borderRadius: "50%",
                         }}
                         // onClick={() => handleSearch("1")}
@@ -873,7 +882,7 @@ const AmountSubmission = ({ data }) => {
                           backgroundColor: "lightgreen",
                           cursor: "pointer",
                           height: "10px",
-                          width: "30px",
+                          width: "40px",
                           borderRadius: "50%",
                         }}
                         onClick={() => handleSearch("2")}
@@ -892,7 +901,7 @@ const AmountSubmission = ({ data }) => {
                     </div>
                   </div>
                 </div>
-                <div className="row mt-2">
+                <div className="row mt-2 font-weight-bold">
                   <span className="ml-3">
                     {t("Project Name")} : &nbsp; {tableData[0]?.ProjectName}
                   </span>
@@ -900,14 +909,14 @@ const AmountSubmission = ({ data }) => {
                     {t("Team")} : &nbsp; {tableData[0]?.Team}
                   </span>
                   <span className="ml-3">
-                    {t("Total Amount")} : &nbsp;
+                    {/* {t("Total Amount")} : &nbsp;
                     {Number(tableData[0]?.TotalAmount || 0).toLocaleString(
                       "en-IN",
                       {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       }
-                    )}
+                    )} */}
                   </span>
                   <span className="ml-3">
                     {t("Total Record")} : &nbsp; {tableData[0]?.TotalRecord}
@@ -940,7 +949,10 @@ const AmountSubmission = ({ data }) => {
               "Recovery Team": ele?.RecoveryTeam,
               PaymentMode:
                 ele?.PaymentMode == "Cash" ? "Delta" : ele?.PaymentMode,
-              Amount: ele?.Amount,
+              Amount: Number(ele.Amount || 0).toLocaleString("en-IN", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }),
               "Received By": ele?.ReceivedBy,
               "UTR NO.": ele?.UtrNo,
               "Bank Name": ele?.BankName,

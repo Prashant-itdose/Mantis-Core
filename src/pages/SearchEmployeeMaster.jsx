@@ -35,6 +35,7 @@ import SearchLotusFilter from "./SearchLotusFilter";
 import Accordion from "./Accordion";
 import { useTranslation } from "react-i18next";
 import { axiosInstances } from "../networkServices/axiosInstance";
+import EmployeeTransfer from "./CRM/EmployeeTransfer";
 
 const SearchEmployeeMaster = () => {
   const [t] = useTranslation();
@@ -78,7 +79,11 @@ const SearchEmployeeMaster = () => {
     StatusType: "",
     OfficeDesignation: "",
   });
-
+  const ReportingManager = useCryptoLocalStorage(
+    "user_Data",
+    "get",
+    "IsReportingManager"
+  );
   const SaveFilter = () => {
     const filterData = [
       { header: "S.No", visible: true },
@@ -443,6 +448,7 @@ const SearchEmployeeMaster = () => {
     ShowFlag: false,
     showProject: false,
     showEmployee: false,
+    transferEmployee: false,
     showVertical: false,
     showTeam: false,
     showWing: false,
@@ -781,6 +787,16 @@ const SearchEmployeeMaster = () => {
           <NewEmployeeModal visible={visible} setVisible={setVisible} />
         </Modal>
       )}
+      {visible?.transferEmployee && (
+        <Modal
+          modalWidth={"1200px"}
+          visible={visible?.transferEmployee}
+          setVisible={setVisible}
+          Header="Transfer Employee"
+        >
+          <EmployeeTransfer visible={visible} setVisible={setVisible} />
+        </Modal>
+      )}
       {visible?.showProject && (
         <Modal
           modalWidth={"800px"}
@@ -1110,7 +1126,7 @@ const SearchEmployeeMaster = () => {
             value={formData?.StatusType}
             handleChange={handleDeliveryChange}
           /> */}
-          <div className="col-2 d-flex">
+          <div className="col-3 d-flex">
             {loading ? (
               <Loading />
             ) : (
@@ -1118,14 +1134,36 @@ const SearchEmployeeMaster = () => {
                 Search
               </button>
             )}
-            <i
+            {/* <i
               className="fa fa-plus-circle fa-sm new_record_pluse mt-2 ml-3"
               onClick={() => {
                 setVisible({ showEmployee: true, showData: "" });
               }}
               title="Click to Create New Employee"
               style={{ cursor: "pointer" }}
-            ></i>
+            ></i> */}
+            <button
+              className="btn btn-sm btn-success ml-3"
+              onClick={() => {
+                setVisible({ showEmployee: true, showData: "" });
+              }}
+              title="Click to Create New Employee"
+              style={{ cursor: "pointer" }}
+            >
+              New Employee
+            </button>
+            {ReportingManager == 1 && (
+              <button
+                className="btn btn-sm btn-success ml-3"
+                onClick={() => {
+                  setVisible({ transferEmployee: true, showData: "" });
+                }}
+                title="Click to Transfer Employee"
+                style={{ cursor: "pointer" }}
+              >
+                Transfer Employee
+              </button>
+            )}
           </div>
         </div>
       </div>

@@ -106,11 +106,11 @@ export const EmployeeManagerTHEAD = [
   "Vertical",
   "Team",
   "Wing",
-  "Reporting Manager",
   "Employee Name",
-  "Designation",
-  "Profile Designation",
-  "Experience"
+  "Office Designation",
+   "Profile Designation",
+  "Reporting Manager",
+  "Experience (Years)",
 ];
 export const userVSprojectTHEAD = [
   "S.No.",

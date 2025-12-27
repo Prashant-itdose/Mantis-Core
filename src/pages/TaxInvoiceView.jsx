@@ -982,10 +982,34 @@ const TaxInvoiceView = ({ data }) => {
                 </>
               ),
               PaymentMode: ele?.PaymentMode,
-              "Gross Amount": ele?.GrossAmount,
-              "Dis Amount": ele?.DiscountAmount,
-              "Tax Amount": ele?.TaxAmount,
-              "Net Amount": ele?.NetAmount,
+              "Gross Amount": Number(ele?.GrossAmount || 0).toLocaleString(
+                "en-IN",
+                {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }
+              ),
+              "Dis Amount": Number(ele?.DiscountAmount || 0).toLocaleString(
+                "en-IN",
+                {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }
+              ),
+              "Tax Amount": Number(ele?.TaxAmount || 0).toLocaleString(
+                "en-IN",
+                {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }
+              ),
+              "Net Amount": Number(ele?.NetAmount || 0).toLocaleString(
+                "en-IN",
+                {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }
+              ),
               Print: ele?.TaxInvoiceURL !== "" && (
                 <i
                   className="fa fa-print"

@@ -1699,7 +1699,7 @@ const SearchProjectMaster = () => {
             {renderComponent?.component}
           </SlideScreen>
 
-          <div className="pagination" style={{ float: "left" }}>
+          <div className="pagination" style={{ marginLeft: "auto" }}>
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}

@@ -107,8 +107,6 @@ const OverseasFlySearch = () => {
     }));
   };
 
-
-
   const handleSearch = () => {
     setLoading(true);
     axiosInstances

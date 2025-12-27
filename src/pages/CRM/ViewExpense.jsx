@@ -73,7 +73,6 @@ const ViewExpense = () => {
     currentYear: currentYear,
     ExpenseType: "Both",
     StatusType: "0",
-    SearchType: "",
   });
   const [tableData, setTableData] = useState([]);
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
@@ -304,8 +303,6 @@ const ViewExpense = () => {
       handleTableSearch(formData?.Employee);
     }
   }, [formData?.Employee]);
-
- 
 
   const handleTableSearchEmployee = () => {
     if (formData?.ExpenseType == "") {
@@ -772,21 +769,7 @@ const ViewExpense = () => {
             handleChange={handleDeliveryChange}
             requiredClassName={"required-fields"}
           />
-          <ReactSelect
-            className="form-control"
-            name="SearchType"
-            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
-            placeholderName="SearchType"
-            id="SearchType"
-            dynamicOptions={[
-              { label: "Select", value: "0" },
-              { label: "Type1", value: "1" },
-              { label: "Type2", value: "2" },
-            ]}
-            value={formData?.SearchType}
-            handleChange={handleDeliveryChange}
-            requiredClassName={"required-fields"}
-          />
+
           {ReportingManager == 1 || RoleID === 4 ? (
             <div>
               {loading ? (
@@ -1043,7 +1026,16 @@ const ViewExpense = () => {
                 </div>
                 <span style={{ fontWeight: "bold", marginLeft: "10px" }}>
                   Grand Total :&nbsp;
-                  {tableData?.reduce((acc, curr) => acc + (curr.Total || 0), 0)}
+                  {Number(
+                    tableData?.reduce(
+                      (acc, curr) => acc + (curr.Total || 0),
+                      0
+                    ) || 0
+                  ).toLocaleString("en-IN", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+                  
                 </span>
                 <span style={{ fontWeight: "bold", marginLeft: "10px" }}>
                   Total Record :&nbsp;{tableData?.length}

@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import ReactSelect from "../components/formComponent/ReactSelect";
 import { apiUrls } from "../networkServices/apiEndpoints";
-import axios from "axios";
 import { toast } from "react-toastify";
-import { headers } from "../utils/apitools";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import moment from "moment/moment";
 import Loading from "../components/loader/Loading";
 import { axiosInstances } from "../networkServices/axiosInstance";
-import { format, parse } from "date-fns";
 
 const LeaveRequestModal = ({
   visible,
@@ -27,9 +24,9 @@ const LeaveRequestModal = ({
   const leaveData = visible?.CalenderDetails?.[1]?.find(
     (val) => String(val?.Day) === moment(visible?.data).format("D")
   );
-  // console.log("leavedata", leaveData);
-  // console.log("visible", visible);
-  // console.log("visible [1]", visible?.CalenderDetails?.[1]);
+  console.log("data", data);
+  console.log("visible", visible);
+  console.log("visible [1]", visible?.CalenderDetails?.[1]);
 
   const [OLTypeWise, setOLTypeWise] = useState([]);
   const [WOTypeWise, setWOTypeWise] = useState([]);
@@ -474,7 +471,7 @@ const LeaveRequestModal = ({
             </span>
           ) : (
             <div className="col-1 d-flex">
-              {data ? (
+              {data || ReportingManager === 1 ? (
                 <>
                   {loading ? (
                     <Loading />

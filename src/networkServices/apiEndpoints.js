@@ -153,6 +153,8 @@ export const apiUrls = {
   LeaveRequest_ApproveALL: "/CRMAttendence/LeaveRequest_ApproveALL",
   LeaveRequest_BindCalender: "/CRMAttendance/LeaveRequest_BindCalender",
   LeaveRequest_Save: "/CRMAttendance/LeaveRequest_Save",
+  CreateEmployeeTransfer: "/EmployeeMaster/CreateEmployeeTransfer",
+  GetEmployeeTransferLogs: "/EmployeeMaster/GetEmployeeTransferLogs",
   LeaveRequest_Select: "/CRMAttendence/LeaveRequest_Select",
 
   LeaveApproval_Search: "/CRMAttendance/LeaveApproval_Search",
@@ -302,6 +304,8 @@ export const apiUrls = {
     "/MantisSummary/DevDashboardWelcomeStatusCount",
   TrainingVedio: "/TrainingVideo/TrainingVideo",
   PaymentFollowup: "/Accounts/PaymentFollowup",
+  ProjectShiftPdf: "/Reports/ProjectShiftPdf",
+  SearchEmployeeTeamData: "/EmployeeMaster/SearchEmployeeTeamData",
   ManageGlobalMaster: "/MasterBind/ManageGlobalMaster",
   GetTeamMember: "/MasterBind/GetTeamMember",
   Reason_Select: "/MasterBind/Reason_Select",

@@ -34,6 +34,7 @@ import LoginDetailModal from "./LoginDetailModal";
 import VoiceNavigation from "../../pages/VoiceNavigation";
 import HeaderLogoutModal from "../../pages/HeaderLogoutModal";
 import { axiosInstances } from "../../networkServices/axiosInstance";
+import HandleFontSize from "../../pages/HandleFontSize";
 
 const Header = React.memo(() => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -803,6 +804,11 @@ const Header = React.memo(() => {
               <VoiceNavigation />
             </li>
           )}
+          {/* {["lg", "md", "sm"].includes(screenSize) && (
+            <li className="nav-item d-none d-md-flex mr-1">
+              <HandleFontSize />
+            </li>
+          )} */}
           {["lg", "md", "sm"].includes(screenSize) && (
             <li className="nav-item d-md-flex ml-1">
               <div onClick={toggleFullScreen} style={{ cursor: "pointer" }}>

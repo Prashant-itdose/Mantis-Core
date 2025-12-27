@@ -31,7 +31,7 @@ const currentMonth = currentDate.getMonth() + 1;
 const currentYear = currentDate.getFullYear();
 
 const LeaveRequest = ({ data }) => {
-  // console.log("data check", data);
+  console.log("data check", data);
 
   const dataMonth = data?.MonthYear;
   const jsDate = new Date(`${dataMonth?.replace("-", " ")} 1`);
@@ -58,6 +58,7 @@ const LeaveRequest = ({ data }) => {
   );
   const IsEmployee = useCryptoLocalStorage("user_Data", "get", "realname");
   const [CalenderDetails, setCalenderDetails] = useState([]);
+  console.log("CalenderDetails", CalenderDetails?.IsApproved);
   const [daysInMonth, setDaysInMonth] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -203,6 +204,10 @@ const LeaveRequest = ({ data }) => {
     if (["GZ", "RT"].includes(HasLeave)) {
       return "gazetted-holiday";
     }
+    //Case 7: Other /Working Day
+    // if (["OTHER"].includes(HasLeave)) {
+    //   return "other-holiday";
+    // }
 
     // Default: Missing attendance
     return "missing-attendance";
@@ -260,8 +265,6 @@ const LeaveRequest = ({ data }) => {
       return match ? match[1] : null;
     };
 
-    // console.log("xxxxxx", getWorkHourFromString("Login:11:08 AM</br>Logout:08:06 PM</br>Work Hour: <span class=red>08:58</span>"));
-
     return (
       <td
         key={index}
@@ -305,6 +308,7 @@ const LeaveRequest = ({ data }) => {
       </td>
     );
   };
+
   const renderCalendarRows = () => {
     const weeks = [];
     const today = new Date();
@@ -332,9 +336,9 @@ const LeaveRequest = ({ data }) => {
               i,
               today,
               CalenderDetails?.[1] ? CalenderDetails?.[1] : []
-            ) // Pass today's date to the renderDay function
+            )
           ) : (
-            <td key={i} className="empty-day"></td> // Render empty cells for padding
+            <td key={i} className="empty-day"></td>
           )
         )}
       </tr>
@@ -367,8 +371,13 @@ const LeaveRequest = ({ data }) => {
         Month: month,
       })
       .then((res) => {
-        setCalenderDetails(res?.data?.data);
-        setLoading(false);
+        if (res.data.success === true) {
+          setCalenderDetails(res?.data?.data);
+          setLoading(false);
+        } else {
+          toast.error("No Records Found..");
+          setLoading(false);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -379,7 +388,6 @@ const LeaveRequest = ({ data }) => {
   const leaveData = CalenderDetails?.[0] || [];
 
   const getLeaveAvailable = (leaveType) => {
-    // console.log("leavetype", leaveType);
     const leave = leaveData.find((item) => item?.LeaveType === leaveType);
     return leave ? leave.Available : "0";
   };
@@ -557,19 +565,28 @@ const LeaveRequest = ({ data }) => {
               </div>
             </div>
             <div className="col-md-3 legend-wrapper">
-              {/* {data && ReportingManager == 1 && (
-              <button
-                className="btn btn-sm mb-2"
-                style={{
-                  background: "#0eb342",
-                  color: "white",
-                  border: "none",
-                }}
-                onClick={handleLeaveRequest_Approve}
-              >
-                Approve All
-              </button>
-            )} */}
+              {/* {CalenderDetails?.[1]?.some(
+                (item) =>
+                  item?.LeaveDescription?.trim() !== "" &&
+                  item?.IsApproved !== 1
+              ) && (
+                <div>
+                  {ReportingManager === 1 && (
+                    <button
+                      className="btn btn-sm mb-2"
+                      style={{
+                        background: "#0eb342",
+                        color: "white",
+                        border: "none",
+                      }}
+                      onClick={handleLeaveRequest_Approve}
+                    >
+                      Approve All
+                    </button>
+                  )}
+                </div>
+              )} */}
+
               <div className="legend">
                 <p>
                   <span className="pending-approval"></span> Pending Approval

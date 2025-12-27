@@ -151,27 +151,44 @@ const AgeingSheet = () => {
 
   const handleSearch = () => {
     setLoading(true);
-
     axiosInstances
-      .post(apiUrls.MantisSummary_Search, {
-        ID: 0,
-        DateType: "string",
-        DateRange: "string",
-        FromDate: new Date().toISOString(),
-        ToDate: new Date().toISOString(),
+      .post(
+        apiUrls.MantisSummary_Search,
+        //    {
+        //   ID: 0,
+        //   DateType: "",
+        //   DateRange: "",
+        //   FromDate: new Date().toISOString(),
+        //   ToDate: new Date().toISOString(),
 
-        ProjectIDs: formData?.ProjectID?.length ? [...formData.ProjectID] : [0],
-        VerticalIDs: formData?.VerticalID?.length
-          ? [...formData.VerticalID]
-          : [0],
-        TeamIDs: formData?.TeamID?.length ? [...formData.TeamID] : [0],
-        WingIDs: formData?.WingID?.length ? [...formData.WingID] : [0],
-        POC1s: formData?.POC1?.length ? [...formData.POC1] : [0],
-        POC2s: formData?.POC2?.length ? [...formData.POC2] : [0],
-        POC3s: formData?.POC3?.length ? [...formData.POC3] : [0],
+        //   ProjectIDs: formData?.ProjectID?.length ? [...formData.ProjectID] : [0],
+        //   VerticalIDs: formData?.VerticalID?.length
+        //     ? [...formData.VerticalID]
+        //     : [0],
+        //   TeamIDs: formData?.TeamID?.length ? [...formData.TeamID] : [0],
+        //   WingIDs: formData?.WingID?.length ? [...formData.WingID] : [0],
+        //   POC1s: formData?.POC1?.length ? [...formData.POC1] : [0],
+        //   POC2s: formData?.POC2?.length ? [...formData.POC2] : [0],
+        //   POC3s: formData?.POC3?.length ? [...formData.POC3] : [0],
 
-        DeveloperID: formData?.DeveloperID || 0,
-      })
+        //   DeveloperID: formData?.DeveloperID || 0,
+        // }
+        {
+          ID: 0,
+          DateType: "",
+          DateRange: "",
+          FromDate: "",
+          ToDate: "",
+          ProjectIDs: Number(0),
+          VerticalIDs: formData?.VerticalID,
+          TeamIDs: formData?.TeamID,
+          WingIDs: formData?.WingID,
+          POC1s: formData?.POC1,
+          POC2s: formData?.POC2,
+          POC3s: formData?.POC3,
+          DeveloperID: 0,
+        }
+      )
       .then((res) => {
         setTableData(res?.data?.dtAgeing);
         setLoading(false);
@@ -288,9 +305,7 @@ const AgeingSheet = () => {
           {loading ? (
             <Loading />
           ) : (
-            <button className="btn btn-lg btn-info ml-3"
-             onClick={handleSearch}
-             >
+            <button className="btn btn-lg btn-info ml-3" onClick={handleSearch}>
               Search
             </button>
           )}

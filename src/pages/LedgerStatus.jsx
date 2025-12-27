@@ -1136,11 +1136,41 @@ const LedgerStatus = () => {
                   </span>
                 </Tooltip>
               ),
-              "Opening Balance": ele?.OpeningAmount,
-              "Current Sale": ele?.CurrentSale,
-              "Received Amount": ele?.ReceivedAmount,
-              "Closing Balance": ele?.ClosingBalance,
-              "Last Received Amount": ele?.LastReceivedAmount,
+              "Opening Balance": Number(ele?.OpeningAmount || 0).toLocaleString(
+                "en-IN",
+                {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }
+              ),
+              "Current Sale": Number(ele?.CurrentSale|| 0).toLocaleString(
+                "en-IN",
+                {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }
+              ), 
+              "Received Amount":Number(ele?.ReceivedAmount || 0).toLocaleString(
+                "en-IN",
+                {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }
+              ), 
+              "Closing Balance": Number(ele?.ClosingBalance|| 0).toLocaleString(
+                "en-IN",
+                {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }
+              ),
+              "Last Received Amount": Number( ele?.LastReceivedAmount || 0).toLocaleString(
+                "en-IN",
+                {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }
+              ),
               "Last Received Date": ele?.LastReceivedDate,
               Ageing: ele?.Ageing,
               LiveDate: ele?.LiveDate,
