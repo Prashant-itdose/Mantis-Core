@@ -60,13 +60,17 @@ const ViewExpenseSummary = () => {
       navigate("/ViewExpenseSummary");
     }
   };
+  const ReportingManager = useCryptoLocalStorage(
+    "user_Data",
+    "get",
+    "IsReportingManager"
+  );
 
   const [renderComponent, setRenderComponent] = useState({
     name: "",
     component: null,
   });
   const ModalComponent = (name, component) => {
-    console.log("name component sale..", name, component);
     setListVisible(true);
     setRenderComponent({
       name: String(name),
@@ -74,9 +78,7 @@ const ViewExpenseSummary = () => {
     });
   };
   const [seeMore, setSeeMore] = useState([]);
-  console.log(" renderComponent..", renderComponent);
   const handleChangeComponent = (e) => {
-    console.log("e e e e", e);
     ModalComponent(e?.label, e?.component);
   };
 
@@ -251,41 +253,38 @@ const ViewExpenseSummary = () => {
           title={<span className="font-weight-bold">View Expense Summary</span>}
           secondTitle={
             <>
-              <div
-                className="d-flex"
-                style={{ justifyContent: "space-between" }}
-              >
-                {/* <span className="font-weight-bold mr-4">
-                  <Link to="/ExpenseSubmission" style={{ float: "right" }}>
-                    {"Expense Submission"}
-                  </Link>
-                </span> */}
-                <label>
-                  <input
-                    className="ml-1"
-                    type="radio"
-                    name="option"
-                    value="yes"
-                    checked={selected === "yes"}
-                    onChange={() => handleRadioChange("yes")}
-                    style={{ cursor: "pointer" }}
-                  />
-                  <span className="mb-2 ml-1">View Expense</span>
-                </label>
+              {ReportingManager == 1 && (
+                <div
+                  className="d-flex"
+                  style={{ justifyContent: "space-between" }}
+                >
+                  <label>
+                    <input
+                      className="ml-1"
+                      type="radio"
+                      name="option"
+                      value="yes"
+                      checked={selected === "yes"}
+                      onChange={() => handleRadioChange("yes")}
+                      style={{ cursor: "pointer" }}
+                    />
+                    <span className="mb-2 ml-1">View Expense</span>
+                  </label>
 
-                <label className="ml-4">
-                  <input
-                    className="ml-1"
-                    type="radio"
-                    name="option"
-                    value="no"
-                    checked={selected === "no"}
-                    style={{ cursor: "pointer" }}
-                    onChange={() => handleRadioChange("no")}
-                  />
-                  <span className="mb-2 ml-1">View Expense Summary</span>
-                </label>
-              </div>
+                  <label className="ml-4">
+                    <input
+                      className="ml-1"
+                      type="radio"
+                      name="option"
+                      value="no"
+                      checked={selected === "no"}
+                      style={{ cursor: "pointer" }}
+                      onChange={() => handleRadioChange("no")}
+                    />
+                    <span className="mb-2 ml-1">View Expense Summary</span>
+                  </label>
+                </div>
+              )}
             </>
           }
         />

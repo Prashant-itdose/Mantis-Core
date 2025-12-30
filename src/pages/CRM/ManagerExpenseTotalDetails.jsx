@@ -6,7 +6,7 @@ import Tables from "../../components/UI/customTable";
 import Heading from "../../components/UI/Heading";
 
 const ManagerExpenseTotalDetails = ({ visible }) => {
-  console.log("visible", visible);
+  // console.log("visible", visible);
   const [hotelData, setHotelData] = useState([]);
   const [mealsData, setMealsData] = useState([]);
   const [travelData, setTravelData] = useState([]);
@@ -21,7 +21,7 @@ const ManagerExpenseTotalDetails = ({ visible }) => {
         ExpenseReportId: Number(visible?.showData),
       })
       .then((res) => {
-        console.log("kamal", res.data.data);
+        // console.log("kamal", res.data.data);
         if (res.data.success === true) {
           setHotelData(res.data.data.dthotel);
           setMealsData(res.data.data.dtMeals);

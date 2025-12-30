@@ -491,15 +491,19 @@ const ViewExpense = () => {
     // }}
     >
       <span className="mr-5">Action</span>
-      <span className="mt-0 ml-5">Select All</span> &nbsp;
-      <input
-        type="checkbox"
-        name="selectAll"
-        checked={selectAll}
-        // className="mr-0 mt-1"
-        style={{ marginTop: "5px" }}
-        onChange={handleCheckBox}
-      />
+      {ReportingManager == 1 && (
+        <span className="mt-0 ml-5">
+          Select All &nbsp;
+          <input
+            type="checkbox"
+            name="selectAll"
+            checked={selectAll}
+            // className="mr-0 mt-1"
+            style={{ marginTop: "5px" }}
+            onChange={handleCheckBox}
+          />
+        </span>
+      )}
       &nbsp;
     </label>,
     { name: "Attachment", width: "5%" },
@@ -700,41 +704,38 @@ const ViewExpense = () => {
           isBreadcrumb={true}
           secondTitle={
             <>
-              <div
-                className="d-flex"
-                style={{ justifyContent: "space-between" }}
-              >
-                {/* <span className="font-weight-bold mr-4">
-                  <Link to="/ExpenseSubmission" style={{ float: "right" }}>
-                    {"Expense Submission"}
-                  </Link>
-                </span> */}
-                <label>
-                  <input
-                    className="ml-1"
-                    type="radio"
-                    name="option"
-                    value="yes"
-                    checked={selected === "yes"}
-                    onChange={() => handleRadioChange("yes")}
-                    style={{ cursor: "pointer" }}
-                  />
-                  <span className="mb-2 ml-1">View Expense</span>
-                </label>
+              {ReportingManager == 1 && (
+                <div
+                  className="d-flex"
+                  style={{ justifyContent: "space-between" }}
+                >
+                  <label>
+                    <input
+                      className="ml-1"
+                      type="radio"
+                      name="option"
+                      value="yes"
+                      checked={selected === "yes"}
+                      onChange={() => handleRadioChange("yes")}
+                      style={{ cursor: "pointer" }}
+                    />
+                    <span className="mb-2 ml-1">View Expense</span>
+                  </label>
 
-                <label className="ml-4">
-                  <input
-                    className="ml-1"
-                    type="radio"
-                    name="option"
-                    value="no"
-                    checked={selected === "no"}
-                    style={{ cursor: "pointer" }}
-                    onChange={() => handleRadioChange("no")}
-                  />
-                  <span className="mb-2 ml-1">View Expense Summary</span>
-                </label>
-              </div>
+                  <label className="ml-4">
+                    <input
+                      className="ml-1"
+                      type="radio"
+                      name="option"
+                      value="no"
+                      checked={selected === "no"}
+                      style={{ cursor: "pointer" }}
+                      onChange={() => handleRadioChange("no")}
+                    />
+                    <span className="mb-2 ml-1">View Expense Summary</span>
+                  </label>
+                </div>
+              )}
             </>
           }
         />
@@ -1698,14 +1699,16 @@ const ViewExpense = () => {
                 Next
               </button>
             </div>
-            <div className="ml-auto mr-5">
-              <button
-                className="btn btn-sm btn-success"
-                onClick={handleApproveAll}
-              >
-                Approve All
-              </button>
-            </div>
+            {ReportingManager == 1 && (
+              <div className="ml-auto mr-5">
+                <button
+                  className="btn btn-sm btn-success"
+                  onClick={handleApproveAll}
+                >
+                  Approve All
+                </button>
+              </div>
+            )}
           </div>
         </div>
       ) : (
