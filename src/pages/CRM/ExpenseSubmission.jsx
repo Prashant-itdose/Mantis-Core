@@ -88,6 +88,7 @@ const ExpenseSubmission = () => {
     OtherTeammate: "",
     currentMonth: currentMonth,
     currentYear: currentYear,
+    GrandTotalExpense: "",
   });
 
   const handleHotelClear = () => {
@@ -370,6 +371,7 @@ const ExpenseSubmission = () => {
       ExpenseTransID: 0,
       LocalTravelExp: LocalTravelpayload,
       InterCityTravelExp: InterCityTravelpayload,
+      GrandTotalExpense: GrandTotalExpense,
     };
     axiosInstances
       .post(apiUrls.ManageExpense_Insert, payload)
@@ -548,6 +550,7 @@ const ExpenseSubmission = () => {
         Number(state?.givenData?.expense_report_ID) || Number(reportidd),
       LocalTravelExp: LocalTravelpayload,
       InterCityTravelExp: InterCityTravelpayload,
+      GrandTotalExpense: GrandTotalExpense,
     };
     axiosInstances
       .post(apiUrls.ManageExpense_Insert, payload)
@@ -843,9 +846,8 @@ const ExpenseSubmission = () => {
 
   const isCurrentMonthSelected = () => {
     const today = new Date();
-    const currentMonth = today.getMonth() + 1; // months are 0-based
+    const currentMonth = today.getMonth() + 1;
     const currentYear = today.getFullYear();
-    // Previous month and year logic
     const prevMonth = currentMonth === 1 ? 12 : currentMonth - 1;
     const prevMonthYear = currentMonth === 1 ? currentYear - 1 : currentYear;
     const isCurrentMonth =
@@ -855,17 +857,15 @@ const ExpenseSubmission = () => {
     const isPreviousMonth =
       formData.currentMonth === prevMonth &&
       formData.currentYear === prevMonthYear;
-
-    // Check if today is within the first 5 days of the month
     const isWithinFirst5Days = today.getDate() <= 5;
-    // Allow previous month only for first 5 days
+
     if (isPreviousMonth && isWithinFirst5Days) {
-      return true; // enabled
+      return true;
     } else if (isPreviousMonth && !isWithinFirst5Days) {
-      return false; // disabled
+      return false;
     }
 
-    return isCurrentMonth; // normal current month behavior
+    return isCurrentMonth;
   };
 
   const TwelthdayCurrentMonthSelected = () => {
@@ -2014,11 +2014,10 @@ const ExpenseSubmission = () => {
           )}
         </div>
       </div>
-      
+
       <div className="card">
         <div className="row m-2 d-flex">
           <BrowseInput handleImageChange={handleImageChange} />
-
 
           {/* {state?.edit && state?.givenData?.FileURLs ? (
             <div className="mr-4">
@@ -2067,14 +2066,14 @@ const ExpenseSubmission = () => {
               // disabled={state?.edit}
               disabled={
                 !(
-                  TwelthdayCurrentMonthSelected() === true &&
-                  ReportingManager === 1
+                  (TwelthdayCurrentMonthSelected() === true &&
+                    ReportingManager === 1) ||
+                  isCurrentMonthSelected() === true
                 )
               }
             >
               Update
             </button>
-            
           ) : (
             <button
               className="btn btn-sm btn-info ml-2"

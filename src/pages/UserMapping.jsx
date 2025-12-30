@@ -54,14 +54,6 @@ const UserMapping = ({ data }) => {
       });
   };
   const getProject = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    // axios
-    //   .post(apiUrls?.ProjectSelect, form, { headers })
     axiosInstances
       .post(apiUrls?.ProjectSelect, { RoleID: 0, ProjectID: 0 })
       .then((res) => {
@@ -318,28 +310,28 @@ const UserMapping = ({ data }) => {
     //   form.append("ProjectID", data?.Id || data?.ProjectID),
     //   form.append("EmployeeID", selectedIds.join(",")),
     //   form.append("ActionType", "DeleteUserMapping"),
-      // axios
-      //   .post(apiUrls?.ProjectMasterUpdate, form, { headers })
-      axiosInstances
-        .post(apiUrls?.ProjectMasterUpdate, {
-          ProjectID: Number(data?.Id || data?.ProjectID),
-          EmployeeID: Number(selectedIds.join(",")),
-          ActionType:"DeleteUserMapping"
-        })
-        .then((res) => {
-          if (res?.data?.success === true) {
-            toast.success(res?.data?.message);
-            setLoading(false);
-            handleSearch();
-          } else {
-            toast.error(res?.data?.message);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
+    // axios
+    //   .post(apiUrls?.ProjectMasterUpdate, form, { headers })
+    axiosInstances
+      .post(apiUrls?.ProjectMasterUpdate, {
+        ProjectID: Number(data?.Id || data?.ProjectID),
+        EmployeeID: Number(selectedIds.join(",")),
+        ActionType: "DeleteUserMapping",
+      })
+      .then((res) => {
+        if (res?.data?.success === true) {
+          toast.success(res?.data?.message);
           setLoading(false);
-        });
+          handleSearch();
+        } else {
+          toast.error(res?.data?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
   const normalizeString = (str) => str.toLowerCase().replace(/\s+/g, "").trim();
 

@@ -1,7 +1,6 @@
 export const apiUrls = {
-
   login: "/Login",
-  
+
   ProjectSelect: "/MasterBind/ProjectSelect",
   ViewIssueSearch: "/ViewIssue/ViewIssueSearch",
 
@@ -36,16 +35,17 @@ export const apiUrls = {
   NewTicket: "/BugReport/NewTicket",
   ManageOverseasTravelInsert: "/ManageOverseas/ManageOverseasTravelInsert",
   SearchOverseasTravel: "/ManageOverseas/SearchOverseasTravel",
-  ApproveOrRejectOverseasTravel: "/ManageOverseas/ApproveOrRejectOverseasTravel",
+  ApproveOrRejectOverseasTravel:
+    "/ManageOverseas/ApproveOrRejectOverseasTravel",
 
   //AutoBackupStatusSheet  Page Api's   & MisReport Table Page
   SPOC_Update: "/Autobackup/SPOCUpdate",
   AutobackupLog: "/Autobackup/AutobackupLog",
   GetOverseasInvoiceList: "/ManageExpense/GetOverseasInvoiceList",
+  GetEmailByProjectId: "/Accounts/GetEmailByProjectId",
 
   //Employee Master Page Api's   && SearchEmployeeMaster
-  SearchEmployee_EmployeeID:
-    "/EmployeeMaster/SearchEmployee_EmployeeID",
+  SearchEmployee_EmployeeID: "/EmployeeMaster/SearchEmployee_EmployeeID",
   CreateEmployee: "/EmployeeMaster/CreateEmployee",
   UpdateEmployee: "/EmployeeMaster/UpdateEmployee",
   ViewDesignation: "/Designation/ViewDesignation",
@@ -57,14 +57,10 @@ export const apiUrls = {
   //EmployeeChangePassword Page Api's
   ChangePassword: "/BugReport/ChangePassword",
   GetKanbanViewList: "/ViewIssue/GetKanbanViewList",
-  Reporter_Select_Module_Wise:
-    "/MasterBind/Reporter_Select_Module_Wise",
-  Product_Select_Project_Wise:
-    "/MasterBind/Product_Select_Project_Wise",
-  Module_Select_Product_Wise:
-    "/MasterBind/Module_Select_Product_Wise",
-  Product_Select_Module_Wise:
-    "/MasterBind/Product_Select_Module_Wise",
+  Reporter_Select_Module_Wise: "/MasterBind/Reporter_Select_Module_Wise",
+  Product_Select_Project_Wise: "/MasterBind/Product_Select_Project_Wise",
+  Module_Select_Product_Wise: "/MasterBind/Module_Select_Product_Wise",
+  Product_Select_Module_Wise: "/MasterBind/Product_Select_Module_Wise",
 
   //ProjectMaster Page Api's
   CreateProject: "/ProjectMaster/CreateProject",
@@ -88,8 +84,7 @@ export const apiUrls = {
   DeleteClientModule: "/ProjectMaster/DeleteClientModule",
   SaveMachineList: "/ProjectMaster/SaveMachineList",
   UpdateMachineList: "/ProjectMaster/UpdateMachineList",
-  DeleteClientMachineList:
-    "/ProjectMaster/DeleteClientMachineList",
+  DeleteClientMachineList: "/ProjectMaster/DeleteClientMachineList",
   GetGstTaxAndOldLisID: "/ProjectMaster/GetGstTaxAndOldLisID",
   AMCType_Select: "/MasterBind/AMCType_Select",
   UpdateFinancialInfo: "/ProjectMaster/UpdateFinancialInfo",
@@ -101,8 +96,7 @@ export const apiUrls = {
   //UserVSProjectMapping Page Api's
   UserVsProject_Select: "/EmployeeMaster/UserVsProject_Select",
   UserVsProjectMapping: "/EmployeeMaster/UserVsProjectMapping",
-  Remove_UserVsProjectMapping:
-    "/EmployeeMaster/UserVsProjectRemove",
+  Remove_UserVsProjectMapping: "/EmployeeMaster/UserVsProjectRemove",
   SelectProjectOrdering: "/ProjectMaster/SelectProjectOrdering",
   UpdateProjectOrdering: "/ProjectMaster/UpdateProjectOrdering",
 
@@ -118,13 +112,14 @@ export const apiUrls = {
   OverseasInvoiceInsert: "/ManageExpense/OverseasInvoiceInsert",
 
   //Amount Submission Page Api's
-  AmountSubmission_ByAccounts:
-    "/Accounts/AmountSubmissionByAccounts",
+  AmountSubmission_ByAccounts: "/Accounts/AmountSubmissionByAccounts",
   AmountSubmission_ByAccounts_Search:
     "/Accounts/AmountSubmissionByAccountsSearch",
   AmountSubmission_ByAccounts_IsCancel:
-    "/Accounts/AmountSubmission_ByAccounts_IsCancel",
+    "/Accounts/AmountSubmissionByAccountsIsCancel",
   OverseasExcelInsert: "/ManageExpense/OverseasExcelInsert",
+  SearchAllEmployees: "/EmployeeMaster/SearchAllEmployees",
+  GetProfileDesignation: "/MasterBind/GetProfileDesignation",
 
   //Query Master Api;s
   Query_Insert: "/QueryVsResult/Query_Insert",
@@ -135,61 +130,55 @@ export const apiUrls = {
 
   //Connector Request Api's
   Connector_Search: "/AccountsConnector/ConnectorSearch",
-  Connector_Settlement_Insert:
-    "/AccountsConnector/ConnectorSettlementInsert",
-  Connector_Discount_Insert:
-    "/AccountsConnector/ConnectorDiscountInsert",
+  Connector_Settlement_Insert: "/AccountsConnector/ConnectorSettlementInsert",
+  Connector_Discount_Insert: "/AccountsConnector/ConnectorDiscountInsert",
   Connector_Select: "/AccountsConnector/ConnectorSelect",
   Connector_Insert: "/AccountsConnector/ConnectorInsert",
-  Connector_Status_Update:
-    "/AccountsConnector/ConnectorStatusUpdate",
+  Connector_Status_Update: "/AccountsConnector/ConnectorStatusUpdate",
   Connector_Update: "/AccountsConnector/ConnectorUpdate",
 
   GetImplementaiondropdown:
     "/ImplementationSteps/ImplementationSteps_MasterSelect",
-  InsertImplementaion:
-    "/ImplementationSteps/ImplementationSteps_Insert",
-  DeleteImplementation:
-    "/ImplementationSteps/ImplementationSteps_Delete",
-  UpdateImplementation:
-    "/ImplementationSteps/ImplementationSteps_Update",
+  InsertImplementaion: "/ImplementationSteps/ImplementationSteps_Insert",
+  DeleteImplementation: "/ImplementationSteps/ImplementationSteps_Delete",
+  UpdateImplementation: "/ImplementationSteps/ImplementationSteps_Update",
 
   //Attendance//
   Attendence_Login: "/CRMAttendance/AttendanceLogin",
   Attendence_Select: "/CRMAttendance/AttendanceSelect",
   Attendence_Search: "/CRMAttendance/AttendanceSearch",
-  Birthday_Anniversary_Search:
-    "/CRMAttendence/Birthday_Anniversary_Search",
+  Birthday_Anniversary_Search: "/CRMAttendence/Birthday_Anniversary_Search",
 
   //LeaveRequest//
-  LeaveRequest_ApproveALL:
-    "/CRMAttendence/LeaveRequest_ApproveALL",
-  LeaveRequest_BindCalender:
-    "/CRMAttendance/LeaveRequest_BindCalender",
+  LeaveRequest_ApproveALL: "/CRMAttendence/LeaveRequest_ApproveALL",
+  LeaveRequest_BindCalender: "/CRMAttendance/LeaveRequest_BindCalender",
   LeaveRequest_Save: "/CRMAttendance/LeaveRequest_Save",
+  CreateEmployeeTransfer: "/EmployeeMaster/CreateEmployeeTransfer",
+  GetEmployeeTransferLogs: "/EmployeeMaster/GetEmployeeTransferLogs",
   LeaveRequest_Select: "/CRMAttendence/LeaveRequest_Select",
 
   LeaveApproval_Search: "/CRMAttendance/LeaveApproval_Search",
-  ShowWorkingDays_Search:
-    "/CRMAttendence/ShowWorkingDays_Search",
+  ShowWorkingDays_Search: "/CRMAttendence/ShowWorkingDays_Search",
   UploadAttendanceExcel: "/CRMAttendence/UploadAttendanceExcel",
 
   ////Advance Request /////
   AdvanceAmount_Requset: "/AdvanceAmount/AdvanceAmountRequest",
   AdvanceRequest_Search: "/AdvanceAmount/AdvanceRequestSearch",
   AdvaceAmount_Select: "/AdvanceAmount/AdvaceAmount_Select",
-  AdvanceAmount_Status_Update:
-    "/AdvanceAmount/AdvanceAmount_Status_Update",
+  AdvanceAmount_Status_Update: "/AdvanceAmount/AdvanceAmount_Status_Update",
   AdvanceAmount_Paid: "/AdvanceAmount/AdvanceAmount_Paid",
   ManageExpense_Insert: "/ManageExpense/ManageExpenseInsert",
   IsExpenseExists: "/ManageExpense/IsExpenseExists",
-  GetReportingTo_Employee:
-    "/ManageExpense/GetReportingToEmployee",
+  GetReportingTo_Employee: "/ManageExpense/GetReportingToEmployee",
   ViewExpenseList: "/ManageExpense/ViewExpenseList",
   PaidAmount: "/ManageExpense/PaidAmount",
-  ViewExpenseList_Accounts:
-    "/ManageExpense/ViewExpenseList_Accounts",
+  ViewExpenseList_Accounts: "/ManageExpense/ViewExpenseList_Accounts",
   UpdateStatus: "/ManageExpense/UpdateStatus",
+  ExpenseSummary: "/ManageExpense/ExpenseSummary",
+  GetManagerMonthlyExpenseSummary: "/ManageExpense/GetManagerMonthlyExpenseSummary",
+  GetExpenseReportWithTravelDetails: "/ManageExpense/GetExpenseReportWithTravelDetails",
+  GetEmployeeExpenseCalendar: "/ManageExpense/GetEmployeeExpenseCalendar",
+  BulkExpenseApprove: "/ManageExpense/BulkExpenseApprove",
 
   // Access right
   CreateRole: "/AccessRight/CreateRole",
@@ -214,17 +203,14 @@ export const apiUrls = {
   AccessRight_Insert: "/AccessRight/AccessRight_Insert",
   UserVsRoleMapping: "/EmployeeMaster/UserVsRoleMapping",
   UserVsCategoryMapping: "/EmployeeMaster/UserVsCategoryMapping",
-  DotNetMantis_EmployeeID:
-    "/EmployeeMaster/DotNetMantis_EmployeeID",
+  DotNetMantis_EmployeeID: "/EmployeeMaster/DotNetMantis_EmployeeID",
   UserVsRole_Select: "/EmployeeMaster/UserVsRole_Select",
   UserVsCategory_Select: "/EmployeeMaster/UserVsCategory_Select",
 
-  Monthly_CollectionSheet_MIS:
-    "/Accounts/Monthly_CollectionSheet_MIS",
+  Monthly_CollectionSheet_MIS: "/Accounts/Monthly_CollectionSheet_MIS",
   UpdateFlag: "/EmployeeMaster/UpdateFlag",
   GetFlag: "/EmployeeMaster/GetFlag",
-  AmountSubmission_ByAccounts_Update:
-    "/Accounts/AmountSubmissionUpdate",
+  AmountSubmission_ByAccounts_Update: "/Accounts/AmountSubmissionUpdate",
   Payement_Installment_Select:
     "/AccountsPaymentInstallment/Payement_Installment_Select",
   Payment_Installment_Insert:
@@ -237,14 +223,12 @@ export const apiUrls = {
   SaveSettlement: "/Accounts/SaveSettlement",
   ForgetPassword_ValdiateEmailMobile:
     "/EmployeeMaster/ForgetPassword_ValidateEmailMobile",
-  ForgetPassword_ValdiateOTP:
-    "/EmployeeMaster/ForgetPassword_ValidateOTP",
+  ForgetPassword_ValdiateOTP: "/EmployeeMaster/ForgetPassword_ValidateOTP",
   ForgetPassword_ChangePassword:
     "/EmployeeMaster/ForgetPassword_ChangePassword",
   LedgerStatus: "/Accounts/LedgerStatusFromForm",
   LedgerStatus_LockUnLock: "/Accounts/LedgerStatusLockUnLock",
-  LedgerStatus_LockUnLock_Log:
-    "/Accounts/LedgerStatusLockUnLockLog",
+  LedgerStatus_LockUnLock_Log: "/Accounts/LedgerStatusLockUnLockLog",
   Settlement: "/Accounts/Settlement",
   Settlement_IsCancel: "/Accounts/Settlement_IsCancel",
   CreateEmployee_Short: "/EmployeeMaster/CreateEmployee_Short",
@@ -256,14 +240,11 @@ export const apiUrls = {
   UserVsWingMapping: "/EmployeeMaster/UserVsWingMapping",
   UpdateThemeColor: "/EmployeeMaster/UpdateThemeColor",
   GetUserName: "/ProjectMaster/GetUserName",
-  AmountSub_CancelReason_Select:
-    "/MasterBind/AmountSub_CancelReason_Select",
-  AmountSubmission_ByAccounts_Search_ProjectID:
-    "/Accounts/SearchByProjectId",
+  AmountSub_CancelReason_Select: "/MasterBind/AmountSub_CancelReason_Select",
+  AmountSubmission_ByAccounts_Search_ProjectID: "/Accounts/SearchByProjectId",
   SalesBooking_CancelReason_Select:
     "/MasterBind/SalesBooking_CancelReason_Select",
-  SalesBooking_IsCancel:
-    "/AccountsPaymentInstallment/SalesBooking_IsCancel",
+  SalesBooking_IsCancel: "/AccountsPaymentInstallment/SalesBooking_IsCancel",
   SalesBooking_GeneratePI:
     "/AccountsPaymentInstallment/SalesBooking_GeneratePI",
   SalesBooking_Load_SalesID:
@@ -274,13 +255,10 @@ export const apiUrls = {
   Quotation_Insert: "/AccountsQuotation/Quotation_Insert",
   Quotation_IsCancel: "/AccountsQuotation/Quotation_IsCancel",
   Quotation_Approved: "/AccountsQuotation/QuotationApproved",
-  Quotation_Load_QuotationID:
-    "/AccountsQuotation/Quotation_Load_QuotationID",
-  Quotation_SalesConvert:
-    "/AccountsQuotation/Quotation_SalesConvert",
+  Quotation_Load_QuotationID: "/AccountsQuotation/Quotation_Load_QuotationID",
+  Quotation_SalesConvert: "/AccountsQuotation/Quotation_SalesConvert",
   Quotation_Update: "/AccountsQuotation/Quotation_Update",
-  Quotation_CancelReason_Select:
-    "/MasterBind/Quotation_CancelReason_Select",
+  Quotation_CancelReason_Select: "/MasterBind/Quotation_CancelReason_Select",
   Payment_Installment_Update:
     "/AccountsPaymentInstallment/Payment_Installment_Update",
   Sales_MIS_Type: "/MasterBind/Sales_MIS_Type",
@@ -304,8 +282,7 @@ export const apiUrls = {
   PaymentTerms_Select: "/MasterBind/PaymentTerms_Select",
   SalesBooking_Load_SalesID:
     "/AccountsPaymentInstallment/SalesBooking_Load_SalesID",
-  BillingCompanyDetail_Select_ID:
-    "/MasterBind/BillingCompanyDetail_Select_ID",
+  BillingCompanyDetail_Select_ID: "/MasterBind/BillingCompanyDetail_Select_ID",
   Dev_Caledar: "/MantisSummary/GetCalendar",
   Module_Select: "/MasterBind/Module_Select",
   Pages_Select: "/MasterBind/Pages_Select",
@@ -324,26 +301,24 @@ export const apiUrls = {
     "/AccountsPaymentInstallment/SalesBooking_GenerateTax",
   TaxInvoice_Search: "/AccountsTaxInvoice/TaxInvoiceSearch",
   TaxInvoice_Upload: "/AccountsTaxInvoice/TaxInvoiceUpload",
-  DevDashboard_Welcome_PriorityID:
-    "/MantisSummary/DevDashboardWelcomePriority",
-  DevDashboard_Welcome_Category:
-    "/MantisSummary/DevDashboardWelcomeCategory",
+  DevDashboard_Welcome_PriorityID: "/MantisSummary/DevDashboardWelcomePriority",
+  DevDashboard_Welcome_Category: "/MantisSummary/DevDashboardWelcomeCategory",
   DevDashboard_Welcome_AvgTime_Category:
     "/MantisSummary/DevDashboardWelcomeAvgTimeCategory",
   DevDashboard_Welcome_Status_Count:
     "/MantisSummary/DevDashboardWelcomeStatusCount",
   TrainingVedio: "/TrainingVideo/TrainingVideo",
   PaymentFollowup: "/Accounts/PaymentFollowup",
+  ProjectShiftPdf: "/Reports/ProjectShiftPdf",
+  SearchEmployeeTeamData: "/EmployeeMaster/SearchEmployeeTeamData",
   ManageGlobalMaster: "/MasterBind/ManageGlobalMaster",
   GetTeamMember: "/MasterBind/GetTeamMember",
   Reason_Select: "/MasterBind/Reason_Select",
   GetProjectInfo: "/ProjectMaster/GetProjectInfo",
   ProjectMasterUpdate: "/ProjectMasterUpdate/SaveProject",
   getViewProject: "/ProjectMasterUpdate/ViewProject",
-  ShowImpleStepsMaster_select:
-    "/ImplementationSteps/StepDetail_Project_Select",
-  ImplementationTracker_Insert:
-    "/ImplementationSteps/Step_Remark",
+  ShowImpleStepsMaster_select: "/ImplementationSteps/StepDetail_Project_Select",
+  ImplementationTracker_Insert: "/ImplementationSteps/Step_Remark",
   ImplementationSteps_Insert_details:
     "/ImplementationSteps/ImplementationSteps_Insert_details",
   Step_Remark_Select: "/ImplementationSteps/Step_Remark_Select",
@@ -360,14 +335,12 @@ export const apiUrls = {
   UpdateEmployee_Short: "/EmployeeMaster/UpdateEmployee_Short",
   CoorDashboard_Received_Recovery:
     "/CoordinatorDashboard/CoorDashboardReceivedRecovery",
-  CoorDashboard_NewSales:
-    "/CoordinatorDashboard/CoorDashboardNewSales",
+  CoorDashboard_NewSales: "/CoordinatorDashboard/CoorDashboardNewSales",
   CoorDashboard_Open_Dead_Sales:
     "/CoordinatorDashboard/CoorDashboardOpenDeadSales",
   CoorDashboard_Ageing_Sheet_Pending_Recovery:
     "/CoordinatorDashboard/CoorDashboardAgeingSheetPendingRecovery",
-  CentreRemoveProject:
-    "/ProjectMasterUpdate/CentreRemoveProject",
+  CentreRemoveProject: "/ProjectMasterUpdate/CentreRemoveProject",
   Module_Search: "/MasterBind/Module_Search",
   BulkNoteInsert: "/BugReport/BulkNoteInsert",
   CreateEmployeeModule: "/EmployeeMaster/CreateEmployeeModule",
@@ -402,10 +375,8 @@ export const apiUrls = {
   TSACancel: "/TSAAgreement/TSACancel",
   ConfirmTSA: "/TSAAgreement/ConfirmTSA",
   TSAHold: "/TSAAgreement/TSAHold",
-  TSAAgreementVarification:
-    "/TSAAgreement/TSAAgreementVarification",
-  ManagerDashboard_New_Sales:
-    "/ManagerDashboard/ManagerDashboard_New_Sales",
+  TSAAgreementVarification: "/TSAAgreement/TSAAgreementVarification",
+  ManagerDashboard_New_Sales: "/ManagerDashboard/ManagerDashboard_New_Sales",
   ManagerDashboard_Received_Recovery:
     "/ManagerDashboard/ManagerDashboard_Received_Recovery",
   ManagerDashboard_Top_Client_Amount:
@@ -416,14 +387,11 @@ export const apiUrls = {
     "/ManagerDashboard/ManagerDashboard_Delay_Recovery",
   TSAMarque: "/TSAAgreement/TSAMarque",
   ClientFeedbackSearch: "/Feedback/ClientFeedbackSearch",
-  ClientFeedbackTransaction:
-    "/Feedback/ClientFeedbackTransaction",
-  ProjectVsAMCMapping:
-    "/ProjectMasterUpdate/ProjectVsAMCMapping",
+  ClientFeedbackTransaction: "/Feedback/ClientFeedbackTransaction",
+  ProjectVsAMCMapping: "/ProjectMasterUpdate/ProjectVsAMCMapping",
   ManagerDashboard_Recovery_Quarter:
     "/ManagerDashboard/ManagerDashboard_Recovery_Quarter",
-  ManagerDashboard_Ageing_POC:
-    "/ManagerDashboard/ManagerDashboard_Ageing_POC",
+  ManagerDashboard_Ageing_POC: "/ManagerDashboard/ManagerDashboard_Ageing_POC",
   ManagerDashboard_Total_Pending:
     "/ManagerDashboard/ManagerDashboard_Total_Pending",
   CoorDashboard_Total_Pending:
@@ -432,46 +400,35 @@ export const apiUrls = {
   DeadSalesLead: "/SalesLead/DeadSalesLead",
   ConvertedSalesLead: "/SalesLead/ConvertedSalesLead",
   SearchSalesLeads: "/SalesLead/SearchSalesLeads",
-  UploadEmployeeSignature:
-    "/EmployeeMaster/UploadEmployeeSignature",
+  UploadEmployeeSignature: "/EmployeeMaster/UploadEmployeeSignature",
   ResendEmail: "/SalesLead/ResendEmail",
   EditSalesLead: "/SalesLead/EditSalesLead",
   UpdateSalesLead: "/SalesLead/UpdateSalesLead",
   Lead_Email_Log: "/SalesLead/Lead_Email_Log",
   // Tsa_Agreement_Format: "/TSAAgreement/Tsa_Agreement_Format",
   Tsa_Agreement_Format: "/TSAAgreement/GetTsaAgreementFormat",
-  Change_Tsa_Agreement_Format:
-    "/TSAAgreement/Change_Tsa_Agreement_Format",
+  Change_Tsa_Agreement_Format: "/TSAAgreement/Change_Tsa_Agreement_Format",
   CreateFeedback: "/Feedback/CreateFeedback",
   ResendFeedbackMail: "/Feedback/ResendFeedbackMail",
   AllEmployeeSearch: "/SalesLead/AllEmployeeSearch",
-  CreateEmployeeFeedback:
-    "/EmployeeFeedback/CreateEmployeeFeedback",
+  CreateEmployeeFeedback: "/EmployeeFeedback/CreateEmployeeFeedback",
   ResendFeedbackWhatsapp: "/Feedback/ResendFeedbackWhatsapp",
-  EmployeeFeedbackSearch:
-    "/EmployeeFeedback/EmployeeFeedbackSearch",
+  EmployeeFeedbackSearch: "/EmployeeFeedback/EmployeeFeedbackSearch",
   ShowFullFeedback: "/EmployeeFeedback/ShowFullFeedback",
   ShowAverageRating: "/EmployeeFeedback/ShowAverageRating",
   EmployeeFeebackBind: "/EmployeeFeedback/EmployeeFeebackBind",
-  EmployeeFeedbackTransaction:
-    "/EmployeeFeedback/EmployeeFeedbackTransaction",
+  EmployeeFeedbackTransaction: "/EmployeeFeedback/EmployeeFeedbackTransaction",
   ResendEmployeeFeedbackWhatsapp:
     "/EmployeeFeedback/ResendEmployeeFeedbackWhatsapp",
-  ResendEmployeeFeedbackMail:
-    "/EmployeeFeedback/ResendEmployeeFeedbackMail",
+  ResendEmployeeFeedbackMail: "/EmployeeFeedback/ResendEmployeeFeedbackMail",
   EmployeeFeedbackAvg: "/EmployeeFeedback/EmployeeFeedbackAvg",
   GetWorkingHours: "/CRMAttendance/GetWorkingHours",
-  GetEmployeeTransactions:
-    "/CRMAttendance/GetEmployeeTransactions",
+  GetEmployeeTransactions: "/CRMAttendance/GetEmployeeTransactions",
   EmployeeBind: "/CRMAttendance/EmployeeBind",
-  WeaklyMonthlyBreakCount:
-    "/CRMAttendance/WeaklyMonthlyBreakCount",
-  WeaklyMonthlyBreakHours:
-    "/CRMAttendance/WeaklyMonthlyBreakHours",
-  EmployeeFeedbackDashboard:
-    "/Attendence/EmployeeFeedbackDashboard",
-  ClientFeedbackDashboard:
-    "/CRMAttendance/ClientFeedbackDashboard",
+  WeaklyMonthlyBreakCount: "/CRMAttendance/WeaklyMonthlyBreakCount",
+  WeaklyMonthlyBreakHours: "/CRMAttendance/WeaklyMonthlyBreakHours",
+  EmployeeFeedbackDashboard: "/Attendence/EmployeeFeedbackDashboard",
+  ClientFeedbackDashboard: "/CRMAttendance/ClientFeedbackDashboard",
   EmailerSearch: "/Email/EmailerSearch",
   RepushMail: "/Email/RepushMail",
   GetFlagProject: "/ProjectMasterUpdate/GetFlagProject",
@@ -492,31 +449,22 @@ export const apiUrls = {
     "/CRMAttendance/ForceFullyShortBreakAttendanceSave",
   ForceFullyShortBreakAttendanceSearch:
     "/CRMAttendance/ForceFullyShortBreakAttendanceSearch",
-  Old_Mantis_Sub_Team_Select:
-    "/MasterBind/Old_Mantis_Sub_Team_Select",
+  Old_Mantis_Sub_Team_Select: "/MasterBind/Old_Mantis_Sub_Team_Select",
   Old_Mantis_Team_Select: "/MasterBind/Old_Mantis_Team_Select",
   Attendence_Report: "/CRMAttendence/Attendence_Report",
-  MonthWiseAttendanceReoprt:
-    "/CRMAttendence/MonthWiseAttendanceReoprt",
-  AttendanceReoprtTypeWise:
-    "/CRMAttendance/AttendanceReportTypeWise",
+  MonthWiseAttendanceReoprt: "/CRMAttendence/MonthWiseAttendanceReoprt",
+  AttendanceReoprtTypeWise: "/CRMAttendance/AttendanceReportTypeWise",
   WOandOLTypeWise: "/CRMAttendance/WOandOLTypeWise",
-  SaveFilterTableReprintData:
-    "/DynamicFilter/SaveFilterTableReprintData",
-  GetFilterTableReprintData:
-    "/DynamicFilter/GetFilterTableReprintData",
+  SaveFilterTableReprintData: "/DynamicFilter/SaveFilterTableReprintData",
+  GetFilterTableReprintData: "/DynamicFilter/GetFilterTableReprintData",
   GetFeaturesStatus: "/Circular/GetFeaturesStatus",
-  Reporter_Select_Employee:
-    "/MasterBind/Reporter_Select_Employee",
-  ClientFeedbackStatsGraph:
-    "/ClientFeedbackDashboard/ClientFeedbackStatsGraph",
+  Reporter_Select_Employee: "/MasterBind/Reporter_Select_Employee",
+  ClientFeedbackStatsGraph: "/ClientFeedbackDashboard/ClientFeedbackStatsGraph",
   ClientFeedbackRatingGraph:
     "/ClientFeedbackDashboard/ClientFeedbackRatingGraph",
   CreateManhourEntry: "/ViewIssue/CreateManhourEntry",
-  ClientFeedbackAggregates:
-    "/ClientFeedbackDashboard/ClientFeedbackAggregates",
-  ClientFeedbackList:
-    "/ClientFeedbackDashboard/ClientFeedbackList",
+  ClientFeedbackAggregates: "/ClientFeedbackDashboard/ClientFeedbackAggregates",
+  ClientFeedbackList: "/ClientFeedbackDashboard/ClientFeedbackList",
 
   AIClientDetails: "/AI/AIClientDetails",
   ThreeMonthClientGoodFeedbackList:
@@ -527,31 +475,22 @@ export const apiUrls = {
   AIClientUpdatePatientAccess: "/AI/AIClientUpdatePatientAccess",
   AIClientLedger: "/AI/AIClientLedger",
   AIClientQuestionMaster: "/AI/AIClientQuestionMaster",
-  AIClientQuestionMasterInsert:
-    "/AI/AIClientQuestionMasterInsert",
+  AIClientQuestionMasterInsert: "/AI/AIClientQuestionMasterInsert",
   WeaklyMonthlyDeveloperFreeManMinute:
     "/MantisSummary/WeaklyMonthlyDeveloperFreeManMinute",
-  ResolutionPointWeekwise:
-    "/MantisSummary/ResolutionPointWeekwise",
-  GetConvertedSalesLeadsAlert:
-    "/ProjectMaster/GetConvertedSalesLeadsAlert",
+  ResolutionPointWeekwise: "/MantisSummary/ResolutionPointWeekwise",
+  GetConvertedSalesLeadsAlert: "/ProjectMaster/GetConvertedSalesLeadsAlert",
   FestivalWishSave: "/MorningWish/FestivalWishSave",
   FestivalWishUpdate: "/MorningWish/FestivalWishUpdate",
   EditFestivalWish: "/MorningWish/EditFestivalWish",
   RemoveFestivalWish: "/MorningWish/RemoveFestivalWish",
   FestivalWishSearch: "/MorningWish/FestivalWishSearch",
-  ProjectRateListSave:
-    "/AccountsPaymentInstallment/ProjectRateListSave",
-  SearchProjectRateList:
-    "/AccountsPaymentInstallment/SearchProjectRateList",
-  EditProjectRateList:
-    "/AccountsPaymentInstallment/EditProjectRateList",
-  ProjectRateListUpdate:
-    "/AccountsPaymentInstallment/ProjectRateListUpdate",
+  ProjectRateListSave: "/AccountsPaymentInstallment/ProjectRateListSave",
+  SearchProjectRateList: "/AccountsPaymentInstallment/SearchProjectRateList",
+  EditProjectRateList: "/AccountsPaymentInstallment/EditProjectRateList",
+  ProjectRateListUpdate: "/AccountsPaymentInstallment/ProjectRateListUpdate",
   OpenPI_Select: "/AdvanceAmount/OpenPI_Select",
   OpenPI_SelectPINo: "/AdvanceAmount/OpenPI_SelectPINo",
-  POAttachementUpload:
-    "/AccountsPaymentInstallment/POAttachementUpload",
-  ViewExpenseListSummary:
-    "/ManageExpense/ViewExpenseListSummary",
+  POAttachementUpload: "/AccountsPaymentInstallment/POAttachementUpload",
+  ViewExpenseListSummary: "/ManageExpense/ViewExpenseListSummary",
 };

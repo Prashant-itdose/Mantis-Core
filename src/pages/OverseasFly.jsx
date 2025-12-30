@@ -35,7 +35,7 @@ const OverseasFly = () => {
   });
 
   const [assignto, setAssignedto] = useState([]);
-  const getAssignTo = (value) => {
+  const getAssignTo = () => {
     axiosInstances
       .post(apiUrls.EmployeeBind, {
         CrmEmployeeID: Number(
@@ -58,9 +58,11 @@ const OverseasFly = () => {
     axiosInstances
       .post(apiUrls?.GetCountry, {})
       .then((res) => {
-        const countrys = res?.data.data.map((item) => {
-          return { label: item?.NAME, value: item?.CountryID };
-        });
+        const countrys = res?.data?.data
+          ?.filter((item) => item?.NAME !== "INDIA")
+          .map((item) => {
+            return { label: item?.NAME, value: item?.CountryID };
+          });
         setCountry(countrys);
       })
       .catch((err) => {

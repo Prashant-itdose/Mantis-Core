@@ -241,6 +241,12 @@ const initialState = {
           breadcrumb: "Master / Search Employee ",
         },
         {
+          childrenName: "Employee Master",
+          url: "/ManagerSearchEmployee",
+          childrenOrder: "14",
+          breadcrumb: "Master / Search Employee ",
+        },
+        {
           childrenName: "Employee Change Password",
           url: "/EmployeeChangePassword",
           childrenOrder: "2",
@@ -526,6 +532,12 @@ const initialState = {
           url: "/ViewExpense",
           childrenOrder: "2",
           breadcrumb: "Accounts /ViewExpense",
+        },
+        {
+          childrenName: "View Expense",
+          url: "/ViewExpenseSummary",
+          childrenOrder: "22",
+          breadcrumb: "Accounts /ViewExpenseSummary",
         },
         {
           childrenName: "View Employee Expense",

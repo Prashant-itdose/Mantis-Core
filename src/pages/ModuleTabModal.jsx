@@ -105,34 +105,8 @@ const ModuleTabModal = ({ data }) => {
   const [visibles, setVisibles] = useState({
     showVisible: false,
   });
-  // const getModuleList = () => {
-  //   let form = new FormData();
-  //   form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-  //     form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname") ),
-  //     axios
-  //       .post(apiUrls?.GetClientModuleList, form, { headers })
-  //       .then((res) => {
-  //         const taxes = res?.data?.data?.map((item) => {
-  //           return { label: item?.ModuleName, value: item?.ID };
-  //         });
-  //         setModule(taxes);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  // };
+
   const getModuleList = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append("ProjectID", "0"),
-    //   form.append("IsActive", "1"),
-    //   form.append("IsMaster", "2"),
-    //   axios
-    //     .post(apiUrls?.Module_Select, form, { headers })
     axiosInstances
       .post(apiUrls?.Module_Select, {
         RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
@@ -151,26 +125,6 @@ const ModuleTabModal = ({ data }) => {
       });
   };
 
-  // const getPhase = (value) => {
-  //   let form = new FormData();
-  //   form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-  //     form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname") ),
-  //     form.append("ProjectID", data?.ProjectID),
-  //     form.append("ModuleID", value),
-  //     form.append("ProductID", data?.ProductID),
-  //     axios
-  //       .post(apiUrls?.GetPhaseID, form, { headers })
-  //       .then((res) => {
-  //         const phases = res?.data?.data?.map((item) => {
-  //           return { label: item?.ModuleName, value: item?.ID };
-  //         });
-  //         setPhase(phases);
-  //         setPhaseState(res?.data?.data);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  // };
   function getlabel(id, dropdownData) {
     const ele = dropdownData.filter((item) => item.value === id);
     return ele.length > 0 ? ele[0].label : "";
@@ -183,62 +137,38 @@ const ModuleTabModal = ({ data }) => {
     return `${year}-${month}-${day}`;
   }
   const handleCreateModule = () => {
-    const formDataJson = JSON.stringify([
-      {
-        ModuleID: formData?.Modules,
-        ModuleName: getlabel(formData?.Modules, module),
-        AfterLiveStatus: formData?.AfterLiveStatus || "0",
-        DeliveryStatus: formData?.DeliveryStatus || "0",
-        LiveStatus: formData?.LiveStatus || "0",
-        IsSale: 0,
-        PhaseID: formData?.Phase || "0",
-        PhaseDays: getlabel(formData?.Phase, phase),
-        Pic_Details: "",
-        LiveDate: formData?.LiveDate
-          ? formatDate(formData.LiveDate)
-          : "1970-01-01",
-      },
-    ]);
     if (formData?.Modules == "") {
       toast.error("Please Select Module.");
     } else {
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "RoleID",
-      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-      //   ),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("ProjectID", data?.Id || data?.ProjectID),
-      //   form.append("ActionType", "InsertModule"),
-      //   form.append("ProjectData", formDataJson),
-      // axios
-      //   .post(apiUrls?.ProjectMasterUpdate, form, { headers })
-
-      const payload = 
-        {
-          ProjectID: data?.Id ? Number(data.Id) : Number(data?.ProjectID) || 0,
-          ActionType: "InsertModule",
-          ModuleID: formData?.Modules ? Number(formData.Modules) : 0,
-          ModuleName: getlabel(formData?.Modules, module) || "",
-          AfterLiveStatus: formData?.AfterLiveStatus
-            ? String(formData.AfterLiveStatus)
-            : "0",
-          DeliveryStatus: formData?.DeliveryStatus
-            ? String(formData.DeliveryStatus)
-            : "0",
-          LiveStatus: formData?.LiveStatus ? String(formData.LiveStatus) : "0",
-          IsSale: 0, // always number
-          PhaseID: formData?.Phase ? Number(formData.Phase) : 0,
-          PhaseDays: getlabel(formData?.Phase, phase) || "",
-          Pic_Details: "", // always string
-          LiveDate: formData?.LiveDate
-            ? formatDate(formData.LiveDate)
-            : "1970-01-01",
-        }
+      const payload = {
+        ActionType: "InsertModule",
+        ProjectModule: [
+          {
+            ModulePrimaryID: 0,
+            ProjectID: data?.Id
+              ? Number(data.Id)
+              : Number(data?.ProjectID) || 0,
+            ModuleID: formData?.Modules ? Number(formData.Modules) : 0,
+            ModuleName: getlabel(formData?.Modules, module) || "",
+            AfterLiveStatus: formData?.AfterLiveStatus
+              ? String(formData.AfterLiveStatus)
+              : "0",
+            DeliveryStatus: formData?.DeliveryStatus
+              ? String(formData.DeliveryStatus)
+              : "0",
+            LiveStatus: formData?.LiveStatus
+              ? String(formData.LiveStatus)
+              : "0",
+            IsSale: false,
+            PhaseID: formData?.Phase ? Number(formData.Phase) : 0,
+            PhaseDays: getlabel(formData?.Phase, phase) || "",
+            Pic_Details: "",
+            LiveDate: formData?.LiveDate
+              ? formatDate(formData.LiveDate)
+              : "1970-01-01",
+          },
+        ],
+      };
 
       axiosInstances
         .post(apiUrls?.ProjectMasterUpdate, payload)
@@ -277,84 +207,74 @@ const ModuleTabModal = ({ data }) => {
   };
 
   const handleUpdateModule = () => {
-    const formDataJson = JSON.stringify([
-      {
-        ModulePrimaryID: formData?.ModulePrimaryID,
-        ModuleID: formData?.Modules,
-        ModuleName: getlabel(formData?.Modules, module),
-        AfterLiveStatus: formData?.AfterLiveStatus,
-        DeliveryStatus: formData?.DeliveryStatus,
-        LiveStatus: formData?.LiveStatus,
-        IsSale: 0,
-        PhaseID: formData?.Phase,
-        PhaseDays: getlabel(formData?.Phase, phase),
-        LiveDate: formData?.LiveDate
-          ? formatDate(formData.LiveDate)
-          : "1970-01-01",
-        Pic_Details: "",
-      },
-    ]);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "RoleID",
-        useCryptoLocalStorage("user_Data", "get", "RoleID")
-      ),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("ProjectID", data?.Id || data?.ProjectID),
-      form.append("ActionType", "UpdateModule"),
-      form.append("ProjectData", formDataJson),
-      axios
-        .post(apiUrls?.ProjectMasterUpdate, form, { headers })
-        .then((res) => {
-          if (res?.data?.success == true) {
-            toast.success(res?.data?.message);
-            handleSearch();
-            setEditMode(false);
-            setFormData({
-              ...formData,
-              MachineName: "",
-              Modules: "",
-              ModuleName: "",
-              LiveDate: "",
-              Phase: "",
-              DeliveryStatus: "",
-              LiveStatus: "",
-              AfterLiveStatus: "",
-              DocumentType: "",
-              SelectFile: "",
-              Document_Base64: "",
-              FileExtension: "",
-              ModulePrimaryID: "",
-              PhaseDays: "",
-              ModuleID: "",
-              PhaseID: "",
-              Pic_Details: "",
-            });
-          } else {
-            toast.error(res?.data?.message);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    axiosInstances
+      .post(apiUrls?.ProjectMasterUpdate, {
+        ActionType: "UpdateModule",
+        ProjectModule: [
+          {
+            ModulePrimaryID: formData?.ModulePrimaryID,
+            ProjectID: data?.Id
+              ? Number(data.Id)
+              : Number(data?.ProjectID) || 0,
+            ModuleID: formData?.Modules ? Number(formData.Modules) : 0,
+            ModuleName: getlabel(formData?.Modules, module) || "",
+            AfterLiveStatus: formData?.AfterLiveStatus
+              ? String(formData.AfterLiveStatus)
+              : "0",
+            DeliveryStatus: formData?.DeliveryStatus
+              ? String(formData.DeliveryStatus)
+              : "0",
+            LiveStatus: formData?.LiveStatus
+              ? String(formData.LiveStatus)
+              : "0",
+            IsSale: false,
+            PhaseID: formData?.Phase ? Number(formData.Phase) : 0,
+            PhaseDays: getlabel(formData?.Phase, phase) || "",
+            Pic_Details: "",
+            LiveDate: formData?.LiveDate
+              ? formatDate(formData.LiveDate)
+              : "1970-01-01",
+          },
+        ],
+      })
+      .then((res) => {
+        if (res?.data?.success == true) {
+          toast.success(res?.data?.message);
+          handleSearch();
+          setEditMode(false);
+          setFormData({
+            ...formData,
+            MachineName: "",
+            Modules: "",
+            ModuleName: "",
+            LiveDate: "",
+            Phase: "",
+            DeliveryStatus: "",
+            LiveStatus: "",
+            AfterLiveStatus: "",
+            DocumentType: "",
+            SelectFile: "",
+            Document_Base64: "",
+            FileExtension: "",
+            ModulePrimaryID: "",
+            PhaseDays: "",
+            ModuleID: "",
+            PhaseID: "",
+            Pic_Details: "",
+          });
+        } else {
+          toast.error(res?.data?.message);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   // useEffect(() => {
   //   setTableData([...tableData, ...visible?.showData?.showData]);
   // }, []);
 
   const handleSearch = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append("LoginName", useCryptoLocalStorage("user_Data", "get", "realname") ),
-    //   form.append("ProjectName", data?.NAME || data?.ProjectName);
-    // form.append("ProjectID", data?.Id || data?.ProjectID);
-    // form.append("Title", "Module");
-    // axios
-    //   .post(apiUrls?.getViewProject, form, { headers })
     axiosInstances
       .post(apiUrls?.getViewProject, {
         RoleID: 0,
@@ -371,7 +291,7 @@ const ModuleTabModal = ({ data }) => {
   };
 
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 10;
+  const rowsPerPage = 15;
   const totalPages = Math.ceil(tableData?.length / rowsPerPage);
   const currentData = tableData?.slice(
     (currentPage - 1) * rowsPerPage,
@@ -387,7 +307,7 @@ const ModuleTabModal = ({ data }) => {
     setFormData({ ...formData, [name]: value });
   };
   const handleBillingEdit = (ele) => {
-    // console.log("editdetails", ele);
+    console.log("editdetails", ele);
     setFormData({
       ...formData,
       ModulePrimaryID: ele?.ID,
@@ -399,8 +319,7 @@ const ModuleTabModal = ({ data }) => {
       IsSale: ele?.IsSale,
       Phase: ele?.PhaseID,
       PhaseDays: ele?.PhaseDays,
-      // LiveDate: new Date(ele?.LiveDate),
-      LiveDate: ele?.LiveDate == null ? "" : new Date(ele?.LiveDate),
+      LiveDate: ele?.LiveDate == "01-Jan-1970" ? "" : new Date(ele?.LiveDate),
       Pic_Details: ele?.Pic_Details,
     });
     setEditMode(true);
@@ -441,34 +360,30 @@ const ModuleTabModal = ({ data }) => {
       setLoading(false);
       return;
     }
-    const form = new FormData();
+    console.log("selectedIds", selectedIds);
+    axiosInstances
+      .post(apiUrls?.ProjectMasterUpdate, {
+        ActionType: "DeleteModule",
+        ProjectID: Number(data?.Id),
 
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("ProjectID", data?.Id),
-      form.append("ModulePrimaryID", selectedIds.join(",")),
-      form.append("ActionType", "DeleteModule"),
-      // axios
-      //   .post(apiUrls?.ProjectMasterUpdate, form, { headers })
-         axiosInstances
-      .post(apiUrls?.ProjectMasterUpdate, {})
-        .then((res) => {
-          if (res?.data?.success === true) {
-            toast.success(res?.data?.message);
-            setLoading(false);
-            handleSearch();
-          } else {
-            toast.error(res?.data?.message);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
+        ProjectModule: selectedIds?.map((id) => ({
+          ModulePrimaryID: id,
+        })),
+      })
+      .then((res) => {
+        if (res?.data?.success === true) {
+          toast.success(res?.data?.message);
           setLoading(false);
-        });
+          handleSearch();
+        } else {
+          toast.error(res?.data?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
   const moduleTHEAD = [
     "S.No.",
@@ -735,11 +650,11 @@ const ModuleTabModal = ({ data }) => {
           )}
         </div>
         {tableData?.length > 0 && (
-          <div className="patient_registration_card mt-2 my-2">
+          <div className="patient_registration_card mt-2 my-1">
             <Heading
               title="Module Status"
               secondTitle={
-                <div className="row g-4">
+                <div className="row ">
                   <div className="d-flex">
                     <div
                       style={{ padding: "0px !important", marginLeft: "10px" }}
@@ -756,7 +671,7 @@ const ModuleTabModal = ({ data }) => {
                         respclass="col-xl-12 col-md-4 col-sm-6 col-12"
                       />
                     </div>
-                    <span style={{ fontWeight: "bold" }}>
+                    <span style={{ fontWeight: "bold", marginRight: "5px" }}>
                       Total Record :&nbsp;{tableData?.length}
                     </span>
                   </div>
@@ -791,40 +706,6 @@ const ModuleTabModal = ({ data }) => {
                           Delete All
                         </button>
                       </div> */}
-                      <div
-                        className="legend-circle"
-                        style={{
-                          backgroundColor: "#04ff02",
-                          cursor: "pointer",
-                          height: "10px",
-                          width: "36px",
-                          borderRadius: "50%",
-                        }}
-                        //   onClick={() => getUploadSearch("2")}
-                      ></div>
-                      <span
-                        className="legend-label"
-                        style={{ width: "100%", textAlign: "left" }}
-                      >
-                        Yes
-                      </span>
-                      <div
-                        className="legend-circle"
-                        style={{
-                          backgroundColor: "orange",
-                          cursor: "pointer",
-                          height: "10px",
-                          width: "36px",
-                          borderRadius: "50%",
-                        }}
-                        //   onClick={() => getUploadSearch("1")}
-                      ></div>
-                      <span
-                        className="legend-label"
-                        style={{ width: "100%", textAlign: "left" }}
-                      >
-                        No
-                      </span>
                     </div>
                   </div>
                 </div>
@@ -838,7 +719,7 @@ const ModuleTabModal = ({ data }) => {
                 LiveStatus: ele?.LiveStatus === 0 ? "No" : "Yes",
                 DeliveryStatus: ele?.DeliveryStatus === 0 ? "No" : "Yes",
                 AfterLiveStatus: ele?.AfterLiveStatus === 0 ? "No" : "Yes",
-                LiveDate: ele?.LiveDate,
+                LiveDate: ele?.LiveDate == "01-Jan-1970" ? "" : ele?.LiveDate,
                 Phase: ele?.PhaseDays,
                 Remove: (
                   // <i

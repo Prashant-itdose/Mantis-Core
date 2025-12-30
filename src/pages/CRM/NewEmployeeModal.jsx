@@ -97,10 +97,10 @@ const NewEmployeeModal = () => {
             Password: "",
           });
           setEditMode(true);
-          handleSearch()
+          handleSearch();
         } else {
           toast.error(res?.data?.message);
-             setLoading(false);
+          setLoading(false);
         }
       })
       .catch((err) => {
@@ -130,7 +130,7 @@ const NewEmployeeModal = () => {
             Password: "",
           });
           setEditMode(true);
-          handleSearch()
+          handleSearch();
         } else {
           toast.error(res?.data?.message);
         }
@@ -182,7 +182,6 @@ const NewEmployeeModal = () => {
   };
   const [editMode, setEditMode] = useState(false);
   const handleBillingEdit = (ele) => {
-    
     setFormData({
       ...formData,
       UserName: ele?.username,

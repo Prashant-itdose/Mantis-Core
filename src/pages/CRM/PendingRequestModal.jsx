@@ -66,9 +66,10 @@
 
 // export default PendingRequestModal;
 
-const PendingRequestModal = ({ visible, selectedDate, calendarData }) => {
+const PendingRequestModal = ({ visible, selectedDate, calendarData ,assignedData }) => {
   
-  
+  // console.log("lotus kamal",calendarData)
+  // console.log("lotus assignedData",assignedData)
   return (
     <div className="card">
       <div className="row m-2">

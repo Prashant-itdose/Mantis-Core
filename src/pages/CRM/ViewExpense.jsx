@@ -5,12 +5,11 @@ import MultiSelectComp from "../../components/formComponent/MultiSelectComp";
 import { apiUrls } from "../../networkServices/apiEndpoints";
 import ReactSelect from "../../components/formComponent/ReactSelect";
 import Tables from "../../components/UI/customTable";
-import { ViewExpenseThead } from "../../components/modalComponent/Utils/HealperThead";
 import Input from "../../components/formComponent/Input";
 import { Tabfunctionality } from "../../utils/helpers";
 import Modal from "../../components/modalComponent/Modal";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ExportToExcel, ExportToExcelColor } from "../../networkServices/Tools";
 import excelimg from "../../assets/image/excel.png";
 import SlideScreen from "../SlideScreen";
@@ -43,7 +42,7 @@ const ViewExpense = () => {
     "get",
     "AllowExpenseApprove"
   );
-
+  const navigate = useNavigate();
   const ReportingManager = useCryptoLocalStorage(
     "user_Data",
     "get",
@@ -63,9 +62,7 @@ const ViewExpense = () => {
     VerticalID: [],
     TeamID: [],
     WingID: [],
-    // Employee: Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID"))
-    //   ? Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID"))
-    //   : "",
+
     Employee: "0",
     ReportingTo: "",
     Name: "",
@@ -253,7 +250,6 @@ const ViewExpense = () => {
   };
 
   const handleTableSearch = (kamal) => {
-    console.log("kamal kamal", kamal);
     if (formData?.ExpenseType == "") {
       toast.error("Please Select Expense Type.");
     } else {
@@ -305,8 +301,6 @@ const ViewExpense = () => {
       handleTableSearch(formData?.Employee);
     }
   }, [formData?.Employee]);
-
-  console.log("formdata employee", formData?.Employee);
 
   const handleTableSearchEmployee = () => {
     if (formData?.ExpenseType == "") {
@@ -439,6 +433,130 @@ const ViewExpense = () => {
   };
 
   const RoleID = useCryptoLocalStorage("user_Data", "get", "RoleID");
+
+  const [selectAll, setSelectAll] = useState(false);
+
+  const handleCheckBox = (e, index) => {
+    const { name, checked } = e?.target;
+
+    if (name === "selectAll") {
+      // Handle Select All for CURRENT page
+      const updatedData = tableData.map((item, idx) => {
+        const isOnCurrentPage =
+          idx >= (currentPage - 1) * rowsPerPage &&
+          idx < currentPage * rowsPerPage;
+
+        return isOnCurrentPage ? { ...item, remove: checked } : item;
+      });
+
+      setTableData(updatedData);
+      setSelectAll(checked);
+    } else if (name === "remove") {
+      // Get actual index in full tableData
+      const globalIndex = (currentPage - 1) * rowsPerPage + index;
+      const data = [...tableData];
+
+      data[globalIndex][name] = checked;
+      setTableData(data);
+
+      // Check if all rows in current page are selected
+      const currentPageData = data.slice(
+        (currentPage - 1) * rowsPerPage,
+        currentPage * rowsPerPage
+      );
+
+      const allChecked = currentPageData.every((item) => item.remove);
+      setSelectAll(allChecked);
+    }
+  };
+  const ViewExpenseThead = [
+    { name: "S.No.", width: "2%" },
+    "Name",
+    "TripName",
+    "Date",
+    "Day",
+    "Hotel",
+    "Meals",
+    "Local",
+    "InterCity",
+    "Entertainment",
+    "Others",
+    "Total",
+    "Status",
+    // "Action",
+    <label
+    // style={{
+    //   display: "flex",
+    //   justifyContent: "flex-end",
+    // }}
+    >
+      <span className="mr-5">Action</span>
+      {ReportingManager == 1 && (
+        <span className="mt-0 ml-5">
+          Select All &nbsp;
+          <input
+            type="checkbox"
+            name="selectAll"
+            checked={selectAll}
+            // className="mr-0 mt-1"
+            style={{ marginTop: "5px" }}
+            onChange={handleCheckBox}
+          />
+        </span>
+      )}
+      &nbsp;
+    </label>,
+    { name: "Attachment", width: "5%" },
+  ];
+
+  const [selected, setSelected] = React.useState("yes");
+
+  const handleRadioChange = (value) => {
+    setSelected(value);
+    if (value === "yes") {
+      navigate("/ViewExpense");
+    } else if (value === "no") {
+      navigate("/ViewExpenseSummary");
+    }
+  };
+
+  const handleApproveAll = () => {
+    setLoading(true);
+    const selectedIds = tableData
+      .filter((row) => row.remove)
+      .map((row) => row.EmpID);
+    const selectedIdss = tableData
+      .filter((row) => row.remove)
+      .map((row) => row.expense_report_ID);
+
+    if (selectedIds.length === 0) {
+      toast.error("Please select at least one row to Approve.");
+      setLoading(false);
+      return;
+    }
+
+    axiosInstances
+      .post(apiUrls.BulkExpenseApprove, {
+        ExpenseEmployeeIDs: String(selectedIds?.length > 0 ? selectedIds : ""),
+        ExpensereportIDs: String(selectedIdss?.length > 0 ? selectedIdss : ""),
+      })
+      .then((res) => {
+        if (res?.data?.success) {
+          toast.success(res?.data?.message);
+          setLoading(false);
+          handleTableSearch();
+          handleTableSearchEmployee();
+          setSelectAll(false);
+        } else {
+          toast.error(res?.data?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  };
   return (
     <>
       {visible?.ShowApprove && (
@@ -582,7 +700,45 @@ const ViewExpense = () => {
       )}
 
       <div className="card">
-        <Heading isBreadcrumb={true} />
+        <Heading
+          isBreadcrumb={true}
+          secondTitle={
+            <>
+              {ReportingManager == 1 && (
+                <div
+                  className="d-flex"
+                  style={{ justifyContent: "space-between" }}
+                >
+                  <label>
+                    <input
+                      className="ml-1"
+                      type="radio"
+                      name="option"
+                      value="yes"
+                      checked={selected === "yes"}
+                      onChange={() => handleRadioChange("yes")}
+                      style={{ cursor: "pointer" }}
+                    />
+                    <span className="mb-2 ml-1">View Expense</span>
+                  </label>
+
+                  <label className="ml-4">
+                    <input
+                      className="ml-1"
+                      type="radio"
+                      name="option"
+                      value="no"
+                      checked={selected === "no"}
+                      style={{ cursor: "pointer" }}
+                      onChange={() => handleRadioChange("no")}
+                    />
+                    <span className="mb-2 ml-1">View Expense Summary</span>
+                  </label>
+                </div>
+              )}
+            </>
+          }
+        />
         <div className="row g-4 m-2">
           {ReportingManager == 1 || RoleID === 4 ? (
             <ReactSelect
@@ -703,6 +859,7 @@ const ViewExpense = () => {
             handleChange={handleDeliveryChange}
             requiredClassName={"required-fields"}
           />
+
           {ReportingManager == 1 || RoleID === 4 ? (
             <div>
               {loading ? (
@@ -772,7 +929,7 @@ const ViewExpense = () => {
         </div>
       </div>
       {tableData?.length > 0 ? (
-        <div className="card mt-3">
+        <div className="card mt-1">
           <Heading
             title={<span style={{ fontWeight: "bold" }}>Search Details</span>}
             secondTitle={
@@ -959,7 +1116,15 @@ const ViewExpense = () => {
                 </div>
                 <span style={{ fontWeight: "bold", marginLeft: "10px" }}>
                   Grand Total :&nbsp;
-                  {tableData?.reduce((acc, curr) => acc + (curr.Total || 0), 0)}
+                  {Number(
+                    tableData?.reduce(
+                      (acc, curr) => acc + (curr.Total || 0),
+                      0
+                    ) || 0
+                  ).toLocaleString("en-IN", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
                 </span>
                 <span style={{ fontWeight: "bold", marginLeft: "10px" }}>
                   Total Record :&nbsp;{tableData?.length}
@@ -1161,274 +1326,319 @@ const ViewExpense = () => {
               Status: ele?.Status,
 
               Action: (
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "8px",
-                    padding: "3px",
-                  }}
-                >
-                  {/* View Button */}
-                  <Link
+                <>
+                  <div
                     style={{
-                      color: "white",
-                      fontWeight: "bold",
-                      border: "1px solid #355ec4",
-                      width: "20px",
-                      height: "20px",
-                      background: "#355ec4",
-                      borderRadius: "50%",
                       display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      textDecoration: "none",
+                      gap: "8px",
+                      padding: "3px",
+                      justifyContent: "space-between",
                     }}
-                    to="/ExpenseSubmission"
-                    state={{
-                      data: ele?.DATE,
-                      edit: true,
-                      givenData: ele,
-                    }}
-                    title="Click to View/Edit"
                   >
-                    V
-                  </Link>
-
-                  {/* Approve Button - with conditional styling */}
-                  {ele?.EmpID ==
-                    useCryptoLocalStorage(
-                      "user_Data",
-                      "get",
-                      "CrmEmployeeID"
-                    ) ||
-                  ele?.is_approved === 1 ||
-                  ele?.Status === "Active" ? null : (
-                    <span
+                    <div
                       style={{
-                        color: "white",
-                        fontWeight: "bold",
-                        border: "1px solid green",
-                        width: "20px",
-                        height: "20px",
-                        background: TwelthdayCurrentMonthSelected()
-                          ? "green"
-                          : "#cccccc",
-                        borderRadius: "50%",
                         display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        textDecoration: "none",
-                        cursor: TwelthdayCurrentMonthSelected()
-                          ? "pointer"
-                          : "not-allowed",
-                        opacity: TwelthdayCurrentMonthSelected() ? 1 : 0.6,
+                        gap: "8px",
+                        padding: "3px",
                       }}
-                      onClick={() => {
-                        if (TwelthdayCurrentMonthSelected()) {
-                          setVisible({ ShowApprove: true, showData: ele });
-                        }
-                      }}
-                      title={
-                        TwelthdayCurrentMonthSelected()
-                          ? "Click to Approve"
-                          : "Approval is available only on the 12th day of the current month."
-                      }
                     >
-                      A
-                    </span>
-                  )}
+                      {/* View Button */}
+                      <Link
+                        style={{
+                          color: "white",
+                          fontWeight: "bold",
+                          border: "1px solid #355ec4",
+                          width: "20px",
+                          height: "20px",
+                          background: "#355ec4",
+                          borderRadius: "50%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          textDecoration: "none",
+                        }}
+                        to="/ExpenseSubmission"
+                        state={{
+                          data: ele?.DATE,
+                          edit: true,
+                          givenData: ele,
+                        }}
+                        title="Click to View/Edit"
+                      >
+                        V
+                      </Link>
 
-                  {/* Reject Button */}
-                  {ele?.is_approved !== 1 && (
-                    <span
-                      style={{
-                        color: "white",
-                        fontWeight: "bold",
-                        border: "1px solid red",
-                        width: "20px",
-                        height: "20px",
-                        background: TwelthdayCurrentMonthSelected()
-                          ? "red"
-                          : "#cccccc",
-                        borderRadius: "50%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        textDecoration: "none",
-                        cursor: TwelthdayCurrentMonthSelected()
-                          ? "pointer"
-                          : "not-allowed",
-                        opacity: TwelthdayCurrentMonthSelected() ? 1 : 0.6,
-                      }}
-                      onClick={() => {
-                        if (TwelthdayCurrentMonthSelected()) {
-                          setVisible({ ShowReject: true, showData: ele });
-                        }
-                      }}
-                      title={
-                        TwelthdayCurrentMonthSelected()
-                          ? "Click to Reject"
-                          : "Reject is available only on the 12th day of the current month."
-                      }
-                    >
-                      R
-                    </span>
-                  )}
+                      {/* Approve Button - with conditional styling */}
+                      {ele?.EmpID ==
+                        useCryptoLocalStorage(
+                          "user_Data",
+                          "get",
+                          "CrmEmployeeID"
+                        ) ||
+                      ele?.is_approved === 1 ||
+                      ele?.Status === "Active" ? null : (
+                        <>
+                          <span
+                            style={{
+                              color: "white",
+                              fontWeight: "bold",
+                              border: "1px solid green",
+                              width: "20px",
+                              height: "20px",
+                              background: TwelthdayCurrentMonthSelected()
+                                ? "green"
+                                : "#cccccc",
+                              borderRadius: "50%",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              textDecoration: "none",
+                              cursor: TwelthdayCurrentMonthSelected()
+                                ? "pointer"
+                                : "not-allowed",
+                              opacity: TwelthdayCurrentMonthSelected()
+                                ? 1
+                                : 0.6,
+                            }}
+                            onClick={() => {
+                              if (TwelthdayCurrentMonthSelected()) {
+                                setVisible({
+                                  ShowApprove: true,
+                                  showData: ele,
+                                });
+                              }
+                            }}
+                            title={
+                              TwelthdayCurrentMonthSelected()
+                                ? "Click to Approve"
+                                : "Approval is available only on the 12th day of the current month."
+                            }
+                          >
+                            A
+                          </span>
+                        </>
+                      )}
 
-                  {/* Submit Button */}
-                  {!["Submitted", "Approved"].includes(ele?.Status) && (
-                    <span
-                      style={{
-                        color: "white",
-                        fontWeight: "bold",
-                        border: "1px solid orange",
-                        width: "20px",
-                        height: "20px",
-                        // background: isCurrentMonthSelected()
-                        //   ? "orange"
-                        //   : "#cccccc",
-                        background:
-                          ReportingManager == 1
-                            ? TwelthdayCurrentMonthSelected()
-                              ? "orange"
-                              : "#cccccc"
-                            : isCurrentMonthSelected()
-                              ? "orange"
+                      {/* Reject Button */}
+                      {ele?.is_approved !== 1 && (
+                        <span
+                          style={{
+                            color: "white",
+                            fontWeight: "bold",
+                            border: "1px solid red",
+                            width: "20px",
+                            height: "20px",
+                            background: TwelthdayCurrentMonthSelected()
+                              ? "red"
                               : "#cccccc",
-                        borderRadius: "50%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        textDecoration: "none",
-                        // cursor: isCurrentMonthSelected()
-                        //   ? "pointer"
-                        //   : "not-allowed",
-                        cursor:
-                          ReportingManager == 1
-                            ? TwelthdayCurrentMonthSelected()
-                              ? "pointer"
-                              : "not-allowed"
-                            : isCurrentMonthSelected()
+                            borderRadius: "50%",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            textDecoration: "none",
+                            cursor: TwelthdayCurrentMonthSelected()
                               ? "pointer"
                               : "not-allowed",
-                        // opacity: isCurrentMonthSelected() ? 1 : 0.6,
-                        opacity:
+                            opacity: TwelthdayCurrentMonthSelected() ? 1 : 0.6,
+                          }}
+                          onClick={() => {
+                            if (TwelthdayCurrentMonthSelected()) {
+                              setVisible({ ShowReject: true, showData: ele });
+                            }
+                          }}
+                          title={
+                            TwelthdayCurrentMonthSelected()
+                              ? "Click to Reject"
+                              : "Reject is available only on the 12th day of the current month."
+                          }
+                        >
+                          R
+                        </span>
+                      )}
+
+                      {/* Submit Button */}
+                      {!["Submitted", "Approved"].includes(ele?.Status) && (
+                        <span
+                          style={{
+                            color: "white",
+                            fontWeight: "bold",
+                            border: "1px solid orange",
+                            width: "20px",
+                            height: "20px",
+                            // background: isCurrentMonthSelected()
+                            //   ? "orange"
+                            //   : "#cccccc",
+                            background:
+                              ReportingManager == 1
+                                ? TwelthdayCurrentMonthSelected()
+                                  ? "orange"
+                                  : "#cccccc"
+                                : isCurrentMonthSelected()
+                                  ? "orange"
+                                  : "#cccccc",
+                            borderRadius: "50%",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            textDecoration: "none",
+                            // cursor: isCurrentMonthSelected()
+                            //   ? "pointer"
+                            //   : "not-allowed",
+                            cursor:
+                              ReportingManager == 1
+                                ? TwelthdayCurrentMonthSelected()
+                                  ? "pointer"
+                                  : "not-allowed"
+                                : isCurrentMonthSelected()
+                                  ? "pointer"
+                                  : "not-allowed",
+                            // opacity: isCurrentMonthSelected() ? 1 : 0.6,
+                            opacity:
+                              ReportingManager == 1
+                                ? TwelthdayCurrentMonthSelected()
+                                  ? 1
+                                  : 0.6
+                                : isCurrentMonthSelected()
+                                  ? 1
+                                  : 0.6,
+                          }}
+                          // onClick={() => {
+                          //   if (isCurrentMonthSelected()) {
+                          //     setVisible({ ShowSubmit: true, showData: ele });
+                          //   }
+                          // }}
+                          onClick={() => {
+                            ReportingManager == 1
+                              ? TwelthdayCurrentMonthSelected()
+                                ? setVisible({
+                                    ShowSubmit: true,
+                                    showData: ele,
+                                  })
+                                : ""
+                              : isCurrentMonthSelected()
+                                ? setVisible({
+                                    ShowSubmit: true,
+                                    showData: ele,
+                                  })
+                                : "";
+                          }}
+                          // title={
+                          //   isCurrentMonthSelected()
+                          //     ? "Click to Submit"
+                          //     : "Submit is available only on the 5th day of the current month."
+                          // }
+                          title={
+                            ReportingManager == 1
+                              ? TwelthdayCurrentMonthSelected()
+                                ? "Click to Submit"
+                                : "Submit is available only on the 12th day of the current month."
+                              : isCurrentMonthSelected()
+                                ? "Click to Submit"
+                                : "Submit is available only on the 5th day of the current month."
+                          }
+                        >
+                          S
+                        </span>
+                      )}
+
+                      {/* Delete Button */}
+                      <span
+                        style={{
+                          color: "white",
+                          fontWeight: "bold",
+                          border: "1px solid #eb3467",
+                          width: "20px",
+                          height: "20px",
+                          background:
+                            ReportingManager == 1
+                              ? TwelthdayCurrentMonthSelected()
+                                ? "#eb3467"
+                                : "#cccccc"
+                              : isCurrentMonthSelected()
+                                ? "#eb3467"
+                                : "#cccccc",
+
+                          borderRadius: "50%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          textDecoration: "none",
+                          cursor:
+                            ReportingManager == 1
+                              ? TwelthdayCurrentMonthSelected()
+                                ? "pointer"
+                                : "not-allowed"
+                              : isCurrentMonthSelected()
+                                ? "pointer"
+                                : "not-allowed",
+                          // cursor: isCurrentMonthSelected()
+                          //   ? "pointer"
+                          //   : "not-allowed",
+                          opacity:
+                            ReportingManager == 1
+                              ? TwelthdayCurrentMonthSelected()
+                                ? 1
+                                : 0.6
+                              : isCurrentMonthSelected()
+                                ? 1
+                                : 0.6,
+                          // opacity: isCurrentMonthSelected() ? 1 : 0.6,
+                        }}
+                        // onClick={() => {
+                        //   if (isCurrentMonthSelected()) {
+                        //     setVisible({ deleteShow: true, showData: ele });
+                        //   }
+                        // }}
+                        onClick={() => {
                           ReportingManager == 1
                             ? TwelthdayCurrentMonthSelected()
-                              ? 1
-                              : 0.6
+                              ? setVisible({ deleteShow: true, showData: ele })
+                              : ""
                             : isCurrentMonthSelected()
-                              ? 1
-                              : 0.6,
-                      }}
-                      // onClick={() => {
-                      //   if (isCurrentMonthSelected()) {
-                      //     setVisible({ ShowSubmit: true, showData: ele });
-                      //   }
-                      // }}
-                      onClick={() => {
-                        ReportingManager == 1
-                          ? TwelthdayCurrentMonthSelected()
-                            ? setVisible({ ShowSubmit: true, showData: ele })
-                            : ""
-                          : isCurrentMonthSelected()
-                            ? setVisible({ ShowSubmit: true, showData: ele })
-                            : "";
-                      }}
-                      // title={
-                      //   isCurrentMonthSelected()
-                      //     ? "Click to Submit"
-                      //     : "Submit is available only on the 5th day of the current month."
-                      // }
-                      title={
-                        ReportingManager == 1
-                          ? TwelthdayCurrentMonthSelected()
-                            ? "Click to Submit"
-                            : "Submit is available only on the 12th day of the current month."
-                          : isCurrentMonthSelected()
-                            ? "Click to Submit"
-                            : "Submit is available only on the 5th day of the current month."
-                      }
-                    >
-                      S
-                    </span>
-                  )}
-
-                  {/* Delete Button */}
-                  <span
-                    style={{
-                      color: "white",
-                      fontWeight: "bold",
-                      border: "1px solid #eb3467",
-                      width: "20px",
-                      height: "20px",
-                      background:
-                        ReportingManager == 1
-                          ? TwelthdayCurrentMonthSelected()
-                            ? "#eb3467"
-                            : "#cccccc"
-                          : isCurrentMonthSelected()
-                            ? "#eb3467"
-                            : "#cccccc",
-
-                      borderRadius: "50%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      textDecoration: "none",
-                      cursor:
-                        ReportingManager == 1
-                          ? TwelthdayCurrentMonthSelected()
-                            ? "pointer"
-                            : "not-allowed"
-                          : isCurrentMonthSelected()
-                            ? "pointer"
-                            : "not-allowed",
-                      // cursor: isCurrentMonthSelected()
-                      //   ? "pointer"
-                      //   : "not-allowed",
-                      opacity:
-                        ReportingManager == 1
-                          ? TwelthdayCurrentMonthSelected()
-                            ? 1
-                            : 0.6
-                          : isCurrentMonthSelected()
-                            ? 1
-                            : 0.6,
-                      // opacity: isCurrentMonthSelected() ? 1 : 0.6,
-                    }}
-                    // onClick={() => {
-                    //   if (isCurrentMonthSelected()) {
-                    //     setVisible({ deleteShow: true, showData: ele });
-                    //   }
-                    // }}
-                    onClick={() => {
-                      ReportingManager == 1
-                        ? TwelthdayCurrentMonthSelected()
-                          ? setVisible({ deleteShow: true, showData: ele })
-                          : ""
-                        : isCurrentMonthSelected()
-                          ? setVisible({ deleteShow: true, showData: ele })
-                          : "";
-                    }}
-                    title={
-                      ReportingManager == 1
-                        ? TwelthdayCurrentMonthSelected()
-                          ? "Click to Delete"
-                          : "Delete is available only on the 12th day of the current month."
-                        : isCurrentMonthSelected()
-                          ? "Click to Delete"
-                          : "Delete is available only on the 5th day of the current month."
-                    }
-                    // title={
-                    //   isCurrentMonthSelected()
-                    //     ? "Click to Delete"
-                    //     : "Delete only available for current month"
-                    // }
-                  >
-                    D
-                  </span>
-                </div>
+                              ? setVisible({ deleteShow: true, showData: ele })
+                              : "";
+                        }}
+                        title={
+                          ReportingManager == 1
+                            ? TwelthdayCurrentMonthSelected()
+                              ? "Click to Delete"
+                              : "Delete is available only on the 12th day of the current month."
+                            : isCurrentMonthSelected()
+                              ? "Click to Delete"
+                              : "Delete is available only on the 5th day of the current month."
+                        }
+                        // title={
+                        //   isCurrentMonthSelected()
+                        //     ? "Click to Delete"
+                        //     : "Delete only available for current month"
+                        // }
+                      >
+                        D
+                      </span>
+                    </div>
+                    <div>
+                      {ele?.EmpID ==
+                        useCryptoLocalStorage(
+                          "user_Data",
+                          "get",
+                          "CrmEmployeeID"
+                        ) ||
+                      ele?.is_approved === 1 ||
+                      ele?.Status === "Active" ? null : (
+                        <input
+                          type="checkbox"
+                          name="remove"
+                          className="mt-2"
+                          checked={
+                            tableData[(currentPage - 1) * rowsPerPage + index]
+                              ?.remove || false
+                          }
+                          onChange={(e) => handleCheckBox(e, index)}
+                        />
+                      )}
+                    </div>
+                  </div>
+                </>
               ),
 
               Attachment: ele?.FileURLs ? (
@@ -1471,7 +1681,7 @@ const ViewExpense = () => {
           >
             {renderComponent?.component}
           </SlideScreen>
-          <div className="pagination ml-auto">
+          <div className="pagination ml-right">
             <div>
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
@@ -1489,6 +1699,16 @@ const ViewExpense = () => {
                 Next
               </button>
             </div>
+            {ReportingManager == 1 && (
+              <div className="ml-auto mr-5">
+                <button
+                  className="btn btn-sm btn-success"
+                  onClick={handleApproveAll}
+                >
+                  Approve All
+                </button>
+              </div>
+            )}
           </div>
         </div>
       ) : (

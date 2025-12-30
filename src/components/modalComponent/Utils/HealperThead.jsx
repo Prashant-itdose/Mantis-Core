@@ -100,6 +100,18 @@ export const EmployeeTHEAD = [
   "Edit",
   "Action",
 ];
+
+export const EmployeeManagerTHEAD = [
+  "S.No.",
+  "Vertical",
+  "Team",
+  "Wing",
+  "Employee Name",
+  "Office Designation",
+   "Profile Designation",
+  "Reporting Manager",
+  "Experience (Years)",
+];
 export const userVSprojectTHEAD = [
   "S.No.",
   "ProjectID",
@@ -431,7 +443,6 @@ export const ViewExpenseThead = [
   "Meals",
   "Local",
   "InterCity",
-  // "Phone",
   "Entertainment",
   "Others",
   "Total",

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Welcome from "../components/WelComeCard/Welcome";
 import moment from "moment";
-import { useLocalStorage } from "../utils/hooks/useLocalStorage";
 import Marque from "../components/UI/Marque";
 import Modal from "../components/modalComponent/Modal";
 import TodaysDeliveryList from "./TodaysDeliveryList";
@@ -11,9 +10,6 @@ import PriorityTicketsChart from "../components/Dashboard/PriorityTicketsChart";
 import ReopenedTicketList from "./ReopenedTicketList";
 import DelayList from "./DelayList";
 import TicketByStatus from "../components/Dashboard/TicketByStatus";
-import axios from "axios";
-import { apiUrls } from "../networkServices/apiEndpoints";
-import { headers } from "../utils/apitools";
 import OpenBugsList from "./OpenBugsList";
 import SpeedometerChart from "../components/Dashboard/SpeedometerChart";
 import NewsDataDashboard from "./NewsDataDashboard";
@@ -34,7 +30,6 @@ import { useSelector } from "react-redux";
 import SpeedometerTable from "./SpeedometerTable";
 import PerformanceVariationTable from "./PerformanceVariationTable";
 import Loading from "../components/loader/Loading";
-import { t } from "i18next";
 import { useTranslation } from "react-i18next";
 import TicketStatusTableDetails from "./TicketStatusTableDetails";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
@@ -42,13 +37,13 @@ import LandingVideoModal from "./LandingVideoModal";
 import { useDispatch } from "react-redux";
 import FlashPageModule from "./FlashPageModule";
 import { axiosInstances } from "../networkServices/axiosInstance";
+import { apiUrls } from "../networkServices/apiEndpoints";
 const currentDate = new Date();
 const currentMonth = currentDate.getMonth() + 1; // Months are 0-indexed, so add 1
 const currentYear = currentDate.getFullYear();
 
 const Dashboard = () => {
   const [t] = useTranslation();
-  const localdata = useLocalStorage("userData", "get");
   const [birthDayData, setBirthDayData] = useState([]);
   const [countData, setCountData] = useState([]);
 
@@ -183,6 +178,7 @@ const Dashboard = () => {
       });
   };
   const { memberID } = useSelector((state) => state?.loadingSlice);
+  // console.log("memberid", memberID);
 
   const handleFirstDashboardCount = () => {
     axiosInstances
@@ -358,7 +354,6 @@ const Dashboard = () => {
       });
   };
 
-
   useEffect(() => {
     handleFirstDashboardCount(memberID);
     const today = new Date();
@@ -371,7 +366,6 @@ const Dashboard = () => {
     handleFirstDashboardCount();
     handleNews();
   }, []);
-
 
   // useEffect(() => {
   //   const today = new Date();

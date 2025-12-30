@@ -217,45 +217,45 @@ const SearchQuotationBooking = ({ data }) => {
   //     });
   // };
 
-const handlePrint1 = (ele) => {
-  axiosInstances
-    .post(apiUrls.QuotationPrintOut, {
-      QuoteID: Number(ele?.ID) || 0,
+  const handlePrint1 = (ele) => {
+    axiosInstances
+      .post(apiUrls.QuotationPrintOut, {
+        QuoteID: Number(ele?.ID) || 0,
         SignatureCode: "",
-    })
-    .then((res) => {
-      if (!res?.data?.success) {
-        console.error("Invalid PDF response");
-        return;
-      }
+      })
+      .then((res) => {
+        if (!res?.data?.success) {
+          console.error("Invalid PDF response");
+          return;
+        }
 
-      const base64 = res?.data?.data;
-      const byteCharacters = atob(base64);
-      const byteNumbers = new Array(byteCharacters.length);
+        const base64 = res?.data?.data;
+        const byteCharacters = atob(base64);
+        const byteNumbers = new Array(byteCharacters.length);
 
-      for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-      }
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
 
-      const byteArray = new Uint8Array(byteNumbers);
+        const byteArray = new Uint8Array(byteNumbers);
 
-      const blob = new Blob([byteArray], { type: "application/pdf" });
+        const blob = new Blob([byteArray], { type: "application/pdf" });
 
-      const url = window.URL.createObjectURL(blob);
+        const url = window.URL.createObjectURL(blob);
 
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `${ele?.ProjectName || "SalesConnector"}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `${ele?.ProjectName || "SalesConnector"}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
 
-      window.URL.revokeObjectURL(url);
-    })
-    .catch((err) => {
-      console.error("Error downloading PDF:", err);
-    });
-};
+        window.URL.revokeObjectURL(url);
+      })
+      .catch((err) => {
+        console.error("Error downloading PDF:", err);
+      });
+  };
 
   const handlePrint2 = (ele) => {
     axiosInstances
@@ -268,24 +268,24 @@ const handlePrint1 = (ele) => {
           console.error("Invalid PDF response");
           return;
         }
-  
+
         const base64 = res?.data?.data; // Base64 string
-  
+
         // Convert Base64 to byte array
         const byteCharacters = atob(base64);
         const byteNumbers = new Array(byteCharacters.length);
-  
+
         for (let i = 0; i < byteCharacters.length; i++) {
           byteNumbers[i] = byteCharacters.charCodeAt(i);
         }
-  
+
         const byteArray = new Uint8Array(byteNumbers);
-  
+
         // Convert to PDF blob
         const blob = new Blob([byteArray], { type: "application/pdf" });
-  
+
         const url = window.URL.createObjectURL(blob);
-  
+
         // Create download link
         const link = document.createElement("a");
         link.href = url;
@@ -293,7 +293,7 @@ const handlePrint1 = (ele) => {
         document.body.appendChild(link);
         link.click();
         link.remove();
-  
+
         window.URL.revokeObjectURL(url);
       })
       .catch((err) => {
@@ -1287,6 +1287,7 @@ const handlePrint1 = (ele) => {
               <div className="d-flex" style={{ fontWeight: "bold" }}>
                 <div className="row">
                   <div className="d-flex flex-wrap align-items-center">
+                    
                     <div
                       className="d-flex"
                       style={{
@@ -1500,18 +1501,18 @@ const handlePrint1 = (ele) => {
                     </div>
                   </div>
                 </div>
-                <span className="mr-4 ml-5">
+                  <span className="ml-5">
+                        Total Amount :&nbsp;{" "}
+                        {Number(tableData[0]?.TotalAmount || 0).toLocaleString(
+                          "en-IN",
+                          {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          }
+                        )}
+                      </span>
+                <span className="mr-2 ml-4">
                   Total Record :&nbsp; {tableData[0]?.TotalRecord}
-                </span>
-                <span>
-                  Total Amount :&nbsp;{" "}
-                  {Number(tableData[0]?.TotalAmount || 0).toLocaleString(
-                    "en-IN",
-                    {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    }
-                  )}
                 </span>
               </div>
             }
@@ -1575,7 +1576,13 @@ const handlePrint1 = (ele) => {
               "Gross Amount": ele?.GrossAmount,
               "Dis Amount": ele?.DiscountAmount,
               "Tax Amount": ele?.TaxAmount,
-              "Net Amount": ele?.NetAmount,
+              "Net Amount": Number(ele?.NetAmount || 0).toLocaleString(
+                "en-IN",
+                {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }
+              ),
               "Entry Date": ele?.dtEntry
                 ? new Date(ele.dtEntry)
                     .toLocaleDateString("en-GB", {

@@ -20,13 +20,10 @@ import { axiosInstances } from "../../src/networkServices/axiosInstance";
 const Circular = () => {
   const { VITE_DATE_FORMAT } = import.meta.env;
   const [t] = useTranslation();
-  const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [circular, setCircular] = useState([]);
-  const [assignto, setAssignedto] = useState([]);
   const [roleMaster, setRoleMaster] = useState([]);
   const [circularto, setCircularTo] = useState([]);
-  const today = new Date();
+
   const [formData, setFormData] = useState({
     Circular: "",
     CircularTo: [],
@@ -34,8 +31,6 @@ const Circular = () => {
     DocumentNo: "",
     FromDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
     ToDate: new Date(),
-    FromTime: new Date(today.setHours(0, 0, 0, 0)),
-    ToTime: new Date(today.setHours(23, 59, 59, 999)),
     Description: "",
     AssignedTo: [],
     RoleMaster: "0",
@@ -118,9 +113,7 @@ const Circular = () => {
       TextEditorShow: !rowHandler?.TextEditorShow,
     });
   };
-  function removeHtmlTags(text) {
-    return text?.replace(/<[^>]*>?/gm, "");
-  }
+
   function formatDate(dateString) {
     let date = new Date(dateString);
     let year = date.getFullYear();
@@ -150,32 +143,30 @@ const Circular = () => {
         DocumentNo: formData?.DocumentNo || "",
         AttachmentData: "", // set base64 file data if needed later
       };
-
-      // axiosInstances
-      //   .post(apiUrls?.SaveCircular, payload, { headers })
       axiosInstances
         .post(apiUrls.SaveCircular, {
           ...payload,
         })
         .then((res) => {
-          toast.success(res?.data?.message || "Circular saved successfully!");
-
-          setFormData({
-            RoleMaster: formData?.RoleMaster, // keep default RoleID from localStorage
-            CircularTo: [], // empty list after save
-            Subject: "",
-            DocumentNo: "",
-            FromDate: new Date(),
-            ToDate: new Date(),
-            FromTime: new Date(today.setHours(0, 0, 0, 0)),
-            ToTime: new Date(today.setHours(23, 59, 59, 999)),
-            Description: "",
-          });
-
-          setLoading(false);
+          if (res.data.success === true) {
+            toast.success(res?.data?.message);
+            setFormData({
+              RoleMaster: formData?.RoleMaster,
+              CircularTo: [],
+              Subject: "",
+              DocumentNo: "",
+              FromDate: new Date(),
+              ToDate: new Date(),
+              Description: "",
+            });
+            setLoading(false);
+          } else {
+            toast.error(res?.data?.message);
+            setLoading(false);
+          }
         })
         .catch((err) => {
-          console.error("SaveCircular Error:", err);
+          console.error(err);
           toast.error("Something went wrong while saving Circular!");
           setLoading(false);
         });
@@ -229,16 +220,7 @@ const Circular = () => {
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
             handleChange={searchHandleChange}
           />
-          <TimePicker
-            className="custom-calendar"
-            id="FromTime"
-            name="FromTime"
-            lable="From Time"
-            placeholder={VITE_DATE_FORMAT}
-            value={formData?.FromTime}
-            respclass="col-xl-1 col-md-4 col-sm-6 col-12"
-            handleChange={searchHandleChange}
-          />
+
           <DatePicker
             className="custom-calendar"
             id="ToDate"
@@ -249,16 +231,7 @@ const Circular = () => {
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
             handleChange={searchHandleChange}
           />
-          <TimePicker
-            className="custom-calendar"
-            id="ToTime"
-            name="ToTime"
-            lable="To Time"
-            placeholder={VITE_DATE_FORMAT}
-            value={formData?.ToTime}
-            respclass="col-xl-1 col-md-4 col-sm-6 col-12"
-            handleChange={searchHandleChange}
-          />
+
           <ReactSelect
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
             name="RoleMaster"

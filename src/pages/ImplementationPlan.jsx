@@ -25,7 +25,7 @@ import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import { parse } from "date-fns";
 import { axiosInstances } from "../networkServices/axiosInstance";
 const ImplementationPlan = ({ data }) => {
-  // console.log("check ", data);
+  console.log("check ", data);
   const TrackerProjectID = data?.Id || data?.ProjectID;
   const TrackerProjectName = data?.NAME || data?.ProjectName;
   const [t] = useTranslation();
@@ -45,18 +45,10 @@ const ImplementationPlan = ({ data }) => {
   });
 
   const getProject = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    // axios
-    //   .post(apiUrls?.ProjectSelect, form, { headers })
     axiosInstances
       .post(apiUrls?.ProjectSelect, {
         ProjectID: 0,
-        IsMaster: "string",
+        IsMaster: "0",
         VerticalID: 0,
         TeamID: 0,
         WingID: 0,
@@ -89,7 +81,7 @@ const ImplementationPlan = ({ data }) => {
   // };
 
   const calculateDeviation = (expectedDate, actualDate) => {
-    console.log("check", expectedDate, actualDate);
+    // console.log("check", expectedDate, actualDate);
     const [day, month, year] = expectedDate.split("-");
     const formattedExpectedDate = new Date(`${year}-${month}-${day}`);
     // console.log("formattedExpectedDate", formattedExpectedDate);
@@ -161,30 +153,8 @@ const ImplementationPlan = ({ data }) => {
     let day = date.getDate().toString().padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
-  console.log("formData", formData);
-  const handleTableShow = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append(
-    //     "ProjectID",
-    //     formData?.ProjectID || data?.ProjectID || data?.Id
-    //   ),
-    //   form.append("ProductID", data?.productid || data?.ProductID),
-    //   form.append(
-    //     "FromDate",
-    //     formData?.FromDate ? formatDate(formData?.FromDate) : " "
-    //   );
-    // axios
-    //   .post(apiUrls?.ShowImpleStepsMaster_select, form, { headers })
 
+  const handleTableShow = () => {
     const payload = {
       RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
       ProjectID: Number(formData?.ProjectID || data?.ProjectID || data?.Id),
@@ -204,29 +174,6 @@ const ImplementationPlan = ({ data }) => {
       });
   };
   const handleTableShowExcel = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append("IsExcel", "1"),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append(
-    //     "ProjectID",
-    //     formData?.ProjectID || data?.ProjectID || data?.Id
-    //   ),
-    //   form.append("ProductID", data?.productid || data?.ProductID),
-    //   form.append(
-    //     "FromDate",
-    //     formData?.FromDate ? formatDate(formData?.FromDate) : ""
-    //   );
-
-    // axios
-    //   .post(apiUrls?.ShowImpleStepsMaster_select, form, { headers })
     const payload = {
       RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID") || 0),
       IsExcel: "1",
@@ -297,29 +244,6 @@ const ImplementationPlan = ({ data }) => {
       });
   };
   const handleTableShowExcelTracker = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append("IsExcel", "2"),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append(
-    //     "ProjectID",
-    //     formData?.ProjectID || data?.ProjectID || data?.Id
-    //   ),
-    //   form.append("ProductID", data?.productid || data?.ProductID),
-    //   form.append(
-    //     "FromDate",
-    //     formData?.FromDate ? formatDate(formData?.FromDate) : ""
-    //   );
-
-    // axios
-    //   .post(apiUrls?.ShowImpleStepsMaster_select, form, { headers })
     const payload = {
       RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID") || 0),
       IsExcel: "2",
@@ -415,19 +339,7 @@ const ImplementationPlan = ({ data }) => {
       });
     });
     setLoading(true);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    // form.append("ProjectID", data?.Id || data?.ProjectID),
-    // form.append("ProjectName", data?.NAME || data?.ProjectName),
-    // form.append("IsApprove", "0"),
-    // form.append("IsNotification", "0"),
-    // form.append("StepMasterRequest", JSON.stringify(payload)),
-    // axios
-    //   .post(apiUrls?.ImplementationSteps_Insert_details, form, { headers })
+
     const payload = {
       ProjectID: Number(data?.Id || data?.ProjectID || 0),
       ProjectName: String(data?.NAME || data?.ProjectName || ""),
@@ -637,11 +549,7 @@ const ImplementationPlan = ({ data }) => {
                   id={`Expefromdt-${index}`}
                   name="Expefromdt"
                   placeholder={VITE_DATE_FORMAT}
-                  value={
-                    ele?.Expefromdt == "01-Jan-2001"
-                      ? ""
-                      : new Date(ele?.Expefromdt)
-                  }
+                  value={ele?.Expefromdt == "" ? "" : new Date(ele?.Expefromdt)}
                   handleChange={(e) =>
                     handleExpeFromDtChange(index, e.target.value)
                   }

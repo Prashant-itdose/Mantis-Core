@@ -51,7 +51,7 @@ const DeveloperCalendar = () => {
   const [summaryData, setSummaryData] = useState([]);
   const rowsPerPage = 5;
   const [calendarData, setCalendarData] = useState([]);
-
+  console.log("calendar calendar", calendarData);
   const [formattedDate, setFormattedDate] = useState([]);
   const [CalenderDetails, setCalenderDetails] = useState([]);
 
@@ -683,14 +683,17 @@ const DeveloperCalendar = () => {
         visible={visible.showVisible}
         setVisible={setVisible}
         Header={`Selected Date: ${formattedDate}`}
-        calendarData={[calendarData]}
-        summaryData={[summaryData]}
+        calendarData={calendarData}
+        summaryData={summaryData}
+        assignedData={assignedData}
       >
         <PendingRequestModal
           visible={visible}
           setVisible={setVisible}
           selectedDate={clickedDate}
-          calendarData={visible.data}
+          calendarData={calendarData}
+           summaryData={summaryData}
+           assignedData={assignedData}
         />
       </Modal>
 

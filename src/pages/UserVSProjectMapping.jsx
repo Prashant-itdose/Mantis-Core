@@ -79,10 +79,6 @@ const UserVSProjectMapping = () => {
     showVisible: false,
     showData: {},
   });
-  useEffect(() => {
-    getReporter();
-    getProject();
-  }, []);
 
   const getProject = () => {
     axiosInstances
@@ -94,7 +90,7 @@ const UserVSProjectMapping = () => {
         WingID: 0,
       })
       .then((res) => {
-        const poc3s = res?.data.data.map((item) => {
+        const poc3s = res?.data?.data?.map((item) => {
           return { name: item?.Project, code: item?.ProjectId };
         });
         setProject(poc3s);
@@ -281,6 +277,11 @@ const UserVSProjectMapping = () => {
 
     setCurrentPage(1);
   };
+
+  useEffect(() => {
+    getReporter();
+    getProject();
+  }, []);
   return (
     <>
       <Modal

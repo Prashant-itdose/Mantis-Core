@@ -217,7 +217,7 @@ const SeeMoreSlideScreenEye = ({
       >
         {name}
         <svg
-          width="12"
+          width="17"
           height="20"
           viewBox="0 0 64 64"
           fill="none"

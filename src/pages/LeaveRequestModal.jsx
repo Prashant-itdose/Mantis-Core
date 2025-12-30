@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReactSelect from "../components/formComponent/ReactSelect";
 import { apiUrls } from "../networkServices/apiEndpoints";
-import axios from "axios";
 import { toast } from "react-toastify";
-import { headers } from "../utils/apitools";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import moment from "moment/moment";
 import Loading from "../components/loader/Loading";
@@ -14,6 +12,7 @@ const LeaveRequestModal = ({
   setVisible,
   data,
   handleLeaveRequest_BindCalender,
+  CrmEmployee,
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -26,9 +25,10 @@ const LeaveRequestModal = ({
   const leaveData = visible?.CalenderDetails?.[1]?.find(
     (val) => String(val?.Day) === moment(visible?.data).format("D")
   );
-  console.log("leavedata", leaveData);
-  console.log("visible", visible);
-  console.log("visible [1]", visible?.CalenderDetails?.[1]);
+  // console.log("data", data);
+
+  // console.log("visible", visible);
+  // console.log("visible [1]", visible?.CalenderDetails?.[1]);
 
   const [OLTypeWise, setOLTypeWise] = useState([]);
   const [WOTypeWise, setWOTypeWise] = useState([]);
@@ -38,6 +38,12 @@ const LeaveRequestModal = ({
     "get",
     "IsReportingManager"
   );
+  const CrmEmployeeID = useCryptoLocalStorage(
+    "user_Data",
+    "get",
+    "CrmEmployeeID"
+  );
+  // console.log("CrmEmployee", CrmEmployee, CrmEmployeeID);
   const [formData, setFormData] = useState({
     LeaveType: leaveData?.Holiday,
     Description: leaveData?.LeaveDescription,
@@ -63,16 +69,22 @@ const LeaveRequestModal = ({
         ...formData,
         [name]: value,
       });
+      convertToISO(value);
+      console.log("wo Type value", value, convertToISO(value));
     } else if (name == "OlType") {
       setFormData({
         ...formData,
         [name]: value,
       });
+      convertToISO(value);
+      console.log("ol Type value", value, convertToISO(value));
     } else if (name == "hlType") {
       setFormData({
         ...formData,
         [name]: value,
       });
+      convertToISO(value);
+      console.log("hl Type value", value, convertToISO(value));
     } else {
       setFormData({
         ...formData,
@@ -118,7 +130,6 @@ const LeaveRequestModal = ({
         LeaveType: Number(2),
       })
       .then((res) => {
-        // console.log("kasjaksjkajs", res?.data?.data[0]);
         const verticals = res?.data?.data?.map((item) => {
           return { label: item?.Day, value: item?.Day };
         });
@@ -162,6 +173,39 @@ const LeaveRequestModal = ({
     const leave = leaveDataFilter.find((item) => item?.LeaveType === leaveType);
     return leave ? leave.Available : "0";
   };
+
+  const convertToISO = (dateStr) => {
+    console.log("datestr", dateStr);
+
+    const parts = dateStr?.split("-");
+    const day = parts?.[1]?.match(/\d+/)[0].padStart(2, "0"); // "9" → "09"
+    const monthName = parts?.[1]?.replace(/\d+/g, ""); // "August"
+    const year = `20${parts?.[2]}`; // "25" → "2025"
+
+    const monthMap = {
+      January: "01",
+      February: "02",
+      March: "03",
+      April: "04",
+      May: "05",
+      June: "06",
+      July: "07",
+      August: "08",
+      September: "09",
+      October: "10",
+      November: "11",
+      December: "12",
+    };
+
+    const month = monthMap[monthName];
+
+    return `${year}-${month}-${day}`;
+  };
+
+  console.log("convertToISO", convertToISO(formData.OlType));
+  console.log("convertToISO", convertToISO(formData.hlType));
+  console.log("convertToISO", convertToISO(formData.woType));
+
   const handleLeaveRequest_Save = () => {
     if (!formData?.LeaveType) {
       toast.error("Please Select LeaveTypee.");
@@ -196,6 +240,16 @@ const LeaveRequestModal = ({
             useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
         LeaveType: String(formData?.LeaveType),
+        LeaveTypeDateValue:
+          // convertToISO() == "20undefined-undefined-undefined"
+          //   ? ""
+          //   :
+          String(
+            convertToISO(formData?.OlType) ||
+              convertToISO(formData?.woType) ||
+              convertToISO(formData?.hlType)
+          ),
+        OptionalType: Number(formData?.OptionalType) || 0,
         Description: String(formData?.Description),
         StatusType: String("Save"),
       })
@@ -425,25 +479,8 @@ const LeaveRequestModal = ({
             </span>
           ) : (
             <div className="col-1 d-flex">
-              {data ? (
-                <>
-                  {loading ? (
-                    <Loading />
-                  ) : (
-                    <button
-                      className="btn btn-sm mb-2"
-                      style={{
-                        background: "#0eb342",
-                        color: "white",
-                        border: "none",
-                      }}
-                      onClick={handleLeaveRequest_Approve}
-                    >
-                      Approve
-                    </button>
-                  )}
-                </>
-              ) : (
+              {(CrmEmployeeID === CrmEmployee && !data) ||
+              ReportingManager !== 1 ? (
                 <>
                   {loading ? (
                     <Loading />
@@ -471,32 +508,26 @@ const LeaveRequestModal = ({
                       </button>
                     </div>
                   )}
-                  {/* {loading ? (
+                </>
+              ) : (
+                <>
+                  {loading ? (
                     <Loading />
                   ) : (
-                    <div>
-                      <button
-                        className="btn btn-sm mb-2 ml-2"
-                        style={{
-                          background: "#0eb342",
-                          color: "white",
-                          border: "none",
-                        }}
-                        onClick={handleLeaveRequest_Update}
-                      >
-                        Update
-                      </button>
-                    </div>
-                  )} */}
+                    <button
+                      className="btn btn-sm mb-2"
+                      style={{
+                        background: "#0eb342",
+                        color: "white",
+                        border: "none",
+                      }}
+                      onClick={handleLeaveRequest_Approve}
+                    >
+                      Approve
+                    </button>
+                  )}
                 </>
               )}
-              {/* <button
-                className="btn btn-sm mb-2 ml-2"
-                style={{ background: "red", color: "white", border: "none" }}
-                onClick={handleLeaveRequest_Delete}
-              >
-                Cancel
-              </button> */}
             </div>
           )}
 

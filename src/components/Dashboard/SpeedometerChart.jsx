@@ -4,14 +4,14 @@ import { apiUrls } from "../../networkServices/apiEndpoints";
 import { useSelector } from "react-redux";
 import { axiosInstances } from "../../networkServices/axiosInstance";
 const SpeedometerChart = ({ getItem }) => {
- 
   const [performanceValue, setPerformanceValue] = useState([]);
   const [needleColor, setNeedleColor] = useState("steelblue");
   const [minValue, setMinValue] = useState(0);
   const [maxValue, setMaxValue] = useState(100);
   const { memberID } = useSelector((state) => state?.loadingSlice);
 
-  
+  console.log("member id", memberID);
+  console.log("getItem", getItem);
 
   const handleFirstDashboardCount = () => {
     axiosInstances

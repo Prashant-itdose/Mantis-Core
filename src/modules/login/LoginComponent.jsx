@@ -1,15 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useFormik } from "formik";
 import { useTranslation } from "react-i18next";
 import { setWindowClass } from "@app/utils/helpers";
 import Input from "@app/components/formComponent/Input";
 import logoitdose from "@app/assets/image/hrcrmBug.png";
-import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { apiUrls } from "../../networkServices/apiEndpoints";
 import { Tabfunctionality } from "../../utils/helpers";
-import { headers } from "../../utils/apitools";
 import { inputBoxValidation, speakMessage } from "../../utils/utils";
 import {
   MOBILE_NUMBER_VALIDATION_REGX,
@@ -373,11 +370,11 @@ const LoginComponent = () => {
 
                 <div className=" mt-3">
                   <button
-                    className=" btn btn-sm btn-block"
+                    className="btn btn-sm btn-block"
                     onClick={handleSubmit}
                     onKeyDown={Tabfunctionality}
                     tabIndex="1"
-                    style={{ background: "white", color: "black" }}
+                    style={{ background: "white", color: "black" ,cursor:"pointer"}}
                   >
                     {t("Login")}
                   </button>

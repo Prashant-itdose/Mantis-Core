@@ -39,22 +39,20 @@ const UploadDocumentProject = ({ data }) => {
 
   const [documenttype, setDocumentType] = useState([]);
   const getType = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.DocumentType_Select, form, { headers })
-        .then((res) => {
-          const wings = res?.data.data.map((item) => {
-            return {
-              label: item?.DocumentTypeName,
-              value: item?.DocumentTypeID,
-            };
-          });
-          setDocumentType(wings);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls?.DocumentType_Select, {})
+      .then((res) => {
+        const wings = res?.data.data.map((item) => {
+          return {
+            label: item?.DocumentTypeName,
+            value: item?.DocumentTypeID,
+          };
         });
+        setDocumentType(wings);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleUploadDocument = async () => {
@@ -87,25 +85,6 @@ const UploadDocumentProject = ({ data }) => {
         reader.onerror = (error) => reject(error);
       });
 
-    // console.log("pdfFile", pdfFile);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID"));
-    // form.append(
-    //   "LoginName",
-    //   useCryptoLocalStorage("user_Data", "get", "realname")
-    // );
-    // form.append("ProjectID", data?.ProjectID || data?.Id);
-    // form.append("DocumentTypeID", formData?.DocumentType);
-    // form.append(
-    //   "DocumentTypeName",
-    //   documenttype.find((item) => item?.value === formData?.DocumentType)?.label
-    // );
-
-    // Append the PDF file
-    // form.append("File", pdfFile);
-    // form.append("FileExtension", formData?.FileExtension),
-    // axios
-    //   .post(apiUrls?.UploadDocument, form, { headers })
     const base64File = pdfFile ? await toBase64(pdfFile) : "";
     const payload = {
       ProjectID: Number(data?.ProjectID || data?.Id),
@@ -146,7 +125,7 @@ const UploadDocumentProject = ({ data }) => {
   };
 
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 10;
+  const rowsPerPage = 15;
   const totalPages = Math.ceil(tableData?.length / rowsPerPage);
   const currentData = tableData?.slice(
     (currentPage - 1) * rowsPerPage,

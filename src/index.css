@@ -3493,6 +3493,11 @@ strong {
   color: #fff;
 }
 
+.managerexpensecss {
+  padding: "10px" !important;
+  font-size: 14px !important;
+  font-weight: bold !important;
+}
 .optional-leave {
   background-color: orange;
   color: #000;
@@ -4388,4 +4393,3 @@ table .verticalTable {
   margin-top: 5px;
   margin-bottom: 5px;
 }
-

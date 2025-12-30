@@ -13,7 +13,6 @@ import { toast } from "react-toastify";
 import Loading from "../components/loader/Loading";
 import * as XLSX from "xlsx";
 import * as FileSaver from "file-saver";
-import RemoveAmountSubmissionModal from "../components/UI/customTable/RemoveAmountSubmissionModal";
 import Input from "../components/formComponent/Input";
 import moment from "moment";
 import NoRecordFound from "../components/formComponent/NoRecordFound";
@@ -27,6 +26,7 @@ import { useTranslation } from "react-i18next";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import SearchLotusFilter from "./SearchLotusFilter";
 import { axiosInstances } from "../networkServices/axiosInstance";
+import RemoveAmountSubmissionModal from "../components/UI/customTable/RemoveAmountSubmissionModal";
 const SearchAmountSubmission = ({ data }) => {
   const [t] = useTranslation();
   const AmountCancel = useCryptoLocalStorage(
@@ -70,7 +70,6 @@ const SearchAmountSubmission = ({ data }) => {
     RecoveryTeam: "",
   });
 
-  console.log("formdata,kamal", formData);
   const handleMultiSelectChange = (name, selectedOptions) => {
     const selectedValues = selectedOptions.map((option) => option.code);
     setFormData((prev) => ({
@@ -910,6 +909,7 @@ const SearchAmountSubmission = ({ data }) => {
           <RemoveAmountSubmissionModal
             visible={visible}
             setVisible={setVisible}
+            handleSearch={handleSearch}
           />
         </Modal>
       )}
@@ -1118,6 +1118,19 @@ const SearchAmountSubmission = ({ data }) => {
               handleChange={handleDeliveryChangefilter}
               value={formData.BankName}
             />
+            // <MultiSelectComp
+            //   respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+            //   name="BankName"
+            //   placeholderName={t("Bank Name")}
+            //   dynamicOptions={[
+            //     { label: "Select", value: "All" },
+            //     { label: "ICICI-220", value: "ICICI-220" },
+            //     { label: "ICICI-51", value: "ICICI-51" },
+            //     { label: "Kotak", value: "Kotak" },
+            //   ]}
+            //   handleChange={handleMultiSelectChange}
+            //   value={formData.BankName}
+            // />
           )}
           {isVisible("Status") && (
             <ReactSelect
@@ -1247,6 +1260,19 @@ const SearchAmountSubmission = ({ data }) => {
                       setColumnConfig={setColumnConfig}
                       PageName="SearchAmountSubmissionTable"
                     />
+                  </span>
+                  <span className="ml-1 font-weight-bold">
+                    {/* {t("Total Amount")} : &nbsp; */}
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                    &nbsp;&nbsp;
+                    {Number(tableData[0]?.TotalAmount || 0).toLocaleString(
+                      "en-IN",
+                      {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      }
+                    )}
                   </span>
                 </div>
               </div>
@@ -1431,7 +1457,7 @@ const SearchAmountSubmission = ({ data }) => {
                     </div>
                   </div>
                   {/* Total Transaction: {tableData1?.length} */}
-                  <span className="ml-5">
+                  {/* <span className="ml-5">
                     {t("Total Amount")} : &nbsp;
                     {Number(tableData[0]?.TotalAmount || 0).toLocaleString(
                       "en-IN",
@@ -1440,7 +1466,7 @@ const SearchAmountSubmission = ({ data }) => {
                         maximumFractionDigits: 2,
                       }
                     )}
-                  </span>
+                  </span> */}
                 </div>
               </>
             }
@@ -1471,12 +1497,26 @@ const SearchAmountSubmission = ({ data }) => {
 
               if (isTableVisible("Team")) rowData.Team = ele?.Team;
               if (isTableVisible("POC-I")) rowData["POC-I"] = ele?.POC_1_Name;
-              if (isTableVisible("Amount")) rowData.Amount = ele?.Amount;
+              if (isTableVisible("Amount")) {
+                rowData.Amount = Number(ele?.Amount || 0).toLocaleString(
+                  "en-IN",
+                  {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  }
+                );
+              }
 
               if (isTableVisible("PaymentMode")) {
                 rowData.PaymentMode = (
                   <div className="d-flex align-items-center justify-content-between">
-                    {!ele?.isShow && <div>{ele?.PaymentMode}</div>}
+                    {!ele?.isShow && (
+                      <div>
+                        {ele?.PaymentMode == "Cash"
+                          ? "Delta"
+                          : ele?.PaymentMode}
+                      </div>
+                    )}
                     <div className="d-flex align-items-center justify-content-between">
                       <i
                         className="fa fa-eye mr-2"

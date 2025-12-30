@@ -281,7 +281,7 @@ const TaxInvoiceView = ({ data }) => {
         StateID: "0",
         DistrictID: "0",
       })
-     
+
       .then((res) => {
         const states = res?.data.data.map((item) => {
           return { label: item?.City, value: item?.ID };
@@ -445,7 +445,7 @@ const TaxInvoiceView = ({ data }) => {
 
       axiosInstances
         .post(apiUrls.TaxInvoice_Search, payload)
-   
+
         .then((res) => {
           if (res?.data?.success == true) {
             // toast.success(res?.data?.message);
@@ -975,16 +975,41 @@ const TaxInvoiceView = ({ data }) => {
                       targrt={`projectName-${index}`}
                       style={{ textAlign: "center" }}
                     >
-                      {capitalizeFirstLetter(shortenName(ele?.Remark))}
+                      {/* {capitalizeFirstLetter(shortenName(ele?.Remark))} */}
+                      {ele?.Remark == "undefined" ? "" : ele.Remark}
                     </span>
                   </Tooltip>
                 </>
               ),
               PaymentMode: ele?.PaymentMode,
-              "Gross Amount": ele?.GrossAmount,
-              "Dis Amount": ele?.DiscountAmount,
-              "Tax Amount": ele?.TaxAmount,
-              "Net Amount": ele?.NetAmount,
+              "Gross Amount": Number(ele?.GrossAmount || 0).toLocaleString(
+                "en-IN",
+                {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }
+              ),
+              "Dis Amount": Number(ele?.DiscountAmount || 0).toLocaleString(
+                "en-IN",
+                {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }
+              ),
+              "Tax Amount": Number(ele?.TaxAmount || 0).toLocaleString(
+                "en-IN",
+                {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }
+              ),
+              "Net Amount": Number(ele?.NetAmount || 0).toLocaleString(
+                "en-IN",
+                {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }
+              ),
               Print: ele?.TaxInvoiceURL !== "" && (
                 <i
                   className="fa fa-print"

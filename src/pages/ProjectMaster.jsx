@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Heading from "../components/UI/Heading";
-import axios from "axios";
 import { apiUrls } from "../networkServices/apiEndpoints";
 import { headers } from "../utils/apitools";
 import ReactSelect from "../components/formComponent/ReactSelect";
@@ -60,12 +59,12 @@ const ProjectMaster = () => {
     District: "",
     City: "",
     ProductVersion: "",
-    PoCashAmount: "",
-    POChequeAmount: "",
-    POAmount: "",
-    NetAmount: "",
+    PoCashAmount: "0",
+    POChequeAmount: "0",
+    POAmount: "0",
+    NetAmount: "0",
     TaxPercent: "18%",
-    Tax: "",
+    Tax: "0",
     PoDate: new Date(),
     StartDate: new Date(),
     LiveDate: new Date(),
@@ -237,10 +236,6 @@ const ProjectMaster = () => {
     });
   };
   const getUserName = () => {
-    // let form = new FormData();
-    // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.GetUserName, form, { headers })
     axiosInstances
       .post(apiUrls?.GetUserName, { Username: "" })
       .then((res) => {
@@ -254,76 +249,63 @@ const ProjectMaster = () => {
       });
   };
   const getVertical = () => {
-    let form = new FormData();
-    form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Vertical_Select, form, { headers })
-        .then((res) => {
-          const verticals = res?.data.data.map((item) => {
-            return { label: item?.Vertical, value: item?.VerticalID };
-          });
-          setVertical(verticals);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls?.Vertical_Select, {})
+      .then((res) => {
+        const verticals = res?.data.data.map((item) => {
+          return { label: item?.Vertical, value: item?.VerticalID };
         });
+        setVertical(verticals);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const getAMCTYPE = () => {
-    let form = new FormData();
-    form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      axios
-        .post(apiUrls?.AMCType_Select, form, { headers })
-        .then((res) => {
-          const verticals = res?.data.data.map((item) => {
-            return { label: item?.NAME, value: item?.ID };
-          });
-          setAmcType(verticals);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls?.AMCType_Select, {})
+      .then((res) => {
+        const verticals = res?.data.data.map((item) => {
+          return { label: item?.NAME, value: item?.ID };
         });
+        setAmcType(verticals);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getTeam = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Team_Select, form, { headers })
-        .then((res) => {
-          const teams = res?.data.data.map((item) => {
-            return { label: item?.Team, value: item?.TeamID };
-          });
-          setTeam(teams);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls?.Team_Select, {})
+      .then((res) => {
+        const teams = res?.data.data.map((item) => {
+          return { label: item?.Team, value: item?.TeamID };
         });
+        setTeam(teams);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const getWing = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Wing_Select, form, { headers })
-        .then((res) => {
-          const wings = res?.data.data.map((item) => {
-            return { label: item?.Wing, value: item?.WingID };
-          });
-          setWing(wings);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls?.Wing_Select, {})
+      .then((res) => {
+        const wings = res?.data.data.map((item) => {
+          return { label: item?.Wing, value: item?.WingID };
         });
+        setWing(wings);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getReporter = () => {
     axiosInstances
       .post(apiUrls?.Reporter_Select, {})
       .then((res) => {
-      
         const reporters = res?.data.data.map((item) => {
           return { label: item?.Name, value: item?.ID };
         });
@@ -474,6 +456,8 @@ const ProjectMaster = () => {
       })
       .then((res) => {
         const fetchData = res?.data?.data[0];
+        console.log("errerer", fetchData);
+        console.log("AMC DATE", fetchData?.AMC_StartDate);
         // console.log("errerer", fetchData);
         setFetchDetails(fetchData);
 
@@ -495,17 +479,29 @@ const ProjectMaster = () => {
           POAmount: fetchData?.PoAmt,
           TaxPercent: fetchData?.GstPercent,
           Tax: fetchData?.PoGstAmt,
-          PoDate: new Date(fetchData?.PODate),
-          StartDate: new Date(fetchData?.Startdate),
-          LiveDate: new Date(fetchData?.LiveDate),
-          OnlineSupportDate: new Date(fetchData?.OnsiteSupportDate),
+          PoDate:
+            fetchData?.PODate == "1970-01-01T00:00:00"
+              ? new Date()
+              : new Date(fetchData?.PODate),
+          StartDate:
+            fetchData?.Startdate == "1970-01-01T00:00:00"
+              ? new Date()
+              : new Date(fetchData?.Startdate),
+          LiveDate:
+            fetchData?.LiveDate == "1970-01-01T00:00:00"
+              ? new Date()
+              : new Date(fetchData?.LiveDate),
+          OnlineSupportDate:
+            fetchData?.OnsiteSupportDate == "1970-01-01T00:00:00"
+              ? new Date()
+              : new Date(fetchData?.OnsiteSupportDate),
           CompanyName: "",
           CompanyAddress: "",
           GSTNumber: "",
           PanCardNo: "",
           AmcType: fetchData?.AMCID,
           AMC_Start_Date:
-            new Date(fetchData?.AMC_StartDate) == "1970-01-01"
+            fetchData?.AMC_StartDate == "1970-01-01T00:00:00"
               ? new Date()
               : new Date(fetchData?.AMC_StartDate),
           AMC_Start_Month: fetchData?.AMCStartmonth,
@@ -550,7 +546,7 @@ const ProjectMaster = () => {
           POChequeAmount: fetchData?.PoChequeAmt,
           NetAmount: fetchData?.PoAmt,
           ProjectDisplayName: fetchData?.ProjectDisplayName,
-          AgreementStatus: fetchData?.TCAAgreement,
+          AgreementStatus: fetchData?.AgreementStatus,
           FeedbackStatus: fetchData?.Feedback,
           OwnerFollowup: fetchData?.OwnerFollowup,
           SPOCFollowup: fetchData?.SPOCFollowup,
@@ -592,6 +588,8 @@ const ProjectMaster = () => {
       toast.error("Please Enter Owner Email.");
     } else if (!formData?.ITPersonEmail) {
       toast.error("Please Enter ITPersonEmail.");
+    } else if (!formData?.ItPersonDesignation) {
+      toast.error("Please Enter ItPersonDesignation.");
     } else if (!formData?.SPOCEmail) {
       toast.error("Please Enter SPOCEmail.");
     } else if (!formData?.AgreementStatus) {
@@ -667,7 +665,7 @@ const ProjectMaster = () => {
         ItPersonEmail: String(formData?.ITPersonEmail) || "",
         OwnerDesignation: String(formData?.OwnerDesignation) || "",
         SPOCDesignation: String(formData?.SPOCDesignation) || "",
-        ItPersonDesignation: String(formData?.ItPersonDesignatio) || "",
+        ItPersonDesignation: String(formData?.ItPersonDesignation || ""),
         VerticalID: Number(formData?.VerticalID) || 0,
         Vertical: getlabel(formData?.VerticalID, vertical),
         TeamID: Number(formData?.TeamID) || 0,
@@ -729,28 +727,121 @@ const ProjectMaster = () => {
   }
 
   const handleUpdateProject = () => {
-    if (!formData?.AmcType) {
-      toast.error("Please Enter AMC Type.");
-    } else if (formData?.AMC_Start_Date === "") {
-      toast.error("Please Enter AMC Start Date");
-    } else if (!formData?.AMC_Start_Month) {
-      toast.error("Please Enter AMC Start Month.");
+    // if (!formData?.AgreementStatus) {
+    //   toast.error("Please Select AgreementStatus.");
+    // } else
+    if (!formData?.ProjectName) {
+      toast.error("Please Enter ProjectName.");
+    }
+    // else if (!formData?.OwnerFollowup) {
+    //   toast.error("Please Select Followup.");
+    else if (!formData?.FeedbackStatus) {
+      toast.error("Please Select FeedbackStatus.");
+    } else if (!formData?.ProjectDisplayName) {
+      toast.error("Please Enter Display Name.");
+    } else if (!formData?.ProjectPriority) {
+      toast.error("Please Select ProjectPriority.");
+    } else if (!formData?.ProjectStatus) {
+      toast.error("Please Select ProjectStatus.");
+    } else if (!formData?.ProjectPriority) {
+      toast.error("Please Select Priority.");
+    } else if (!formData?.ProjectOrganizationType) {
+      toast.error("Please Select OrganizationType.");
+    } else if (!formData?.ProductVersion) {
+      toast.error("Please Select ProductVersion.");
+    }
+    // else if (!formData?.PoCashAmount) {
+    //   toast.error("Please Enter PoCashAmount.");
+    // } else if (!formData?.POChequeAmount) {
+    //   toast.error("Please Enter POChequeAmount.");
+    // } else if (!formData?.TaxPercent) {
+    //   toast.error("Please Enter TaxPercent.");
+    // } else if (!formData?.Tax) {
+    //   toast.error("Please Enter Tax Amount.");
+    // } else if (!formData?.NetAmount) {
+    //   toast.error("Please Enter NetAmount.");
+    else if (!formData?.ExistingApplication) {
+      toast.error("Please Select ExistingApplication.");
+    } else if (!formData?.Website) {
+      toast.error("Please Enter Website.");
+    } else if (!formData?.VerticalID) {
+      toast.error("Please Select VerticalID.");
+    } else if (!formData?.TeamID) {
+      toast.error("Please Select TeamID.");
+    } else if (!formData?.WingID) {
+      toast.error("Please Select WingID.");
+    } else if (!formData?.Level1Employee1) {
+      toast.error("Please Select Level1.");
+    } else if (!formData?.Level2Employee1) {
+      toast.error("Please Select Level2.");
+    } else if (!formData?.Level3Employee1) {
+      toast.error("Please Select Level3.");
     } else if (!formData?.Country) {
       toast.error("Please Select Country.");
     } else if (!formData?.State) {
       toast.error("Please Select State.");
-    } else if (!formData?.Address) {
+    }
+    // else if (!formData?.District) {
+    //   toast.error("Please Select District.");
+    // } else if (!formData?.City) {
+    //   toast.error("Please Select City.");
+    // }
+    else if (!formData?.Address) {
       toast.error("Please Enter Address.");
+    } else if (!formData?.PinCode) {
+      toast.error("Please Enter PinCode.");
+    } else if (!formData?.AmcType) {
+      toast.error("Please Select AmcType.");
+    } else if (!formData?.AMC_Start_Date) {
+      toast.error("Please Select AMC_Start_Date.");
+    } else if (!formData?.AMC_Start_Month) {
+      toast.error("Please Enter AMC_Start_Month.");
+    } else if (!formData?.AMC_Installment) {
+      toast.error("Please Enter AMC_Installment.");
+    } else if (!formData?.AMCPercent) {
+      toast.error("Please Enter AMCPercent.");
+    }
+    // else if (!formData?.ManDays) {
+    //   toast.error("Please Enter ManDays.");
+    // } else if (!formData?.Visit) {
+    //   toast.error("Please Enter VisitCharges.");
+    // } else if (!formData?.MachineUni) {
+    //   toast.error("Please Enter MachineUni.");
+    // } else if (!formData?.MachineBi) {
+    //   toast.error("Please Enter MachineBi.");
+    // }
+    else if (!formData?.PoDate) {
+      toast.error("Please Select PoDate.");
+    } else if (!formData?.StartDate) {
+      toast.error("Please Select StartDate.");
+    } else if (!formData?.LiveDate) {
+      toast.error("Please Select LiveDate.");
+    } else if (!formData?.OnlineSupportDate) {
+      toast.error("Please Select OnlineSupportDate.");
+    } else if (!formData?.AuthorityName) {
+      toast.error("Please Enter Owner Name.");
+    } else if (!formData?.OwnerDesignation) {
+      toast.error("Please Enter Owner Designation.");
+    } else if (!formData?.AuthorityMobile) {
+      toast.error("Please Enter Owner Mobile.");
     } else if (!formData?.AuthorityEmail) {
       toast.error("Please Enter Owner Email.");
+    } else if (!formData?.SPOCName) {
+      toast.error("Please Enter SPOC Name.");
+    } else if (!formData?.SPOCDesignation) {
+      toast.error("Please Enter SPOC Designation.");
+    } else if (!formData?.SPOCMobile) {
+      toast.error("Please Enter SPOC Mobile.");
+    } else if (!formData?.SPOCEmail) {
+      toast.error("Please Enter SPOC Email.");
+    } else if (!formData?.ITPersonName) {
+      toast.error("Please Enter ITPersonName.");
+    } else if (!formData?.ItPersonDesignation) {
+      toast.error("Please Enter ItPersonDesignation.");
+    } else if (!formData?.ITPersonMobile) {
+      toast.error("Please Enter ITPersonMobile.");
     } else if (!formData?.ITPersonEmail) {
       toast.error("Please Enter ITPersonEmail.");
-    } else if (!formData?.SPOCEmail) {
-      toast.error("Please Enter SPOCEmail.");
-    } else if (!formData?.AgreementStatus) {
-      toast.error("Please Select AgreementStatus.");
-    } else if (!formData?.FeedbackStatus) {
-      toast.error("Please Select FeedbackStatus.");
     } else {
       const formatDate = (date) => {
         return date &&
@@ -819,7 +910,7 @@ const ProjectMaster = () => {
         ItPersonEmail: String(formData?.ITPersonEmail) || "",
         OwnerDesignation: String(formData?.OwnerDesignation) || "",
         SPOCDesignation: String(formData?.SPOCDesignation) || "",
-        ItPersonDesignation: String(formData?.ItPersonDesignatio) || "",
+        ItPersonDesignation: String(formData?.ItPersonDesignation) || "",
         VerticalID: Number(formData?.VerticalID) || 0,
         Vertical: getlabel(formData?.VerticalID, vertical),
         TeamID: Number(formData?.TeamID) || 0,
@@ -1392,7 +1483,7 @@ const ProjectMaster = () => {
                   respclass="col-xl-3 col-md-4 col-sm-4 col-12"
                   name="Country"
                   placeholderName="Country"
-                  dynamicOptions={country}
+                  dynamicOptions={[{ label: "Select", value: "" }, ...country]}
                   handleChange={handleDeliveryChange}
                   value={formData.Country}
                 />
@@ -1400,7 +1491,7 @@ const ProjectMaster = () => {
                   respclass="col-xl-3 col-md-4 col-sm-4 col-12"
                   name="State"
                   placeholderName="State"
-                  dynamicOptions={states}
+                  dynamicOptions={[{ label: "Select", value: "" }, ...states]}
                   handleChange={handleDeliveryChange}
                   value={formData.State}
                 />
@@ -1408,7 +1499,7 @@ const ProjectMaster = () => {
                   respclass="col-xl-3 col-md-4 col-sm-4 col-12"
                   name="District"
                   placeholderName="District"
-                  dynamicOptions={district}
+                  dynamicOptions={[{ label: "Select", value: "" }, ...district]}
                   handleChange={handleDeliveryChange}
                   value={formData.District}
                 />
@@ -1416,7 +1507,7 @@ const ProjectMaster = () => {
                   respclass="col-xl-3 col-md-4 col-sm-4 col-12"
                   name="City"
                   placeholderName="City"
-                  dynamicOptions={city}
+                  dynamicOptions={[{ label: "Select", value: "" }, ...city]}
                   handleChange={handleDeliveryChange}
                   value={formData.City}
                 />

@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { headers } from "../utils/apitools";
-import axios from "axios";
 import { toast } from "react-toastify";
 import ReactSelect from "../components/formComponent/ReactSelect";
 import Input from "../components/formComponent/Input";
@@ -11,12 +9,10 @@ import * as FileSaver from "file-saver";
 // import { projectPlanTHEAD } from "../components/modalComponent/Utils/HealperThead";
 import { Link, useNavigate } from "react-router-dom";
 import Modal from "../components/modalComponent/Modal";
-
 import { apiUrls } from "../networkServices/apiEndpoints";
 import AddProjectModal from "./AddProjectModal";
 import ProjectMasterProjectModal from "./ProjectMasterProjectModal";
 import MultiSelectComp from "../components/formComponent/MultiSelectComp";
-
 import Tooltip from "./Tooltip";
 import AmountSubmissionSeeMoreList from "../networkServices/AmountSubmissionSeeMoreList";
 import SlideScreen from "./SlideScreen";
@@ -643,19 +639,17 @@ const SearchProjectMaster = () => {
   };
 
   const getVertical = () => {
-    let form = new FormData();
-    form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Vertical_Select, form, { headers })
-        .then((res) => {
-          const verticals = res?.data.data.map((item) => {
-            return { name: item?.Vertical, code: item?.VerticalID };
-          });
-          setVertical(verticals);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls?.Vertical_Select, {})
+      .then((res) => {
+        const verticals = res?.data.data.map((item) => {
+          return { name: item?.Vertical, code: item?.VerticalID };
         });
+        setVertical(verticals);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getUserName = () => {
     axiosInstances
@@ -675,79 +669,69 @@ const SearchProjectMaster = () => {
     return ele?.length > 0 ? ele[0].label : undefined;
   }
   const getTeam = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Team_Select, form, { headers })
-        .then((res) => {
-          const teams = res?.data.data.map((item) => {
-            return { name: item?.Team, code: item?.TeamID };
-          });
-          setTeam(teams);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls?.Team_Select, {})
+      .then((res) => {
+        const teams = res?.data.data.map((item) => {
+          return { name: item?.Team, code: item?.TeamID };
         });
+        setTeam(teams);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getWing = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.Wing_Select, form, { headers })
-        .then((res) => {
-          const wings = res?.data.data.map((item) => {
-            return { name: item?.Wing, code: item?.WingID };
-          });
-          setWing(wings);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls?.Wing_Select, {})
+      .then((res) => {
+        const wings = res?.data.data.map((item) => {
+          return { name: item?.Wing, code: item?.WingID };
         });
+        setWing(wings);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getPOC1 = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.POC_1_Select, form, { headers })
-        .then((res) => {
-          const poc1s = res?.data.data.map((item) => {
-            return { name: item?.POC_1_Name, code: item?.POC_1_ID };
-          });
-          setPoc1(poc1s);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls?.POC_1_Select, {})
+      .then((res) => {
+        const poc1s = res?.data.data.map((item) => {
+          return { name: item?.POC_1_Name, code: item?.POC_1_ID };
         });
+        setPoc1(poc1s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getPOC2 = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.POC_2_Select, form, { headers })
-        .then((res) => {
-          const poc2s = res?.data.data.map((item) => {
-            return { name: item?.POC_2_Name, code: item?.POC_2_ID };
-          });
-          setPoc2(poc2s);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls?.POC_2_Select, {})
+      .then((res) => {
+        const poc2s = res?.data.data.map((item) => {
+          return { name: item?.POC_2_Name, code: item?.POC_2_ID };
         });
+        setPoc2(poc2s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getPOC3 = () => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      axios
-        .post(apiUrls?.POC_3_Select, form, { headers })
-        .then((res) => {
-          const poc3s = res?.data.data.map((item) => {
-            return { name: item?.POC_3_Name, code: item?.POC_3_ID };
-          });
-          setPoc3(poc3s);
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls?.POC_3_Select, {})
+      .then((res) => {
+        const poc3s = res?.data.data.map((item) => {
+          return { name: item?.POC_3_Name, code: item?.POC_3_ID };
         });
+        setPoc3(poc3s);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const getCategory = (proj) => {
@@ -1715,7 +1699,7 @@ const SearchProjectMaster = () => {
             {renderComponent?.component}
           </SlideScreen>
 
-          <div className="pagination" style={{ float: "left" }}>
+          <div className="pagination" style={{ marginLeft: "auto" }}>
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}

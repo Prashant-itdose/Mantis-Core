@@ -684,85 +684,83 @@ const SearchConnectorRequest = ({ data }) => {
   //       console.error("Error:", err);
   //     });
   // };
- 
-//   const handlePrint2 = (ele) => {
-//   axiosInstances.post(
-//     apiUrls.Sales_Connector_pdf,
-//     {
-//       ConnectorId: Number(ele?.ID) || 0,
-//       SignatureCode: "",
-//     },
-//     {
-//       responseType: "blob",    // ⭐ important
-//     }
-//   )
-//   .then((res) => {
-//     console.log("testing ",res)
-//     // Create blob from response
-//     const blob = new Blob([res.data], { type: "application/pdf" });
 
-//     const url = URL.createObjectURL(blob);
+  //   const handlePrint2 = (ele) => {
+  //   axiosInstances.post(
+  //     apiUrls.Sales_Connector_pdf,
+  //     {
+  //       ConnectorId: Number(ele?.ID) || 0,
+  //       SignatureCode: "",
+  //     },
+  //     {
+  //       responseType: "blob",    // ⭐ important
+  //     }
+  //   )
+  //   .then((res) => {
+  //     console.log("testing ",res)
+  //     // Create blob from response
+  //     const blob = new Blob([res.data], { type: "application/pdf" });
 
-//     // Download
-//     const link = document.createElement("a");
-//     link.href = url;
-//     link.download = `${ele?.ProjectName}.pdf`;  // SAFE when cache is disabled
-//     document.body.appendChild(link);
-//     link.click();
-//     link.remove();
+  //     const url = URL.createObjectURL(blob);
 
-//     URL.revokeObjectURL(url);
-//   })
-//   .catch((err) => {
-//     console.error("Error downloading PDF:", err);
-//   });
-// };
+  //     // Download
+  //     const link = document.createElement("a");
+  //     link.href = url;
+  //     link.download = `${ele?.ProjectName}.pdf`;  // SAFE when cache is disabled
+  //     document.body.appendChild(link);
+  //     link.click();
+  //     link.remove();
 
+  //     URL.revokeObjectURL(url);
+  //   })
+  //   .catch((err) => {
+  //     console.error("Error downloading PDF:", err);
+  //   });
+  // };
 
+  const handlePrint2 = (ele) => {
+    axiosInstances
+      .post(apiUrls.Sales_Connector_pdf, {
+        ConnectorId: Number(ele?.ID) || 0,
+        SignatureCode: "",
+      })
+      .then((res) => {
+        if (!res?.data?.success) {
+          console.error("Invalid PDF response");
+          return;
+        }
 
-const handlePrint2 = (ele) => {
-  axiosInstances
-    .post(apiUrls.Sales_Connector_pdf, {
-      ConnectorId: Number(ele?.ID) || 0,
-      SignatureCode: "",
-    })
-    .then((res) => {
-      if (!res?.data?.success) {
-        console.error("Invalid PDF response");
-        return;
-      }
+        const base64 = res?.data?.data; // Base64 string
 
-      const base64 = res?.data?.data; // Base64 string
+        // Convert Base64 to byte array
+        const byteCharacters = atob(base64);
+        const byteNumbers = new Array(byteCharacters.length);
 
-      // Convert Base64 to byte array
-      const byteCharacters = atob(base64);
-      const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
 
-      for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-      }
+        const byteArray = new Uint8Array(byteNumbers);
 
-      const byteArray = new Uint8Array(byteNumbers);
+        // Convert to PDF blob
+        const blob = new Blob([byteArray], { type: "application/pdf" });
 
-      // Convert to PDF blob
-      const blob = new Blob([byteArray], { type: "application/pdf" });
+        const url = window.URL.createObjectURL(blob);
 
-      const url = window.URL.createObjectURL(blob);
+        // Create download link
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `${ele?.ProjectName}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
 
-      // Create download link
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `${ele?.ProjectName}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-
-      window.URL.revokeObjectURL(url);
-    })
-    .catch((err) => {
-      console.error("Error downloading PDF:", err);
-    });
-};
+        window.URL.revokeObjectURL(url);
+      })
+      .catch((err) => {
+        console.error("Error downloading PDF:", err);
+      });
+  };
 
   return (
     <>
@@ -1216,11 +1214,38 @@ const handlePrint2 = (ele) => {
               "25 Pin Female": ele?.Quantity25Female,
               "9 Pin Male": ele?.Quantity9Male,
               "9 Pin Female": ele?.Quantity9Female,
-              "Gross Amount": ele?.TotalAmount,
-              "Discount Amount": ele?.DiscountOnTotal,
-              "Net Amount": ele?.TotalAmount - ele?.DiscountOnTotal,
-              "Paid Amount": ele?.ReceivedAmount,
-              "Balance Amount": ele?.TotalAmount - ele?.DiscountOnTotal,
+              "Gross Amount": Number(ele?.TotalAmount || 0).toLocaleString(
+                "en-IN",
+                {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }
+              ),
+              "Discount Amount": Number(
+                ele?.DiscountOnTotal || 0
+              ).toLocaleString("en-IN", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }),
+              "Net Amount": Number(
+                ele?.TotalAmount - ele?.DiscountOnTotal || 0
+              ).toLocaleString("en-IN", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }),
+              "Paid Amount": Number(ele?.ReceivedAmount || 0).toLocaleString(
+                "en-IN",
+                {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }
+              ),
+              "Balance Amount": Number(
+                ele?.TotalAmount - ele?.DiscountOnTotal || 0
+              ).toLocaleString("en-IN", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }),
               "Created Date": ele?.CreatedDate,
               Print: (
                 <i

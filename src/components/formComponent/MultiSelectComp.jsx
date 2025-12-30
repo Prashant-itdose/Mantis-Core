@@ -9,7 +9,7 @@ const MultiSelectComp = (props) => {
     handleChange,
     name,
     placeholderName,
-    lable, // <-- Add this to pass label name like "Status"
+    lable, 
   } = props;
 
   const truncate = (str, maxLength) => {

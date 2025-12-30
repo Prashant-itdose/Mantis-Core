@@ -1,0 +1,604 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.pacific-login-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+}
+
+.pacific-login-container {
+  flex: 1;
+  display: flex;
+  max-width: 1400px;
+  width: 100%;
+  /* margin: 40px auto; */
+  background: white;
+  /* border-radius: 24px; */
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Form Section */
+.pacific-form-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px;
+  background: white;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pacific-form-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(102, 126, 234, 0.03) 0%, transparent 70%);
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.pacific-form-section.slide-in {
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.pacific-form-content {
+  width: 100%;
+  max-width: 460px;
+  position: relative;
+  z-index: 1;
+}
+
+.pacific-logo-section {
+  text-align: center;
+  margin-bottom: 20px;
+  animation: fadeInDown 0.6s ease-out 0.2s both;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.pacific-logo-img {
+  width: 350px;
+  height: auto;
+  margin-bottom: 24px;
+  filter: drop-shadow(0 4px 12px rgba(102, 126, 234, 0.2));
+  transition: transform 0.3s ease;
+}
+
+.pacific-logo-img:hover {
+  transform: scale(1.05);
+}
+
+.pacific-brand-title {
+  font-size: 24px !important;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 5px;
+  letter-spacing: -0.5px;
+}
+
+.pacific-brand-subtitle {
+  font-size: 15px;
+  color: #718096;
+  font-weight: 400;
+}
+
+/* Form Styles */
+.pacific-login-form {
+  animation: fadeIn 0.6s ease-out 0.3s both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.pacific-input-group {
+  margin-bottom: 24px;
+}
+
+.pacific-input-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 8px;
+  letter-spacing: 0.3px;
+}
+
+.pacific-required {
+  color: #e53e3e;
+}
+
+.pacific-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.pacific-input-icon {
+  position: absolute;
+  left: 16px;
+  color: #a0aec0;
+  font-size: 18px;
+  transition: color 0.3s ease;
+  z-index: 1;
+}
+
+.pacific-form-input {
+  width: 100%;
+  padding: 14px 16px 14px 48px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 15px;
+  color: #2d3748;
+  background: #f7fafc;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+}
+
+.pacific-form-input::placeholder {
+  color: #a0aec0;
+}
+
+.pacific-form-input:focus {
+  background: white;
+  border-color: #e66e20;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+  transform: translateY(-2px);
+}
+
+.pacific-form-input:focus ~ .pacific-input-icon,
+.pacific-form-input:focus + .pacific-input-icon {
+  color: #e66e20;
+}
+
+.pacific-toggle-password {
+  position: absolute;
+  right: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #e66e20;
+  font-size: 18px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  z-index: 1;
+}
+
+.pacific-toggle-password:hover {
+  color: #c55e1a;
+  background: rgba(102, 126, 234, 0.1);
+  transform: scale(1.1);
+}
+
+.pacific-toggle-password:active {
+  transform: scale(0.95);
+}
+
+/* Form Footer */
+.pacific-form-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0 32px;
+  font-size: 14px;
+}
+
+.pacific-checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.pacific-checkbox-container input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #e66e20;
+}
+
+.pacific-checkbox-label {
+  color: #e66e20;
+  font-weight: 500;
+}
+
+.pacific-forgot-link {
+  color: #e66e20;
+  text-decoration: none;
+  border: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.pacific-forgot-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #ca611b;
+  transition: width 0.3s ease;
+}
+
+.pacific-forgot-link:hover {
+  color: #e66e20;
+}
+
+.pacific-forgot-link:hover::after {
+  width: 100%;
+}
+
+/* Primary Button */
+.pacific-btn-primary {
+  width: 100%;
+  padding: 16px 24px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f78133 0%, #cf6016 100%);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.pacific-btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.pacific-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.pacific-btn-primary:hover::before {
+  left: 100%;
+}
+
+.pacific-btn-primary:active {
+  transform: translateY(0);
+}
+
+.pacific-btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.pacific-btn-icon {
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+.pacific-btn-primary:hover .pacific-btn-icon {
+  transform: translateX(4px);
+}
+
+.pacific-loader-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pacific-loader-text::after {
+  content: '';
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Back Link */
+.pacific-back-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #e66e20;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 24px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.pacific-back-link:hover {
+  color: #e66e20;
+  background: rgba(102, 126, 234, 0.1);
+  transform: translateX(-4px);
+}
+
+.pacific-back-icon {
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+
+.pacific-back-link:hover .pacific-back-icon {
+  transform: translateX(-2px);
+}
+
+/* Image Section */
+.pacific-image-section {
+  flex: 1;
+    background: linear-gradient(135deg, #e66e20 0%, #b45415 100%);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.pacific-gradient-overlay {
+  position: absolute;
+  inset: 0;
+background: linear-gradient(135deg, #e66e20 0%, #a04e17 100%);
+  z-index: 1;
+}
+
+.pacific-brand-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  padding: 0px;
+  max-width: 500px;
+}
+
+.pacific-hero-image {
+  width: 400px;
+  height: auto;
+  margin-bottom: 32px;
+  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.5;
+  }
+}
+
+/* Footer */
+.pacific-powered-footer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  margin-top: 25px;
+}
+
+.pacific-powered-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 10px 24px;
+  font-size: 13px;
+  color: #4a5568;
+  font-weight: 500;
+  animation: fadeInUp 0.6s ease-out 0.5s both;
+}
+
+.pacific-powered-logo {
+  width: 28px;
+  height: auto;
+}
+
+.pacific-powered-text strong {
+  color: #0072e5;
+  font-weight: 700;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+  .pacific-login-container {
+    flex-direction: column;
+    margin: 0px auto;
+    
+  }
+
+  .pacific-image-section {
+    order: -1;
+    min-height: 300px;
+    display: none;
+  }
+
+  .pacific-form-section {
+    padding: 40px 20px;
+  }
+
+  .pacific-hero-image {
+    width: 200px;
+  }
+  
+
+  .pacific-features {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .pacific-login-wrapper {
+    max-height: 40vh;
+    padding: 0px 10px;
+  }
+  
+  .pacific-login-container {
+    border-radius: 16px;
+    margin: 40px auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  }
+
+  .pacific-form-section {
+    padding: 30px 20px;
+  }
+
+  .pacific-form-content {
+    max-width: 100%;
+  }
+
+  .pacific-brand-title {
+    font-size: 26px;
+  }
+
+  .pacific-brand-subtitle {
+    font-size: 14px;
+  }
+
+  .pacific-logo-img {
+    width: 200px;
+  }
+
+  .pacific-image-section {
+    display: none;
+  }
+
+  .pacific-hero-image {
+    width: 160px;
+  }
+
+  .pacific-back-link {
+    margin-bottom: 10px;
+  }
+
+  .pacific-features {
+    gap: 12px;
+  }
+
+  .pacific-powered-text {
+    font-size: 11px !important;
+    padding: 8px 16px;
+  }
+
+  .pacific-powered-logo {
+    width: 24px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .pacific-input-group {
+    margin-bottom: 20px;
+  }
+
+  .pacific-form-input {
+    padding: 12px 14px 12px 42px;
+    font-size: 14px;
+  }
+
+  .pacific-btn-primary {
+    padding: 14px 20px;
+    font-size: 15px;
+  }
+
+  .pacific-form-footer {
+    margin: 0px 0 12px;
+  }
+
+  .pacific-image-section {
+   display: none;
+  }
+
+  .pacific-brand-content {
+    padding: 20px;
+  }
+
+  .pacific-features {
+    flex-direction: column;
+  }
+}

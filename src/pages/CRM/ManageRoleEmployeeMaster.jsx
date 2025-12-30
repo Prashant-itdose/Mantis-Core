@@ -5,6 +5,7 @@ import ReactSelect from "../../components/formComponent/ReactSelect";
 import { apiUrls } from "../../networkServices/apiEndpoints";
 import { toast } from "react-toastify";
 import { axiosInstances } from "../../networkServices/axiosInstance";
+import { useCryptoLocalStorage } from "../../utils/hooks/useCryptoLocalStorage";
 
 const ManageRoleEmployeeMaster = (ele) => {
   const [roleMaster, setRoleMaster] = useState([]);
@@ -30,22 +31,32 @@ const ManageRoleEmployeeMaster = (ele) => {
       [name]: value,
     });
   };
-
+  const RoleID = useCryptoLocalStorage("user_Data", "get", "RoleID");
   const bindRole = () => {
     axiosInstances
       .post(apiUrls?.SearchRole, {
-        RoleName: String(""),
+        RoleName: "",
       })
       .then((res) => {
-        const poc3s = res?.data.data.map((item) => {
-          return { label: item?.RoleName, value: item?.ID };
-        });
+        const excludedRoles = ["Accounts", "HR", "UAT", "HR Executive"];
+        const poc3s = res?.data?.data
+          ?.filter((item) => {
+            if (RoleID == 5 || RoleID == 3) {
+              return true;
+            }
+            return item?.RoleName && !excludedRoles?.includes(item?.RoleName);
+          })
+          .map((item) => {
+            return { label: item?.RoleName, value: item?.ID };
+          });
+
         setRoleMaster(poc3s);
       })
       .catch((err) => {
-        console.log(err);
+        console.error("Error fetching roles:", err);
       });
   };
+
   const addRole = (item) => {
     axiosInstances
       .post(apiUrls?.UserVsRoleMapping, {

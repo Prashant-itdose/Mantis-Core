@@ -16,6 +16,7 @@ import Tooltip from "./Tooltip";
 import Modal from "../components/modalComponent/Modal";
 import OverseasExpenseModal from "./OverseasExpenseModal";
 import Loading from "../components/loader/Loading";
+import ReactSelect from "../components/formComponent/ReactSelect";
 
 const OverseasExpenseManagementSearch = () => {
   const [loading, setLoading] = useState(false);
@@ -35,7 +36,7 @@ const OverseasExpenseManagementSearch = () => {
   };
   const getAssignTo = () => {
     axiosInstances
-      .post(apiUrls.EmployeeFeebackBind, {
+      .post(apiUrls.EmployeeBind, {
         CrmEmployeeID: Number(
           useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
@@ -43,10 +44,10 @@ const OverseasExpenseManagementSearch = () => {
       })
 
       .then((res) => {
-        const assigntos = res?.data.data.map((item) => {
-          return { name: item?.EmployeeName, code: item?.EmployeeCode };
+        const wings = res?.data?.data?.map((item) => {
+          return { label: item?.EmployeeName, value: item?.EmployeeCode };
         });
-        setAssignedto(assigntos);
+        setAssignedto(wings);
       })
       .catch((err) => {
         console.log(err);
@@ -131,7 +132,38 @@ const OverseasExpenseManagementSearch = () => {
     getAssignTo();
   }, []);
 
- 
+  function downloadExcel() {
+    const base64Data = tableData?.[0]?.File_Base64;
+    const byteCharacters = atob(base64Data);
+    const byteNumbers = Array.from(byteCharacters, (c) => c.charCodeAt(0));
+    const blob = new Blob([new Uint8Array(byteNumbers)], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    const today = new Date().toLocaleDateString("en-GB").replace(/\//g, "-");
+    a.download = `Dollar_Expense_${today}.xlsx`;
+
+    a.click();
+    window.URL.revokeObjectURL(url);
+  }
+  const ReportingManager = useCryptoLocalStorage(
+    "user_Data",
+    "get",
+    "IsReportingManager"
+  );
+
+  const handleDeliveryChange = (name, e) => {
+    const { value } = e;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+  const IsEmployee = useCryptoLocalStorage("user_Data", "get", "realname");
+  const RoleID = Number(useCryptoLocalStorage("user_Data", "get", "RoleID"));
   return (
     <>
       {visible?.attachVisible && (
@@ -165,21 +197,44 @@ const OverseasExpenseManagementSearch = () => {
           }
         />
         <div className="row m-2">
-          <MultiSelectComp
-            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
-            name="AssignedTo"
-            placeholderName={t("Employee")}
-            dynamicOptions={assignto}
-            handleChange={handleMultiSelectChange}
-            value={
-              Array.isArray(formData?.AssignedTo)
-                ? formData.AssignedTo.map((code) => ({
-                    code,
-                    name: assignto.find((item) => item.code === code)?.name,
-                  }))
-                : []
-            }
-          />
+          {ReportingManager == 1 || RoleID === 4 ? (
+            // <MultiSelectComp
+            //   respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+            //   name="AssignedTo"
+            //   placeholderName={t("Employee")}
+            //   dynamicOptions={assignto}
+            //   handleChange={handleMultiSelectChange}
+            //   value={
+            //     Array.isArray(formData?.AssignedTo)
+            //       ? formData.AssignedTo.map((code) => ({
+            //           code,
+            //           name: assignto.find((item) => item.code === code)?.name,
+            //         }))
+            //       : []
+            //   }
+            // />
+            <ReactSelect
+              name="AssignedTo"
+              respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+              placeholderName="Employee"
+              dynamicOptions={assignto}
+              value={formData?.AssignedTo}
+              handleChange={handleDeliveryChange}
+            />
+          ) : (
+            <Input
+              type="text"
+              respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+              className="form-control"
+              placeholder=" "
+              lable="Employee"
+              id="Employee"
+              name="Employee"
+              value={IsEmployee}
+              // onChange={handleChange}
+              disabled={true}
+            />
+          )}
           <Input
             type="text"
             className="form-control"
@@ -298,16 +353,7 @@ const OverseasExpenseManagementSearch = () => {
                         borderRadius: "3px",
                       }}
                       title="Click here to Print."
-                      onClick={() => {
-                        const a = document.createElement("a");
-                        a.href = ele.File_Url;
-                        a.download = "Dollar_Expense.xlsx"; // SHORT name
-                        a.click();
-
-                        // window.open(ele?.File_Url, "_blank")
-                        // console.log('File_Url::',ele.File_Url)
-                      }}
-                      // onClick={() => handlePrint1(ele)}
+                      onClick={() => downloadExcel()}
                     />
                   ),
                   "View & Upload": index === 0 && (

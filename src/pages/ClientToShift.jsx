@@ -23,7 +23,9 @@ const ClientToShift = ({ data }) => {
   const [user, setUser] = useState([]);
   const [wing, setWing] = useState([]);
   const [tableData, setTableData] = useState([]);
+
   const [docData, setDocData] = useState([]);
+  console.log("kamal", tableData);
   const [levelList, setLevelList] = useState({
     leve1: {},
     level2: {},
@@ -157,7 +159,6 @@ const ClientToShift = ({ data }) => {
     axiosInstances
       .post(apiUrls?.getViewProject, payload)
       .then((res) => {
-        console.log(res);
         setTableData(res?.data?.data);
       })
       .catch((err) => {
@@ -369,6 +370,52 @@ const ClientToShift = ({ data }) => {
         setLoading(false);
       });
   };
+
+const handlePrint = (ele) => {
+  console.log("element ", ele);
+
+  axiosInstances
+    .post(apiUrls?.ProjectShiftPdf, {
+      ShiftID: Number(ele?.ID),
+      SignatureCode: "",
+    })
+    .then((res) => {
+      if (!res?.data?.success) {
+        console.error("Invalid PDF response");
+        return;
+      }
+
+      const base64 = res?.data?.data;
+
+      // Convert Base64 to byte array
+      const byteCharacters = atob(base64);
+      const byteNumbers = new Array(byteCharacters.length);
+
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+
+      // Create PDF blob
+      const blob = new Blob([byteArray], { type: "application/pdf" });
+
+      const url = window.URL.createObjectURL(blob);
+
+      // 🔥 Open PDF in a new tab
+      window.open(url, "_blank");
+
+      // Optional: revoke URL after some delay
+      setTimeout(() => {
+        window.URL.revokeObjectURL(url);
+      }, 1000);
+    })
+    .catch((err) => {
+      console.error(err);
+      setLoading(false);
+    });
+};
+
   return (
     <>
       <div className="card  p-2 ">
@@ -580,7 +627,7 @@ const ClientToShift = ({ data }) => {
               Wing: ele?.Wing,
               ProjectName: ele?.ProjectName,
               Type: ele?.DocumentName,
-              Print: ele?.DocumentUrl ? (
+              Print: (
                 <i
                   className="fa fa-print"
                   style={{
@@ -592,9 +639,12 @@ const ClientToShift = ({ data }) => {
                     background: "black",
                     borderRadius: "3px",
                   }}
-                  onClick={() => window.open(ele?.DocumentUrl, "_blank")}
+                  onClick={() => {
+                    const fileUrl = ele?.DocumentUrl;
+                    window.open(fileUrl, "_blank", "noreferrer");
+                  }}
                 ></i>
-              ) : null,
+              ),
 
               UploadedBy: ele?.UploadedBy,
               UploadedDate: ele?.dtUpload,
@@ -634,6 +684,7 @@ const ClientToShift = ({ data }) => {
           </div>
         </div>
       )}
+
       {tableData?.length > 0 && (
         <div className="card mt-3">
           <Heading title={"Clik To Shift Details"} />
@@ -668,17 +719,20 @@ const ClientToShift = ({ data }) => {
               ),
               ShiftedBy: ele?.ShiftedBy,
               "Shifted Date": ele?.dtShift,
+
               Print: (
                 <i
                   className="fa fa-print"
                   style={{
                     marginLeft: "5px",
                     cursor: "pointer",
-                    color: "black",
+                    color: "white",
+                    border: "1px solid green",
                     padding: "2px",
+                    background: "black",
                     borderRadius: "3px",
                   }}
-                  onClick={() => window.open(ele?.PDFURL, "_blank")}
+                  onClick={() => handlePrint(ele)}
                 ></i>
               ),
             }))}

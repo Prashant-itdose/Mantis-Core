@@ -26,6 +26,10 @@ const AmountSubmission = ({ data }) => {
   const { VITE_DATE_FORMAT } = import.meta.env;
   const [project, setProject] = useState([]);
   const [pisaledetail, setPiSaleDetail] = useState([]);
+  const TaxIDcheck = pisaledetail?.[0]?.TaxID;
+  const SalesIdcheck = pisaledetail?.[0]?.SalesId;
+  const TaxInvoiceNocheck = pisaledetail?.[0]?.TaxInvoiceNo;
+  console.log("TaxInvoiceNocheck", TaxInvoiceNocheck);
   const [tableData, setTableData] = useState([]);
   const [pinum, setPiNum] = useState([]);
   const [formData, setFormData] = useState({
@@ -57,6 +61,7 @@ const AmountSubmission = ({ data }) => {
     PiPendingAmount: "",
     Picheckbox: "",
     PoNumber: "",
+    TaxInvoiceNo: "",
   });
 
   const piTHEAD = [
@@ -67,6 +72,8 @@ const AmountSubmission = ({ data }) => {
     "PI Amount",
     "Received Amount",
     "Pending Amount",
+    "Tax Invoice No.",
+    "Tax File",
   ];
   const handleOpenPI_Select = (value) => {
     axiosInstances
@@ -86,7 +93,6 @@ const AmountSubmission = ({ data }) => {
   };
   const handleDeliveryChange = (name, e) => {
     const { value, fullData } = e;
-
     if (name === "Project") {
       const isSupport = fullData?.IsSupport === 1;
       setFormData((prev) => ({
@@ -102,6 +108,7 @@ const AmountSubmission = ({ data }) => {
       setPiSaleDetail([]);
       handleSearch(value);
       handleOpenPI_Select(value);
+      getProjectEmail(value);
     } else if (name == "PINumberDropdown") {
       setFormData((prev) => ({
         ...prev,
@@ -290,6 +297,24 @@ const AmountSubmission = ({ data }) => {
         console.log(err);
       });
   };
+  const [projectEmail, setProjectEmail] = useState([]);
+  console.log(
+    "Owner_Email",
+    projectEmail?.[0]?.SPOC_EmailID,
+    projectEmail?.[0]?.Owner_Email
+  );
+  const getProjectEmail = (value) => {
+    axiosInstances
+      .post(apiUrls.GetEmailByProjectId, {
+        ProjectId: Number(value),
+      })
+      .then((res) => {
+        setProjectEmail(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   function getlabel(id, dropdownData) {
     const ele = dropdownData.filter((item) => item.value === id);
     return ele.length > 0 ? ele[0].label : "";
@@ -327,6 +352,7 @@ const AmountSubmission = ({ data }) => {
       message,
     };
   };
+
   const amountSubmissionTHEAD = [
     t("S.No."),
     t("Receive Date"),
@@ -387,6 +413,12 @@ const AmountSubmission = ({ data }) => {
       VoucherNo: String(formData?.VoucherNo || ""),
       RecoveryTeam: String(formData?.RecoveryTeam),
       PIID: String(formData?.PINumberDropdown) || "0",
+      TaxID: Number(TaxIDcheck),
+      TaxIDFlag:
+        formData?.PaymentMode == "Cash" ? 0 : Number(TaxIDcheck == 0 ? 1 : 0),
+      TaxInvoiceNo: String(formData?.TaxInvoiceNo) || "",
+      TaxEmail: String(projectEmail?.[0]?.Owner_Email ?? "").trim(),
+      SalesId: Number(SalesIdcheck),
     };
     axiosInstances
       .post(apiUrls.AmountSubmission_ByAccounts, payload)
@@ -414,6 +446,7 @@ const AmountSubmission = ({ data }) => {
             PINumberDropdown: "",
           });
           setPiSaleDetail([]);
+          setTableData([]);
           handleSearch(formData?.Project);
         } else {
           toast.error(res?.data?.message);
@@ -496,6 +529,7 @@ const AmountSubmission = ({ data }) => {
   useEffect(() => {
     getProject();
   }, []);
+
   return (
     <>
       {visible?.showVisible && (
@@ -686,15 +720,28 @@ const AmountSubmission = ({ data }) => {
             respclass="col-xl-2 col-md-4 col-sm-4 col-12 mt-1"
             disabled={!formData?.Project}
           />
-          {/* <Input
-            type="file"
-            id="Documents"
-            name="Documents"
-            respclass="col-xl-2 col-md-4 col-sm-4 col-12"
-            style={{ width: "100%", marginLeft: "5px" }}
-            // onChange={handleFileChange}
-          /> */}
-          <div className="col-sm-3 d-flex mt-2">
+          {formData?.PaymentMode == "Cash" ? (
+            ""
+          ) : (
+            <div>
+              {(TaxInvoiceNocheck == null ||
+                TaxInvoiceNocheck == "" ||
+                TaxInvoiceNocheck == undefined) && (
+                <Input
+                  type="text"
+                  className="form-control"
+                  id="TaxInvoiceNo"
+                  name="TaxInvoiceNo"
+                  lable={t("Tax Invoice No.")}
+                  onChange={handleSelectChange}
+                  value={formData?.TaxInvoiceNo}
+                  respclass="col-12 mt-2"
+                />
+              )}
+            </div>
+          )}
+
+          <div className="col-sm-2 d-flex mt-2">
             <BrowseButton handleImageChange={handleImageChange} />
 
             {loading ? (
@@ -702,7 +749,7 @@ const AmountSubmission = ({ data }) => {
             ) : (
               <>
                 <button
-                  className="btn btn-sm btn-success ml-3"
+                  className="btn btn-sm btn-success ml-1"
                   onClick={handleCallbackAction}
                 >
                   {t("Save")}
@@ -742,6 +789,16 @@ const AmountSubmission = ({ data }) => {
                       "PI Amount": ele?.PIAmount,
                       "Received Amount": ele?.ReceivedAmt,
                       "Pending Amount": ele?.PendingAmount,
+                      "Tax Invoice No.": ele?.TaxInvoiceNo,
+                      "Tax File": ele?.FileUrl > 0 && (
+                        <i
+                          className="fa fa-eye"
+                          onClick={() => {
+                            const fileUrl = ele?.FileUrl;
+                            window.open(fileUrl, "_blank", "noreferrer");
+                          }}
+                        ></i>
+                      ),
                     }))}
                     tableHeight={"tableHeight"}
                   />
@@ -750,6 +807,24 @@ const AmountSubmission = ({ data }) => {
             </>
           )}
         </div>
+        {formData?.Project !== "" ? (
+          <div className="row m-2">
+            {projectEmail.length > 0 ? (
+              <div>
+                <strong>Tax Email:- </strong>
+                <span className="font-weight-bold" style={{ color: "blue" }}>
+                  ({projectEmail?.[0]?.Owner_Email})
+                </span>
+              </div>
+            ) : (
+              <span className="font-weight-bold" style={{ color: "red" }}>
+                Email details are not available.
+              </span>
+            )}
+          </div>
+        ) : (
+          ""
+        )}
       </div>
 
       {tableData?.length > 0 && (
@@ -770,13 +845,22 @@ const AmountSubmission = ({ data }) => {
                         alignItems: "center",
                       }}
                     >
+                      <span className="mr-5 font-weight-bold">
+                        {Number(tableData[0]?.TotalAmount || 0).toLocaleString(
+                          "en-IN",
+                          {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          }
+                        )}
+                      </span>
                       <div
                         className="legend-circle"
                         style={{
                           backgroundColor: "#00B0F0",
                           cursor: "pointer",
                           height: "10px",
-                          width: "30px",
+                          width: "40px",
                           borderRadius: "50%",
                         }}
                         // onClick={() => handleSearch("1")}
@@ -798,7 +882,7 @@ const AmountSubmission = ({ data }) => {
                           backgroundColor: "lightgreen",
                           cursor: "pointer",
                           height: "10px",
-                          width: "30px",
+                          width: "40px",
                           borderRadius: "50%",
                         }}
                         onClick={() => handleSearch("2")}
@@ -817,7 +901,7 @@ const AmountSubmission = ({ data }) => {
                     </div>
                   </div>
                 </div>
-                <div className="row mt-2">
+                <div className="row mt-2 font-weight-bold">
                   <span className="ml-3">
                     {t("Project Name")} : &nbsp; {tableData[0]?.ProjectName}
                   </span>
@@ -825,14 +909,14 @@ const AmountSubmission = ({ data }) => {
                     {t("Team")} : &nbsp; {tableData[0]?.Team}
                   </span>
                   <span className="ml-3">
-                    {t("Total Amount")} : &nbsp;
+                    {/* {t("Total Amount")} : &nbsp;
                     {Number(tableData[0]?.TotalAmount || 0).toLocaleString(
                       "en-IN",
                       {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       }
-                    )}
+                    )} */}
                   </span>
                   <span className="ml-3">
                     {t("Total Record")} : &nbsp; {tableData[0]?.TotalRecord}
@@ -863,8 +947,12 @@ const AmountSubmission = ({ data }) => {
               "S.No.": index + 1,
               "Receive Date": ele?.ReceivedDate,
               "Recovery Team": ele?.RecoveryTeam,
-              PaymentMode: ele?.PaymentMode,
-              Amount: ele?.Amount,
+              PaymentMode:
+                ele?.PaymentMode == "Cash" ? "Delta" : ele?.PaymentMode,
+              Amount: Number(ele.Amount || 0).toLocaleString("en-IN", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }),
               "Received By": ele?.ReceivedBy,
               "UTR NO.": ele?.UtrNo,
               "Bank Name": ele?.BankName,

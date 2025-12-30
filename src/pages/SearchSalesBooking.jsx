@@ -1152,11 +1152,8 @@ const SearchSalesBooking = ({ data }) => {
             }
             secondTitle={
               <div style={{ fontWeight: "bold" }}>
-                <span className="mr-4">
-                  Total Record :&nbsp; {tableData[0]?.TotalRecord}
-                </span>
-                <span>
-                  Total Amount :&nbsp;{" "}
+                <span className="mr-5">
+                  Total Amount :&nbsp;
                   {Number(tableData[0]?.TotalAmount || 0).toLocaleString(
                     "en-IN",
                     {
@@ -1164,6 +1161,9 @@ const SearchSalesBooking = ({ data }) => {
                       maximumFractionDigits: 2,
                     }
                   )}
+                </span>{" "}
+                <span className="mr-2 ">
+                  Total Record :&nbsp; {tableData[0]?.TotalRecord}
                 </span>
               </div>
             }
@@ -1266,7 +1266,13 @@ const SearchSalesBooking = ({ data }) => {
                     </>
                   ),
                   PaymentMode: ele?.PaymentMode,
-                  "Net Amount": ele?.NetAmount,
+                  "Net Amount": Number(ele?.NetAmount || 0).toLocaleString(
+                    "en-IN",
+                    {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    }
+                  ),
                   Print: ele?.PINo > 0 && (
                     <i
                       className="fa fa-print"

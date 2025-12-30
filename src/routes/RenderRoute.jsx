@@ -404,6 +404,13 @@ const allRoutes = {
     {
       Guard: Authenticated,
       layout: Layout,
+      path: "/ManagerSearchEmployee",
+      component: lazy(() => import("@app/pages/ManagerSearchEmployee.jsx")),
+      exact: true,
+    },
+    {
+      Guard: Authenticated,
+      layout: Layout,
       path: "/SearchProjectMaster",
       component: lazy(() => import("@app/pages/SearchProjectMaster.jsx")),
       exact: true,
@@ -673,6 +680,14 @@ const allRoutes = {
     {
       Guard: Authenticated,
       layout: Layout,
+      path: "/ViewExpenseSummary",
+      component: lazy(() => import("@app/pages/CRM/ViewExpenseSummary.jsx")),
+      exact: true,
+    },
+   
+    {
+      Guard: Authenticated,
+      layout: Layout,
       path: "/ViewEmployeeExpense",
       component: lazy(() => import("@app/pages/CRM/ViewEmployeeExpense.jsx")),
       exact: true,
@@ -691,6 +706,13 @@ const allRoutes = {
       component: lazy(() => import("@app/pages/ProjectMaster.jsx")),
       exact: true,
     },
+    // {
+    //   Guard: Authenticated,
+    //   layout: Layout,
+    //   path: "/TeamStructure",
+    //   component: lazy(() => import("@app/pages/TeamStructure.jsx")),
+    //   exact: true,
+    // },
     {
       Guard: Authenticated,
       layout: Layout,
@@ -699,6 +721,22 @@ const allRoutes = {
       exact: true,
     },
 
+    {
+      Guard: Authenticated,
+      layout: Layout,
+      path: "/BaseClassRegister",
+      component: lazy(() => import("@app/pages/Machine/BaseClassRegister.jsx")),
+      exact: true,
+    },
+    {
+      Guard: Authenticated,
+      layout: Layout,
+      path: "/MachineRegistration",
+      component: lazy(
+        () => import("@app/pages/Machine/MachineRegistration.jsx")
+      ),
+      exact: true,
+    },
     {
       Guard: Authenticated,
       layout: Layout,
@@ -811,6 +849,7 @@ const allRoutes = {
       component: lazy(() => import("@app/pages/OverseasFlySearch.jsx")),
       exact: true,
     },
+
     {
       Guard: Authenticated,
       layout: Layout,

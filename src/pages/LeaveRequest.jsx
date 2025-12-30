@@ -50,7 +50,7 @@ const LeaveRequest = ({ data }) => {
       ? useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
       : "",
   });
-  console.log("data formdata", useCryptoLocalStorage("user_Data", "get", "ID"));
+
   const ReportingManager = useCryptoLocalStorage(
     "user_Data",
     "get",
@@ -58,6 +58,7 @@ const LeaveRequest = ({ data }) => {
   );
   const IsEmployee = useCryptoLocalStorage("user_Data", "get", "realname");
   const [CalenderDetails, setCalenderDetails] = useState([]);
+  // console.log("CalenderDetails", CalenderDetails?.IsApproved);
   const [daysInMonth, setDaysInMonth] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -112,26 +113,41 @@ const LeaveRequest = ({ data }) => {
   };
 
   const apiCalledRef = useRef(false);
-
   useEffect(() => {
     if (apiCalledRef.current) return;
     if (data?.MonthYear) {
       apiCalledRef.current = true;
       const jsDate = new Date(`${data?.MonthYear?.replace("-", " ")} 1`);
-      const selectedYear = jsDate.getFullYear();
-      const selectedMonth = jsDate.getMonth() + 1;
+      const selYear = jsDate.getFullYear();
+      const selMonthZeroBased = jsDate.getMonth();
+
+      setSelectedYear(selYear);
+      setSelectedMonth(selMonthZeroBased);
+      setFormData((prev) => ({
+        ...prev,
+        Month: jsDate,
+        currentYear: selYear,
+        currentMonth: selMonthZeroBased + 1,
+        Employee: data?.EmployeeId || data?.Employee_Id || prev.Employee,
+      }));
+
       handleLeaveRequest_BindCalender({
-        year: selectedYear,
-        month: selectedMonth,
+        year: selYear,
+        month: selMonthZeroBased + 1,
+        employee: data?.EmployeeId || data?.Employee_Id,
       });
     } else {
-      handleLeaveRequest_BindCalender();
+      apiCalledRef.current = true;
+      handleLeaveRequest_BindCalender({
+        year: selectedYear,
+        month: selectedMonth + 1,
+        employee: formData?.Employee,
+      });
     }
   }, [data?.MonthYear]);
 
   const getStatusClass = (day, table1Data) => {
     const Table1LeaveList = table1Data?.find((d) => d.Day === day);
-    // console.log("tablelist", Table1LeaveList);
 
     if (!Table1LeaveList) return "";
 
@@ -206,39 +222,32 @@ const LeaveRequest = ({ data }) => {
     const currentMonth = today.getMonth();
     const currentYear = today.getFullYear();
     const targetMonth = month - 1;
-    const targetYear = today.getFullYear(); // assuming same year context
+    const targetYear = today.getFullYear();
 
     let isDisabled = false;
 
     if (ReportingManager == 1) {
-      // --- Reporting Manager Logic ---
       if (
         targetYear < currentYear ||
         (targetYear === currentYear && targetMonth < currentMonth)
       ) {
-        // Previous month logic
         const daysPassed = today.getDate();
-        isDisabled = daysPassed > 2; // enable only first 2 days of current month
+        isDisabled = daysPassed > 2;
       } else if (targetYear === currentYear && targetMonth === currentMonth) {
-        // Current month → always active
         isDisabled = false;
       } else {
-        // Future months → disabled
-        // isDisabled = true;
-        isDisabled = false; // future months enabled
+        isDisabled = false;
       }
     } else {
-      // --- Normal User Logic ---
       if (
         targetYear < currentYear ||
         (targetYear === currentYear && targetMonth < currentMonth)
       ) {
-        isDisabled = true; // past months disabled
+        isDisabled = true;
       } else if (targetYear === currentYear && targetMonth === currentMonth) {
-        isDisabled = false; // current month active
+        isDisabled = false;
       } else {
-        // isDisabled = true; // future months disabled
-        isDisabled = false; // future months enabled
+        isDisabled = false;
       }
     }
 
@@ -250,8 +259,6 @@ const LeaveRequest = ({ data }) => {
       );
       return match ? match[1] : null;
     };
-
-    // console.log("xxxxxx", getWorkHourFromString("Login:11:08 AM</br>Logout:08:06 PM</br>Work Hour: <span class=red>08:58</span>"));
 
     return (
       <td
@@ -296,6 +303,7 @@ const LeaveRequest = ({ data }) => {
       </td>
     );
   };
+
   const renderCalendarRows = () => {
     const weeks = [];
     const today = new Date();
@@ -323,9 +331,9 @@ const LeaveRequest = ({ data }) => {
               i,
               today,
               CalenderDetails?.[1] ? CalenderDetails?.[1] : []
-            ) // Pass today's date to the renderDay function
+            )
           ) : (
-            <td key={i} className="empty-day"></td> // Render empty cells for padding
+            <td key={i} className="empty-day"></td>
           )
         )}
       </tr>
@@ -341,21 +349,30 @@ const LeaveRequest = ({ data }) => {
 
   const handleLeaveRequest_BindCalender = (details) => {
     setLoading(true);
+
+    const empFromForm = formData?.Employee;
+    const empFromProp = data?.Employee_Id || data?.EmployeeId;
+    const empId = Number(
+      details?.employee ?? empFromForm ?? empFromProp ?? CRMID
+    );
+
+    const year = Number(details?.year ?? selectedYear);
+    const month = Number(details?.month ?? selectedMonth + 1);
+
     axiosInstances
       .post(apiUrls.LeaveRequest_BindCalender, {
-        CrmEmpID: Number(
-          data?.Employee_Id || data?.EmployeeId || formData?.Employee
-        ),
-        Year:
-          Number(details ? details?.year : currentYear) ||
-          formData?.currentYear,
-        Month:
-          Number(details ? details?.month : currentMonth) ||
-          formData?.currentMonth,
+        CrmEmpID: empId,
+        Year: year,
+        Month: month,
       })
       .then((res) => {
-        setCalenderDetails(res?.data?.data);
-        setLoading(false);
+        if (res.data.success === true) {
+          setCalenderDetails(res?.data?.data);
+          setLoading(false);
+        } else {
+          toast.error("No Records Found..");
+          setLoading(false);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -366,7 +383,6 @@ const LeaveRequest = ({ data }) => {
   const leaveData = CalenderDetails?.[0] || [];
 
   const getLeaveAvailable = (leaveType) => {
-    // console.log("leavetype", leaveType);
     const leave = leaveData.find((item) => item?.LeaveType === leaveType);
     return leave ? leave.Available : "0";
   };
@@ -426,6 +442,7 @@ const LeaveRequest = ({ data }) => {
             setVisible={setVisible}
             tableData={CalenderDetails}
             data={data}
+            CrmEmployee={formData?.Employee}
             handleLeaveRequest_BindCalender={handleLeaveRequest_BindCalender}
           />
         </Modal>
@@ -436,11 +453,11 @@ const LeaveRequest = ({ data }) => {
         <div className="card">
           <Heading title={"Attendance Calendar"} isBreadcrumb={true} />
           <div className="row g-4 m-2">
-            <label className="mr-2">Name :</label>
+            {/* <label className="mr-2">Name :</label>
             <span style={{ textAlign: "right" }}>
               {data ? data?.Name : LoginUserName}
-            </span>
-            {/* {ReportingManager == 1 ? (
+            </span> */}
+            {ReportingManager == 1 ? (
               <ReactSelect
                 respclass="col-xl-2 col-md-4 col-sm-6 col-12"
                 name="Employee"
@@ -461,12 +478,12 @@ const LeaveRequest = ({ data }) => {
                 value={IsEmployee}
                 disabled={true}
               />
-            )} */}
+            )}
 
             <div className="col-sm-4 d-flex">
-              <div className="ml-4">
+              {/* <div className="ml-4">
                 <label>Leave Month/Year :</label>
-              </div>
+              </div> */}
               <div className="cl-sm-4">
                 <DatePickerMonth
                   className="custom-calendar"
@@ -479,12 +496,18 @@ const LeaveRequest = ({ data }) => {
                   handleChange={(e) => handleMonthYearChange("Month", e)}
                 />
               </div>
-              {/* <button
+              <button
                 className="btn btn-sm btn-info ml-3"
-                onClick={handleLeaveRequest_BindCalender}
+                onClick={() =>
+                  handleLeaveRequest_BindCalender({
+                    year: selectedYear,
+                    month: selectedMonth + 1,
+                    employee: formData?.Employee,
+                  })
+                }
               >
                 Search
-              </button> */}
+              </button>
             </div>
             <div className="col-sm-2"></div>
             <div className="col-sm-4">
@@ -538,19 +561,28 @@ const LeaveRequest = ({ data }) => {
               </div>
             </div>
             <div className="col-md-3 legend-wrapper">
-              {/* {data && ReportingManager == 1 && (
-              <button
-                className="btn btn-sm mb-2"
-                style={{
-                  background: "#0eb342",
-                  color: "white",
-                  border: "none",
-                }}
-                onClick={handleLeaveRequest_Approve}
-              >
-                Approve All
-              </button>
-            )} */}
+              {/* {CalenderDetails?.[1]?.some(
+                (item) =>
+                  item?.LeaveDescription?.trim() !== "" &&
+                  item?.IsApproved !== 1
+              ) && (
+                <div>
+                  {ReportingManager === 1 && (
+                    <button
+                      className="btn btn-sm mb-2"
+                      style={{
+                        background: "#0eb342",
+                        color: "white",
+                        border: "none",
+                      }}
+                      onClick={handleLeaveRequest_Approve}
+                    >
+                      Approve All
+                    </button>
+                  )}
+                </div>
+              )} */}
+
               <div className="legend">
                 <p>
                   <span className="pending-approval"></span> Pending Approval
