@@ -174,6 +174,11 @@ export const apiUrls = {
   PaidAmount: "/ManageExpense/PaidAmount",
   ViewExpenseList_Accounts: "/ManageExpense/ViewExpenseList_Accounts",
   UpdateStatus: "/ManageExpense/UpdateStatus",
+  ExpenseSummary: "/ManageExpense/ExpenseSummary",
+  GetManagerMonthlyExpenseSummary: "/ManageExpense/GetManagerMonthlyExpenseSummary",
+  GetExpenseReportWithTravelDetails: "/ManageExpense/GetExpenseReportWithTravelDetails",
+  GetEmployeeExpenseCalendar: "/ManageExpense/GetEmployeeExpenseCalendar",
+  BulkExpenseApprove: "/ManageExpense/BulkExpenseApprove",
 
   // Access right
   CreateRole: "/AccessRight/CreateRole",

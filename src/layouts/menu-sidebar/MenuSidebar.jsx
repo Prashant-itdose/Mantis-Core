@@ -511,6 +511,12 @@ export const MENU = {
           breadcrumb: "Accounts / ViewExpense",
         },
         {
+          name: "View Expense Summary",
+          icon: "fas fa-regular fa-user",
+          path: "/ViewExpenseSummary",
+          breadcrumb: "Accounts / ViewExpenseSummary",
+        },
+        {
           name: "View Employee Expense",
           icon: "fas fa-regular fa-user",
           path: "/ViewEmployeeExpense",

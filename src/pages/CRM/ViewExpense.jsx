@@ -9,7 +9,7 @@ import Input from "../../components/formComponent/Input";
 import { Tabfunctionality } from "../../utils/helpers";
 import Modal from "../../components/modalComponent/Modal";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ExportToExcel, ExportToExcelColor } from "../../networkServices/Tools";
 import excelimg from "../../assets/image/excel.png";
 import SlideScreen from "../SlideScreen";
@@ -42,7 +42,7 @@ const ViewExpense = () => {
     "get",
     "AllowExpenseApprove"
   );
-
+  const navigate = useNavigate();
   const ReportingManager = useCryptoLocalStorage(
     "user_Data",
     "get",
@@ -62,9 +62,7 @@ const ViewExpense = () => {
     VerticalID: [],
     TeamID: [],
     WingID: [],
-    // Employee: Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID"))
-    //   ? Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID"))
-    //   : "",
+
     Employee: "0",
     ReportingTo: "",
     Name: "",
@@ -437,6 +435,7 @@ const ViewExpense = () => {
   const RoleID = useCryptoLocalStorage("user_Data", "get", "RoleID");
 
   const [selectAll, setSelectAll] = useState(false);
+
   const handleCheckBox = (e, index) => {
     const { name, checked } = e?.target;
 
@@ -484,27 +483,76 @@ const ViewExpense = () => {
     "Others",
     "Total",
     "Status",
-    "Action",
-    // <label
-    //   style={{
-    //     display: "flex",
-    //     justifyContent: "flex-end",
-
-    //   }}
-    // >
-    //   {" "}
-    //   Select All &nbsp;
-    //   <input
-    //     type="checkbox"
-    //     name="selectAll"
-    //     checked={selectAll}
-    //     className="mr-2"
-    //     onChange={handleCheckBox}
-    //   />
-    //   &nbsp;
-    // </label>,
+    // "Action",
+    <label
+    // style={{
+    //   display: "flex",
+    //   justifyContent: "flex-end",
+    // }}
+    >
+      <span className="mr-5">Action</span>
+      <span className="mt-0 ml-5">Select All</span> &nbsp;
+      <input
+        type="checkbox"
+        name="selectAll"
+        checked={selectAll}
+        // className="mr-0 mt-1"
+        style={{ marginTop: "5px" }}
+        onChange={handleCheckBox}
+      />
+      &nbsp;
+    </label>,
     { name: "Attachment", width: "5%" },
   ];
+
+  const [selected, setSelected] = React.useState("yes");
+
+  const handleRadioChange = (value) => {
+    setSelected(value);
+    if (value === "yes") {
+      navigate("/ViewExpense");
+    } else if (value === "no") {
+      navigate("/ViewExpenseSummary");
+    }
+  };
+
+  const handleApproveAll = () => {
+    setLoading(true);
+    const selectedIds = tableData
+      .filter((row) => row.remove)
+      .map((row) => row.EmpID);
+    const selectedIdss = tableData
+      .filter((row) => row.remove)
+      .map((row) => row.expense_report_ID);
+
+    if (selectedIds.length === 0) {
+      toast.error("Please select at least one row to Approve.");
+      setLoading(false);
+      return;
+    }
+
+    axiosInstances
+      .post(apiUrls.BulkExpenseApprove, {
+        ExpenseEmployeeIDs: String(selectedIds?.length > 0 ? selectedIds : ""),
+        ExpensereportIDs: String(selectedIdss?.length > 0 ? selectedIdss : ""),
+      })
+      .then((res) => {
+        if (res?.data?.success) {
+          toast.success(res?.data?.message);
+          setLoading(false);
+          handleTableSearch();
+          handleTableSearchEmployee();
+          setSelectAll(false);
+        } else {
+          toast.error(res?.data?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  };
   return (
     <>
       {visible?.ShowApprove && (
@@ -648,7 +696,48 @@ const ViewExpense = () => {
       )}
 
       <div className="card">
-        <Heading isBreadcrumb={true} />
+        <Heading
+          isBreadcrumb={true}
+          secondTitle={
+            <>
+              <div
+                className="d-flex"
+                style={{ justifyContent: "space-between" }}
+              >
+                {/* <span className="font-weight-bold mr-4">
+                  <Link to="/ExpenseSubmission" style={{ float: "right" }}>
+                    {"Expense Submission"}
+                  </Link>
+                </span> */}
+                <label>
+                  <input
+                    className="ml-1"
+                    type="radio"
+                    name="option"
+                    value="yes"
+                    checked={selected === "yes"}
+                    onChange={() => handleRadioChange("yes")}
+                    style={{ cursor: "pointer" }}
+                  />
+                  <span className="mb-2 ml-1">View Expense</span>
+                </label>
+
+                <label className="ml-4">
+                  <input
+                    className="ml-1"
+                    type="radio"
+                    name="option"
+                    value="no"
+                    checked={selected === "no"}
+                    style={{ cursor: "pointer" }}
+                    onChange={() => handleRadioChange("no")}
+                  />
+                  <span className="mb-2 ml-1">View Expense Summary</span>
+                </label>
+              </div>
+            </>
+          }
+        />
         <div className="row g-4 m-2">
           {ReportingManager == 1 || RoleID === 4 ? (
             <ReactSelect
@@ -839,7 +928,7 @@ const ViewExpense = () => {
         </div>
       </div>
       {tableData?.length > 0 ? (
-        <div className="card mt-3">
+        <div className="card mt-1">
           <Heading
             title={<span style={{ fontWeight: "bold" }}>Search Details</span>}
             secondTitle={
@@ -1035,7 +1124,6 @@ const ViewExpense = () => {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                   })}
-                  
                 </span>
                 <span style={{ fontWeight: "bold", marginLeft: "10px" }}>
                   Total Record :&nbsp;{tableData?.length}
@@ -1243,6 +1331,7 @@ const ViewExpense = () => {
                       display: "flex",
                       gap: "8px",
                       padding: "3px",
+                      justifyContent: "space-between",
                     }}
                   >
                     <div
@@ -1526,7 +1615,7 @@ const ViewExpense = () => {
                         D
                       </span>
                     </div>
-                    {/* <div>
+                    <div>
                       {ele?.EmpID ==
                         useCryptoLocalStorage(
                           "user_Data",
@@ -1546,7 +1635,7 @@ const ViewExpense = () => {
                           onChange={(e) => handleCheckBox(e, index)}
                         />
                       )}
-                    </div> */}
+                    </div>
                   </div>
                 </>
               ),
@@ -1591,7 +1680,7 @@ const ViewExpense = () => {
           >
             {renderComponent?.component}
           </SlideScreen>
-          <div className="pagination ml-auto">
+          <div className="pagination ml-right">
             <div>
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
@@ -1607,6 +1696,14 @@ const ViewExpense = () => {
                 disabled={currentPage === totalPages}
               >
                 Next
+              </button>
+            </div>
+            <div className="ml-auto mr-5">
+              <button
+                className="btn btn-sm btn-success"
+                onClick={handleApproveAll}
+              >
+                Approve All
               </button>
             </div>
           </div>

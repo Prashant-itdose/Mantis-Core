@@ -1162,7 +1162,6 @@ const SearchSalesBooking = ({ data }) => {
                     }
                   )}
                 </span>{" "}
-             
                 <span className="mr-2 ">
                   Total Record :&nbsp; {tableData[0]?.TotalRecord}
                 </span>

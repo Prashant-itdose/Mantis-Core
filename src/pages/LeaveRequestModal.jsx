@@ -12,6 +12,7 @@ const LeaveRequestModal = ({
   setVisible,
   data,
   handleLeaveRequest_BindCalender,
+  CrmEmployee,
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -24,9 +25,10 @@ const LeaveRequestModal = ({
   const leaveData = visible?.CalenderDetails?.[1]?.find(
     (val) => String(val?.Day) === moment(visible?.data).format("D")
   );
-  console.log("data", data);
-  console.log("visible", visible);
-  console.log("visible [1]", visible?.CalenderDetails?.[1]);
+  // console.log("data", data);
+
+  // console.log("visible", visible);
+  // console.log("visible [1]", visible?.CalenderDetails?.[1]);
 
   const [OLTypeWise, setOLTypeWise] = useState([]);
   const [WOTypeWise, setWOTypeWise] = useState([]);
@@ -36,6 +38,12 @@ const LeaveRequestModal = ({
     "get",
     "IsReportingManager"
   );
+  const CrmEmployeeID = useCryptoLocalStorage(
+    "user_Data",
+    "get",
+    "CrmEmployeeID"
+  );
+  // console.log("CrmEmployee", CrmEmployee, CrmEmployeeID);
   const [formData, setFormData] = useState({
     LeaveType: leaveData?.Holiday,
     Description: leaveData?.LeaveDescription,
@@ -471,25 +479,8 @@ const LeaveRequestModal = ({
             </span>
           ) : (
             <div className="col-1 d-flex">
-              {data || ReportingManager === 1 ? (
-                <>
-                  {loading ? (
-                    <Loading />
-                  ) : (
-                    <button
-                      className="btn btn-sm mb-2"
-                      style={{
-                        background: "#0eb342",
-                        color: "white",
-                        border: "none",
-                      }}
-                      onClick={handleLeaveRequest_Approve}
-                    >
-                      Approve
-                    </button>
-                  )}
-                </>
-              ) : (
+              {(CrmEmployeeID === CrmEmployee && !data) ||
+              ReportingManager !== 1 ? (
                 <>
                   {loading ? (
                     <Loading />
@@ -517,32 +508,26 @@ const LeaveRequestModal = ({
                       </button>
                     </div>
                   )}
-                  {/* {loading ? (
+                </>
+              ) : (
+                <>
+                  {loading ? (
                     <Loading />
                   ) : (
-                    <div>
-                      <button
-                        className="btn btn-sm mb-2 ml-2"
-                        style={{
-                          background: "#0eb342",
-                          color: "white",
-                          border: "none",
-                        }}
-                        onClick={handleLeaveRequest_Update}
-                      >
-                        Update
-                      </button>
-                    </div>
-                  )} */}
+                    <button
+                      className="btn btn-sm mb-2"
+                      style={{
+                        background: "#0eb342",
+                        color: "white",
+                        border: "none",
+                      }}
+                      onClick={handleLeaveRequest_Approve}
+                    >
+                      Approve
+                    </button>
+                  )}
                 </>
               )}
-              {/* <button
-                className="btn btn-sm mb-2 ml-2"
-                style={{ background: "red", color: "white", border: "none" }}
-                onClick={handleLeaveRequest_Delete}
-              >
-                Cancel
-              </button> */}
             </div>
           )}
 

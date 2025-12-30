@@ -62,6 +62,12 @@ const EmployeeTransfer = () => {
         [name]: value,
       });
       getDetails(value);
+    } else if (name == "EmployeeSearch") {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+      setTableData([]);
     } else {
       setFormData({
         ...formData,
@@ -123,9 +129,9 @@ const EmployeeTransfer = () => {
       });
   };
   const [details, setDetails] = useState([]);
-  console.log("details", details);
+  // console.log("details", details);
   const getDetails = (value) => {
-    console.log("details details", details);
+    // console.log("details details", details);
     axiosInstances
       .post(apiUrls.SearchEmployeeTeamData, {
         EmployeeID: Number(value),

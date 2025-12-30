@@ -680,6 +680,14 @@ const allRoutes = {
     {
       Guard: Authenticated,
       layout: Layout,
+      path: "/ViewExpenseSummary",
+      component: lazy(() => import("@app/pages/CRM/ViewExpenseSummary.jsx")),
+      exact: true,
+    },
+   
+    {
+      Guard: Authenticated,
+      layout: Layout,
       path: "/ViewEmployeeExpense",
       component: lazy(() => import("@app/pages/CRM/ViewEmployeeExpense.jsx")),
       exact: true,

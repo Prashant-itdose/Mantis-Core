@@ -31,7 +31,7 @@ const currentMonth = currentDate.getMonth() + 1;
 const currentYear = currentDate.getFullYear();
 
 const LeaveRequest = ({ data }) => {
-  console.log("data check", data);
+  // console.log("data check", data);
 
   const dataMonth = data?.MonthYear;
   const jsDate = new Date(`${dataMonth?.replace("-", " ")} 1`);
@@ -58,7 +58,7 @@ const LeaveRequest = ({ data }) => {
   );
   const IsEmployee = useCryptoLocalStorage("user_Data", "get", "realname");
   const [CalenderDetails, setCalenderDetails] = useState([]);
-  console.log("CalenderDetails", CalenderDetails?.IsApproved);
+  // console.log("CalenderDetails", CalenderDetails?.IsApproved);
   const [daysInMonth, setDaysInMonth] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -204,10 +204,6 @@ const LeaveRequest = ({ data }) => {
     if (["GZ", "RT"].includes(HasLeave)) {
       return "gazetted-holiday";
     }
-    //Case 7: Other /Working Day
-    // if (["OTHER"].includes(HasLeave)) {
-    //   return "other-holiday";
-    // }
 
     // Default: Missing attendance
     return "missing-attendance";
@@ -447,6 +443,7 @@ const LeaveRequest = ({ data }) => {
             setVisible={setVisible}
             tableData={CalenderDetails}
             data={data}
+            CrmEmployee={formData?.Employee}
             handleLeaveRequest_BindCalender={handleLeaveRequest_BindCalender}
           />
         </Modal>

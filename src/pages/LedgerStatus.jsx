@@ -10,19 +10,16 @@ import DatePicker from "../components/formComponent/DatePicker";
 import Input from "../components/formComponent/Input";
 import UnlockClientLog from "../components/UI/customTable/UnlockClientLog";
 import excelimg from "../../src/assets/image/excel.png";
-import pdf from "../../src/assets/image/pdf.png";
 import { useTranslation } from "react-i18next";
 import Loading from "../components/loader/Loading";
 import * as XLSX from "xlsx";
 import * as FileSaver from "file-saver";
 import NoRecordFound from "../components/formComponent/NoRecordFound";
 import { useNavigate } from "react-router-dom";
-import SeeMoreIconInTable from "../components/SearchableTable/SeeMoreIconInTable";
 import { toast } from "react-toastify";
 import Tooltip from "./Tooltip";
 import { PageSize } from "../utils/constant";
 import CustomPagination from "../utils/CustomPagination";
-import { ExportToPDF } from "../networkServices/Tools";
 import AmountSubmissionSeeMoreList from "../networkServices/AmountSubmissionSeeMoreList";
 import SeeMoreSlideScreen from "../components/SearchableTable/SeeMoreSlideScreen";
 import SlideScreen from "./SlideScreen";
@@ -1143,34 +1140,31 @@ const LedgerStatus = () => {
                   maximumFractionDigits: 2,
                 }
               ),
-              "Current Sale": Number(ele?.CurrentSale|| 0).toLocaleString(
-                "en-IN",
-                {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                }
-              ), 
-              "Received Amount":Number(ele?.ReceivedAmount || 0).toLocaleString(
-                "en-IN",
-                {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                }
-              ), 
-              "Closing Balance": Number(ele?.ClosingBalance|| 0).toLocaleString(
+              "Current Sale": Number(ele?.CurrentSale || 0).toLocaleString(
                 "en-IN",
                 {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 }
               ),
-              "Last Received Amount": Number( ele?.LastReceivedAmount || 0).toLocaleString(
-                "en-IN",
-                {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                }
-              ),
+              "Received Amount": Number(
+                ele?.ReceivedAmount || 0
+              ).toLocaleString("en-IN", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }),
+              "Closing Balance": Number(
+                ele?.ClosingBalance || 0
+              ).toLocaleString("en-IN", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }),
+              "Last Received Amount": Number(
+                ele?.LastReceivedAmount || 0
+              ).toLocaleString("en-IN", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }),
               "Last Received Date": ele?.LastReceivedDate,
               Ageing: ele?.Ageing,
               LiveDate: ele?.LiveDate,

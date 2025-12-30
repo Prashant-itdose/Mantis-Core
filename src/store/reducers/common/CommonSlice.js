@@ -534,6 +534,12 @@ const initialState = {
           breadcrumb: "Accounts /ViewExpense",
         },
         {
+          childrenName: "View Expense",
+          url: "/ViewExpenseSummary",
+          childrenOrder: "22",
+          breadcrumb: "Accounts /ViewExpenseSummary",
+        },
+        {
           childrenName: "View Employee Expense",
           url: "/ViewEmployeeExpense",
           childrenOrder: "3",

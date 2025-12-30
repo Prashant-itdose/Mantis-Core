@@ -546,7 +546,7 @@ const ProjectMaster = () => {
           POChequeAmount: fetchData?.PoChequeAmt,
           NetAmount: fetchData?.PoAmt,
           ProjectDisplayName: fetchData?.ProjectDisplayName,
-          AgreementStatus: fetchData?.TCAAgreement,
+          AgreementStatus: fetchData?.AgreementStatus,
           FeedbackStatus: fetchData?.Feedback,
           OwnerFollowup: fetchData?.OwnerFollowup,
           SPOCFollowup: fetchData?.SPOCFollowup,
@@ -727,9 +727,10 @@ const ProjectMaster = () => {
   }
 
   const handleUpdateProject = () => {
-    if (!formData?.AgreementStatus) {
-      toast.error("Please Select AgreementStatus.");
-    } else if (!formData?.ProjectName) {
+    // if (!formData?.AgreementStatus) {
+    //   toast.error("Please Select AgreementStatus.");
+    // } else
+    if (!formData?.ProjectName) {
       toast.error("Please Enter ProjectName.");
     }
     // else if (!formData?.OwnerFollowup) {

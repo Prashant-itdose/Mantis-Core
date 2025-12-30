@@ -9,7 +9,6 @@ import axios from "axios";
 import moment from "moment";
 import Loading from "../components/loader/Loading";
 import Tables from "../components/UI/customTable";
-import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import Heading from "../components/UI/Heading";
 import NoRecordFound from "../components/formComponent/NoRecordFound";
 import { axiosInstances } from "../networkServices/axiosInstance";
