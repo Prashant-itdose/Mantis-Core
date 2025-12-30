@@ -6,13 +6,13 @@ import { apiUrls } from "../networkServices/apiEndpoints";
 import ManagerExpenseTotalDetails from "./CRM/ManagerExpenseTotalDetails";
 import Modal from "../components/modalComponent/Modal";
 import Loading from "../components/loader/Loading";
+import "./ExpenseCalendar.css";
 
 const ExpenseCalendar = ({ data }) => {
-  console.log("ExpenseCalendar", data);
-
   const [loading, setLoading] = useState(false);
   const [expenseData, setExpenseData] = useState([]);
   const [daysInMonth, setDaysInMonth] = useState([]);
+
   const [startDayOfWeek, setStartDayOfWeek] = useState(0);
 
   useEffect(() => {
@@ -27,15 +27,8 @@ const ExpenseCalendar = ({ data }) => {
 
     const getStartDayOfWeek = (year, month) =>
       new Date(year, month - 1, 1).getDay();
-
-    const updatedDays = getDaysInMonth(
-      data?.expense_Year,
-      data?.expense_month + 1
-    );
-    const startDay = getStartDayOfWeek(
-      data?.expense_Year,
-      data?.expense_month + 1
-    );
+    const updatedDays = getDaysInMonth(data?.expense_Year, data?.expense_month);
+    const startDay = getStartDayOfWeek(data?.expense_Year, data?.expense_month);
     setDaysInMonth(updatedDays);
     setStartDayOfWeek(startDay);
   }, []);
@@ -177,7 +170,7 @@ const ExpenseCalendar = ({ data }) => {
 
     const handleDayClick = () => {
       if (hasExpense) {
-        console.log("Expense details for day:", dayOfMonth, expenseForDay);
+        console.log("Expense details for day:");
       }
     };
     const [visible, setVisible] = useState({
@@ -294,13 +287,13 @@ const ExpenseCalendar = ({ data }) => {
     });
 
     if (currentWeek.length > 0) {
-      weeks.push([
+      weeks?.push([
         ...currentWeek,
         ...new Array(7 - currentWeek.length).fill(null),
       ]);
     }
 
-    return weeks.map((week, index) => (
+    return weeks?.map((week, index) => (
       <tr key={index}>
         {week.map((day, i) =>
           day ? (
@@ -336,84 +329,133 @@ const ExpenseCalendar = ({ data }) => {
           </h5>
         </div>
         <div className="card-body" style={{ background: "#dbd7e2" }}>
-          <div className="row">
-            <div className="col-sm-4"></div>
-            <div className="col-sm-6">
-              <div className="d-flex  gap-3 mb-3" style={{ fontSize: "12px" }}>
-                <div className="d-flex align-items-center">
-                  <div
-                    style={{
-                      width: "12px",
-                      height: "12px",
-                      borderRadius: "50%",
-                      backgroundColor: getStatusColor("Active"),
-                      marginRight: "5px",
-                    }}
-                  ></div>
-                  <span className="ml-1 font-weight-bold">Active</span>
-                </div>
-                <div className="d-flex align-items-center">
-                  <div
-                    style={{
-                      width: "12px",
-                      height: "12px",
-                      borderRadius: "50%",
-                      backgroundColor: getStatusColor("Submitted"),
-                      marginRight: "5px",
-                      marginLeft: "10px",
-                    }}
-                  ></div>
-                  <span className="ml-1 font-weight-bold">Submitted</span>
-                </div>
-                <div className="d-flex align-items-center">
-                  <div
-                    style={{
-                      width: "12px",
-                      height: "12px",
-                      borderRadius: "50%",
-                      backgroundColor: getStatusColor("Approved"),
-                      marginRight: "5px",
-                      marginLeft: "10px",
-                    }}
-                  ></div>
-                  <span className="ml-1 font-weight-bold">Approved</span>
-                </div>
-                <div className="d-flex align-items-center">
-                  <div
-                    style={{
-                      width: "12px",
-                      height: "12px",
-                      borderRadius: "50%",
-                      backgroundColor: getStatusColor("Rejected"),
-                      marginRight: "5px",
-                      marginLeft: "10px",
-                    }}
-                  ></div>
-                  <span className="ml-1 font-weight-bold">Rejected</span>
-                </div>
+          <div className="row mb-1">
+            {/* <div className="col-sm-4"></div> */}
+            {/* <div className="col-sm-6">
+           
+            </div> */}
+            <div className="col-sm-12">
+              {expenseData.length > 0 && (
+                <div className="mt-0 p-2 bg-light rounded lskdiwe">
+                  <div className="row">
+                    <div className="col-md-4">
+                      <h6 className="mb-2 font-weight-bold">Month Summary</h6>
+                      <div className="d-flex align-items-center">
+                        <FaReceipt className="text-primary me-2" />
+                        <span className="fw-bold">
+                          Total Expenses: ₹
+                          {new Intl.NumberFormat("en-IN").format(
+                            expenseData[0]?.MonthTotal || 0
+                          )}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="col-md-3">
+                      <div className="text-muted small">
+                        <div>
+                          Days with expenses:{" "}
+                          {
+                            expenseData.filter((item) => item.ExpenseCount > 0)
+                              .length
+                          }
+                        </div>
+                        <div>
+                          Total expense reports:{" "}
+                          {expenseData.reduce(
+                            (sum, item) => sum + item.ExpenseCount,
+                            0
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-5">
+                      <div className="d-flex" style={{ fontSize: "12px" }}>
+                        <div className="d-flex align-items-center">
+                          <div
+                            style={{
+                              width: "12px",
+                              height: "12px",
+                              borderRadius: "50%",
+                              backgroundColor: getStatusColor("Active"),
+                              marginRight: "5px",
+                            }}
+                          ></div>
+                          <span className="ml-1 font-weight-bold">Active</span>
+                        </div>
+                        <div className="d-flex align-items-center">
+                          <div
+                            style={{
+                              width: "12px",
+                              height: "12px",
+                              borderRadius: "50%",
+                              backgroundColor: getStatusColor("Submitted"),
+                              marginRight: "5px",
+                              marginLeft: "10px",
+                            }}
+                          ></div>
+                          <span className="ml-1 font-weight-bold">
+                            Submitted
+                          </span>
+                        </div>
+                        <div className="d-flex align-items-center">
+                          <div
+                            style={{
+                              width: "12px",
+                              height: "12px",
+                              borderRadius: "50%",
+                              backgroundColor: getStatusColor("Approved"),
+                              marginRight: "5px",
+                              marginLeft: "10px",
+                            }}
+                          ></div>
+                          <span className="ml-1 font-weight-bold">
+                            Approved
+                          </span>
+                        </div>
+                        <div className="d-flex align-items-center">
+                          <div
+                            style={{
+                              width: "12px",
+                              height: "12px",
+                              borderRadius: "50%",
+                              backgroundColor: getStatusColor("Rejected"),
+                              marginRight: "5px",
+                              marginLeft: "10px",
+                            }}
+                          ></div>
+                          <span className="ml-1 font-weight-bold">
+                            Rejected
+                          </span>
+                        </div>
 
-                <div className="d-flex align-items-center">
-                  <div
-                    style={{
-                      width: "12px",
-                      height: "12px",
-                      borderRadius: "50%",
-                      backgroundColor: getStatusColor("No Expense"),
-                      marginRight: "5px",
-                      marginLeft: "10px",
-                    }}
-                  ></div>
-                  <span className="ml-1 font-weight-bold">No Expense</span>
+                        <div className="d-flex align-items-center">
+                          <div
+                            style={{
+                              width: "12px",
+                              height: "12px",
+                              borderRadius: "50%",
+                              backgroundColor: getStatusColor("No Expense"),
+                              marginRight: "5px",
+                              marginLeft: "10px",
+                            }}
+                          ></div>
+                          <span className="ml-1 font-weight-bold">
+                            No Expense
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
-            <div className="col-sm-3"></div>
           </div>
+
           {loading ? (
             <Loading />
           ) : (
-            <div className="col-sm-12 calendar-container-wrapper ml-5">
-              <table className="calendar">
+            <div className="col-sm-12 calendar-container-wrapper px-0">
+              <table className="calendar mx-0 ml-0">
                 <thead
                   style={{
                     color: "#2196F3",
@@ -435,7 +477,7 @@ const ExpenseCalendar = ({ data }) => {
               </table>
 
               {/* Month Total Summary */}
-              {expenseData.length > 0 && (
+              {/* {expenseData.length > 0 && (
                 <div
                   className="mt-4 p-2 bg-light rounded"
                   style={{ width: "1120px" }}
@@ -473,7 +515,7 @@ const ExpenseCalendar = ({ data }) => {
                     </div>
                   </div>
                 </div>
-              )}
+              )} */}
             </div>
           )}
         </div>
