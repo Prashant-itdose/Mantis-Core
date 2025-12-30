@@ -222,7 +222,7 @@ const LeaveRequest = ({ data }) => {
     const currentMonth = today.getMonth();
     const currentYear = today.getFullYear();
     const targetMonth = month - 1;
-    const targetYear = today.getFullYear(); // assuming same year context
+    const targetYear = today.getFullYear();
 
     let isDisabled = false;
 
@@ -247,8 +247,7 @@ const LeaveRequest = ({ data }) => {
       } else if (targetYear === currentYear && targetMonth === currentMonth) {
         isDisabled = false;
       } else {
-        // isDisabled = true; // future months disabled
-        isDisabled = false; // future months enabled
+        isDisabled = false;
       }
     }
 

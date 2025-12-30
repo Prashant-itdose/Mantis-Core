@@ -12,11 +12,12 @@ import Tables from "../../components/UI/customTable";
 import NoRecordFound from "../../components/formComponent/NoRecordFound";
 import Input from "../../components/formComponent/Input";
 import { toast } from "react-toastify";
-import Modal from "../../components/modalComponent/Modal";
-import ManagerExpenseModal from "./ManagerExpenseModal";
 import AmountSubmissionSeeMoreList from "../../networkServices/AmountSubmissionSeeMoreList";
 import SlideScreen from "../SlideScreen";
 import SeeMoreSlideScreen from "../../components/SearchableTable/SeeMoreSlideScreen";
+import FirstMoreList from "../../networkServices/FirstMoreList";
+import FirstSlideScreen from "../FirstSlideScreen";
+import SeeMoreSlideScreenEye from "../../components/SearchableTable/SeeMoreSlideScreenEye";
 const currentDate = new Date();
 const currentMonth = currentDate.getMonth() + 1;
 const currentYear = currentDate.getFullYear();
@@ -224,7 +225,7 @@ const ViewExpenseSummary = () => {
   ];
   return (
     <>
-      {visible?.clickSearch && (
+      {/* {visible?.clickSearch && (
         <Modal
           modalWidth={"1000px"}
           visible={visible}
@@ -233,7 +234,7 @@ const ViewExpenseSummary = () => {
         >
           <ManagerExpenseModal visible={visible} setVisible={setVisible} />
         </Modal>
-      )}
+      )} */}
       {/* {visible?.employeeSearch && (
         <Modal
           modalWidth={"1200px"}
@@ -330,7 +331,8 @@ const ViewExpenseSummary = () => {
               Search
             </button>
           )}
-          <i
+
+          {/* <i
             className="fa fa-eye mt-2 ml-4"
             title="Click to Manager Team Expense Summary."
             style={{ cursor: "pointer" }}
@@ -339,7 +341,46 @@ const ViewExpenseSummary = () => {
                 clickSearch: true,
               });
             }}
-          ></i>
+          ></i> */}
+          <span className="ml-4" title="Manager Wise Expense Details">
+            <FirstMoreList
+              ModalComponent={ModalComponent}
+              isShowDropDown={false}
+              setSeeMore={setSeeMore}
+              data={""}
+              setVisible={() => {
+                setListVisible(false);
+              }}
+              handleBindFrameMenu={[
+                {
+                  FileName: "ManagerWise Total Expense Details",
+                  URL: "ManagerExpenseModal",
+                  FrameName: "ManagerExpenseModal",
+                  Description: "ManagerExpenseModal",
+                },
+              ]}
+              isShowPatient={true}
+            />
+          </span>
+          <FirstSlideScreen
+            visible={listVisible}
+            setVisible={() => {
+              setListVisible(false);
+              setRenderComponent({
+                name: null,
+                component: null,
+              });
+            }}
+            Header={
+              <SeeMoreSlideScreenEye
+                name={renderComponent?.name}
+                seeMore={seeMore}
+                handleChangeComponent={handleChangeComponent}
+              />
+            }
+          >
+            {renderComponent?.component}
+          </FirstSlideScreen>
         </div>
       </div>
 

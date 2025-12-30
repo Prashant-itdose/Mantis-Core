@@ -85,7 +85,7 @@ const ExpenseCalendar = ({ data }) => {
     const hasExpense = expenseForDay && expenseForDay.ExpenseCount > 0;
     const dailyTotal = expenseForDay?.DailyTotal || 0;
     const expenseCount = expenseForDay?.ExpenseCount || 0;
-    const status = expenseForDay?.STATUS || "No Expense";
+    const status = expenseForDay?.STATUS || "0";
     const expenseReportIds = expenseForDay?.expense_report_IDs;
 
     // Format amount with commas
@@ -132,6 +132,7 @@ const ExpenseCalendar = ({ data }) => {
       badge: (bgColor, textColor) => ({
         backgroundColor: bgColor,
         color: textColor,
+        // color: "white",
         fontWeight: "500",
         fontSize: "9px",
         borderRadius: "10px",
@@ -233,8 +234,7 @@ const ExpenseCalendar = ({ data }) => {
           {/* Amount */}
           <div style={styles.amountContainer}>
             <div style={styles.amountText}>
-              <FaRupeeSign size={8} />{" "}
-              {hasExpense ? formattedAmount : "No Expense"}
+              <FaRupeeSign size={8} /> {hasExpense ? formattedAmount : "0"}
             </div>
           </div>
 
@@ -250,7 +250,7 @@ const ExpenseCalendar = ({ data }) => {
           </div>
 
           {/* Report IDs (hidden by default, show on hover if needed) */}
-          {hasExpense && expenseReportIds !== "0" && (
+          {/* {hasExpense && expenseReportIds !== "0" && (
             <div
               style={{
                 fontSize: "7px",
@@ -264,7 +264,7 @@ const ExpenseCalendar = ({ data }) => {
             >
               ID: {expenseReportIds}
             </div>
-          )}
+          )} */}
         </td>
       </>
     );
@@ -330,10 +330,6 @@ const ExpenseCalendar = ({ data }) => {
         </div>
         <div className="card-body" style={{ background: "#dbd7e2" }}>
           <div className="row mb-1">
-            {/* <div className="col-sm-4"></div> */}
-            {/* <div className="col-sm-6">
-           
-            </div> */}
             <div className="col-sm-12">
               {expenseData.length > 0 && (
                 <div className="mt-0 p-2 bg-light rounded lskdiwe">
@@ -342,7 +338,7 @@ const ExpenseCalendar = ({ data }) => {
                       <h6 className="mb-2 font-weight-bold">Month Summary</h6>
                       <div className="d-flex align-items-center">
                         <FaReceipt className="text-primary me-2" />
-                        <span className="fw-bold">
+                        <span className="fw-bold" style={{ color: "black" }}>
                           Total Expenses: ₹
                           {new Intl.NumberFormat("en-IN").format(
                             expenseData[0]?.MonthTotal || 0
@@ -352,14 +348,14 @@ const ExpenseCalendar = ({ data }) => {
                     </div>
                     <div className="col-md-3">
                       <div className="text-muted small">
-                        <div>
+                        <div style={{ color: "black" }}>
                           Days with expenses:{" "}
                           {
                             expenseData.filter((item) => item.ExpenseCount > 0)
                               .length
                           }
                         </div>
-                        <div>
+                        <div style={{ color: "black" }}>
                           Total expense reports:{" "}
                           {expenseData.reduce(
                             (sum, item) => sum + item.ExpenseCount,

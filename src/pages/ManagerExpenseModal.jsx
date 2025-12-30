@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import Input from "../../components/formComponent/Input";
-import { axiosInstances } from "../../networkServices/axiosInstance";
-import { apiUrls } from "../../networkServices/apiEndpoints";
-import DatePickerMonth from "../../components/formComponent/DatePickerMonth";
-import Heading from "../../components/UI/Heading";
-import Tables from "../../components/UI/customTable";
-import NoRecordFound from "../../components/formComponent/NoRecordFound";
-import Loading from "../../components/loader/Loading";
+import { axiosInstances } from "../networkServices/axiosInstance";
+import { apiUrls } from "../networkServices/apiEndpoints";
+import DatePickerMonth from "../components/formComponent/DatePickerMonth";
+import Loading from "../components/loader/Loading";
+import Heading from "../components/UI/Heading";
+import Tables from "../components/UI/customTable";
+import NoRecordFound from "../components/formComponent/NoRecordFound";
+import Input from "../components/formComponent/Input";
+
 const currentDate = new Date();
 const currentMonth = currentDate.getMonth() + 1;
 const currentYear = currentDate.getFullYear();
@@ -123,12 +124,19 @@ const ManagerExpenseModal = () => {
     <>
       <div className="card">
         <div className="row p-2">
+          <span className="font-weight-bold ml-2">
+            Manager Wise Expense Details
+          </span>
+        </div>
+      </div>
+      <div className="card">
+        <div className="row p-2">
           <DatePickerMonth
             id="Month"
             name="Month"
             lable="Month/Year"
             placeholder={"MM/YY"}
-            respclass="col-xl-3 col-md-4 col-sm-6 col-12"
+            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
             value={formData?.Month}
             handleChange={(e) => handleMonthYearChange("Month", e)}
           />

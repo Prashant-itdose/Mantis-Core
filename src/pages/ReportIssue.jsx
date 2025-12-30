@@ -35,6 +35,7 @@ const ReportIssue = ({ visibleTicket }) => {
       ? visibleTicket?.showData?.CategoryID
       : "",
     AssignedTo: "",
+    AssignedToTo: "",
     Incharge: "",
     Priority: visibleTicket?.showData?.Priority
       ? visibleTicket?.showData?.Priority
@@ -68,6 +69,7 @@ const ReportIssue = ({ visibleTicket }) => {
   const [project, setProject] = useState([]);
   const [category, setCategory] = useState([]);
   const [assignto, setAssignedto] = useState([]);
+  const [assigntoTo, setAssignedtoTo] = useState([]);
   const [priority, setPriority] = useState([]);
   const [moduleName, setModuleName] = useState([]);
   const [incharge, setIncharge] = useState([]);
@@ -87,6 +89,7 @@ const ReportIssue = ({ visibleTicket }) => {
         ProductVersion: "",
       });
       getAssignTo(e.value);
+      getAssignToTo(e.value);
       getCategory(e.value);
       // getModule(e.value);
       getPage(e.value);
@@ -159,6 +162,7 @@ const ReportIssue = ({ visibleTicket }) => {
             ProjectID: singleProject,
           }));
           getAssignTo(singleProject);
+          getAssignToTo(singleProject);
           getCategory(singleProject);
           getPage(singleProject);
           getGetProjectInfo(singleProject);
@@ -295,6 +299,21 @@ const ReportIssue = ({ visibleTicket }) => {
           return { label: item?.Name, value: item?.ID };
         });
         setAssignedto(assigntos);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const getAssignToTo = (value) => {
+    axiosInstances
+      .post(apiUrls.AssignTo_Select, {
+        ProjectID: value,
+      })
+      .then((res) => {
+        const assigntos = res?.data?.data?.map((item) => {
+          return { label: item?.Name, value: item?.ID };
+        });
+        setAssignedtoTo(assigntos);
       })
       .catch((err) => {
         console.log(err);
@@ -642,6 +661,15 @@ const ReportIssue = ({ visibleTicket }) => {
             handleChange={handleDeliveryChange}
             searchable={true}
           />
+          {/* <ReactSelect
+            respclass="col-xl-2 col-md-4 col-sm-6 col-12 mt-1"
+            name="AssignedToTo"
+            placeholderName={t("AssignedTo To")}
+            dynamicOptions={assigntoTo}
+            value={formData?.AssignedToTo}
+            handleChange={handleDeliveryChange}
+            searchable={true}
+          /> */}
           <ReactSelect
             respclass="col-xl-2 col-md-4 col-sm-6 col-12 mt-1"
             name="Priority"

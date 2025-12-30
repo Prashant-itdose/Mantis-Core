@@ -66,6 +66,7 @@ const ViewIssues = ({ data }) => {
   const datePickerRefs = useRef({});
   const [vertical, setVertical] = useState([]);
   const [team, setTeam] = useState([]);
+  const [assigntoTo, setAssignedtoTo] = useState([]);
   const [project, setProject] = useState([]);
   const [wing, setWing] = useState([]);
   const [moduleName, setModuleName] = useState([]);
@@ -182,6 +183,7 @@ const ViewIssues = ({ data }) => {
     POC3: [],
     Reporter: [],
     AssignedTo: [],
+    AssignedToTo: [],
     AssignedToStatus: "",
     MoveStatus: "",
     UpdateToStatus: "",
@@ -1958,6 +1960,21 @@ const ViewIssues = ({ data }) => {
         console.log(err);
       });
   };
+  const getAssignToTo = (value) => {
+    axiosInstances
+      .post(apiUrls.AssignTo_Select, {
+        ProjectID: value,
+      })
+      .then((res) => {
+        const assigntos = res?.data?.data?.map((item) => {
+          return { name: item?.Name, code: item?.ID };
+        });
+        setAssignedtoTo(assigntos);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const getAssignToValue = () => {
     axiosInstances
       .post(apiUrls.AssignTo_Select, {
@@ -2104,6 +2121,7 @@ const ViewIssues = ({ data }) => {
       await Promise.all([
         getVertical(),
         getAssignTo(),
+        getAssignToTo(),
         getStatus(),
         getHideStatus(),
         getCategory(),
@@ -3360,6 +3378,31 @@ const ViewIssues = ({ data }) => {
                     {t("NotToDo")}
                   </span>
                 </div>
+                {/* <div
+                  className="d-flex "
+                  style={{
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      backgroundColor: "#89e9faff",
+                      cursor: "pointer",
+                      height: "10px",
+                      width: "12px",
+                      borderRadius: "50%",
+                      marginLeft: "4px",
+                    }}
+                    onClick={() => handleViewSearch("92", "0")}
+                  ></div>
+                  <span
+                    className="legend-label"
+                    style={{ width: "100%", textAlign: "left" }}
+                  >
+                    {t("Pending From Client")}
+                  </span>
+                </div> */}
                 <button
                   className={`fa ${rowHandler.show ? "fa-arrow-up" : "fa-arrow-down"}`}
                   onClick={() => {
@@ -3550,6 +3593,22 @@ const ViewIssues = ({ data }) => {
                     : []
                 }
               />
+              {/* <MultiSelectComp
+                respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+                name="AssignedToTo"
+                placeholderName={t("AssignedTo To")}
+                dynamicOptions={assigntoTo}
+                handleChange={handleMultiSelectChange}
+                value={
+                  Array.isArray(formData?.AssignedToTo)
+                    ? formData.AssignedToTo.map((code) => ({
+                        code,
+                        name: assigntoTo?.find((item) => item.code === code)
+                          ?.name,
+                      }))
+                    : []
+                }
+              /> */}
               <ReactSelect
                 respclass="col-xl-2 col-md-4 col-sm-6 col-12"
                 name="Priority"
