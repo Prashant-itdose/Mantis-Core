@@ -179,6 +179,7 @@ export const apiUrls = {
   GetExpenseReportWithTravelDetails: "/ManageExpense/GetExpenseReportWithTravelDetails",
   GetEmployeeExpenseCalendar: "/ManageExpense/GetEmployeeExpenseCalendar",
   BulkExpenseApprove: "/ManageExpense/BulkExpenseApprove",
+  LeaveRequest_ApproveALL: "/CRMAttendance/LeaveRequest_ApproveALL",
 
   // Access right
   CreateRole: "/AccessRight/CreateRole",

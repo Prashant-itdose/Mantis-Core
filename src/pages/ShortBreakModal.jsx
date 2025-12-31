@@ -54,8 +54,8 @@ const ShortBreakModal = ({ visible, setVisible, handleTableSearch }) => {
 
   const processFile = (file) => {
     if (file) {
-      if (file.size > 1 * 1024 * 1024) {
-        toast.error("File size exceeds 1MB limit");
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error("File size exceeds 5MB limit");
         return;
       }
 

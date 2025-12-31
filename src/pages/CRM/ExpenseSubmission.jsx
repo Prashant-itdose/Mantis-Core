@@ -644,9 +644,9 @@ const ExpenseSubmission = () => {
   const handleImageChange = (e) => {
     const file = e?.target?.files[0];
     if (file) {
-      const maxSize = 10 * 1024 * 1024;
+      const maxSize = 5 * 1024 * 1024;
       if (file.size > maxSize) {
-        alert("File size exceeds 10MB. Please choose a smaller file.");
+        alert("File size exceeds 5MB. Please choose a smaller file.");
         return;
       }
       const reader = new FileReader();

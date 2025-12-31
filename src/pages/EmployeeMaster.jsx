@@ -226,8 +226,8 @@ const EmployeeMaster = () => {
   // File processors
   const processFile = (file) => {
     if (file) {
-      if (file.size > 1 * 1024 * 1024) {
-        toast.error("File size exceeds 1MB limit");
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error("File size exceeds 5MB limit");
         return;
       }
 
@@ -249,8 +249,8 @@ const EmployeeMaster = () => {
 
   const processFile1 = (file) => {
     if (file) {
-      if (file.size > 1 * 1024 * 1024) {
-        toast.error("File size exceeds 1MB limit");
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error("File size exceeds 5MB limit");
         return;
       }
 

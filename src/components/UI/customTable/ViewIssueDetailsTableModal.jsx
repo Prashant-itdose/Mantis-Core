@@ -53,6 +53,7 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
   const [tableData2, setTableData2] = useState([]);
   const [tableData1, setTableData1] = useState([]);
   const [incharge, setIncharge] = useState([]);
+  const [assigntoTo, setAssignedtoTo] = useState([]);
   const [loading, setLoading] = useState();
   const [formData, setFormData] = useState({
     TicketID: "",
@@ -63,6 +64,7 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
     LastUpdate: "",
     Reporter: "",
     AssignedTo: "",
+    AssignedToTo: "",
     Priority: "",
     Status: "",
     ReportedByMobile: "",
@@ -107,7 +109,7 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
     HoldReason: "",
     Reason: "",
     ReOpen: "",
-
+    AssignedToTo: "",
     ModuleName: "",
     PageName: "",
   });
@@ -131,7 +133,21 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
       });
     }
   };
-
+  const getAssignToTo = (value) => {
+    axiosInstances
+      .post(apiUrls.AssignTo_Select, {
+        ProjectID: value,
+      })
+      .then((res) => {
+        const assigntos = res?.data?.data?.map((item) => {
+          return { label: item?.Name, value: item?.ID };
+        });
+        setAssignedtoTo(assigntos);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const RoleID = useCryptoLocalStorage("user_Data", "get", "RoleID");
   const getModule = () => {
     axiosInstances
@@ -154,11 +170,6 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
       });
   };
   const getIncharge = (value) => {
-    // let form = new FormData();
-    // form.append("Id", value || ""),
-    //   // form.append("IsIncharge", "1"),
-    //   axios
-    //     .post(apiUrls?.Reporter_Select_Module_Wise, form, { headers })
     axiosInstances
       .post(apiUrls.Reporter_Select_Module_Wise, {
         ID: value || "0",
@@ -294,6 +305,7 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
           LastUpdate: res?.data.data[0]?.Updatedate,
           Reporter: res?.data.data[0]?.AssignedTo,
           AssignedTo: res?.data.data[0]?.AssignedTo,
+          AssignedToTo: res?.data?.data[0]?.AssignedToToName,
           Priority: res?.data.data[0]?.priority,
           Status: res?.data.data[0]?.Status,
           ReportedByMobile: res?.data.data[0]?.RepoterMobileNo,
@@ -330,6 +342,7 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
           LastUpdate: res?.data.data[0]?.Updatedate,
           Reporter: res?.data.data[0]?.AssignedTo,
           AssignedTo: res?.data.data[0]?.handler_id,
+          AssignedToTo: res?.data.data[0]?.AssignedToTo,
           Priority: res?.data.data[0]?.priority,
           Status: res?.data.data[0]?.StatusId,
           ReportedByMobile: res?.data.data[0]?.RepoterMobileNo,
@@ -381,6 +394,7 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
           User_id: 0,
           CategoryID: Number(formDataUpdate?.Category ?? 0),
           AssignToID: Number(formDataUpdate?.AssignedTo ?? 0),
+          AssignedToTo: Number(formDataUpdate?.AssignedToTo ?? 0),
           PriorityID: Number(formDataUpdate?.Priority ?? 0),
           DeliveryDate: String(
             formDataUpdate?.DeliveryDate == ""
@@ -591,6 +605,7 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
     getProject();
     getAssignTo();
     getPriority();
+    getAssignToTo();
     getStatus();
     getModule();
     getPage();
@@ -769,19 +784,42 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
               />
             </>
           )}
-
           {edit == false ? (
             <Input
               type="text"
               className="form-control mt-2"
-              id="Priority"
-              name="Priority"
-              lable="Priority"
-              value={formData?.Priority}
+              id="AssignedToTo"
+              name="AssignedToTo"
+              lable="Secondary AssignedTo"
+              value={formData?.AssignedToTo}
               placeholder=" "
               respclass="col-md-2 col-12 col-sm-12"
               onChange={handleChange}
               disabled={edit == false}
+            />
+          ) : (
+            <>
+              <ReactSelect
+                respclass="col-md-2 col-12 col-sm-12 mt-2"
+                name="AssignedToTo"
+                placeholderName={t("Secondary AssignedTo")}
+                dynamicOptions={assigntoTo}
+                value={formDataUpdate?.AssignedToTo}
+                handleChange={handleDeliveryChange}
+                searchable={true}
+              />
+            </>
+          )}
+
+          {edit == false ? (
+            <ReactSelect
+              respclass="col-md-2 col-12 col-sm-12 mt-2"
+              name="Priority"
+              placeholderName="Priority"
+              dynamicOptions={priority}
+              value={formData?.Priority}
+              handleChange={handleDeliveryChange}
+              isDisabled={edit == false}
             />
           ) : (
             <ReactSelect

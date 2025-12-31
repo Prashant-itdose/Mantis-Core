@@ -60,13 +60,13 @@ const ExpenseCalendar = ({ data }) => {
   const getStatusColor = (status) => {
     switch (status) {
       case "Approved":
-        return "#4CAF50"; // Green
+        return "#B2FBA5"; // Green
       case "Submitted":
-        return "#2196F3"; // Blue
+        return "#B3EBF2"; // Blue
       case "Rejected":
-        return "#F44336"; // Red
+        return "#FF746C"; // Red
       case "Active":
-        return "#f1e131ff"; // Gray
+        return "#FDFD96"; // Gray
       case "No Expense":
         return "#9E9E9E"; // Gray
       default:
@@ -131,7 +131,8 @@ const ExpenseCalendar = ({ data }) => {
       },
       badge: (bgColor, textColor) => ({
         backgroundColor: bgColor,
-        color: textColor,
+        color: "black",
+        // color: textColor,
         // color: "white",
         fontWeight: "500",
         fontSize: "9px",

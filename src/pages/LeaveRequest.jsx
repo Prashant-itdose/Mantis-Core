@@ -38,7 +38,6 @@ const LeaveRequest = ({ data }) => {
   // console.log("data?.MonthYear", data?.MonthYear);
   // console.log("js date", jsDate);
   const CRMID = useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID");
-  const LoginUserName = useCryptoLocalStorage("user_Data", "get", "realname");
   const [employee, setEmployee] = useState([]);
   const [formData, setFormData] = useState({
     Month: dataMonth == undefined ? new Date() : jsDate,
@@ -232,7 +231,7 @@ const LeaveRequest = ({ data }) => {
         (targetYear === currentYear && targetMonth < currentMonth)
       ) {
         const daysPassed = today.getDate();
-        isDisabled = daysPassed > 2;
+        isDisabled = daysPassed > 2; //// Only enable 2nd Day of every month
       } else if (targetYear === currentYear && targetMonth === currentMonth) {
         isDisabled = false;
       } else {
@@ -313,7 +312,6 @@ const LeaveRequest = ({ data }) => {
         weeks.push(currentWeek);
         currentWeek = [];
       }
-
       currentWeek.push(day);
     });
     if (currentWeek.length > 0) {
@@ -402,29 +400,28 @@ const LeaveRequest = ({ data }) => {
   }
   const handleLeaveRequest_Approve = () => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("LoginName", data?.Name),
-      form.append("CrmEmpID", data?.EmployeeId),
-      form.append("FromDate", data?.LeaveDate),
-      form.append("LeaveType", data?.LeaveType),
-      form.append("Description", data?.Description),
-      form.append("StatusType", "All"),
-      axios
-        .post(apiUrls?.LeaveRequest_Save, form, { headers })
-        .then((res) => {
-          if (res?.data?.success === true) {
-            toast.success(res?.data?.message);
-            setLoading(false);
-          } else {
-            toast.error(res?.data?.message);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls.LeaveRequest_ApproveALL, {
+        CrmEmpID: Number(
+          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+        ),
+        ToApproveCrmEmpID: String(formData?.Employee),
+        Month: Number(formData?.currentMonth),
+        Year: Number(formData?.currentYear),
+      })
+      .then((res) => {
+        if (res?.data?.success === true) {
+          toast.success(res?.data?.message);
           setLoading(false);
-        });
+        } else {
+          toast.error(res?.data?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
   // console.log("check", CalenderDetails);
   return (

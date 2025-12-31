@@ -208,6 +208,7 @@ const ViewIssues = ({ data }) => {
     PagesName: "",
     SearhType: "0",
     NotToDo: "",
+    PendingFromClient: "",
   });
 
   const viewissuesTHEAD = [
@@ -230,6 +231,7 @@ const ViewIssues = ({ data }) => {
     // t("PMM"),
     t("M.ManMinutes"),
     { name: t("Change Action"), width: "9%" },
+    t("Secondary AssignTo"),
     t("Module Name"),
     t("Incharge"),
     // t("Dev.MM"),
@@ -504,6 +506,10 @@ const ViewIssues = ({ data }) => {
       label: "NotToDo",
       value: "NotToDo",
     },
+    {
+      label: "PendingFromClient",
+      value: "PendingFromClient",
+    },
   ];
 
   const dynamicOptionStatus = [
@@ -521,6 +527,10 @@ const ViewIssues = ({ data }) => {
     {
       label: "NotToDo",
       value: "NotToDo",
+    },
+    {
+      label: "PendingFromClient",
+      value: "PendingFromClient",
     },
   ];
   const filteredOptions =
@@ -799,7 +809,75 @@ const ViewIssues = ({ data }) => {
         });
     }
   };
+  const handlePendingFromClientTable = () => {
+    const filterdata = tableData?.filter((item) => item.IsActive == true);
+    const ticketIDs = filterdata.map((item) => item.TicketID).join(",");
+    if (ticketIDs == "") {
+      toast.error("Please Select atleast one Ticket.");
+    } else {
+      axiosInstances
+        .post(apiUrls.ApplyAction, {
+          TicketIDs: String(ticketIDs),
+          ActionText: "PendingFromClient",
+          ActionId: String(formData?.PendingFromClient),
+          RCA: "",
+          ReferenceCode: "",
+          ManHour: "",
+          Summary: "",
+          ModuleID: "",
+          ModuleName: "",
+          PagesID: "",
+          PagesName: "",
+          ManHoursClient: "",
+          DeliveryDateClient: "",
+          ReOpenReasonID: "",
+          ReOpenReason: "",
+        })
+        .then((res) => {
+          toast.success(res?.data?.message);
+          setFormData({
+            ...formData,
+            PendingFromClient: "",
+          });
+          handleViewSearch();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
 
+  const handlePendingFromClient = (item) => {
+    axiosInstances
+      .post(apiUrls.ApplyAction, {
+        TicketIDs: String(item?.TicketID),
+        ActionText: "PendingFromClient",
+        ActionId: String(formData?.PendingFromClient),
+        RCA: "",
+        ReferenceCode: "",
+        ManHour: "",
+        Summary: "",
+        ModuleID: "",
+        ModuleName: "",
+        PagesID: "",
+        PagesName: "",
+        ManHoursClient: "",
+        DeliveryDateClient: "",
+        ReOpenReasonID: "",
+        ReOpenReason: "",
+      })
+      .then((res) => {
+        toast.success(res?.data?.message);
+        setFormData({
+          ...formData,
+          PendingFromClient: "",
+        });
+        handleViewSearch();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const handleNotToDo = (item) => {
     axiosInstances
       .post(apiUrls.ApplyAction, {
@@ -1499,6 +1577,7 @@ const ViewIssues = ({ data }) => {
             POC3: resultObject?.POC3 || "",
             Reporter: resultObject?.Reporter || "",
             AssignedTo: resultObject?.AssignedTo || "",
+            AssignedToTo: resultObject?.AssignedToTo || "",
             Category: resultObject?.Category || "",
             ClientManHourDropdown: resultObject?.ClientManHourDropdown || "",
             ManHourDropdown: resultObject?.ManHourDropdown || "",
@@ -1588,6 +1667,7 @@ const ViewIssues = ({ data }) => {
       POC3: [],
       Reporter: [],
       AssignedTo: [],
+      AssignedToTo: [],
       AssignedToStatus: "",
       MoveStatus: "",
       UpdateToStatus: "",
@@ -1679,6 +1759,7 @@ const ViewIssues = ({ data }) => {
       POC3: [],
       Reporter: [],
       AssignedTo: [],
+      AssignedToTo: [],
       AssignedToStatus: "",
       MoveStatus: "",
       UpdateToStatus: "",
@@ -2188,6 +2269,7 @@ const ViewIssues = ({ data }) => {
       DelayedTicket: String(formData?.DelayedTicket || ""),
       ReporterId: String(Reporter || ""),
       AssignToID: String(AssignedTo || ""),
+      AssignedToTo: String(formData?.AssignedToTo || ""),
       PriorityId: String(Priority || ""),
       CategoryID: String(CategoryID || ""),
       HideStatusId: String(HideStatusId || ""),
@@ -3378,7 +3460,7 @@ const ViewIssues = ({ data }) => {
                     {t("NotToDo")}
                   </span>
                 </div>
-                {/* <div
+                <div
                   className="d-flex "
                   style={{
                     justifyContent: "flex-start",
@@ -3402,7 +3484,7 @@ const ViewIssues = ({ data }) => {
                   >
                     {t("Pending From Client")}
                   </span>
-                </div> */}
+                </div>
                 <button
                   className={`fa ${rowHandler.show ? "fa-arrow-up" : "fa-arrow-down"}`}
                   onClick={() => {
@@ -3586,29 +3668,30 @@ const ViewIssues = ({ data }) => {
                 handleChange={handleMultiSelectChange}
                 value={
                   Array.isArray(formData?.AssignedTo)
-                    ? formData.AssignedTo.map((code) => ({
+                    ? formData?.AssignedTo?.map((code) => ({
                         code,
-                        name: assignto.find((item) => item.code === code)?.name,
+                        name: assignto?.find((item) => item.code === code)
+                          ?.name,
                       }))
                     : []
                 }
               />
-              {/* <MultiSelectComp
+              <MultiSelectComp
                 respclass="col-xl-2 col-md-4 col-sm-6 col-12"
                 name="AssignedToTo"
-                placeholderName={t("AssignedTo To")}
+                placeholderName={t("Secondary AssignedTo")}
                 dynamicOptions={assigntoTo}
                 handleChange={handleMultiSelectChange}
                 value={
                   Array.isArray(formData?.AssignedToTo)
-                    ? formData.AssignedToTo.map((code) => ({
+                    ? formData?.AssignedToTo?.map((code) => ({
                         code,
                         name: assigntoTo?.find((item) => item.code === code)
                           ?.name,
                       }))
                     : []
                 }
-              /> */}
+              />
               <ReactSelect
                 respclass="col-xl-2 col-md-4 col-sm-6 col-12"
                 name="Priority"
@@ -5382,6 +5465,31 @@ const ViewIssues = ({ data }) => {
                                   </button>
                                 </>
                               )}
+                              {ele?.TableStatus == "PendingFromClient" && (
+                                <>
+                                  <Input
+                                    type="text"
+                                    className="form-control mt-1"
+                                    id="PendingFromClient"
+                                    name="PendingFromClient"
+                                    lable="Enter Pending From Client Reason"
+                                    value={ele?.PendingFromClient}
+                                    respclass="width110px"
+                                    style={{ width: "50%" }}
+                                    onChange={handleChange}
+                                  />
+                                  <button
+                                    className="btn btn-sm btn-success ml-1 mb-1 mt-1"
+                                    style={{
+                                      marginRight: "1px",
+                                      marginLeft: "1px",
+                                    }}
+                                    onClick={() => handlePendingFromClient(ele)}
+                                  >
+                                    Save
+                                  </button>
+                                </>
+                              )}
                               {ele?.TableStatus == "Hold" && (
                                 <>
                                   <Input
@@ -5531,6 +5639,7 @@ const ViewIssues = ({ data }) => {
                           </div>
                         </>
                       ),
+                    "Secondary AssignTo": ele?.AssignToToName,
                     "Module Name": ele?.ModuleName,
                     Incharge: ele?.Incharge,
                     "Dev. ManMinutes": ele?.ReferenceCode,
@@ -5724,6 +5833,35 @@ const ViewIssues = ({ data }) => {
                             <button
                               className="btn btn-sm btn-info ml-4"
                               onClick={handleNotToDoTable}
+                            >
+                              Save
+                            </button>
+                          </div>
+                        </>
+                      )}
+                      {formData?.TableStatus?.value == "PendingFromClient" && (
+                        <>
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-evenly",
+                            }}
+                          >
+                            <Input
+                              type="text"
+                              id="PendingFromClient"
+                              name="PendingFromClient"
+                              className="form-control ml-2"
+                              lable="Enter Pending From Client Reason"
+                              value={formData?.PendingFromClient}
+                              respclass="width100px"
+                              style={{ width: "100%", marginLeft: "2px" }}
+                              onChange={handleChange}
+                            />
+
+                            <button
+                              className="btn btn-sm btn-info ml-4"
+                              onClick={handlePendingFromClientTable}
                             >
                               Save
                             </button>

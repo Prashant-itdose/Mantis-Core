@@ -50,8 +50,8 @@ const UploadFile = ({ tableData, setVisible }) => {
   const handleFileChange = (e) => {
     const file = e?.target?.files?.[0] || e?.dataTransfer?.files?.[0];
     if (file) {
-      if (file.size > 50 * 1024 * 1024) {
-        toast.error("File size exceeds 50MB limit");
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error("File size exceeds 5MB limit");
         return;
       }
       const reader = new FileReader();
