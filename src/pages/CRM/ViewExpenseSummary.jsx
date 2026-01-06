@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Heading from "../../components/UI/Heading";
 import DatePickerMonth from "../../components/formComponent/DatePickerMonth";
-import ReactSelect from "../../components/formComponent/ReactSelect";
 import { useCryptoLocalStorage } from "../../utils/hooks/useCryptoLocalStorage";
 import { axiosInstances } from "../../networkServices/axiosInstance";
 import { apiUrls } from "../../networkServices/apiEndpoints";
@@ -18,6 +17,7 @@ import SeeMoreSlideScreen from "../../components/SearchableTable/SeeMoreSlideScr
 import FirstMoreList from "../../networkServices/FirstMoreList";
 import FirstSlideScreen from "../FirstSlideScreen";
 import SeeMoreSlideScreenEye from "../../components/SearchableTable/SeeMoreSlideScreenEye";
+import TablesUpDown from "../../components/UI/customTable/TablesUpDown";
 const currentDate = new Date();
 const currentMonth = currentDate.getMonth() + 1;
 const currentYear = currentDate.getFullYear();
@@ -39,7 +39,14 @@ const ViewExpenseSummary = () => {
     currentYear: currentYear,
   });
   const [selected, setSelected] = React.useState("no");
-
+  const CrmEmployeeID = useCryptoLocalStorage(
+    "user_Data",
+    "get",
+    "CrmEmployeeID"
+  );
+  console.log("CrmEmployeeID", CrmEmployeeID);
+  const IsEmployee = useCryptoLocalStorage("user_Data", "get", "realname");
+  const RoleID = useCryptoLocalStorage("user_Data", "get", "RoleID");
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 20;
   const totalPages = Math.ceil(tableData?.length / rowsPerPage);
@@ -141,14 +148,39 @@ const ViewExpenseSummary = () => {
 
   const handleSearch = () => {
     setLoading(true);
+
     axiosInstances
       .post(apiUrls.ExpenseSummary, {
         Month: Number(formData?.currentMonth),
         Year: Number(formData?.currentYear),
-        ManagerIDs: String(formData?.ReportingTo || ""),
+        ManagerIDs: String(formData?.ReportingTo) || "",
         EmployeeIDs: String(formData?.Employee || ""),
       })
+      .then((res) => {
+        if (res.data.success === true) {
+          setTableData(res.data.data);
+          setFilteredData(res.data.data);
+          setLoading(false);
+        } else {
+          toast.error("No record found.");
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  };
+  const handleSearchManager = () => {
+    setLoading(true);
 
+    axiosInstances
+      .post(apiUrls.ExpenseSummary, {
+        Month: Number(formData?.currentMonth),
+        Year: Number(formData?.currentYear),
+        ManagerIDs: String(CrmEmployeeID),
+        EmployeeIDs: String(formData?.Employee || ""),
+      })
       .then((res) => {
         if (res.data.success === true) {
           setTableData(res.data.data);
@@ -290,17 +322,32 @@ const ViewExpenseSummary = () => {
           }
         />
         <div className="row p-2">
-          <MultiSelectComp
-            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
-            name="ReportingTo"
-            placeholderName="Reorting Manager"
-            dynamicOptions={reporter}
-            handleChange={handleMultiSelectChange}
-            value={formData.ReportingTo.map((code) => ({
-              code,
-              name: reporter?.find((item) => item.code === code)?.name,
-            }))}
-          />
+          {CrmEmployeeID == 650 || CrmEmployeeID == 5 || CrmEmployeeID == 6 ? (
+            <MultiSelectComp
+              respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+              name="ReportingTo"
+              placeholderName="Reorting Manager"
+              dynamicOptions={reporter}
+              handleChange={handleMultiSelectChange}
+              value={formData.ReportingTo.map((code) => ({
+                code,
+                name: reporter?.find((item) => item.code === code)?.name,
+              }))}
+            />
+          ) : (
+            <Input
+              type="text"
+              respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+              className="form-control"
+              placeholder=" "
+              lable="Reorting Manager"
+              id="Employee"
+              name="Employee"
+              value={IsEmployee}
+              // onChange={handleChange}
+              disabled={true}
+            />
+          )}
           <MultiSelectComp
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
             name="Employee"
@@ -312,9 +359,7 @@ const ViewExpenseSummary = () => {
               name: employee?.find((item) => item.code === code)?.name,
             }))}
           />
-
           <DatePickerMonth
-            // className="custom-calendar"
             id="Month"
             name="Month"
             lable="Month/Year"
@@ -323,15 +368,26 @@ const ViewExpenseSummary = () => {
             value={formData?.Month}
             handleChange={(e) => handleMonthYearChange("Month", e)}
           />
-
           {loading ? (
             <Loading />
           ) : (
-            <button className="btn btn-sm btn-info" onClick={handleSearch}>
-              Search
-            </button>
+            <>
+              {CrmEmployeeID == 650 ||
+              CrmEmployeeID == 5 ||
+              CrmEmployeeID == 6 ? (
+                <button className="btn btn-sm btn-info" onClick={handleSearch}>
+                  Search
+                </button>
+              ) : (
+                <button
+                  className="btn btn-sm btn-info"
+                  onClick={handleSearchManager}
+                >
+                  Search
+                </button>
+              )}
+            </>
           )}
-
           {/* <i
             className="fa fa-eye mt-2 ml-4"
             title="Click to Manager Team Expense Summary."
@@ -342,26 +398,30 @@ const ViewExpenseSummary = () => {
               });
             }}
           ></i> */}
-          <span className="ml-4" title="Manager Wise Expense Details">
-            <FirstMoreList
-              ModalComponent={ModalComponent}
-              isShowDropDown={false}
-              setSeeMore={setSeeMore}
-              data={""}
-              setVisible={() => {
-                setListVisible(false);
-              }}
-              handleBindFrameMenu={[
-                {
-                  FileName: "ManagerWise Total Expense Details",
-                  URL: "ManagerExpenseModal",
-                  FrameName: "ManagerExpenseModal",
-                  Description: "ManagerExpenseModal",
-                },
-              ]}
-              isShowPatient={true}
-            />
-          </span>
+          {(CrmEmployeeID == 650 ||
+            CrmEmployeeID == 5 ||
+            CrmEmployeeID == 6) && (
+            <span className="ml-4" title="Manager Wise Expense Details">
+              <FirstMoreList
+                ModalComponent={ModalComponent}
+                isShowDropDown={false}
+                setSeeMore={setSeeMore}
+                data={""}
+                setVisible={() => {
+                  setListVisible(false);
+                }}
+                handleBindFrameMenu={[
+                  {
+                    FileName: "ManagerWise Total Expense Details",
+                    URL: "ManagerExpenseModal",
+                    FrameName: "ManagerExpenseModal",
+                    Description: "ManagerExpenseModal",
+                  },
+                ]}
+                isShowPatient={true}
+              />
+            </span>
+          )}
           <FirstSlideScreen
             visible={listVisible}
             setVisible={() => {
@@ -403,12 +463,73 @@ const ViewExpenseSummary = () => {
                     respclass="col-xl-12 col-md-4 col-sm-6 col-12"
                   />
                 </div>
-
-                <span className="font-weight-bold mr-4">
-                  Total Record :&nbsp; {tableData?.length}
+                <span className="font-weight-bold ml-5">
+                  {Number(
+                    tableData?.reduce(
+                      (sum, item) => sum + Number(item.TotalActiveAmount ?? 0),
+                      0
+                    ) ?? 0
+                  ).toLocaleString("en-IN", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
                 </span>
-                <span className="font-weight-bold mr-3">
-                  Total Amount :&nbsp;{" "}
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+                <span className="font-weight-bold">
+                  {/* Submit Amount :&nbsp;{" "} */}
+                  {Number(
+                    tableData?.reduce(
+                      (sum, item) =>
+                        sum + Number(item.TotalSubmittedAmount ?? 0),
+                      0
+                    ) ?? 0
+                  ).toLocaleString("en-IN", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+                </span>
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
+                <span className="font-weight-bold">
+                  {/* Rejected Amount :&nbsp;{" "} */}
+                  {Number(
+                    tableData?.reduce(
+                      (sum, item) =>
+                        sum + Number(item.TotalRejectedAmount ?? 0),
+                      0
+                    ) ?? 0
+                  ).toLocaleString("en-IN", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+                </span>
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
+                <span className="font-weight-bold">
+                  {/* Approved Amount :&nbsp;{" "} */}
+                  {Number(
+                    tableData?.reduce(
+                      (sum, item) =>
+                        sum + Number(item.TotalApprovedAmount ?? 0),
+                      0
+                    ) ?? 0
+                  ).toLocaleString("en-IN", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+                </span>
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                <span className="font-weight-bold">
+                  {/* Total Amount :&nbsp;{" "} */}
                   {Number(
                     tableData?.reduce(
                       (sum, item) =>
@@ -420,10 +541,14 @@ const ViewExpenseSummary = () => {
                     maximumFractionDigits: 2,
                   })}
                 </span>
+                &nbsp; &nbsp;
+                <span className="font-weight-bold mr-0">
+                  Total Record :&nbsp; {tableData?.length}
+                </span>
               </div>
             }
           />
-          <Tables
+          <TablesUpDown
             thead={searchTHEAD}
             tbody={currentData?.map((ele, index) => ({
               "S.No.": (currentPage - 1) * rowsPerPage + index + 1,

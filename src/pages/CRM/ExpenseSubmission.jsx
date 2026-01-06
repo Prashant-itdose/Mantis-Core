@@ -20,7 +20,7 @@ import moment from "moment";
 import BrowseInput from "../../components/formComponent/BrowseInput";
 import { useCryptoLocalStorage } from "../../utils/hooks/useCryptoLocalStorage";
 import { axiosInstances } from "../../networkServices/axiosInstance";
-import { use } from "react";
+
 const currentDate = new Date();
 const currentMonth = currentDate.getMonth() + 1; // Months are 0-indexed, so add 1
 const currentYear = currentDate.getFullYear();
@@ -282,33 +282,56 @@ const ExpenseSubmission = () => {
 
   const handleSave = () => {
     if (!formData?.FromDate) {
-      toast.error("Please Select Date");
+      toast.error("Please Select Date.");
       return;
     }
     if (!formData?.TripName) {
-      toast.error("Please Enter Trip Name");
+      toast.error("Please Enter Trip Name.");
       return;
     }
     if (!formData?.State) {
-      toast.error("Please Select State");
+      toast.error("Please Select State.");
       return;
     }
     if (!formData?.City) {
-      toast.error("Please Enter City Name");
+      toast.error("Please Enter City Name.");
       return;
     }
     if (!formData?.Locality) {
-      toast.error("Please Enter Locality");
+      toast.error("Please Enter Locality.");
       return;
     }
     if (!formData?.ClientName) {
-      toast.error("Please Enter Client Name");
+      toast.error("Please Enter Client Name.");
       return;
     }
     if (!formData?.ExpenseType) {
-      toast.error("Please Select Expense Type");
+      toast.error("Please Select Expense Type.");
       return;
     }
+    // const hasAmount = formData?.OtherAmount?.length > 0;
+    // const hasDescription = !!formData?.OtherDescription;
+    // if (hasAmount && !hasDescription) {
+    //   toast.error("Please Enter Description for Other Amount");
+    //   return;
+    // }
+
+    const amount = Number(formData?.OtherAmount);
+    const hasAmount = formData?.OtherAmount?.length > 0;
+    const hasDescription = !!formData?.OtherDescription;
+
+    if (hasAmount && (amount > 5000 || !hasDescription)) {
+      if (amount > 5000) {
+        toast.error("Other Amount should not be greater than 5000.");
+        return;
+      }
+
+      if (!hasDescription) {
+        toast.error("Description is mandatory when Other Amount is entered.");
+        return;
+      }
+    }
+
     let LocalTravelpayload = [];
     rows?.map((val, index) => {
       LocalTravelpayload.push({
@@ -464,32 +487,48 @@ const ExpenseSubmission = () => {
 
   const handleUpdate = () => {
     if (!formData?.FromDate) {
-      toast.error("Please Select Date");
+      toast.error("Please Select Date.");
       return;
     }
     if (!formData?.TripName) {
-      toast.error("Please Enter Trip Name");
+      toast.error("Please Enter Trip Name.");
       return;
     }
     if (!formData?.State) {
-      toast.error("Please Select State");
+      toast.error("Please Select State.");
       return;
     }
     if (!formData?.City) {
-      toast.error("Please Enter City Name");
+      toast.error("Please Enter City Name.");
       return;
     }
     if (!formData?.Locality) {
-      toast.error("Please Enter Locality");
+      toast.error("Please Enter Locality.");
       return;
     }
     if (!formData?.ClientName) {
-      toast.error("Please Enter Client Name");
+      toast.error("Please Enter Client Name.");
       return;
     }
     if (!formData?.ExpenseType) {
-      toast.error("Please Select Expense Type");
+      toast.error("Please Select Expense Type.");
       return;
+    }
+
+    const amount = Number(formData?.OtherAmount);
+    const hasAmount = formData?.OtherAmount?.length > 0;
+    const hasDescription = !!formData?.OtherDescription;
+
+    if (hasAmount && (amount > 5000 || !hasDescription)) {
+      if (amount > 5000) {
+        toast.error("Other Amount should not be greater than 5000.");
+        return;
+      }
+
+      if (!hasDescription) {
+        toast.error("Description is mandatory when Other Amount is entered.");
+        return;
+      }
     }
 
     let LocalTravelpayload = [];
@@ -516,7 +555,7 @@ const ExpenseSubmission = () => {
     });
     setLoading(true);
     const payload = {
-      EmpID: state?.givenData?.EmpID,
+      EmpID: state?.givenData?.EmpID || Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),
       GeneralDetails: [
         {
           Date: moment(formData?.FromDate).format("YYYY-MM-DD"),
@@ -644,9 +683,9 @@ const ExpenseSubmission = () => {
   const handleImageChange = (e) => {
     const file = e?.target?.files[0];
     if (file) {
-      const maxSize = 10 * 1024 * 1024;
+      const maxSize = 5 * 1024 * 1024;
       if (file.size > maxSize) {
-        alert("File size exceeds 10MB. Please choose a smaller file.");
+        alert("File size exceeds 5MB. Please choose a smaller file.");
         return;
       }
       const reader = new FileReader();
@@ -687,6 +726,7 @@ const ExpenseSubmission = () => {
       })
       .then((res) => {
         const response = res?.data?.data?.dt?.[0];
+        console.log("response edit check", response);
         const datecheck = response?.Date;
         const filetd = response?.FileURL;
         setFiledta(filetd);
@@ -827,7 +867,7 @@ const ExpenseSubmission = () => {
       currentYear: date.getFullYear(),
     });
   };
-
+  console.log("formData kamal", formData);
   const hasCalledRef = useRef(false);
 
   useEffect(() => {

@@ -52,8 +52,8 @@ const DocumentTypeModal = ({ tableData, setVisible }) => {
   const handleFileChange = (e) => {
     const file = e?.target?.files?.[0] || e?.dataTransfer?.files?.[0];
     if (file) {
-      if (file.size > 1 * 1024 * 1024) {
-        toast.error("File size exceeds 1MB limit, Please compress the file below 1MB");
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error("File size exceeds 5MB limit, Please compress the file below 5MB");
         return;
       }
       const reader = new FileReader();

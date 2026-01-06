@@ -165,8 +165,8 @@ export const apiUrls = {
   AdvanceAmount_Requset: "/AdvanceAmount/AdvanceAmountRequest",
   AdvanceRequest_Search: "/AdvanceAmount/AdvanceRequestSearch",
   AdvaceAmount_Select: "/AdvanceAmount/AdvaceAmount_Select",
-  AdvanceAmount_Status_Update: "/AdvanceAmount/AdvanceAmount_Status_Update",
-  AdvanceAmount_Paid: "/AdvanceAmount/AdvanceAmount_Paid",
+  AdvanceAmount_Status_Update: "/AdvanceAmount/AdvanceAmountStatusUpdate",
+  AdvanceAmount_Paid: "/AdvanceAmount/AdvanceAmountPaid",
   ManageExpense_Insert: "/ManageExpense/ManageExpenseInsert",
   IsExpenseExists: "/ManageExpense/IsExpenseExists",
   GetReportingTo_Employee: "/ManageExpense/GetReportingToEmployee",
@@ -179,6 +179,7 @@ export const apiUrls = {
   GetExpenseReportWithTravelDetails: "/ManageExpense/GetExpenseReportWithTravelDetails",
   GetEmployeeExpenseCalendar: "/ManageExpense/GetEmployeeExpenseCalendar",
   BulkExpenseApprove: "/ManageExpense/BulkExpenseApprove",
+  LeaveRequest_ApproveALL: "/CRMAttendance/LeaveRequest_ApproveALL",
 
   // Access right
   CreateRole: "/AccessRight/CreateRole",

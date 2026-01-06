@@ -2,10 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import Heading from "../components/UI/Heading";
 import DatePickerMonth from "../components/formComponent/DatePickerMonth";
 import Modal from "../components/modalComponent/Modal";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { apiUrls } from "../networkServices/apiEndpoints";
-import { headers } from "../utils/apitools";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import LeaveRequestModal from "./LeaveRequestModal";
 import Loading from "../components/loader/Loading";
@@ -31,14 +29,13 @@ const currentMonth = currentDate.getMonth() + 1;
 const currentYear = currentDate.getFullYear();
 
 const LeaveRequest = ({ data }) => {
-  // console.log("data check", data);
+  console.log("data check", currentYear);
 
   const dataMonth = data?.MonthYear;
   const jsDate = new Date(`${dataMonth?.replace("-", " ")} 1`);
   // console.log("data?.MonthYear", data?.MonthYear);
   // console.log("js date", jsDate);
   const CRMID = useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID");
-  const LoginUserName = useCryptoLocalStorage("user_Data", "get", "realname");
   const [employee, setEmployee] = useState([]);
   const [formData, setFormData] = useState({
     Month: dataMonth == undefined ? new Date() : jsDate,
@@ -58,7 +55,7 @@ const LeaveRequest = ({ data }) => {
   );
   const IsEmployee = useCryptoLocalStorage("user_Data", "get", "realname");
   const [CalenderDetails, setCalenderDetails] = useState([]);
-  // console.log("CalenderDetails", CalenderDetails?.IsApproved);
+
   const [daysInMonth, setDaysInMonth] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -210,9 +207,17 @@ const LeaveRequest = ({ data }) => {
   };
 
   const renderDay = (day, index, today, table1Data) => {
+    console.log("tabledata tabledta", table1Data);
+
     const { date, status } = day;
-    const [month, dayOfMonth] = date.split("/").map(Number);
+    const [month, dayOfMonth] = date?.split("/")?.map(Number);
     const dayDate = new Date(today.getFullYear(), month - 1, dayOfMonth);
+
+    const AttendanceDateFormat = new Date(
+      table1Data?.find((d) => d.AttendanceDate)?.AttendanceDate
+    );
+
+    console.log("AttendanceDateFormat", AttendanceDateFormat);
 
     const formattedDate = dayDate?.toLocaleDateString("en-US", {
       month: "short",
@@ -232,11 +237,11 @@ const LeaveRequest = ({ data }) => {
         (targetYear === currentYear && targetMonth < currentMonth)
       ) {
         const daysPassed = today.getDate();
-        isDisabled = daysPassed > 2;
+        isDisabled = daysPassed > 2; //// Only enable 2nd Day of every month
       } else if (targetYear === currentYear && targetMonth === currentMonth) {
         isDisabled = false;
       } else {
-        isDisabled = false;
+        isDisabled = true;
       }
     } else {
       if (
@@ -247,7 +252,7 @@ const LeaveRequest = ({ data }) => {
       } else if (targetYear === currentYear && targetMonth === currentMonth) {
         isDisabled = false;
       } else {
-        isDisabled = false;
+        isDisabled = true;
       }
     }
 
@@ -281,16 +286,19 @@ const LeaveRequest = ({ data }) => {
               showVisible: true,
               data: dayDate,
               CalenderDetails: CalenderDetails,
+              ApproveDate: AttendanceDateFormat,
             });
           }
 
-          setclickeddate(dayDate);
+          setclickeddate(AttendanceDateFormat);
         }}
         style={{
           cursor: isDisabled ? "not-allowed" : "pointer",
           pointerEvents: isDisabled ? "none" : "auto",
         }}
       >
+        {console.log("CalenderDetails", CalenderDetails)}
+
         <label className="formattedDate">{formattedDate}</label>
         {status && <div className="day-status">{status}</div>}
 
@@ -313,7 +321,6 @@ const LeaveRequest = ({ data }) => {
         weeks.push(currentWeek);
         currentWeek = [];
       }
-
       currentWeek.push(day);
     });
     if (currentWeek.length > 0) {
@@ -402,29 +409,28 @@ const LeaveRequest = ({ data }) => {
   }
   const handleLeaveRequest_Approve = () => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append("LoginName", data?.Name),
-      form.append("CrmEmpID", data?.EmployeeId),
-      form.append("FromDate", data?.LeaveDate),
-      form.append("LeaveType", data?.LeaveType),
-      form.append("Description", data?.Description),
-      form.append("StatusType", "All"),
-      axios
-        .post(apiUrls?.LeaveRequest_Save, form, { headers })
-        .then((res) => {
-          if (res?.data?.success === true) {
-            toast.success(res?.data?.message);
-            setLoading(false);
-          } else {
-            toast.error(res?.data?.message);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls.LeaveRequest_ApproveALL, {
+        CrmEmpID: Number(
+          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+        ),
+        ToApproveCrmEmpID: String(formData?.Employee),
+        Month: Number(formData?.currentMonth),
+        Year: Number(formData?.currentYear),
+      })
+      .then((res) => {
+        if (res?.data?.success === true) {
+          toast.success(res?.data?.message);
           setLoading(false);
-        });
+        } else {
+          toast.error(res?.data?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
   // console.log("check", CalenderDetails);
   return (
@@ -435,7 +441,8 @@ const LeaveRequest = ({ data }) => {
           visible={visible}
           setVisible={setVisible}
           tableData={CalenderDetails}
-          Header={`Selected Date: ${format2Date(clickedate)}`}
+          // Header={`Selected Date: ${format2Date(clickedate)}`}
+          Header={"Leave Request Details"}
         >
           <LeaveRequestModal
             visible={visible}

@@ -465,10 +465,10 @@ const AmountSubmission = ({ data }) => {
     const file = e?.target?.files[0];
 
     if (file) {
-      // Check if file size exceeds 5MB (5 * 1024 * 1024 bytes)
-      const maxSize = 1 * 1024 * 1024;
+
+      const maxSize = 5 * 1024 * 1024;
       if (file.size > maxSize) {
-        alert("File size exceeds 1MB.");
+        alert("File size exceeds 5MB.");
         return;
       }
       const reader = new FileReader();

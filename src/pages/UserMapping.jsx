@@ -287,6 +287,7 @@ const UserMapping = ({ data }) => {
     </label>,
   ];
   const handleDeleteSelected = () => {
+    
     setLoading(true);
     const selectedIds = tableData
       .filter((row) => row.remove)
@@ -297,21 +298,6 @@ const UserMapping = ({ data }) => {
       setLoading(false);
       return;
     }
-    const form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "RoleID",
-    //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-    //   ),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ProjectID", data?.Id || data?.ProjectID),
-    //   form.append("EmployeeID", selectedIds.join(",")),
-    //   form.append("ActionType", "DeleteUserMapping"),
-    // axios
-    //   .post(apiUrls?.ProjectMasterUpdate, form, { headers })
     axiosInstances
       .post(apiUrls?.ProjectMasterUpdate, {
         ProjectID: Number(data?.Id || data?.ProjectID),

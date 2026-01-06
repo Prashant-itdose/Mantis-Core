@@ -857,7 +857,7 @@ const ManagerDashboard = () => {
             <div className="mainDashboardwrp">
               <div
                 className="mainBox1"
-                style={{ width: "100%", height: "175px" }}
+                style={{ width: "100%", height: "170px" }}
               >
                 <div className="d-flex flex-wrap mainHeader">
                   <label className="ml-2 mt-1">Ageing POC</label>

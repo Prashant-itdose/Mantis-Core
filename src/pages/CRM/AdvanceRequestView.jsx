@@ -3,8 +3,6 @@ import Heading from "../../components/UI/Heading";
 import DatePickerMonth from "../../components/formComponent/DatePickerMonth";
 import MultiSelectComp from "../../components/formComponent/MultiSelectComp";
 import { apiUrls } from "../../networkServices/apiEndpoints";
-import axios from "axios";
-import { headers } from "../../utils/apitools";
 import ReactSelect from "../../components/formComponent/ReactSelect";
 import Tables from "../../components/UI/customTable";
 import {
@@ -24,46 +22,25 @@ import { Link } from "react-router-dom";
 import { axiosInstances } from "../../networkServices/axiosInstance";
 
 const currentDate = new Date();
-const currentMonth = currentDate.getMonth() + 1; // Months are 0-indexed, so add 1
+const currentMonth = currentDate.getMonth() + 1;
 const currentYear = currentDate.getFullYear();
 
 const AdvanceRequestView = () => {
   const [loading, setLoading] = useState(false);
-  const [tableData, setTableData] = useState([]); //original data
-  const [searchQuery, setSearchQuery] = useState(""); // State for search query
-  const [filteredData, setFilteredData] = useState([]); // Filtered data
+  const [tableData, setTableData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const ReportingManager = useCryptoLocalStorage(
     "user_Data",
     "get",
     "IsReportingManager"
   );
-  const IsAccountant = useCryptoLocalStorage(
-    "user_Data",
-    "get",
-    "IsAccountant"
-  );
+  const IsAccountant = useCryptoLocalStorage("user_Data", "get", "ID");
+
   const IsCEO = useCryptoLocalStorage("user_Data", "get", "IsCEO");
+
   const IsEmployee = useCryptoLocalStorage("user_Data", "get", "realname");
-  const handleSearch = (event) => {
-    const query = event.target.value.toLowerCase();
-    setSearchQuery(query);
-
-    if (query === "") {
-      // If the search query is empty, reset the filtered data to the original table data
-      setFilteredData(tableData);
-    } else {
-      console.log("query", query, tableData);
-      const filtered = tableData?.filter(
-        (item) => item.RequestedBy?.toLowerCase().includes(query) // Add optional chaining to handle undefined
-      );
-      // console.log("filteredfiltered",filtered)
-      setFilteredData(filtered);
-      setCurrentPage(1); // Reset to the first page after search
-    }
-  };
-
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 10;
+  const rowsPerPage = 13;
   const totalPages = Math.ceil(filteredData?.length / rowsPerPage);
   const currentData = filteredData?.slice(
     (currentPage - 1) * rowsPerPage,
@@ -94,6 +71,12 @@ const AdvanceRequestView = () => {
     currentMonth: currentMonth,
     currentYear: currentYear,
   });
+
+  const CrmEmployeeID = useCryptoLocalStorage(
+    "user_Data",
+    "get",
+    "CrmEmployeeID"
+  );
   const handleMonthYearChange = (name, e) => {
     const { value } = e.target;
     const date = new Date(value);
@@ -105,17 +88,18 @@ const AdvanceRequestView = () => {
   };
   const getReporter = () => {
     axiosInstances
-      .post(apiUrls.Reporter_Select, {
-        IsMaster: 0,
-        RoleID: 0,
-        OnlyItdose: 0,
+      .post(apiUrls.EmployeeBind, {
+        CrmEmployeeID: Number(
+          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+        ),
+        RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
       })
 
       .then((res) => {
-        const reporters = res?.data.data.map((item) => {
-          return { label: item?.Name, value: item?.ID };
+        const wings = res?.data?.data?.map((item) => {
+          return { label: item?.EmployeeName, value: item?.MantisEmployee_ID };
         });
-        setEmployee(reporters);
+        setEmployee(wings);
       })
       .catch((err) => {
         console.log(err);
@@ -124,10 +108,6 @@ const AdvanceRequestView = () => {
   const getVertical = () => {
     axiosInstances
       .post(apiUrls.Vertical_Select, {})
-      // let form = new FormData();
-      // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.Vertical_Select, form, { headers })
       .then((res) => {
         const verticals = res?.data.data.map((item) => {
           return { name: item?.Vertical, code: item?.VerticalID };
@@ -141,10 +121,6 @@ const AdvanceRequestView = () => {
   const getTeam = () => {
     axiosInstances
       .post(apiUrls.Team_Select, {})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.Team_Select, form, { headers })
       .then((res) => {
         const teams = res?.data.data.map((item) => {
           return { name: item?.Team, code: item?.TeamID };
@@ -158,10 +134,6 @@ const AdvanceRequestView = () => {
   const getWing = () => {
     axiosInstances
       .post(apiUrls.Wing_Select, {})
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   axios
-      //     .post(apiUrls?.Wing_Select, form, { headers })
       .then((res) => {
         const wings = res?.data.data.map((item) => {
           return { name: item?.Wing, code: item?.WingID };
@@ -171,13 +143,6 @@ const AdvanceRequestView = () => {
       .catch((err) => {
         console.log(err);
       });
-  };
-  const searchHandleChange = (e) => {
-    const { name, value, checked, type } = e?.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? (checked ? "1" : "0") : value,
-    });
   };
 
   const handleMultiSelectChange = (name, selectedOptions) => {
@@ -194,71 +159,32 @@ const AdvanceRequestView = () => {
       [name]: value,
     });
   };
-  useEffect(() => {
-    getVertical();
-    getTeam();
-    getWing();
-    getReporter();
-  }, []);
-  const handleSelectChange = (e) => {
-    const { name, value } = e?.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
 
-  // const handleFilter = (filterValue) => {
-  //   const filterData = filteredData?.filter(
-  //     (item) => item?.Name === filterValue
-  //   );
-  //   return filterData;
-  // };
-  // console.log(handleFilter);
-
-  function formatDate(dateString) {
-    let date = new Date(dateString);
-    let year = date.getFullYear();
-    let month = (date.getMonth() + 1).toString().padStart(2, "0");
-    let day = date.getDate().toString().padStart(2, "0");
-    return `${year}/${month}/${day}`;
-  }
   const handleSearchAdvance = () => {
+    // if (formData?.Employee === "") {
+    //   toast.error("Please Select Employee.");
+    //   return;
+    // }
     setLoading(true);
     axiosInstances
       .post(apiUrls.AdvanceRequest_Search, {
         Month: String(formData?.currentMonth),
         Year: String(formData?.currentYear),
-        RequestedBy: Number(formData?.Employee),
+        RequestedBy: Number(formData?.Employee) || Number("0"),
         SearchType: Number(0),
         VerticalID: Number(formData?.VerticalID),
         TeamID: Number(formData?.TeamID),
         WingID: Number(formData?.WingID),
       })
-      // let form = new FormData();
-      // form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-      // form.append(
-      //   "LoginName",
-      //   useCryptoLocalStorage("user_Data", "get", "realname")
-      // );
-      // form.append(
-      //   "CrmID",
-      //   useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      // );
-      // form.append("Month", formData?.currentMonth),
-      //   form.append("Year", formData?.currentYear),
-      //   form.append("RequestedBy", formData?.Employee || "0");
-      // form.append("SearchType", "");
-      // form.append("VerticalID", formData?.VerticalID);
-      // form.append("TeamID", formData?.TeamID);
-      // form.append("WingID", formData?.WingID);
-
-      // axios
-      //   .post(apiUrls?.AdvanceRequest_Search, form, { headers })
       .then((res) => {
-        setTableData(res?.data?.data);
-        setFilteredData(res?.data?.data);
-        setLoading(false);
+        if (res?.data?.success === true) {
+          setTableData(res?.data?.data);
+          setFilteredData(res?.data?.data);
+          setLoading(false);
+        } else {
+          toast.error(res?.data?.message);
+          setLoading(false);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -306,6 +232,13 @@ const AdvanceRequestView = () => {
     ShowFinalApprove: false,
     showData: {},
   });
+
+  useEffect(() => {
+    getVertical();
+    getTeam();
+    getWing();
+    getReporter();
+  }, []);
   return (
     <>
       {visible?.showVisible && (
@@ -371,38 +304,43 @@ const AdvanceRequestView = () => {
             <span style={{ fontWeight: "bold" }}>Advance Request View</span>
           }
           secondTitle={
-            <div className="attendance-status">
-              <div className="status-item ">
-                <span className="dot white"></span>
-                <strong>Pending</strong>
+            <>
+              <div className="d-flex">
+                {tableData?.length > 0 && (
+                  <div className="attendance-status">
+                    <div className="status-item ">
+                      <span className="dot white"></span>
+                      <strong>Pending</strong>
+                    </div>
+                    <div className="status-item ">
+                      <span className="dot lemonchiffonAdvReq"></span>
+                      <strong>First Level Approved </strong>
+                    </div>
+                    <div className="status-item ">
+                      <span className="dot skyblueAdReq"></span>
+                      <strong>Final Approved</strong>
+                    </div>
+                    <div className="status-item ">
+                      <span className="dot pinkAdvReq"></span>
+                      <strong>Rejected </strong>
+                    </div>
+                    <div className="status-item ">
+                      <span className="dot yellowAdvReq"></span>
+                      <strong>Settelement </strong>
+                    </div>
+                    <div className="status-item ">
+                      <span className="dot greenAdvReq"></span>
+                      <strong>Paid </strong>
+                    </div>
+                  </div>
+                )}
+                <div style={{ fontWeight: "bold" }}>
+                  <Link to="/AdvanceRequest" className="ml-3">
+                    Advance Request Create
+                  </Link>
+                </div>
               </div>
-              <div className="status-item ">
-                <span className="dot lemonchiffonAdvReq"></span>
-                <strong>First Level Approved </strong>
-              </div>
-              <div className="status-item ">
-                <span className="dot skyblueAdReq"></span>
-                <strong>Final Approved</strong>
-              </div>
-              <div className="status-item ">
-                <span className="dot pinkAdvReq"></span>
-                <strong>Rejected </strong>
-              </div>
-              <div className="status-item ">
-                <span className="dot yellowAdvReq"></span>
-                <strong>Settelement </strong>
-              </div>
-              <div className="status-item ">
-                <span className="dot greenAdvReq"></span>
-                <strong>Paid </strong>
-              </div>
-
-              <div style={{ fontWeight: "bold" }}>
-                <Link to="/AdvanceRequest" className="ml-3">
-                  Advance Request Create
-                </Link>
-              </div>
-            </div>
+            </>
           }
         />
         <div className="row g-4 m-2">
@@ -416,7 +354,7 @@ const AdvanceRequestView = () => {
             value={formData?.Month}
             handleChange={(e) => handleMonthYearChange("Month", e)}
           />
-          {ReportingManager == 1 ? (
+          {ReportingManager == 1 || CrmEmployeeID == "650" ? (
             <ReactSelect
               name="Employee"
               respclass="col-xl-2 col-md-4 col-sm-6 col-12"
@@ -435,7 +373,6 @@ const AdvanceRequestView = () => {
               id="Employee"
               name="Employee"
               value={IsEmployee}
-              // onChange={handleChange}
               disabled={true}
             />
           )}
@@ -447,9 +384,9 @@ const AdvanceRequestView = () => {
             optionLabel="VerticalID"
             className="VerticalID"
             handleChange={handleMultiSelectChange}
-            value={formData.VerticalID.map((code) => ({
+            value={formData?.VerticalID?.map((code) => ({
               code,
-              name: vertical.find((item) => item.code === code)?.name,
+              name: vertical?.find((item) => item.code === code)?.name,
             }))}
           />
           <MultiSelectComp
@@ -458,9 +395,9 @@ const AdvanceRequestView = () => {
             placeholderName="Team"
             dynamicOptions={team}
             handleChange={handleMultiSelectChange}
-            value={formData.TeamID.map((code) => ({
+            value={formData?.TeamID?.map((code) => ({
               code,
-              name: team.find((item) => item.code === code)?.name,
+              name: team?.find((item) => item.code === code)?.name,
             }))}
           />
           <MultiSelectComp
@@ -475,7 +412,7 @@ const AdvanceRequestView = () => {
             }))}
           />
 
-          {ReportingManager == 1 ? (
+          {ReportingManager == 1 || CrmEmployeeID == "650" ? (
             <div className="col-2">
               {loading ? (
                 <Loading />
@@ -509,27 +446,6 @@ const AdvanceRequestView = () => {
         <div className="card">
           <Heading
             title={<span style={{ fontWeight: "bold" }}>Search Details</span>}
-            secondTitle={
-              // <div className="d-flex">
-              //   <div className="">
-              //     Showing {startEntry} to {endEntry} of {totalEntries} entries
-              //   </div>
-              //   <div style={{ padding: "0px !important", marginLeft: "50px" }}>
-              //     <Input
-              //       type="text"
-              //       className="form-control"
-              //       id="Name"
-              //       name="Name"
-              //       placeholder="Search By Name"
-              //       onChange={handleSearch}
-              //       value={searchQuery}
-              //       respclass="col-xl-12 col-md-4 col-sm-6 col-12"
-              //     />
-              //   </div>
-              // </div>
-
-              ""
-            }
           />
 
           <Tables
@@ -543,8 +459,11 @@ const AdvanceRequestView = () => {
               Team: ele?.Team,
               Wing: ele?.Wing,
               Purpose: ele?.PurposeofAdvance,
+              "Bank Name": ele?.BankName,
+              IFSCCODE: ele?.IFSCCODE,
+              "Account Number": ele?.AccountNumber,
               Amount: ele?.AmountRequired,
-              Settlement: IsAccountant == "1" &&
+              Settlement: IsAccountant == "1688" &&
                 ele?.IsFinalApproved == "1" && (
                   <>
                     {ele?.IsPaid > 0 ? (
@@ -577,7 +496,7 @@ const AdvanceRequestView = () => {
                             <button
                               className="btn btn-xs"
                               style={{
-                                background: "green",
+                                background: "#80EF80",
                                 border: "none",
                                 color: "white",
                               }}
@@ -605,7 +524,7 @@ const AdvanceRequestView = () => {
                             <button
                               className="btn btn-xs ml-3"
                               style={{
-                                background: "red",
+                                background: "#FF746C",
                                 border: "none",
                                 color: "white",
                               }}
@@ -628,7 +547,7 @@ const AdvanceRequestView = () => {
                         <button
                           className="btn btn-xs ml-1"
                           style={{
-                            background: "green",
+                            background: "#80EF80",
                             border: "none",
                             color: "white",
                           }}

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Heading from "../components/UI/Heading";
-import axios from "axios";
 import { apiUrls } from "../networkServices/apiEndpoints";
-import { headers } from "../utils/apitools";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import ReactSelect from "../components/formComponent/ReactSelect";
 import { useTranslation } from "react-i18next";
@@ -10,10 +8,8 @@ import Modal from "../components/modalComponent/Modal";
 import EmployeeFeedbackCreate from "./EmployeeFeedbackCreate";
 import NoRecordFound from "../components/formComponent/NoRecordFound";
 import Tables from "../components/UI/customTable";
-import { Rating } from "react-simple-star-rating";
 import gmaillogo from "../../src/assets/image/Gmail_Logo.png";
 import whats from "../../src/assets/image/whtsapp.png";
-import smss from "../../src/assets/image/smss.png";
 import EmployeeFeedbackLogDetail from "./EmployeeFeedbackLogDetail";
 import EmployeeFeedbackWhatsapp from "./EmployeeFeedbackWhatsapp";
 import EmployeeFeedbackGmail from "./EmployeeFeedbackGmail";
@@ -25,6 +21,14 @@ import excelimg from "../../src/assets/image/excel.png";
 import { ExportToExcel } from "../networkServices/Tools";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { axiosInstances } from "../networkServices/axiosInstance";
+import DatePickerMonth from "../components/formComponent/DatePickerMonth";
+import MultiSelectComp from "../components/formComponent/MultiSelectComp";
+import { Tabfunctionality } from "../utils/helpers";
+
+const currentDate = new Date();
+const currentMonth = currentDate.getMonth() + 1; // Months are 0-indexed, so add 1
+const currentYear = currentDate.getFullYear();
+
 const EmployeeFeedback = ({ data }) => {
   const ReportingManager = useCryptoLocalStorage(
     "user_Data",
@@ -43,10 +47,21 @@ const EmployeeFeedback = ({ data }) => {
   const [loading, setLoading] = useState(false);
   const [t] = useTranslation();
   const [tableData, setTableData] = useState([]);
+  const [vertical, setVertical] = useState([]);
+  const [team, setTeam] = useState([]);
+  const [wing, setWing] = useState([]);
+  const [reporter, setReporter] = useState([]);
   const [assignto, setAssignedto] = useState([]);
-  const [columnConfig, setColumnConfig] = useState([]);
   const [formData, setFormData] = useState({
-    AssignedTo: "0",
+    AssignedTo: [],
+    VerticalID: [],
+    TeamID: [],
+    WingID: [],
+    ReportingTo: [],
+    Month: new Date(),
+    currentMonth: currentMonth,
+    currentYear: currentYear,
+    SelectType: "0",
   });
 
   const handleDeliveryChange = (name, e) => {
@@ -57,6 +72,66 @@ const EmployeeFeedback = ({ data }) => {
     });
   };
 
+  const handleMultiSelectChange = (name, selectedOptions) => {
+    const selectedValues = selectedOptions.map((option) => option.code);
+    setFormData((prev) => ({
+      ...prev,
+      [`${name}`]: selectedValues,
+    }));
+  };
+  const getVertical = () => {
+    axiosInstances
+      .post(apiUrls.Vertical_Select, {})
+      .then((res) => {
+        const verticals = res?.data.data.map((item) => {
+          return { name: item?.Vertical, code: item?.VerticalID };
+        });
+        setVertical(verticals);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const getTeam = () => {
+    axiosInstances
+      .post(apiUrls.Team_Select, {})
+      .then((res) => {
+        const teams = res?.data.data.map((item) => {
+          return { name: item?.Team, code: item?.TeamID };
+        });
+        setTeam(teams);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const getReporter = () => {
+    axiosInstances
+      .post(apiUrls.GetReportingTo_Employee, {})
+
+      .then((res) => {
+        const reporters = res?.data.data.map((item) => {
+          return { name: item?.NAME, code: item?.Employee_ID };
+        });
+        setReporter(reporters);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const getWing = () => {
+    axiosInstances
+      .post(apiUrls.Wing_Select, {})
+      .then((res) => {
+        const wings = res?.data.data.map((item) => {
+          return { name: item?.Wing, code: item?.WingID };
+        });
+        setWing(wings);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const getAssignTo = () => {
     axiosInstances
       .post(apiUrls.EmployeeFeebackBind, {
@@ -68,7 +143,7 @@ const EmployeeFeedback = ({ data }) => {
 
       .then((res) => {
         const assigntos = res?.data.data.map((item) => {
-          return { label: item?.EmployeeName, value: item?.Employee_ID };
+          return { name: item?.EmployeeName, code: item?.Employee_ID };
         });
         setAssignedto(assigntos);
       })
@@ -77,6 +152,18 @@ const EmployeeFeedback = ({ data }) => {
       });
   };
 
+  const handleMonthYearChange = (name, e) => {
+    const { value } = e.target;
+    const date = new Date(value);
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value, // ← store selected value
+      currentMonth: date.getMonth() + 1,
+      currentYear: date.getFullYear(),
+    }));
+    setTableData([]);
+  };
   const handleSearchList = (code) => {
     setLoading(true);
     axiosInstances
@@ -88,24 +175,7 @@ const EmployeeFeedback = ({ data }) => {
         RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
         RowColor: code ? Number(code) : 0,
       })
-      // const form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID")),
-      //   form.append(
-      //     "CrmEmployeeID",
-      //     useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      //   ),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append(
-      //     "EmployeeID",
-      //     formData?.AssignedTo ? formData.AssignedTo : "0"
-      //   );
-      // form.append("RowColor", code ? code : "0"),
-      // axios
-      //   .post(apiUrls?.EmployeeFeedbackSearch, form, { headers })
+
       .then((res) => {
         if (res?.data?.success === true) {
           setTableData(res?.data?.data);
@@ -134,24 +204,7 @@ const EmployeeFeedback = ({ data }) => {
         RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
         RowColor: code ? Number(code) : 0,
       })
-      // const form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append("RoleID", useCryptoLocalStorage("user_Data", "get", "RoleID")),
-      //   form.append(
-      //     "CrmEmployeeID",
-      //     useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      //   ),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append(
-      //     "EmployeeID",
-      //     useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      //   );
-      // form.append("RowColor", code ? code : "0"),
-      //   axios
-      //     .post(apiUrls?.EmployeeFeedbackSearch, form, { headers })
+
       .then((res) => {
         if (res?.data?.success === true) {
           setTableData(res?.data?.data);
@@ -179,7 +232,7 @@ const EmployeeFeedback = ({ data }) => {
   });
 
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 10;
+  const rowsPerPage = 15;
   const totalPages = Math.ceil(tableData?.length / rowsPerPage);
   const currentData = tableData?.slice(
     (currentPage - 1) * rowsPerPage,
@@ -205,6 +258,10 @@ const EmployeeFeedback = ({ data }) => {
 
   useEffect(() => {
     getAssignTo();
+    getVertical();
+    getTeam();
+    getWing();
+    getReporter();
   }, []);
 
   const renderStars = (count, size = 15) => {
@@ -336,13 +393,18 @@ const EmployeeFeedback = ({ data }) => {
         <Heading isBreadcrumb={true} />
         <div className="row p-2">
           {ReportingManager == 1 ? (
-            <ReactSelect
+            <MultiSelectComp
               respclass="col-xl-2 col-md-4 col-sm-6 col-12"
               name="AssignedTo"
-              placeholderName={t("Employee")}
-              dynamicOptions={[{ label: "Select", value: "0" }, ...assignto]}
-              handleChange={handleDeliveryChange}
-              value={formData?.AssignedTo}
+              placeholderName="Employee"
+              dynamicOptions={assignto}
+              handleChange={handleMultiSelectChange}
+              value={formData.AssignedTo.map((code) => ({
+                code,
+                name: assignto.find((item) => item.code === code)?.name,
+              }))}
+              onKeyDown={Tabfunctionality}
+              tabIndex="1"
             />
           ) : (
             <Input
@@ -358,6 +420,79 @@ const EmployeeFeedback = ({ data }) => {
             />
           )}
 
+          <MultiSelectComp
+            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+            name="ReportingTo"
+            placeholderName="Reporting To"
+            dynamicOptions={reporter}
+            handleChange={handleMultiSelectChange}
+            value={formData?.ReportingTo?.map((code) => ({
+              code,
+              name: reporter?.find((item) => item.code === code)?.name,
+            }))}
+            onKeyDown={Tabfunctionality}
+            tabIndex="1"
+          />
+          <MultiSelectComp
+            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+            name="VerticalID"
+            placeholderName="Vertical"
+            dynamicOptions={vertical}
+            handleChange={handleMultiSelectChange}
+            value={formData?.VerticalID?.map((code) => ({
+              code,
+              name: vertical.find((item) => item.code === code)?.name,
+            }))}
+            onKeyDown={Tabfunctionality}
+            tabIndex="1"
+          />
+          <MultiSelectComp
+            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+            name="TeamID"
+            placeholderName="Team"
+            dynamicOptions={team}
+            handleChange={handleMultiSelectChange}
+            value={formData?.TeamID?.map((code) => ({
+              code,
+              name: team.find((item) => item.code === code)?.name,
+            }))}
+            onKeyDown={Tabfunctionality}
+            tabIndex="1"
+          />
+          <MultiSelectComp
+            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+            name="WingID"
+            placeholderName="Wing"
+            dynamicOptions={wing}
+            handleChange={handleMultiSelectChange}
+            value={formData?.WingID?.map((code) => ({
+              code,
+              name: wing.find((item) => item.code === code)?.name,
+            }))}
+            onKeyDown={Tabfunctionality}
+            tabIndex="1"
+          />
+          <DatePickerMonth
+            id="Month"
+            name="Month"
+            lable="Month/Year"
+            placeholder={"MM/YY"}
+            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+            value={formData?.Month}
+            handleChange={(e) => handleMonthYearChange("Month", e)}
+          />
+
+          <ReactSelect
+            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+            name="SelectType"
+            placeholderName={t("Type")}
+            dynamicOptions={[
+              { label: "All", value: "0" },
+              { label: "Probation Period", value: "1" },
+            ]}
+            handleChange={handleDeliveryChange}
+            value={formData?.SelectType}
+          />
           {ReportingManager == 1 ? (
             <div>
               {loading ? (
@@ -408,7 +543,7 @@ const EmployeeFeedback = ({ data }) => {
       </div>
 
       {tableData?.length > 0 ? (
-        <div className="card mt-2">
+        <div className="card mt-0">
           <Heading
             title={<span style={{ fontWeight: "bold" }}>Search Details</span>}
             secondTitle={

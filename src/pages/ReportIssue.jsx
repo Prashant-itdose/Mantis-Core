@@ -372,7 +372,8 @@ const ReportIssue = ({ visibleTicket }) => {
         ProjectID: Number(formData.ProjectID || 0),
         CategoryID: Number(formData.Category?.value || 0),
         AssignTo: String(formData.AssignedTo || "0"),
-        PriorityID: String(formData.ProjectID || "0"),
+        AssignedToTo: String(formData.AssignedToTo || "0"),
+        PriorityID: String(formData.Priority || "0"),
         Summary: String(formData.Summary || ""),
         ReporterMobileNo: String(formData.ReportedMobile || ""),
         ReporterName: String(formData.ReportedName || ""),
@@ -661,15 +662,15 @@ const ReportIssue = ({ visibleTicket }) => {
             handleChange={handleDeliveryChange}
             searchable={true}
           />
-          {/* <ReactSelect
+          <ReactSelect
             respclass="col-xl-2 col-md-4 col-sm-6 col-12 mt-1"
             name="AssignedToTo"
-            placeholderName={t("AssignedTo To")}
+            placeholderName={t("Secondary AssignedTo")}
             dynamicOptions={assigntoTo}
             value={formData?.AssignedToTo}
             handleChange={handleDeliveryChange}
             searchable={true}
-          /> */}
+          />
           <ReactSelect
             respclass="col-xl-2 col-md-4 col-sm-6 col-12 mt-1"
             name="Priority"

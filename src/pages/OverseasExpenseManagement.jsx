@@ -9,7 +9,7 @@ import ExcelPreviewHandler from "./ExcelImport/ExcelPreviewHandler";
 import Loading from "../components/loader/Loading";
 import * as XLSX from "xlsx";
 import BrowseInvoiceButton from "../components/formComponent/BrowseInvoiceButton";
-const MAX_FILE_SIZE = 1 * 1024 * 1024;
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const OverseasExpenseManagement = () => {
   const [t] = useTranslation();
   const [excelData, setExcelData] = useState([]);

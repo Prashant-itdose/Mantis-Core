@@ -703,6 +703,10 @@ const ViewTicketClient = () => {
       label: "Resolve",
       value: "Resolve",
     },
+    {
+      label: "PendingFromClient",
+      value: "PendingFromClient",
+    },
   ];
   const [currentPage, setCurrentPage] = useState(1);
   const totalRecords =
@@ -754,6 +758,9 @@ const ViewTicketClient = () => {
     }
     if (name === "TableStatus" && value === "Resolve") {
       updateReceivedDate(ele);
+    }
+    if (name === "TableStatus" && value === "PendingFromClient") {
+      updatePendingFromClient(ele);
     }
   };
   const handleAgainChange = (name, value, index, ele) => {
@@ -823,6 +830,37 @@ const ViewTicketClient = () => {
       .post(apiUrls.ApplyAction, {
         TicketIDs: String(details?.TicketID),
         ActionText: "ResolveDate",
+        ActionId: String(new Date().toISOString().split("T")[0]),
+        RCA: "",
+        ReferenceCode: "",
+        ManHour: "",
+        Summary: "",
+        ModuleID: "",
+        ModuleName: "",
+        PagesID: "",
+        PagesName: "",
+        ManHoursClient: "",
+        DeliveryDateClient: "",
+        ReOpenReasonID: String(""),
+        ReOpenReason: String(""),
+      })
+      .then((res) => {
+        if (res?.data?.success === true) {
+          toast.success(res?.data?.message);
+          handleViewSearch();
+        } else {
+          toast.error(res?.data?.message);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const updatePendingFromClient = (details) => {
+    axiosInstances
+      .post(apiUrls.ApplyAction, {
+        TicketIDs: String(details?.TicketID),
+        ActionText: "PendingFromClient",
         ActionId: String(new Date().toISOString().split("T")[0]),
         RCA: "",
         ReferenceCode: "",
@@ -1250,6 +1288,31 @@ const ViewTicketClient = () => {
                     style={{ width: "100%", textAlign: "left" }}
                   >
                     {t("Confirmed")}
+                  </span>
+                </div>
+                <div
+                  className="d-flex "
+                  style={{
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      backgroundColor: "#89e9faff",
+                      cursor: "pointer",
+                      height: "10px",
+                      width: "12px",
+                      borderRadius: "50%",
+                      marginLeft: "4px",
+                    }}
+                    onClick={() => handleViewSearch("35", "0")}
+                  ></div>
+                  <span
+                    className="legend-label"
+                    style={{ width: "100%", textAlign: "left" }}
+                  >
+                    {t("Pending From Client")}
                   </span>
                 </div>
               </div>

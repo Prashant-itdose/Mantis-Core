@@ -35,6 +35,9 @@ const AdvanceRequest = () => {
     ThirdEmi: "",
     FourthEmi: "",
     FifthEmi: "",
+    IFSCCODE: "",
+    AccountNumber: "",
+    BankName: "",
   });
   const handleDeliveryChange = (name, e) => {
     const { value } = e;
@@ -53,7 +56,7 @@ const AdvanceRequest = () => {
       });
     }
   };
-  
+
   const searchHandleChange = (e) => {
     const { name, value, checked, type } = e?.target;
     setFormData({
@@ -82,13 +85,29 @@ const AdvanceRequest = () => {
       return;
     }
     if (!formData?.PurposeOfAdvance) {
-      toast.error("Please Select Purpose of Advance.");
+      toast.error("Please Enter Purpose of Advance.");
+      return;
+    }
+    if (!formData?.IFSCCODE) {
+      toast.error("Please Enter IFSC Code.");
+      return;
+    }
+
+    if (!formData?.AccountNumber) {
+      toast.error("Please Enter Account Number.");
+      return;
+    }
+    if (!formData?.BankName) {
+      toast.error("Please Enter BankName.");
       return;
     }
     setLoading(true);
     axiosInstances
       .post(apiUrls.AdvanceAmount_Requset, {
         AdvanceType: String(formData?.AdvanceType),
+        IFSCCODE: String(formData?.IFSCCODE),
+        BankName: String(formData?.BankName),
+        AccountNumber: String(formData?.AccountNumber),
         AmountRequired: Number(totalAmount),
         PurposeofAdvance: String(formData?.PurposeOfAdvance),
         ExpectedDate: new Date(formData.AdvanceExpectedDate).toISOString(),
@@ -100,7 +119,6 @@ const AdvanceRequest = () => {
           },
         ],
       })
-
       .then((res) => {
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);
@@ -218,11 +236,10 @@ const AdvanceRequest = () => {
 
   const processFile = (file) => {
     if (file) {
-      if (file.size > 1 * 1024 * 1024) {
-        toast.error("File size exceeds 1MB limit");
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error("File size exceeds 5MB limit");
         return;
       }
-
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64String = reader.result.split(",")[1];
@@ -307,17 +324,51 @@ const AdvanceRequest = () => {
             value={formData?.PurposeOfAdvance}
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
           />
+          <Input
+            type="text"
+            className="form-control"
+            id="IFSCCODE"
+            name="IFSCCODE"
+            lable="IFSC CODE"
+            placeholder=""
+            onChange={searchHandleChange}
+            value={formData?.IFSCCODE}
+            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+          />
+          <Input
+            type="number"
+            className="form-control"
+            id="AccountNumber"
+            name="AccountNumber"
+            lable="Account Number"
+            placeholder=""
+            onChange={searchHandleChange}
+            value={formData?.AccountNumber}
+            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+          />
+          <Input
+            type="text"
+            className="form-control"
+            id="BankName"
+            name="BankName"
+            lable="Bank Name"
+            placeholder=""
+            onChange={searchHandleChange}
+            value={formData?.BankName}
+            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+          />
           <DatePicker
             className="custom-calendar"
             id="AdvanceExpectedDate"
             name="AdvanceExpectedDate"
             placeholder={VITE_DATE_FORMAT}
-            respclass="col-xl-2 col-md-4 col-sm-4 col-12"
+            respclass="col-xl-2 col-md-4 col-sm-4 col-12 mt-1"
             value={formData?.AdvanceExpectedDate}
             lable="Advance Expected Date"
             handleChange={searchHandleChange}
           />
-          <div className="ml-3 mr-2" style={{ display: "flex" }}>
+
+          <div className="ml-3 mr-2 mt-1" style={{ display: "flex" }}>
             <div style={{ width: "100%", marginRight: "3px" }}>
               <button
                 className="btn btn-sm btn-success"
@@ -329,18 +380,8 @@ const AdvanceRequest = () => {
             </div>
           </div>
 
-          {loading ? (
-            <Loading />
-          ) : (
-            <div className="col-2">
-              <button className="btn btn-sm btn-success" onClick={handleSave}>
-                Save
-              </button>
-            </div>
-          )}
-
           {tableData1?.length > 0 && (
-            <div className="card mt-3" style={{ width: "400px" }}>
+            <div className="card mt-3 mr-2" style={{ width: "400px" }}>
               <Heading
                 title={<span className="font-weight-bold">EMI Details</span>}
               />
@@ -443,6 +484,15 @@ const AdvanceRequest = () => {
                   Selected: <strong>{formData?.SelectFile?.name}</strong>
                 </p>
               )}
+            </div>
+          )}
+          {loading ? (
+            <Loading />
+          ) : (
+            <div className="ml-3 mt-1">
+              <button className="btn btn-sm btn-success" onClick={handleSave}>
+                Save
+              </button>
             </div>
           )}
         </div>

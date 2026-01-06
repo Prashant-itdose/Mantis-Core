@@ -1,12 +1,9 @@
-import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { apiUrls } from "../networkServices/apiEndpoints";
-import { headers } from "../utils/apitools";
 import { toast } from "react-toastify";
 import Heading from "../components/UI/Heading";
 import ReactSelect from "../components/formComponent/ReactSelect";
 import Loading from "../components/loader/Loading";
-import Input from "../components/formComponent/Input";
 import Tables from "../components/UI/customTable";
 import DocumentTypeModal from "../components/UI/customTable/DocumentTypeModal";
 import Modal from "../components/modalComponent/Modal";
@@ -149,17 +146,6 @@ const UploadDocumentProject = ({ data }) => {
 
   const handleDocRemove = (ele) => {
     setLoading(true);
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   form.append(
-    //     "LoginName",
-    //     useCryptoLocalStorage("user_Data", "get", "realname")
-    //   ),
-    //   form.append("ProjectID", ele?.ProjectID),
-    //   form.append("ActionType", "DeleteDocument"),
-    //   form.append("DocumentPrimaryID", ele?.UniqueID),
-    //   axios
-    //     .post(apiUrls?.ProjectMasterUpdate, form, { headers })
     axiosInstances
       .post(apiUrls.ProjectMasterUpdate, {
         ProjectID: Number(ele?.ProjectID),
@@ -265,9 +251,9 @@ const UploadDocumentProject = ({ data }) => {
 
   const processFile = (file) => {
     if (file) {
-      if (file.size > 1 * 1024 * 1024) {
+      if (file.size > 5 * 1024 * 1024) {
         toast.error(
-          "File size exceeds 1MB limit, Please compress the file below 1MB"
+          "File size exceeds 5MB limit, Please compress the file below 4MB"
         );
         return;
       }
