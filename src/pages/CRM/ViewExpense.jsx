@@ -37,10 +37,10 @@ const currentMonth = currentDate.getMonth() + 1; // Months are 0-indexed, so add
 const currentYear = currentDate.getFullYear();
 
 const ViewExpense = () => {
-  const IsManager = useCryptoLocalStorage(
+  const CrmEmployeeID = useCryptoLocalStorage(
     "user_Data",
     "get",
-    "AllowExpenseApprove"
+    "CrmEmployeeID"
   );
   const navigate = useNavigate();
   const ReportingManager = useCryptoLocalStorage(
@@ -50,6 +50,7 @@ const ViewExpense = () => {
   );
 
   const IsEmployee = useCryptoLocalStorage("user_Data", "get", "realname");
+  const RoleID = useCryptoLocalStorage("user_Data", "get", "RoleID");
   // console.log("IsManager", IsManager);
   const [vertical, setVertical] = useState([]);
   const [team, setTeam] = useState([]);
@@ -432,8 +433,6 @@ const ViewExpense = () => {
     return isCurrentMonth; // normal current month behavior
   };
 
-  const RoleID = useCryptoLocalStorage("user_Data", "get", "RoleID");
-
   const [selectAll, setSelectAll] = useState(false);
 
   const handleCheckBox = (e, index) => {
@@ -704,7 +703,7 @@ const ViewExpense = () => {
           isBreadcrumb={true}
           secondTitle={
             <>
-              {ReportingManager == 1 && (
+              {(ReportingManager == 1 || CrmEmployeeID == 650) && (
                 <div
                   className="d-flex"
                   style={{ justifyContent: "space-between" }}

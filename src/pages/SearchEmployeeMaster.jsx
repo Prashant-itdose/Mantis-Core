@@ -357,67 +357,68 @@ const SearchEmployeeMaster = () => {
           rowColor: String(code ? code : 0 || "0"),
         })
         .then((res) => {
-          ///for employee error message
-          if (!res?.data?.success) {
-            toast.error(res.data.message);
-            setLoading(true);
+          if (res?.data?.success === true) {
+            const data = res?.data?.data;
+            const updatedData = data?.map((ele, index) => {
+              return {
+                ...ele,
+                index: index,
+                IsActive: "0",
+
+                RoleDropDown: "",
+                RoleResolve: false,
+                RoleDropDownValue: "",
+
+                FlagDropDown: "",
+                FlagResolve: false,
+                FlagDropDownValue: "",
+
+                UpdateCategoryDropdown: "",
+                UpdateCategoryResolve: false,
+                UpdateCategoryValue: "",
+
+                ProjectMappingDropdown: "",
+                ProjectMappingResolve: false,
+                ProjectMappingValue: "",
+
+                VerticalDropdown: "",
+                VerticalResolve: false,
+                VerticalValue: "",
+
+                TeamDropdown: "",
+                TeamResolve: false,
+                TeamValue: "",
+
+                WingDropdown: "",
+                WingResolve: false,
+                WingValue: "",
+
+                ModuleDropdown: "",
+                ModuleResolve: false,
+                ModuleValue: "",
+
+                AssignToDropdown: "",
+                AssignToResolve: false,
+                AssignToValue: "",
+
+                DashboardDropdown: "",
+                DashboardResolve: false,
+                DashboardValue: "",
+
+                ImageSignatureDropdown: "",
+                ImageSignatureResolve: false,
+                ImageSignatureValue: "",
+              };
+            });
+            setTableData(updatedData);
+            setFilteredData(updatedData);
+            setLoading(false);
+          } else {
+            toast.error(res?.data?.message);
+            setTableData([]);
+            setFilteredData([]);
+            setLoading(false);
           }
-
-          const data = res?.data?.data;
-          const updatedData = data?.map((ele, index) => {
-            return {
-              ...ele,
-              index: index,
-              IsActive: "0",
-
-              RoleDropDown: "",
-              RoleResolve: false,
-              RoleDropDownValue: "",
-
-              FlagDropDown: "",
-              FlagResolve: false,
-              FlagDropDownValue: "",
-
-              UpdateCategoryDropdown: "",
-              UpdateCategoryResolve: false,
-              UpdateCategoryValue: "",
-
-              ProjectMappingDropdown: "",
-              ProjectMappingResolve: false,
-              ProjectMappingValue: "",
-
-              VerticalDropdown: "",
-              VerticalResolve: false,
-              VerticalValue: "",
-
-              TeamDropdown: "",
-              TeamResolve: false,
-              TeamValue: "",
-
-              WingDropdown: "",
-              WingResolve: false,
-              WingValue: "",
-
-              ModuleDropdown: "",
-              ModuleResolve: false,
-              ModuleValue: "",
-
-              AssignToDropdown: "",
-              AssignToResolve: false,
-              AssignToValue: "",
-
-              DashboardDropdown: "",
-              DashboardResolve: false,
-              DashboardValue: "",
-
-              ImageSignatureDropdown: "",
-              ImageSignatureResolve: false,
-              ImageSignatureValue: "",
-            };
-          });
-          setTableData(updatedData);
-          setFilteredData(updatedData);
-          setLoading(false);
         })
         .catch((err) => {
           toast.error(

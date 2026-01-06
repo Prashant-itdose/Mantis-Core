@@ -17,6 +17,7 @@ const ProjectFlagModal = ({ data, handleViewProject }) => {
     ClientFeedbackDisplay: "0",
     IsWeeklyMailSend: "0",
     IsClientCredentialMailSend: "0",
+    PoNotAvailable: "0",
   });
 
   useEffect(() => {
@@ -32,6 +33,7 @@ const ProjectFlagModal = ({ data, handleViewProject }) => {
         IsWeeklyMailSend: flagdata[0]?.IsWeeklyMailSend == "1" ? "1" : "0",
         IsClientCredentialMailSend:
           flagdata[0]?.IsClientCredentialMailSend == "1" ? "1" : "0",
+        PoNotAvailable: flagdata[0]?.PoNotAvailable == "1" ? "1" : "0",
       });
     }
   }, [flagdata]);
@@ -49,7 +51,6 @@ const ProjectFlagModal = ({ data, handleViewProject }) => {
   };
 
   const getNotfication = (updatedFormData) => {
-
     const payload = {
       ProjectID: data?.Id || data?.ProjectID || 0,
       enabled: updatedFormData?.IsActive || "0",
@@ -61,6 +62,7 @@ const ProjectFlagModal = ({ data, handleViewProject }) => {
       IsWeeklyMailSend: updatedFormData?.IsWeeklyMailSend || "0",
       IsClientCredentialMailSend:
         updatedFormData?.IsClientCredentialMailSend || "0",
+      PoNotAvailable: updatedFormData?.PoNotAvailable || "0",
     };
 
     axiosInstances
@@ -79,7 +81,6 @@ const ProjectFlagModal = ({ data, handleViewProject }) => {
   };
 
   const getFlagData = () => {
-
     axiosInstances
       .post(apiUrls?.GetFlagProject, { ProjectID: data?.Id || data?.ProjectID })
       .then((res) => {
@@ -135,6 +136,10 @@ const ProjectFlagModal = ({ data, handleViewProject }) => {
                   {
                     name: "IsClientCredentialMailSend",
                     label: "IsClientCredentialMailSend",
+                  },
+                  {
+                    name: "PoNotAvailable",
+                    label: "PoNotAvailable",
                   },
                 ]
                   .slice(col * Math.ceil(11 / 2), (col + 1) * Math.ceil(11 / 2))

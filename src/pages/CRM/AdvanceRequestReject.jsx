@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import Loading from "../../components/loader/Loading";
 import { apiUrls } from "../../networkServices/apiEndpoints";
-import { headers } from "../../utils/apitools";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { useCryptoLocalStorage } from "../../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../../networkServices/axiosInstance";
 const AdvanceRequestReject = ({ visible, setVisible, handleSearchAdvance }) => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -18,23 +17,20 @@ const AdvanceRequestReject = ({ visible, setVisible, handleSearchAdvance }) => {
     });
   };
   const handleReject = () => {
+    if (!formData?.Remarks) {
+      toast.error("Please enter remarks for rejection.");
+      return;
+    }
     setLoading(true);
-    let form = new FormData();
-    form.append("Id", useCryptoLocalStorage("user_Data", "get", "ID"));
-      form.append(
-      "CrmID",
-      useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-    );
-    form.append(
-      "LoginName",
-      useCryptoLocalStorage("user_Data", "get", "realname")
-    );
-    form.append("Status", "Reject");
-    form.append("AdvanceReqID", visible?.showData?.ID);
-    form.append("Remarks", formData?.Remarks || "");
-
-    axios
-      .post(apiUrls?.AdvanceAmount_Status_Update, form, { headers })
+    axiosInstances
+      .post(apiUrls.AdvanceAmount_Status_Update, {
+        Status: String("Reject"),
+        AdvanceReqID: Number(visible?.showData?.ID),
+        Remarks: String(formData?.Remarks || ""),
+        CrmEmpID: String(
+          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+        ),
+      })
       .then((res) => {
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);

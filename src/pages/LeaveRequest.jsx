@@ -2,10 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import Heading from "../components/UI/Heading";
 import DatePickerMonth from "../components/formComponent/DatePickerMonth";
 import Modal from "../components/modalComponent/Modal";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { apiUrls } from "../networkServices/apiEndpoints";
-import { headers } from "../utils/apitools";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import LeaveRequestModal from "./LeaveRequestModal";
 import Loading from "../components/loader/Loading";
@@ -31,7 +29,7 @@ const currentMonth = currentDate.getMonth() + 1;
 const currentYear = currentDate.getFullYear();
 
 const LeaveRequest = ({ data }) => {
-  // console.log("data check", data);
+  console.log("data check", currentYear);
 
   const dataMonth = data?.MonthYear;
   const jsDate = new Date(`${dataMonth?.replace("-", " ")} 1`);
@@ -57,7 +55,7 @@ const LeaveRequest = ({ data }) => {
   );
   const IsEmployee = useCryptoLocalStorage("user_Data", "get", "realname");
   const [CalenderDetails, setCalenderDetails] = useState([]);
-  // console.log("CalenderDetails", CalenderDetails?.IsApproved);
+
   const [daysInMonth, setDaysInMonth] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -209,9 +207,17 @@ const LeaveRequest = ({ data }) => {
   };
 
   const renderDay = (day, index, today, table1Data) => {
+    console.log("tabledata tabledta", table1Data);
+
     const { date, status } = day;
-    const [month, dayOfMonth] = date.split("/").map(Number);
+    const [month, dayOfMonth] = date?.split("/")?.map(Number);
     const dayDate = new Date(today.getFullYear(), month - 1, dayOfMonth);
+
+    const AttendanceDateFormat = new Date(
+      table1Data?.find((d) => d.AttendanceDate)?.AttendanceDate
+    );
+
+    console.log("AttendanceDateFormat", AttendanceDateFormat);
 
     const formattedDate = dayDate?.toLocaleDateString("en-US", {
       month: "short",
@@ -235,7 +241,7 @@ const LeaveRequest = ({ data }) => {
       } else if (targetYear === currentYear && targetMonth === currentMonth) {
         isDisabled = false;
       } else {
-        isDisabled = false;
+        isDisabled = true;
       }
     } else {
       if (
@@ -246,7 +252,7 @@ const LeaveRequest = ({ data }) => {
       } else if (targetYear === currentYear && targetMonth === currentMonth) {
         isDisabled = false;
       } else {
-        isDisabled = false;
+        isDisabled = true;
       }
     }
 
@@ -280,16 +286,19 @@ const LeaveRequest = ({ data }) => {
               showVisible: true,
               data: dayDate,
               CalenderDetails: CalenderDetails,
+              ApproveDate: AttendanceDateFormat,
             });
           }
 
-          setclickeddate(dayDate);
+          setclickeddate(AttendanceDateFormat);
         }}
         style={{
           cursor: isDisabled ? "not-allowed" : "pointer",
           pointerEvents: isDisabled ? "none" : "auto",
         }}
       >
+        {console.log("CalenderDetails", CalenderDetails)}
+
         <label className="formattedDate">{formattedDate}</label>
         {status && <div className="day-status">{status}</div>}
 
@@ -432,7 +441,8 @@ const LeaveRequest = ({ data }) => {
           visible={visible}
           setVisible={setVisible}
           tableData={CalenderDetails}
-          Header={`Selected Date: ${format2Date(clickedate)}`}
+          // Header={`Selected Date: ${format2Date(clickedate)}`}
+          Header={"Leave Request Details"}
         >
           <LeaveRequestModal
             visible={visible}

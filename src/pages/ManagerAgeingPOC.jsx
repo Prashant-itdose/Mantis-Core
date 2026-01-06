@@ -2,17 +2,13 @@ import React, { useEffect, useState } from "react";
 import Tables from "../components/UI/customTable";
 import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
 import { apiUrls } from "../networkServices/apiEndpoints";
-import { headers } from "../utils/apitools";
-import axios from "axios";
+
 import { axiosInstances } from "../networkServices/axiosInstance";
 
 const ManagerAgeingPOC = () => {
   const [tableData, setTableData] = useState([]);
   const handleSearch = () => {
-    // let form = new FormData();
-    // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-    //   axios
-    //     .post(apiUrls?.ManagerDashboard_Ageing_POC, form, { headers })
+ 
     axiosInstances
       .post(apiUrls?.ManagerDashboard_Ageing_POC, {
         DeveloperID: String(useCryptoLocalStorage("user_Data", "get", "ID")),
@@ -31,7 +27,7 @@ const ManagerAgeingPOC = () => {
   const newFileTHEAD = ["POC", "<30", "30-45", "45-60", ">60"];
   return (
     <>
-      <div className="card">
+      <div className="card m-0">
         <Tables
           thead={newFileTHEAD}
           tbody={[

@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import ReactSelect from "../../components/formComponent/ReactSelect";
 import DatePicker from "../../components/formComponent/DatePicker";
 import Loading from "../../components/loader/Loading";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { apiUrls } from "../../networkServices/apiEndpoints";
-import { headers } from "../../utils/apitools";
-import { useCryptoLocalStorage } from "../../utils/hooks/useCryptoLocalStorage";
+import { axiosInstances } from "../../networkServices/axiosInstance";
+
 const AdvanceRequestSettelementModal = ({
   visible,
   setVisible,
@@ -38,41 +37,40 @@ const AdvanceRequestSettelementModal = ({
     let year = date.getFullYear();
     let month = (date.getMonth() + 1).toString().padStart(2, "0");
     let day = date.getDate().toString().padStart(2, "0");
-    return `${year}/${month}/${day}`;
+    return `${year}-${month}-${day}`;
   }
   const handleLSubmit = () => {
+    if (!formData?.PaymentMode) {
+      toast.error("Please select Payment Mode");
+      return;
+    }
+    if (!formData?.Remarks) {
+      toast.error("Please enter Remarks");
+      return;
+    }
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "CrmID",
-        useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-      );
-    form.append(
-      "LoginName",
-      useCryptoLocalStorage("user_Data", "get", "realname")
-    ),
-      form.append("PaymentDate", formatDate(formData?.PaymentDate)),
-      form.append("AdvanceRequestID", visible?.showData?.ID),
-      form.append("Remarks", formData?.Remarks),
-      form.append("PaymentMode", formData?.PaymentMode),
-      axios
-        .post(apiUrls?.AdvanceAmount_Paid, form, { headers })
-        .then((res) => {
-          if (res?.data?.success === true) {
-            toast.success(res?.data?.message);
-            setLoading(false);
-            setVisible(false);
-            handleSearchAdvance();
-          } else {
-            toast.error(res?.data?.message);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
+    axiosInstances
+      .post(apiUrls.AdvanceAmount_Paid, {
+        AdvanceRequestID: Number(visible?.showData?.ID),
+        PaymentMode: String(formData?.PaymentMode),
+        PaymentDate: String(formatDate(formData?.PaymentDate)),
+        Remarks: String(formData?.Remarks) || "",
+      })
+      .then((res) => {
+        if (res?.data?.success === true) {
+          toast.success(res?.data?.message);
           setLoading(false);
-        });
+          setVisible(false);
+          handleSearchAdvance();
+        } else {
+          toast.error(res?.data?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
   return (
     <>

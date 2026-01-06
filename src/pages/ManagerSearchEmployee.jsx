@@ -366,9 +366,13 @@ const ManagerSearchEmployee = () => {
             thead={EmployeeManagerTHEAD}
             tbody={currentData?.map((ele, index) => ({
               "S.No.": (currentPage - 1) * rowsPerPage + index + 1,
-              Vertical: ele?.DefaultVerticalName,
-              Team: ele?.TeamName,
-              Wing: ele?.DefaultWingName,
+              Vertical:
+                ele?.DefaultVerticalName == "undefined"
+                  ? ""
+                  : ele?.DefaultVerticalName,
+              Team: ele?.TeamName == "undefined" ? "" : ele?.TeamName,
+              Wing:
+                ele?.DefaultWingName == "undefined" ? "" : ele?.DefaultWingName,
               "Employee Name": ele?.EmployeeName,
               "Office Designation": ele?.Designation,
               "Profile Designation": ele?.ProfileDesignationName,

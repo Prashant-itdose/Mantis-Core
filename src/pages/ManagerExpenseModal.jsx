@@ -7,6 +7,7 @@ import Heading from "../components/UI/Heading";
 import Tables from "../components/UI/customTable";
 import NoRecordFound from "../components/formComponent/NoRecordFound";
 import Input from "../components/formComponent/Input";
+import TablesUpDown from "../components/UI/customTable/TablesUpDown";
 
 const currentDate = new Date();
 const currentMonth = currentDate.getMonth() + 1;
@@ -188,7 +189,7 @@ const ManagerExpenseModal = () => {
               </div>
             }
           />
-          <Tables
+          <TablesUpDown
             thead={searchTHEAD}
             tbody={currentData?.map((ele, index) => ({
               "S.No.": (currentPage - 1) * rowsPerPage + index + 1,

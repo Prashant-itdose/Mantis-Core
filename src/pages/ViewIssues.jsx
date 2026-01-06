@@ -3112,6 +3112,31 @@ const ViewIssues = ({ data }) => {
                   }}
                 >
                   <div
+                    style={{
+                      backgroundColor: "#89e9faff",
+                      cursor: "pointer",
+                      height: "10px",
+                      width: "12px",
+                      borderRadius: "50%",
+                      marginLeft: "4px",
+                    }}
+                    onClick={() => handleViewSearch("35", "0")}
+                  ></div>
+                  <span
+                    className="legend-label"
+                    style={{ width: "100%", textAlign: "left" }}
+                  >
+                    {t("Pending From Client")}
+                  </span>
+                </div>
+                <div
+                  className="d-flex "
+                  style={{
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                  }}
+                >
+                  <div
                     className="legend-circle"
                     style={{
                       backgroundColor: "#fff494",
@@ -3129,6 +3154,7 @@ const ViewIssues = ({ data }) => {
                     {t("Confirmed")}
                   </span>
                 </div>
+
                 <div
                   className="d-flex "
                   style={{
@@ -3460,31 +3486,7 @@ const ViewIssues = ({ data }) => {
                     {t("NotToDo")}
                   </span>
                 </div>
-                <div
-                  className="d-flex "
-                  style={{
-                    justifyContent: "flex-start",
-                    alignItems: "center",
-                  }}
-                >
-                  <div
-                    style={{
-                      backgroundColor: "#89e9faff",
-                      cursor: "pointer",
-                      height: "10px",
-                      width: "12px",
-                      borderRadius: "50%",
-                      marginLeft: "4px",
-                    }}
-                    onClick={() => handleViewSearch("92", "0")}
-                  ></div>
-                  <span
-                    className="legend-label"
-                    style={{ width: "100%", textAlign: "left" }}
-                  >
-                    {t("Pending From Client")}
-                  </span>
-                </div>
+
                 <button
                   className={`fa ${rowHandler.show ? "fa-arrow-up" : "fa-arrow-down"}`}
                   onClick={() => {
@@ -5472,7 +5474,7 @@ const ViewIssues = ({ data }) => {
                                     className="form-control mt-1"
                                     id="PendingFromClient"
                                     name="PendingFromClient"
-                                    lable="Enter Pending From Client Reason"
+                                    lable="Enter PendingFromClient Reason"
                                     value={ele?.PendingFromClient}
                                     respclass="width110px"
                                     style={{ width: "50%" }}
@@ -5852,7 +5854,7 @@ const ViewIssues = ({ data }) => {
                               id="PendingFromClient"
                               name="PendingFromClient"
                               className="form-control ml-2"
-                              lable="Enter Pending From Client Reason"
+                              lable="Enter PendingFromClient Reason"
                               value={formData?.PendingFromClient}
                               respclass="width100px"
                               style={{ width: "100%", marginLeft: "2px" }}

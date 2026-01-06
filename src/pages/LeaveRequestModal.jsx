@@ -13,6 +13,7 @@ const LeaveRequestModal = ({
   data,
   handleLeaveRequest_BindCalender,
   CrmEmployee,
+  ApproveDate,
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -25,10 +26,12 @@ const LeaveRequestModal = ({
   const leaveData = visible?.CalenderDetails?.[1]?.find(
     (val) => String(val?.Day) === moment(visible?.data).format("D")
   );
-  // console.log("data", data);
+
+  console.log("leaveData", leaveData);
+  console.log("ApproveDate", ApproveDate);
 
   // console.log("visible", visible);
-  // console.log("visible [1]", visible?.CalenderDetails?.[1]);
+  console.log("visible [1]", visible);
 
   const [OLTypeWise, setOLTypeWise] = useState([]);
   const [WOTypeWise, setWOTypeWise] = useState([]);
@@ -139,6 +142,7 @@ const LeaveRequestModal = ({
         console.log(err);
       });
   };
+
   const getHLTypeWise = () => {
     // let form = new FormData();
     const now = new Date();
@@ -270,15 +274,15 @@ const LeaveRequestModal = ({
       });
   };
 
+  console.log("visible?.data", visible?.data);
   const handleLeaveRequest_Approve = () => {
     setLoading(true);
     axiosInstances
       .post(apiUrls.LeaveRequest_Save, {
-        FromDate: String(moment(visible?.data).format("YYYY-MM-DD")),
-        CrmEmpID: Number(
-          data?.EmployeeId ||
-            useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-        ),
+        FromDate:
+          // String(moment(visible?.data).format("YYYY-MM-DD")) ||
+          String(moment(leaveData?.AttendanceDate).format("YYYY-MM-DD")),
+        CrmEmpID: Number(data?.EmployeeId || CrmEmployee),
         LeaveType: String(formData?.LeaveType),
         Description: String(formData?.Description),
         StatusType: String("Approve"),
@@ -305,10 +309,7 @@ const LeaveRequestModal = ({
     axiosInstances
       .post(apiUrls.LeaveRequest_Save, {
         FromDate: String(moment(visible?.data).format("YYYY-MM-DD")),
-        CrmEmpID: Number(
-          data?.EmployeeId ||
-            useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-        ),
+        CrmEmpID: Number(data?.EmployeeId || CrmEmployee),
         LeaveType: String(formData?.LeaveType),
         Description: String(formData?.Description),
         StatusType: String("Delete"),
