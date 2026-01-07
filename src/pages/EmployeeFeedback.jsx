@@ -493,6 +493,7 @@ const EmployeeFeedback = ({ data }) => {
             handleChange={handleDeliveryChange}
             value={formData?.SelectType}
           />
+          
           {ReportingManager == 1 ? (
             <div>
               {loading ? (

@@ -22,7 +22,7 @@ const EmployeeFeedbackGmail = (showData) => {
         FeedbackID: Number(showData?.visible?.showData?.FeedbackID),
         EmployeeID: Number(showData?.visible?.showData?.CrmEmployeeID),
         EmployeeName: String(showData?.visible?.showData?.EmployeeName),
-        MobileNo: String(formData?.Gmail),
+        ToEmailID: String(formData?.Gmail),
       })
       .then((res) => {
         if (res?.data?.success === true) {

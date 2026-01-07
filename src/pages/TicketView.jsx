@@ -176,7 +176,7 @@ const AvatarTooltip = ({ task, isVisible, columnId }) => {
             <div className="tooltip-row">
               <span className="tooltip-label">StartDate: </span>
               <span className="tooltip-value">
-                {originalData.Date ? formatDate(originalData.Date) : "N/A"}
+                {originalData.DeliveryDate ? formatDate(originalData.DeliveryDate) : "N/A"}
               </span>
             </div>
             <div className="tooltip-row">
@@ -192,7 +192,7 @@ const AvatarTooltip = ({ task, isVisible, columnId }) => {
             <div className="tooltip-row">
               <span className="tooltip-label">EndDate: </span>
               <span className="tooltip-value">
-                {originalData.Date ? formatDate(originalData.Date) : "N/A"}
+                {originalData.DeliveryDate ? formatDate(originalData.DeliveryDate) : "N/A"}
               </span>
             </div>
             <div className="tooltip-row">
