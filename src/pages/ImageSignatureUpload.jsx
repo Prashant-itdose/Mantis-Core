@@ -1,15 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import BrowseSignature from "../components/formComponent/BrowseSignature";
 import Loading from "../components/loader/Loading";
-import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
-import axios from "axios";
 import { apiUrls } from "../networkServices/apiEndpoints";
 import { toast } from "react-toastify";
-import { headers } from "../utils/apitools";
 import { useTranslation } from "react-i18next";
 import Heading from "../components/UI/Heading";
 import Tables from "../components/UI/customTable";
-import NoRecordFound from "../components/formComponent/NoRecordFound";
+import { axiosInstances } from "../networkServices/axiosInstance";
 const ImageSignatureUpload = (showData) => {
   // console.log("showData", showData);
   const [t] = useTranslation();
@@ -130,40 +126,36 @@ const ImageSignatureUpload = (showData) => {
       },
     ]);
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("ActionType", "Signature"),
-      form.append("EmployeeID", showData?.visible?.showData?.id),
-      form.append("ImageDetails", SignatureJson),
-      axios
-        .post(apiUrls?.UploadEmployeeImages, form, { headers })
-        .then((res) => {
-          if (res?.data?.success === true) {
-            toast.success(res?.data?.message);
-            setLoading(false);
-            setFormData({
-              SelectFile: "",
-              SelectFileSig: "",
 
-              Document_Base64: "",
-              FileExtension: "",
+    axiosInstances
+      .post(apiUrls.UploadEmployeeImages, {
+        EmployeeID: Number(showData?.visible?.showData?.id),
+        ActionType: String("Signature"),
+        ImageDetails: String(SignatureJson),
+      })
+      .then((res) => {
+        if (res?.data?.success === true) {
+          toast.success(res?.data?.message);
+          setLoading(false);
+          setFormData({
+            SelectFile: "",
+            SelectFileSig: "",
 
-              SigDocument_Base64: "",
-              FileExtensionSig: "",
-            });
-            // showData?.setVisible(false);
-          } else {
-            toast.error(res?.data?.message);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+            Document_Base64: "",
+            FileExtension: "",
+
+            SigDocument_Base64: "",
+            FileExtensionSig: "",
+          });
+          // showData?.setVisible(false);
+        } else {
+          toast.error(res?.data?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleImageUpload = () => {
@@ -178,112 +170,93 @@ const ImageSignatureUpload = (showData) => {
       },
     ]);
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("ActionType", "Profile"),
-      form.append("EmployeeID", showData?.visible?.showData?.id),
-      form.append("ImageDetails", ImageJson),
-      axios
-        .post(apiUrls?.UploadEmployeeImages, form, { headers })
-        .then((res) => {
-          if (res?.data?.success === true) {
-            toast.success(res?.data?.message);
-            setLoading(false);
-            setFormData({
-              SelectFile: "",
-              SelectFileSig: "",
 
-              Document_Base64: "",
-              FileExtension: "",
+    axiosInstances
+      .post(apiUrls.UploadEmployeeImages, {
+        EmployeeID: Number(showData?.visible?.showData?.id),
+        ActionType: String("Profile"),
+        ImageDetails: String(ImageJson),
+      })
+      .then((res) => {
+        if (res?.data?.success === true) {
+          toast.success(res?.data?.message);
+          setLoading(false);
+          setFormData({
+            SelectFile: "",
+            SelectFileSig: "",
 
-              SigDocument_Base64: "",
-              FileExtensionSig: "",
-            });
-            // showData?.setVisible(false);
-          } else {
-            toast.error(res?.data?.message);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+            Document_Base64: "",
+            FileExtension: "",
+
+            SigDocument_Base64: "",
+            FileExtensionSig: "",
+          });
+          // showData?.setVisible(false);
+        } else {
+          toast.error(res?.data?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleSearch = () => {
-    let form = new FormData();
-    form.append("EmployeeID", showData?.visible?.showData?.id),
-      axios
-        .post(apiUrls?.SearchEmployeeImages, form, {
-          headers,
-        })
-        .then((res) => {
-          setImageData(res?.data?.data);
-          setSignData(res?.data?.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    axiosInstances
+      .post(apiUrls.SearchEmployeeImages, {
+        EmployeeID: Number(showData?.visible?.showData?.id),
+      })
+      .then((res) => {
+        setImageData(res?.data?.data);
+        setSignData(res?.data?.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleImageRemove = (id) => {
     setLoading(true);
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("ActionType", "Profile"),
-      form.append("EmployeeID", id),
-      axios
-        .post(apiUrls?.RemoveEmployeeImages, form, {
-          headers,
-        })
-        .then((res) => {
-          if (res?.data?.success === true) {
-            toast.success(res?.data?.message);
-            setLoading(false);
-            handleSearch();
-          } else {
-            toast.error(res?.data?.message);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    axiosInstances
+      .post(apiUrls.RemoveEmployeeImages, {
+        EmployeeID: Number(id),
+        ActionType: String("Profile"),
+      })
+      .then((res) => {
+        if (res?.data?.success === true) {
+          toast.success(res?.data?.message);
+          setLoading(false);
+          handleSearch();
+        } else {
+          toast.error(res?.data?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const handleSignRemove = (id) => {
-    let form = new FormData();
-    form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      form.append(
-        "LoginName",
-        useCryptoLocalStorage("user_Data", "get", "realname")
-      ),
-      form.append("ActionType", "Signature"),
-      form.append("EmployeeID", id),
-      axios
-        .post(apiUrls?.RemoveEmployeeImages, form, {
-          headers,
-        })
-        .then((res) => {
-          if (res?.data?.success === true) {
-            toast.success(res?.data?.message);
-            setLoading(false);
-            handleSearch();
-          } else {
-            toast.error(res?.data?.message);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    setLoading(true);
+    axiosInstances
+      .post(apiUrls.RemoveEmployeeImages, {
+        EmployeeID: Number(id),
+        ActionType: String("Signature"),
+      })
+      .then((res) => {
+        if (res?.data?.success === true) {
+          toast.success(res?.data?.message);
+          setLoading(false);
+          handleSearch();
+        } else {
+          toast.error(res?.data?.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   useEffect(() => {
     handleSearch();
@@ -299,24 +272,7 @@ const ImageSignatureUpload = (showData) => {
           &nbsp; &nbsp; &nbsp; Email : {showData?.visible?.showData?.email}
         </span>
       </div>
-      {/* <div className="card">
-        <div className="row p-2">
-          <div className="ml-2">
-            <BrowseSignature handleSignatureChange={handleSignatureChange} />
-          </div>
 
-          {loading ? (
-            <Loading />
-          ) : (
-            <button
-              className="btn btn-sm btn-success ml-5"
-              onClick={handleSignatureUpload}
-            >
-              Upload
-            </button>
-          )}
-        </div>
-      </div> */}
       <div className="card">
         <div className="row p-2">
           <label className="ml-2" style={{ fontWeight: "bold" }}>
