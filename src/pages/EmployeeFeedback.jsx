@@ -520,7 +520,7 @@ const EmployeeFeedback = ({ data }) => {
               )}
             </div>
           )}
-          {ReportingManager == 1 && (
+          {/* {ReportingManager == 1 && (
             <i
               className="fa fa-plus-circle fa-sm new_record_pluse mt-2 ml-3"
               onClick={() => {
@@ -529,7 +529,7 @@ const EmployeeFeedback = ({ data }) => {
               title="Click to Create Employee Feedback"
               style={{ cursor: "pointer" }}
             ></i>
-          )}
+          )} */}
 
           {tableData?.length > 0 && (
             <img

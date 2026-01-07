@@ -237,9 +237,15 @@ const LeaveRequest = ({ data }) => {
         (targetYear === currentYear && targetMonth < currentMonth)
       ) {
         const daysPassed = today.getDate();
-        isDisabled = daysPassed > 2; //// Only enable 2nd Day of every month
-      } else if (targetYear === currentYear && targetMonth === currentMonth) {
-        isDisabled = false;
+        isDisabled = daysPassed > 2; // Only enable 2nd Day of every month for past months
+      } else if (
+        (targetYear === currentYear && targetMonth === currentMonth) ||
+        (targetYear === currentYear && targetMonth === currentMonth + 1) ||
+        (targetYear === currentYear + 1 &&
+          targetMonth === 0 &&
+          currentMonth === 11) // Handle year boundary (Dec -> Jan)
+      ) {
+        isDisabled = false; // Enable for current month AND next month
       } else {
         isDisabled = true;
       }
@@ -249,8 +255,14 @@ const LeaveRequest = ({ data }) => {
         (targetYear === currentYear && targetMonth < currentMonth)
       ) {
         isDisabled = true;
-      } else if (targetYear === currentYear && targetMonth === currentMonth) {
-        isDisabled = false;
+      } else if (
+        (targetYear === currentYear && targetMonth === currentMonth) ||
+        (targetYear === currentYear && targetMonth === currentMonth + 1) ||
+        (targetYear === currentYear + 1 &&
+          targetMonth === 0 &&
+          currentMonth === 11)
+      ) {
+        isDisabled = false; // Enable for current month AND next month
       } else {
         isDisabled = true;
       }
@@ -407,7 +419,7 @@ const LeaveRequest = ({ data }) => {
     });
     return formattedDate;
   }
-  const handleLeaveRequest_Approve = () => {
+  const handleLeaveRequest_ApproveAll = () => {
     setLoading(true);
     axiosInstances
       .post(apiUrls.LeaveRequest_ApproveALL, {
@@ -422,6 +434,7 @@ const LeaveRequest = ({ data }) => {
         if (res?.data?.success === true) {
           toast.success(res?.data?.message);
           setLoading(false);
+          handleLeaveRequest_BindCalender();
         } else {
           toast.error(res?.data?.message);
           setLoading(false);
@@ -568,13 +581,13 @@ const LeaveRequest = ({ data }) => {
               </div>
             </div>
             <div className="col-md-3 legend-wrapper">
-              {/* {CalenderDetails?.[1]?.some(
+              {CalenderDetails?.[1]?.some(
                 (item) =>
                   item?.LeaveDescription?.trim() !== "" &&
                   item?.IsApproved !== 1
               ) && (
                 <div>
-                  {ReportingManager === 1 && (
+                  {ReportingManager === 1 ? (
                     <button
                       className="btn btn-sm mb-2"
                       style={{
@@ -582,13 +595,15 @@ const LeaveRequest = ({ data }) => {
                         color: "white",
                         border: "none",
                       }}
-                      onClick={handleLeaveRequest_Approve}
+                      onClick={handleLeaveRequest_ApproveAll}
                     >
                       Approve All
                     </button>
+                  ) : (
+                    ""
                   )}
                 </div>
-              )} */}
+              )}
 
               <div className="legend">
                 <p>
