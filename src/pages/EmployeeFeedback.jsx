@@ -61,7 +61,7 @@ const EmployeeFeedback = ({ data }) => {
     Month: new Date(),
     currentMonth: currentMonth,
     currentYear: currentYear,
-    SelectType: "0",
+    FeedbackType: "0",
   });
 
   const handleDeliveryChange = (name, e) => {
@@ -171,8 +171,17 @@ const EmployeeFeedback = ({ data }) => {
         CrmEmployeeID: Number(
           useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
-        EmployeeID: formData?.AssignedTo ? Number(formData.AssignedTo) : 0,
+        EmployeeID: String(formData.AssignedTo) || "",
         RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
+        ReportingManager: String(
+          formData?.ReportingTo ? formData.ReportingTo : ""
+        ),
+        VerticalID: String(formData?.VerticalID ? formData.VerticalID : ""),
+        TeamID: String(formData?.TeamID ? formData.TeamID : ""),
+        WingID: String(formData?.WingID ? formData.WingID : ""),
+        Month: String(formData?.currentMonth),
+        Year: String(formData?.currentYear),
+        FeedbackType: Number(formData?.FeedbackType) || 0,
         RowColor: code ? Number(code) : 0,
       })
 
@@ -198,13 +207,21 @@ const EmployeeFeedback = ({ data }) => {
         CrmEmployeeID: Number(
           useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
-        EmployeeID: Number(
+        EmployeeID: String(
           useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
         RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
+        ReportingManager: String(
+          formData?.ReportingTo ? formData.ReportingTo : ""
+        ),
+        VerticalID: String(formData?.VerticalID ? formData.VerticalID : ""),
+        TeamID: String(formData?.TeamID ? formData.TeamID : ""),
+        WingID: String(formData?.WingID ? formData.WingID : ""),
+        Month: String(formData?.currentMonth),
+        Year: String(formData?.currentYear),
+        FeedbackType: Number(formData?.FeedbackType) || 0,
         RowColor: code ? Number(code) : 0,
       })
-
       .then((res) => {
         if (res?.data?.success === true) {
           setTableData(res?.data?.data);
@@ -247,6 +264,7 @@ const EmployeeFeedback = ({ data }) => {
     { name: "S.No.", width: "2%" },
     "Employee Name",
     "Employee Email",
+    "Employee Type",
     "Created Date",
     "FeedbackBy",
     "Feedback Date",
@@ -484,16 +502,17 @@ const EmployeeFeedback = ({ data }) => {
 
           <ReactSelect
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
-            name="SelectType"
-            placeholderName={t("Type")}
+            name="FeedbackType"
+            placeholderName={t("Employee Type")}
             dynamicOptions={[
               { label: "All", value: "0" },
               { label: "Probation Period", value: "1" },
+              { label: "Old Employee", value: "2" },
             ]}
             handleChange={handleDeliveryChange}
-            value={formData?.SelectType}
+            value={formData?.FeedbackType}
           />
-          
+
           {ReportingManager == 1 ? (
             <div>
               {loading ? (
@@ -651,6 +670,8 @@ const EmployeeFeedback = ({ data }) => {
               "S.No.": (currentPage - 1) * rowsPerPage + index + 1,
               "Employee Name": ele?.EmployeeName,
               "Employee Email": ele?.EmployeeEmail,
+              "Employee Type":
+                ele?.FeedbackType === 1 ? "Probation Period" : "Old Employee",
               "Created Date": new Date(ele.dtEntry).toLocaleDateString(
                 "en-GB",
                 {
