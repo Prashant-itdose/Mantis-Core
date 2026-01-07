@@ -261,7 +261,7 @@ const FeedBack = () => {
             onChange={handleChange}
             value={formData?.designation}
             lable={"Employee Designation"}
-            placeholder="E"
+            placeholder=" "
             respclass="col-xl-2 col-md-3 col-sm-4 col-12"
           />
           <Input
