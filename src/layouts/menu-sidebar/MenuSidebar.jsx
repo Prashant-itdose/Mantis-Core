@@ -342,6 +342,12 @@ export const MENU = {
           path: "/ClientFeedbackFlow",
           breadcrumb: "Feedback / Client Feedback",
         },
+        {
+          name: "Employee Feedback",
+          icon: "fas fa-regular fa-user",
+          path: "/EmployeeFeedbackDashboard",
+          breadcrumb: "Feedback / Employee Feedback",
+        },
       ],
     },
     {
