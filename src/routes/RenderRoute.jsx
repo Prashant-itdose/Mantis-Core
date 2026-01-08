@@ -352,6 +352,13 @@ const allRoutes = {
     {
       Guard: Authenticated,
       layout: Layout,
+      path: "/EmployeeFeedbackDashboard",
+      component: lazy(() => import("@app/pages/EmployeeFeedbackDashboard.jsx")),
+      exact: true,
+    },
+    {
+      Guard: Authenticated,
+      layout: Layout,
       path: "/DeveloperCalendar",
       component: lazy(() => import("@app/pages/CRM/DeveloperCalendar.jsx")),
       exact: true,
@@ -684,7 +691,7 @@ const allRoutes = {
       component: lazy(() => import("@app/pages/CRM/ViewExpenseSummary.jsx")),
       exact: true,
     },
-   
+
     {
       Guard: Authenticated,
       layout: Layout,

@@ -186,6 +186,12 @@ const initialState = {
           childrenOrder: "4",
           breadcrumb: "Feedback / Client Feedback",
         },
+        {
+          childrenName: "Employee Feedback",
+          url: "/EmployeeFeedbackDashboard",
+          childrenOrder: "4",
+          breadcrumb: "Feedback / Employee Feedback",
+        },
       ],
     },
     {
