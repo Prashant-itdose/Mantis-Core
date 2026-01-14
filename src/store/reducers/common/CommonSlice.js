@@ -157,6 +157,20 @@ const initialState = {
       ],
     },
     {
+      menuName: "SmartReport",
+      menuOrder: "229",
+      menuID: "854",
+      menuIcon: "fas fa-tachometer-alt",
+      children: [
+        {
+          childrenName: "SmartReport",
+          url: "/SmartReport",
+          childrenOrder: "1",
+          breadcrumb: "SmartReport / SmartReport",
+        },
+      ],
+    },
+    {
       menuName: "Feedback",
       menuOrder: "22",
       menuID: "89",

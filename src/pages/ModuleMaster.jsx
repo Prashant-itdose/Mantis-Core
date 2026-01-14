@@ -10,6 +10,7 @@ import Tables from "../components/UI/customTable";
 import { useTranslation } from "react-i18next";
 import ReactSelect from "../components/formComponent/ReactSelect";
 import { axiosInstances } from "../networkServices/axiosInstance";
+import { set } from "lodash";
 
 const ModuleMaster = () => {
   const [tableData, setTableData] = useState([]);
@@ -182,18 +183,22 @@ const ModuleMaster = () => {
         });
     }
   };
-  const getModuleSearch = () => {
+  const getModuleSearch = (value) => {
+    setLoading(true);
     axiosInstances
       .post(apiUrls.Module_Search, {
-        InchargeID: 0,
-        IsActive: 0,
+        ProductID: Number(value ? value : 0),
+        InchargeID: Number(0),
+        IsActive: Number(-1),
       })
       .then((res) => {
         if (res.data.success === true) {
           setTableData(res?.data?.data);
           setFilteredData(res?.data?.data);
+          setLoading(false);
         } else {
           toast.error(res.data.message);
+          setLoading(false);
         }
       })
       .catch((err) => {
@@ -241,10 +246,19 @@ const ModuleMaster = () => {
   };
   const handleDeliveryChange = (name, e) => {
     const { value } = e;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    if (name === "ProductVersion") {
+      setFormData({
+        ...formData,
+        [name]: value,
+        Incharge: "",
+      });
+      getModuleSearch(value);
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
   useEffect(() => {
     getModuleSearch();

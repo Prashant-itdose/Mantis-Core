@@ -318,6 +318,13 @@ function manageRoutePath() {
     {
       Guard: Authenticated,
       layout: Layout,
+      path: "/SmartReport",
+      component: lazy(() => import("@app/pages/SmartReport/SmartReport.jsx")),
+      exact: true,
+    },
+    {
+      Guard: Authenticated,
+      layout: Layout,
       path: "/AdvanceRequestView",
       component: lazy(() => import("@app/pages/CRM/AdvanceRequestView.jsx")),
       exact: true,

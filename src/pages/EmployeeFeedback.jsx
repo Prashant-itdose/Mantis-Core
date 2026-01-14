@@ -57,7 +57,9 @@ const EmployeeFeedback = ({ data }) => {
     VerticalID: [],
     TeamID: [],
     WingID: [],
-    ReportingTo: [],
+    ReportingTo: [useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")]
+      ? [useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")]
+      : [],
     Month: new Date(),
     currentMonth: currentMonth,
     currentYear: currentYear,
@@ -134,7 +136,7 @@ const EmployeeFeedback = ({ data }) => {
   };
   const getAssignTo = () => {
     axiosInstances
-      .post(apiUrls.EmployeeFeebackBind, {
+      .post(apiUrls.EmployeeBind, {
         CrmEmployeeID: Number(
           useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
@@ -142,10 +144,10 @@ const EmployeeFeedback = ({ data }) => {
       })
 
       .then((res) => {
-        const assigntos = res?.data.data.map((item) => {
+        const wings = res?.data?.data?.map((item) => {
           return { name: item?.EmployeeName, code: item?.Employee_ID };
         });
-        setAssignedto(assigntos);
+        setAssignedto(wings);
       })
       .catch((err) => {
         console.log(err);
@@ -168,9 +170,6 @@ const EmployeeFeedback = ({ data }) => {
     setLoading(true);
     axiosInstances
       .post(apiUrls.EmployeeFeedbackSearch, {
-        CrmEmployeeID: Number(
-          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-        ),
         EmployeeID: String(formData.AssignedTo) || "",
         RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
         ReportingManager: String(
@@ -204,9 +203,6 @@ const EmployeeFeedback = ({ data }) => {
     setLoading(true);
     axiosInstances
       .post(apiUrls.EmployeeFeedbackSearch, {
-        CrmEmployeeID: Number(
-          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
-        ),
         EmployeeID: String(
           useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
         ),
@@ -249,7 +245,7 @@ const EmployeeFeedback = ({ data }) => {
   });
 
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 15;
+  const rowsPerPage = 13;
   const totalPages = Math.ceil(tableData?.length / rowsPerPage);
   const currentData = tableData?.slice(
     (currentPage - 1) * rowsPerPage,
@@ -410,6 +406,22 @@ const EmployeeFeedback = ({ data }) => {
       <div className="card">
         <Heading isBreadcrumb={true} />
         <div className="row p-2">
+          {ReportingManager == "1" && (
+            <MultiSelectComp
+              respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+              name="ReportingTo"
+              placeholderName=""
+              lable="Reporting Manager"
+              dynamicOptions={reporter}
+              handleChange={handleMultiSelectChange}
+              value={formData?.ReportingTo?.map((code) => ({
+                code,
+                name: reporter?.find((item) => item.code === code)?.name,
+              }))}
+              onKeyDown={Tabfunctionality}
+              tabIndex="1"
+            />
+          )}
           {ReportingManager == 1 ? (
             <MultiSelectComp
               respclass="col-xl-2 col-md-4 col-sm-6 col-12"
@@ -438,19 +450,6 @@ const EmployeeFeedback = ({ data }) => {
             />
           )}
 
-          <MultiSelectComp
-            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
-            name="ReportingTo"
-            placeholderName="Reporting To"
-            dynamicOptions={reporter}
-            handleChange={handleMultiSelectChange}
-            value={formData?.ReportingTo?.map((code) => ({
-              code,
-              name: reporter?.find((item) => item.code === code)?.name,
-            }))}
-            onKeyDown={Tabfunctionality}
-            tabIndex="1"
-          />
           <MultiSelectComp
             respclass="col-xl-2 col-md-4 col-sm-6 col-12"
             name="VerticalID"

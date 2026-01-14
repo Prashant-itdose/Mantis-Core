@@ -482,29 +482,24 @@ const ViewExpense = () => {
     "Others",
     "Total",
     "Status",
-    // "Action",
-    <label
-    // style={{
-    //   display: "flex",
-    //   justifyContent: "flex-end",
-    // }}
-    >
-      <span className="mr-5">Action</span>
-      {ReportingManager == 1 && (
-        <span className="mt-0 ml-5">
-          Select All &nbsp;
-          <input
-            type="checkbox"
-            name="selectAll"
-            checked={selectAll}
-            // className="mr-0 mt-1"
-            style={{ marginTop: "5px" }}
-            onChange={handleCheckBox}
-          />
-        </span>
-      )}
-      &nbsp;
-    </label>,
+    "Action",
+    // <label
+    // >
+    //   <span className="mr-5">Action</span>
+    //   {ReportingManager == 1 && (
+    //     <span className="mt-0 ml-5">
+    //       Select All &nbsp;
+    //       <input
+    //         type="checkbox"
+    //         name="selectAll"
+    //         checked={selectAll}
+    //         style={{ marginTop: "5px" }}
+    //         onChange={handleCheckBox}
+    //       />
+    //     </span>
+    //   )}
+    //   &nbsp;
+    // </label>,
     { name: "Attachment", width: "5%" },
   ];
 
@@ -543,8 +538,12 @@ const ViewExpense = () => {
         if (res?.data?.success) {
           toast.success(res?.data?.message);
           setLoading(false);
-          handleTableSearch();
-          handleTableSearchEmployee();
+          {
+            ReportingManager == 1
+              ? handleTableSearch()
+              : handleTableSearchEmployee();
+          }
+
           setSelectAll(false);
         } else {
           toast.error(res?.data?.message);
@@ -764,16 +763,18 @@ const ViewExpense = () => {
               disabled={true}
             />
           )}
-          <ReactSelect
-            name="ReportingTo"
-            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
-            placeholderName="ReportTo"
-            dynamicOptions={reporter}
-            value={formData?.ReportingTo}
-            handleChange={handleDeliveryChange}
-            onKeyDown={Tabfunctionality}
-            tabIndex="1"
-          />
+          {(ReportingManager == 1 || CrmEmployeeID == 650) && (
+            <ReactSelect
+              name="ReportingTo"
+              respclass="col-xl-2 col-md-4 col-sm-6 col-12"
+              placeholderName="Reporting Manager"
+              dynamicOptions={reporter}
+              value={formData?.ReportingTo}
+              handleChange={handleDeliveryChange}
+              onKeyDown={Tabfunctionality}
+              tabIndex="1"
+            />
+          )}
           <DatePickerMonth
             // className="custom-calendar"
             id="Month"

@@ -28,18 +28,19 @@ const HeaderLogoutModal = ({ setVisible }) => {
   return (
     <>
       <div className="card">
-        <div className="row p-2">
+        <div className="row p-2 d-flex justify-content-space-between align-items-center">
+          <div className="col-sm-12">
           <span style={{ fontWeight: "bold", marginLeft: "10px" }}>
             Please confirm, Do you want to logout?
           </span>
 
-          <button className="btn btn-sm btn-danger ml-3" onClick={handlelogOut}>
+          <button className="btn btn-sm btn-danger ml-3" onClick={handlelogOut} style={{cursor:"pointer"}}>
             Yes
           </button>
-          <button className="btn btn-sm btn-danger ml-3" onClick={handleNo}>
+          <button className="btn btn-sm btn-danger ml-3" onClick={handleNo} style={{cursor:"pointer"}}>
             No
           </button>
-        </div>
+        </div></div>
       </div>
     </>
   );

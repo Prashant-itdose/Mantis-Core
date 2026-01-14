@@ -555,7 +555,9 @@ const ExpenseSubmission = () => {
     });
     setLoading(true);
     const payload = {
-      EmpID: state?.givenData?.EmpID || Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),
+      EmpID:
+        state?.givenData?.EmpID ||
+        Number(useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")),
       GeneralDetails: [
         {
           Date: moment(formData?.FromDate).format("YYYY-MM-DD"),
@@ -867,7 +869,7 @@ const ExpenseSubmission = () => {
       currentYear: date.getFullYear(),
     });
   };
-  console.log("formData kamal", formData);
+  
   const hasCalledRef = useRef(false);
 
   useEffect(() => {

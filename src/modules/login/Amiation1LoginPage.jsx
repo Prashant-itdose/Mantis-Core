@@ -247,9 +247,9 @@ const Amiation1LoginPage = () => {
       <div className="container bg-white shadow-lg rounded-4 overflow-hidden">
         <div className="row">
           {/* Left Side: Branding/Image (Hidden on mobile) */}
-          <div className="col-md-6 d-none d-md-flex bg-primary align-items-center justify-content-center p-5 text-white animate__animated animate__fadeInLeft">
+          <div className="col-md-6 d-none d-md-flex bg-primary align-items-center justify-content-center p-5 text-white animate__animated animate__fadeInLeft" style={{height:"400px"}}>
             <div className="text-center">
-              <h1 className="display-4 fw-bold">CRM Plus</h1>
+              <h1 className="display-4 fw-bold">CRM</h1>
               <p className="lead">
                 Manage your pipeline, clients, and revenue in one place.
               </p>
@@ -287,7 +287,7 @@ const Amiation1LoginPage = () => {
                 {showForgotPage.isLogin && (
                   <>
                     <div className="row">
-                      <div className="col-sm-12 d-flex mt-4">
+                      <div className="col-sm-12 d-flex mt-4" >
                         <div className="maindiv">
                           <Input
                             type="text"
@@ -300,6 +300,7 @@ const Amiation1LoginPage = () => {
                             onChange={handleChange}
                             onKeyDown={Tabfunctionality}
                             tabIndex="1"
+                            style={{height:"60px"}}
                           />
                         </div>
                         <div className="icondiv">
@@ -351,14 +352,13 @@ const Amiation1LoginPage = () => {
 
                     <div className=" mt-3">
                       <button
-                        className="btn btn-sm btn-block bg-success"
+                        className="btn btn-sm btn-block bg-primary"
                         onClick={handleSubmit}
                         onKeyDown={Tabfunctionality}
                         tabIndex="1"
                         style={{ background: "white", color: "black" }}
                       >
                         {t("Login")}
-                        
                       </button>
                     </div>
                   </>

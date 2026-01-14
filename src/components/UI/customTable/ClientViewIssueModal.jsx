@@ -28,8 +28,6 @@ const ClientViewIssueModal = ({
   setVisible,
   handleViewSearch,
 }) => {
-
-
   const AllowDeliveryDateEdit = useCryptoLocalStorage(
     "user_Data",
     "get",
@@ -361,6 +359,7 @@ const ClientViewIssueModal = ({
         User_id: Number(useCryptoLocalStorage("user_Data", "get", "ID")) || 0,
         CategoryID: Number(formDataUpdate?.Category) || 0,
         AssignToID: Number(formDataUpdate?.AssignedTo) || 0,
+        AssignedToTo: Number(0),
         PriorityID: Number(formDataUpdate?.Priority) || 0,
         DeliveryDate:
           formDataUpdate?.DeliveryDate &&
@@ -404,7 +403,7 @@ const ClientViewIssueModal = ({
         IsReOpen: Number("1"),
         ReOpenReasonID: Number(formDataUpdate?.ReOpen) || 0,
         ReOpenReason: getlabel(formDataUpdate?.ReOpen, reopen) || "",
-        OtherReferenceNo:String(formDataUpdate?.OtherReferenceNo)||"",
+        OtherReferenceNo: String(formDataUpdate?.OtherReferenceNo) || "",
       };
 
       axiosInstances
@@ -570,7 +569,6 @@ const ClientViewIssueModal = ({
         ProjectID: Number(0),
       })
       .then((res) => {
-       
         const assigntos = res?.data?.data?.map((item) => {
           return { label: item?.Name, value: item?.ID };
         });
@@ -607,18 +605,16 @@ const ClientViewIssueModal = ({
     getPage();
     handleSearchNote();
     handleSearchHistory();
-  
+
     handleIssueSearch(visible?.showData?.TicketID);
   }, []);
   return (
     <>
-     
       <div className="card">
         <Heading
           title={"Ticket Details"}
           secondTitle={
             <div className="col-sm-12 col-xs-12">
-            
               {visible.showData.flag == true ? (
                 <></>
               ) : (
@@ -671,7 +667,7 @@ const ClientViewIssueModal = ({
             placeholder=" "
             respclass="col-md-2 col-12 col-sm-12"
             onChange={handleChange}
-            disabled={edit == false}
+            disabled
           />
           {edit == false ? (
             <Input

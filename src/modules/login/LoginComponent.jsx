@@ -374,7 +374,11 @@ const LoginComponent = () => {
                     onClick={handleSubmit}
                     onKeyDown={Tabfunctionality}
                     tabIndex="1"
-                    style={{ background: "white", color: "black" ,cursor:"pointer"}}
+                    style={{
+                      background: "white",
+                      color: "black",
+                      cursor: "pointer",
+                    }}
                   >
                     {t("Login")}
                   </button>

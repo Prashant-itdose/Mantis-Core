@@ -685,7 +685,7 @@ const ViewIssueDetailsTableModal = ({ visible, tableData, setVisible }) => {
             placeholder=" "
             respclass="col-md-2 col-12 col-sm-12"
             onChange={handleChange}
-            disabled={edit == false}
+            disabled
           />
           {edit == false ? (
             <Input

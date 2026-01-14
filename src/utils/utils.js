@@ -1,6 +1,5 @@
 import { toast } from "react-toastify";
 
-
 export const notify = (message, type = "success") => {
   if (type === "success") {
     toast.success(message);
@@ -12,14 +11,15 @@ export const notify = (message, type = "success") => {
 };
 
 export const filterByType = (state, type, filterKey, labelKey, valueKey) => {
-  if (state?.length) return state
-    ?.filter((ele) => ele[filterKey] === type)
-    ?.map((ele) => {
-      return {
-        label: ele?.[labelKey],
-        value: ele?.[valueKey],
-      };
-    });
+  if (state?.length)
+    return state
+      ?.filter((ele) => ele[filterKey] === type)
+      ?.map((ele) => {
+        return {
+          label: ele?.[labelKey],
+          value: ele?.[valueKey],
+        };
+      });
 };
 
 export const filterByTypes = (
@@ -31,21 +31,22 @@ export const filterByTypes = (
   extraColomn
 ) => {
   // ele[filterKeys[0]] === type[0] && ele[filterKeys[1]] === type[1]
-  if (data?.length) return data
-    ?.filter((ele) => {
-      return filterKeys?.every((key, index) => {
-        return typeof type[index] === "object"
-          ? type[index].includes(ele[key])
-          : ele[key] === type[index];
+  if (data?.length)
+    return data
+      ?.filter((ele) => {
+        return filterKeys?.every((key, index) => {
+          return typeof type[index] === "object"
+            ? type[index].includes(ele[key])
+            : ele[key] === type[index];
+        });
+      })
+      ?.map((ele) => {
+        return {
+          label: ele?.[labelKey],
+          value: ele?.[valueKey],
+          extraColomn: ele?.[extraColomn],
+        };
       });
-    })
-    ?.map((ele) => {
-      return {
-        label: ele?.[labelKey],
-        value: ele?.[valueKey],
-        extraColomn: ele?.[extraColomn],
-      };
-    });
 };
 
 export const BindStateByCountry = (
@@ -148,16 +149,21 @@ export const bindLabelValue = (label, value) => {
 export const handletab = (formRef) => {
   const handleTabKey = (event) => {
     if (event.key === "Tab") {
+      const allFields = Array.from(formRef.current.querySelectorAll("input"));
 
-      const allFields = Array.from(
-        formRef.current.querySelectorAll("input")
+      let requiredFields = allFields.filter((el) =>
+        el.classList.contains("required-fields")
+      );
+      let optionalFields = allFields.filter(
+        (el) => !el.classList.contains("required-fields")
       );
 
-      let requiredFields = allFields.filter(el => el.classList.contains('required-fields'));
-      let optionalFields = allFields.filter(el => !el.classList.contains('required-fields'));
-
-      requiredFields = requiredFields.filter(el => !el.classList.contains('disable-focus'));
-      optionalFields = optionalFields.filter(el => !el.classList.contains('disable-focus'));
+      requiredFields = requiredFields.filter(
+        (el) => !el.classList.contains("disable-focus")
+      );
+      optionalFields = optionalFields.filter(
+        (el) => !el.classList.contains("disable-focus")
+      );
 
       const currentElement = document.activeElement;
       const currentIndex = allFields.indexOf(currentElement);
@@ -168,14 +174,18 @@ export const handletab = (formRef) => {
 
         if (requiredFields.includes(currentElement)) {
           // Move to the next required field
-          let nextIndex = (requiredFields.indexOf(currentElement) + 1) % requiredFields.length;
+          let nextIndex =
+            (requiredFields.indexOf(currentElement) + 1) %
+            requiredFields.length;
           nextElement = requiredFields[nextIndex];
         } else {
           // Move to the next optional field
-          let nextIndex = (optionalFields.indexOf(currentElement) + 1) % optionalFields.length;
+          let nextIndex =
+            (optionalFields.indexOf(currentElement) + 1) %
+            optionalFields.length;
           nextElement = optionalFields[nextIndex];
         }
-               if (nextElement) {
+        if (nextElement) {
           nextElement.focus();
         }
       }
@@ -259,24 +269,26 @@ export const ageValidation = (regx, e, handleChange, AgeType) => {
       handleChange(e);
     }
   }
-}
-
+};
 
 export const speakMessage = (message) => {
   const utterance = new SpeechSynthesisUtterance(message);
   const setFemaleVoice = () => {
     const voices = window.speechSynthesis.getVoices();
     // Try to find a female voice based on common name patterns
-    let femaleVoice = voices.find(voice =>
-      voice.name.toLowerCase().includes("female") ||
-      voice.name.toLowerCase().includes("susan") ||
-      voice.name.toLowerCase().includes("samantha") ||
-      voice.name.toLowerCase().includes("zira") || // Windows
-      (voice.gender && voice.gender.toLowerCase() === "female")
+    let femaleVoice = voices.find(
+      (voice) =>
+        voice.name.toLowerCase().includes("female") ||
+        voice.name.toLowerCase().includes("susan") ||
+        voice.name.toLowerCase().includes("samantha") ||
+        voice.name.toLowerCase().includes("zira") || // Windows
+        (voice.gender && voice.gender.toLowerCase() === "female")
     );
     // Fallback to an English voice if no clear female voice is found
     if (!femaleVoice) {
-      femaleVoice = voices.find(voice => voice.lang.toLowerCase().includes("en"));
+      femaleVoice = voices.find((voice) =>
+        voice.lang.toLowerCase().includes("en")
+      );
     }
     if (femaleVoice) {
       utterance.voice = femaleVoice;
@@ -291,7 +303,17 @@ export const speakMessage = (message) => {
   }
 };
 
+export function getTodayColor() {
+  const colors = [
+    "Sunday", // Sunday
+    "Monday", // Monday
+    "Tuesday", // Tuesday
+    "Wednesday", // Wednesday
+    "Thursday", // Thursday
+    "Friday", // Friday
+    "Saturday", // Saturday
+  ];
 
-
-
-
+  const today = new Date().getDay(); // 0 = Sunday
+  return colors[today];
+}
