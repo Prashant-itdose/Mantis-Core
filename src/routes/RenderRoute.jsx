@@ -768,6 +768,13 @@ const allRoutes = {
     {
       Guard: Authenticated,
       layout: Layout,
+      path: "/SmartReport",
+      component: lazy(() => import("@app/pages/SmartReport/SmartReport.jsx")),
+      exact: true,
+    },
+    {
+      Guard: Authenticated,
+      layout: Layout,
       path: "/UserVsModuleMapping",
       component: lazy(() => import("@app/pages/UserVsModuleMapping.jsx")),
       exact: true,

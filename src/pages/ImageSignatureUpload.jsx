@@ -547,7 +547,6 @@ const ImageSignatureUpload = (showData) => {
               )}
             </div>
           )}
-
           {loading ? (
             <Loading />
           ) : (

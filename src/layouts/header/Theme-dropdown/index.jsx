@@ -1,15 +1,10 @@
-import { StyledDropdown } from "@app/styles/common";
 import { Fragment, useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
 import { addWindowClass, removeWindowClass } from "@app/utils/helpers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPalette } from "@fortawesome/free-solid-svg-icons";
-import { useLocalStorage } from "@app/utils/hooks/useLocalStorage";
 import { apiUrls } from "../../../networkServices/apiEndpoints";
-import { headers } from "../../../utils/apitools";
 import { toast } from "react-toastify";
-import axios from "axios";
 import { useCryptoLocalStorage } from "../../../utils/hooks/useCryptoLocalStorage";
 import { axiosInstances } from "../../../networkServices/axiosInstance";
 

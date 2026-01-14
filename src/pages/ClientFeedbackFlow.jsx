@@ -53,8 +53,8 @@ const ClientFeedbackFlow = () => {
     ProjectID: [],
     ProjectIDA: "",
     CustomerSearchBy: "",
-    VerticalID:[],
-    POC3:[]
+    VerticalID: [],
+    POC3: [],
   });
 
   const [project, setProject] = useState([]);
@@ -236,24 +236,7 @@ const ClientFeedbackFlow = () => {
   const handleGoodFeedback3MonthTable = () => {
     setLoading(true);
     axiosInstances
-      .post(apiUrls.ThreeMonthClientGoodFeedbackList, {
-        DateType: String(formData?.SearchBy),
-        ProjectID: String(formData?.ProjectID),
-        StartDate: moment(formData?.FromDate).isValid()
-          ? moment(formData?.FromDate).format("YYYY-MM-DD")
-          : "",
-        EndDate: moment(formData?.EndDate).isValid()
-          ? moment(formData?.EndDate).format("YYYY-MM-DD")
-          : "",
-        SearchBy: String(
-          formData?.CustomerName ||
-            formData?.CustomerPhone ||
-            formData?.CustomerEmail
-        ),
-        Rating: String(formData?.RatingType),
-        Category: String(formData?.Category),
-        Type: String("GoodFeedback3Month"),
-      })
+      .post(apiUrls.ThreeMonthClientGoodFeedbackList, {})
       .then((res) => {
         if (res?.data?.success === true) {
           settableGoodFeedback3Month(res.data.data);
@@ -382,11 +365,12 @@ const ClientFeedbackFlow = () => {
         EndDate: moment(formData?.EndDate).isValid()
           ? moment(formData?.EndDate).format("YYYY-MM-DD")
           : "",
-        SearchBy: String(
+        SearchData: String(
           formData?.CustomerName ||
             formData?.CustomerPhone ||
             formData?.CustomerEmail
         ),
+        SearchBy: String(formData?.CustomerSearchBy),
         Rating: String(formData?.RatingType),
         Category: String(formData?.Category),
       })
@@ -421,11 +405,12 @@ const ClientFeedbackFlow = () => {
         EndDate: moment(formData?.EndDate).isValid()
           ? moment(formData?.EndDate).format("YYYY-MM-DD")
           : "",
-        SearchBy: String(
+         SearchData: String(
           formData?.CustomerName ||
             formData?.CustomerPhone ||
             formData?.CustomerEmail
         ),
+        SearchBy: String(formData?.CustomerSearchBy),
         Rating: String(formData?.RatingType),
         Category: String(formData?.Category),
         Type: String("All"),
@@ -457,11 +442,12 @@ const ClientFeedbackFlow = () => {
         EndDate: moment(formData?.EndDate).isValid()
           ? moment(formData?.EndDate).format("YYYY-MM-DD")
           : "",
-        SearchBy: String(
+        SearchData: String(
           formData?.CustomerName ||
             formData?.CustomerPhone ||
             formData?.CustomerEmail
         ),
+        SearchBy: String(formData?.CustomerSearchBy),
         Rating: String(formData?.RatingType),
         Category: String(formData?.Category),
         Type: String("ReceviedFeedback"),
@@ -493,11 +479,12 @@ const ClientFeedbackFlow = () => {
         EndDate: moment(formData?.EndDate).isValid()
           ? moment(formData?.EndDate).format("YYYY-MM-DD")
           : "",
-        SearchBy: String(
+        SearchData: String(
           formData?.CustomerName ||
             formData?.CustomerPhone ||
             formData?.CustomerEmail
         ),
+        SearchBy: String(formData?.CustomerSearchBy),
         Rating: String(formData?.RatingType),
         Category: String(formData?.Category),
         Type: String("NotReceviedFeedback"),
@@ -529,11 +516,12 @@ const ClientFeedbackFlow = () => {
         EndDate: moment(formData?.EndDate).isValid()
           ? moment(formData?.EndDate).format("YYYY-MM-DD")
           : "",
-        SearchBy: String(
+        SearchData: String(
           formData?.CustomerName ||
             formData?.CustomerPhone ||
             formData?.CustomerEmail
         ),
+        SearchBy: String(formData?.CustomerSearchBy),
         Rating: String(formData?.RatingType),
         Category: String(formData?.Category),
         Type: String("LowCommentFeedback"),

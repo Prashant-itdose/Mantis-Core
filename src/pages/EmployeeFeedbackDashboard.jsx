@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Heading from "../components/UI/Heading";
 import { Button } from "react-bootstrap";
 import Input from "../components/formComponent/Input";
 import ReactSelect from "../components/formComponent/ReactSelect";
@@ -7,7 +6,6 @@ import { useTranslation } from "react-i18next";
 import Loading from "../components/loader/Loading";
 import "./EmployeeFeedbackDashboard.css";
 import ClientFeedbackSaleChart from "./ClientFeedbackSaleChart";
-import { headers } from "../utils/apitools";
 import ClientCategoryBreakdown from "../components/Dashboard/ClientCategoryBreakdown";
 import {
   FaUser,
@@ -29,6 +27,10 @@ import ClientFeddbackMsgModal from "./ClientFeddbackMsgModal";
 import Modal from "../components/modalComponent/Modal";
 import Tooltip from "./Tooltip";
 import { axiosInstances } from "../networkServices/axiosInstance";
+import { useCryptoLocalStorage } from "../utils/hooks/useCryptoLocalStorage";
+import Feedback from "react-bootstrap/esm/Feedback";
+import EmployeeFeedbackChart from "./EmployeeFeedbackChart";
+import EmployeeFeedbackBreakDown from "../components/Dashboard/EmployeeFeedbackBreakDown";
 
 const EmployeeFeedbackDashboard = () => {
   const [t] = useTranslation();
@@ -51,7 +53,9 @@ const EmployeeFeedbackDashboard = () => {
     FromDate: "",
     ToDate: "",
     ProjectID: [],
-    ProjectIDA: "",
+    ProjectIDA: useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+      ? useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+      : "",
     CustomerSearchBy: "",
     VerticalID: [],
     POC3: [],
@@ -114,12 +118,18 @@ const EmployeeFeedbackDashboard = () => {
   };
   const getProject = () => {
     axiosInstances
-      .post(apiUrls.ProjectSelect, {})
+      .post(apiUrls.EmployeeBind, {
+        CrmEmployeeID: Number(
+          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+        ),
+        RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
+      })
+
       .then((res) => {
-        const poc3s = res?.data.data.map((item) => {
-          return { name: item?.Project, code: item?.ProjectId };
+        const wings = res?.data?.data?.map((item) => {
+          return { name: item?.EmployeeName, code: item?.Employee_ID };
         });
-        setProject(poc3s);
+        setProject(wings);
       })
       .catch((err) => {
         console.log(err);
@@ -173,7 +183,7 @@ const EmployeeFeedbackDashboard = () => {
     const color = getColor(count); // Single color for filled stars
     const stars = [];
     for (let i = 1; i <= 5; i++) {
-      stars.push(
+      stars?.push(
         i <= count ? (
           <FaStar key={i} color={color} size={size} />
         ) : (
@@ -236,24 +246,7 @@ const EmployeeFeedbackDashboard = () => {
   const handleGoodFeedback3MonthTable = () => {
     setLoading(true);
     axiosInstances
-      .post(apiUrls.ThreeMonthClientGoodFeedbackList, {
-        DateType: String(formData?.SearchBy),
-        ProjectID: String(formData?.ProjectID),
-        StartDate: moment(formData?.FromDate).isValid()
-          ? moment(formData?.FromDate).format("YYYY-MM-DD")
-          : "",
-        EndDate: moment(formData?.EndDate).isValid()
-          ? moment(formData?.EndDate).format("YYYY-MM-DD")
-          : "",
-        SearchBy: String(
-          formData?.CustomerName ||
-            formData?.CustomerPhone ||
-            formData?.CustomerEmail
-        ),
-        Rating: String(formData?.RatingType),
-        Category: String(formData?.Category),
-        Type: String("GoodFeedback3Month"),
-      })
+      .post(apiUrls.ThreeMonthEmployeeGoodFeedbackList, {})
       .then((res) => {
         if (res?.data?.success === true) {
           settableGoodFeedback3Month(res.data.data);
@@ -269,44 +262,6 @@ const EmployeeFeedbackDashboard = () => {
         setLoading(false);
       });
   };
-  const mpnthTHEAD = [
-    "S.No.",
-    "Month",
-    "Total Submissions",
-    "Average Rating",
-    "Change vs. Prev. Month",
-  ];
-
-  const monthlyData = [
-    {
-      month: "May 2025",
-      submissions: 35,
-      rating: 2.8,
-      changeSubs: 0,
-      changeRating: 0,
-    },
-    {
-      month: "June 2025",
-      submissions: 57,
-      rating: 3.2,
-      changeSubs: 22,
-      changeRating: 0.4,
-    },
-    {
-      month: "July 2025",
-      submissions: 54,
-      rating: 3.2,
-      changeSubs: -3,
-      changeRating: 0,
-    },
-    {
-      month: "August 2025",
-      submissions: 4,
-      rating: 4.5,
-      changeSubs: -50,
-      changeRating: 1.3,
-    },
-  ];
 
   const classMap = {
     5: "#B2FBA5",
@@ -371,24 +326,26 @@ const EmployeeFeedbackDashboard = () => {
   const handleSearch = () => {
     setLoading(true);
     axiosInstances
-      .post(apiUrls.ClientFeedbackAggregates, {
+      .post(apiUrls.EmployeeFeedbackAggregates, {
         DateType: String(formData?.SearchBy),
-        ProjectID: String(formData?.ProjectID),
-        VerticalID: String(formData?.VerticalID),
-        POC3: String(formData?.POC3),
         StartDate: moment(formData?.FromDate).isValid()
           ? moment(formData?.FromDate).format("YYYY-MM-DD")
           : "",
         EndDate: moment(formData?.EndDate).isValid()
           ? moment(formData?.EndDate).format("YYYY-MM-DD")
           : "",
-        SearchBy: String(
+        EmployeeID: String(formData?.ProjectID),
+        VerticalID: String(formData?.VerticalID),
+        POC3: String(formData?.POC3),
+
+        SearchData: String(
           formData?.CustomerName ||
             formData?.CustomerPhone ||
             formData?.CustomerEmail
         ),
+        SearchBy: String(formData?.CustomerSearchBy),
         Rating: String(formData?.RatingType),
-        Category: String(formData?.Category),
+        FeedbackType: String(formData?.Category),
       })
       .then((res) => {
         if (res?.data?.success === true) {
@@ -412,22 +369,23 @@ const EmployeeFeedbackDashboard = () => {
   const handleSearchTable = () => {
     setLoading(true);
     axiosInstances
-      .post(apiUrls.ClientFeedbackList, {
+      .post(apiUrls.EmployeeFeedbackList, {
         DateType: String(formData?.SearchBy),
-        ProjectID: String(formData?.ProjectID),
+        EmployeeID: String(formData?.ProjectID),
         StartDate: moment(formData?.FromDate).isValid()
           ? moment(formData?.FromDate).format("YYYY-MM-DD")
           : "",
         EndDate: moment(formData?.EndDate).isValid()
           ? moment(formData?.EndDate).format("YYYY-MM-DD")
           : "",
-        SearchBy: String(
+        SearchData: String(
           formData?.CustomerName ||
             formData?.CustomerPhone ||
             formData?.CustomerEmail
         ),
+        SearchBy: String(formData?.CustomerSearchBy),
         Rating: String(formData?.RatingType),
-        Category: String(formData?.Category),
+        FeedbackType: String(formData?.Category),
         Type: String("All"),
       })
       .then((res) => {
@@ -448,22 +406,23 @@ const EmployeeFeedbackDashboard = () => {
   const handleReceivedTable = () => {
     setLoading(true);
     axiosInstances
-      .post(apiUrls.ClientFeedbackList, {
+      .post(apiUrls.EmployeeFeedbackList, {
         DateType: String(formData?.SearchBy),
-        ProjectID: String(formData?.ProjectID),
+        EmployeeID: String(formData?.ProjectID),
         StartDate: moment(formData?.FromDate).isValid()
           ? moment(formData?.FromDate).format("YYYY-MM-DD")
           : "",
         EndDate: moment(formData?.EndDate).isValid()
           ? moment(formData?.EndDate).format("YYYY-MM-DD")
           : "",
-        SearchBy: String(
+        SearchData: String(
           formData?.CustomerName ||
             formData?.CustomerPhone ||
             formData?.CustomerEmail
         ),
+        SearchBy: String(formData?.CustomerSearchBy),
         Rating: String(formData?.RatingType),
-        Category: String(formData?.Category),
+        FeedbackType: String(formData?.Category),
         Type: String("ReceviedFeedback"),
       })
       .then((res) => {
@@ -484,22 +443,23 @@ const EmployeeFeedbackDashboard = () => {
   const handleNotReceivedTable = () => {
     setLoading(true);
     axiosInstances
-      .post(apiUrls.ClientFeedbackList, {
+      .post(apiUrls.EmployeeFeedbackList, {
         DateType: String(formData?.SearchBy),
-        ProjectID: String(formData?.ProjectID),
+        EmployeeID: String(formData?.ProjectID),
         StartDate: moment(formData?.FromDate).isValid()
           ? moment(formData?.FromDate).format("YYYY-MM-DD")
           : "",
         EndDate: moment(formData?.EndDate).isValid()
           ? moment(formData?.EndDate).format("YYYY-MM-DD")
           : "",
-        SearchBy: String(
+        SearchData: String(
           formData?.CustomerName ||
             formData?.CustomerPhone ||
             formData?.CustomerEmail
         ),
+        SearchBy: String(formData?.CustomerSearchBy),
         Rating: String(formData?.RatingType),
-        Category: String(formData?.Category),
+        FeedbackType: String(formData?.Category),
         Type: String("NotReceviedFeedback"),
       })
       .then((res) => {
@@ -520,22 +480,23 @@ const EmployeeFeedbackDashboard = () => {
   const handleSearchTableImogi = () => {
     setLoading(true);
     axiosInstances
-      .post(apiUrls.ClientFeedbackList, {
+      .post(apiUrls.EmployeeFeedbackList, {
         DateType: String(formData?.SearchBy),
-        ProjectID: String(formData?.ProjectID),
+        EmployeeID: String(formData?.ProjectID),
         StartDate: moment(formData?.FromDate).isValid()
           ? moment(formData?.FromDate).format("YYYY-MM-DD")
           : "",
         EndDate: moment(formData?.EndDate).isValid()
           ? moment(formData?.EndDate).format("YYYY-MM-DD")
           : "",
-        SearchBy: String(
+        SearchData: String(
           formData?.CustomerName ||
             formData?.CustomerPhone ||
             formData?.CustomerEmail
         ),
+        SearchBy: String(formData?.CustomerSearchBy),
         Rating: String(formData?.RatingType),
-        Category: String(formData?.Category),
+        FeedbackType: String(formData?.Category),
         Type: String("LowCommentFeedback"),
       })
       .then((res) => {
@@ -556,21 +517,18 @@ const EmployeeFeedbackDashboard = () => {
 
   const getProjectA = () => {
     axiosInstances
-      .post(apiUrls.ProjectSelect, {})
+      .post(apiUrls.EmployeeBind, {
+        CrmEmployeeID: Number(
+          useCryptoLocalStorage("user_Data", "get", "CrmEmployeeID")
+        ),
+        RoleID: Number(useCryptoLocalStorage("user_Data", "get", "RoleID")),
+      })
       .then((res) => {
         const datas = res?.data.data;
         const poc3s = datas.map((item) => {
-          return { label: item?.Project, value: item?.ProjectId };
+          return { label: item?.EmployeeName, value: item?.Employee_ID };
         });
         setProjectA(poc3s);
-        if (datas.length > 0) {
-          const singleProject = datas[0]?.ProjectId;
-          setFormData((prev) => ({
-            ...prev,
-            ProjectIDA: singleProject,
-          }));
-          // handleProjectChart(singleProject);
-        }
       })
       .catch((err) => {
         console.log(err);
@@ -593,8 +551,8 @@ const EmployeeFeedbackDashboard = () => {
   };
   const handleProjectChart = (value) => {
     axiosInstances
-      .post(apiUrls.ClientFeedbackRatingGraph, {
-        ProjectID: String(value),
+      .post(apiUrls.EmployeeFeedbackRatingGraph, {
+        EmployeeID: String(value),
       })
       .then((res) => {
         if (res.data.success === true) {
@@ -736,7 +694,7 @@ const EmployeeFeedbackDashboard = () => {
               <MultiSelectComp
                 respclass="col-xl-2 col-md-4 col-sm-6 col-12"
                 name="ProjectID"
-                placeholderName="Project"
+                placeholderName="Employee"
                 dynamicOptions={project}
                 handleChange={handleMultiSelectChange}
                 value={formData.ProjectID.map((code) => ({
@@ -757,77 +715,7 @@ const EmployeeFeedbackDashboard = () => {
                   name: vertical.find((item) => item.code === code)?.name,
                 }))}
               />
-              <MultiSelectComp
-                respclass="col-xl-2 col-md-4 col-sm-6 col-12"
-                name="POC3"
-                placeholderName={t("POC-III")}
-                dynamicOptions={poc3}
-                handleChange={handleMultiSelectChange}
-                value={formData?.POC3?.map((code) => ({
-                  code,
-                  name: poc3.find((item) => item.code === code)?.name,
-                }))}
-              />
-              <ReactSelect
-                className="form-control"
-                name="CustomerSearchBy"
-                respclass="col-xl-2 col-md-4 col-sm-6 col-12"
-                placeholderName="Cutomer Search By"
-                id="CustomerSearchBy"
-                dynamicOptions={[
-                  { label: "Select", value: "0" },
-                  { label: "Name", value: "1" },
-                  { label: "Mobile", value: "2" },
-                  { label: "Email", value: "3" },
-                ]}
-                value={formData?.CustomerSearchBy}
-                handleChange={handleDeliveryChange}
-              />
-              {formData?.CustomerSearchBy == "1" && (
-                <Input
-                  type="text"
-                  className="form-control"
-                  id="CustomerName"
-                  name="CustomerName"
-                  lable="Customer Name"
-                  placeholder=" "
-                  onChange={handleSelectChange}
-                  value={formData?.CustomerName}
-                  respclass="col-xl-2 col-md-4 col-sm-4 col-12"
-                />
-              )}
-              {formData?.CustomerSearchBy == "2" && (
-                <Input
-                  type="number"
-                  className="form-control"
-                  id="CustomerPhone"
-                  name="CustomerPhone"
-                  lable="Customer Mobile"
-                  placeholder=" "
-                  onChange={(e) => {
-                    inputBoxValidation(
-                      MOBILE_NUMBER_VALIDATION_REGX,
-                      e,
-                      handleSelectChange
-                    );
-                  }}
-                  value={formData?.CustomerPhone}
-                  respclass="col-xl-2 col-md-4 col-sm-4 col-12"
-                />
-              )}
-              {formData?.CustomerSearchBy == "3" && (
-                <Input
-                  type="text"
-                  className="form-control"
-                  id="CustomerEmail"
-                  name="CustomerEmail"
-                  lable="Customer Email"
-                  placeholder=" "
-                  onChange={handleSelectChange}
-                  value={formData?.CustomerEmail}
-                  respclass="col-xl-2 col-md-4 col-sm-4 col-12"
-                />
-              )}
+
               <ReactSelect
                 className="form-control"
                 name="RatingType"
@@ -849,15 +737,12 @@ const EmployeeFeedbackDashboard = () => {
                 className="form-control"
                 name="Category"
                 respclass="col-xl-2 col-md-4 col-sm-6 col-12"
-                placeholderName="Category"
+                placeholderName="Feedback Type"
                 id="Category"
                 dynamicOptions={[
                   { label: "All", value: "0" },
-                  {
-                    label: "Support And Services",
-                    value: "Support And Services",
-                  },
-                  { label: "Delivery", value: "Delivery" },
+                  { label: "Probation Period", value: "1" },
+                  { label: "Old Employee", value: "2" },
                 ]}
                 value={formData?.Category}
                 handleChange={handleDeliveryChange}
@@ -1451,7 +1336,7 @@ const EmployeeFeedbackDashboard = () => {
                       {t("Feedback Trends")}
                     </label>
                     <div>
-                      <ClientFeedbackSaleChart />
+                      <EmployeeFeedbackChart />
                     </div>
                   </div>
                 </div>
@@ -1471,14 +1356,14 @@ const EmployeeFeedbackDashboard = () => {
                     <ReactSelect
                       respclass="col-xl-5 col-md-4 col-sm-6 col-12"
                       name="ProjectIDA"
-                      placeholderName={t("Project")}
+                      placeholderName={t("Employee")}
                       dynamicOptions={projectA}
                       value={formData?.ProjectIDA}
                       handleChange={handleDeliveryChangeProject}
                     />
                   </div>
                   <div>
-                    <ClientCategoryBreakdown state={filterdata} />
+                    <EmployeeFeedbackBreakDown state={filterdata} />
                   </div>
                 </div>
               </div>

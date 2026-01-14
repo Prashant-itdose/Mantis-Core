@@ -163,6 +163,18 @@ export const MENU = {
       ],
     },
     {
+      name: i18n.t("SmartReport"),
+      icon: "fas fa-regular fa-users",
+      children: [
+        {
+          name: "SmartReport",
+          icon: "fas fa-regular fa-user",
+          path: "/SmartReport",
+          breadcrumb: "SmartReport / Smart Report",
+        },
+      ],
+    },
+    {
       name: i18n.t("Master"),
       icon: "fas fa-regular fa-users",
       children: [

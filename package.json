@@ -53,7 +53,7 @@
     "chart.js": "^4.4.5",
     "chartjs-chart-matrix": "^2.0.1",
     "chartjs-plugin-datalabels": "^2.2.0",
-    "ckeditor4-react": "^5.1.0",
+    "ckeditor4-react": "^4.3.0",
     "class-variance-authority": "^0.7.1",
     "crypto-js": "^4.2.0",
     "date-fns": "^4.1.0",

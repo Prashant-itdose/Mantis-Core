@@ -2,16 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { AutoComplete } from "primereact/autocomplete";
-import Input from "../../components/formComponent/Input";
 import { useSelector } from "react-redux";
 import ReactSelect from "../../components/formComponent/ReactSelect";
 import { apiUrls } from "../../networkServices/apiEndpoints";
-import { headers } from "../../utils/apitools";
-import axios from "axios";
 import { useDispatch } from "react-redux";
 import {
   setDeveloperSearchType,
-  setLoading,
   setMemberId,
 } from "../../store/reducers/loadingSlice/loadingSlice";
 import { useCryptoLocalStorage } from "../../utils/hooks/useCryptoLocalStorage";
@@ -468,21 +464,21 @@ const DesktopMenuItem = ({ filteredData }) => {
                       />
                     </div>
                   )}
-                  <div className="jwekuqhwi">
-                    <ReactSelect
-                      respclass="width100px "
-                      name="AssignedTo"
-                      placeholderName={t("Team Member")}
-                      dynamicOptions={[
-                        { label: "Select", value: "" },
-                        ...assignto,
-                      ]}
-                      value={formData?.AssignedTo}
-                      handleChange={handleDeliveryChange}
-                      // value={assignto.find(option => option.value === formData?.AssignedTo)}
-                      // handleChange={(e) => handleDeliveryChange("AssignedTo", e)}
-                    />
-                  </div>
+                  {pageURL?.pathname === "/CoordinatorDashboard" && (
+                    <div className="jwekuqhwi">
+                      <ReactSelect
+                        respclass="width100px "
+                        name="AssignedTo"
+                        placeholderName={t("Team Member")}
+                        dynamicOptions={[
+                          { label: "Select", value: "" },
+                          ...assignto,
+                        ]}
+                        value={formData?.AssignedTo}
+                        handleChange={handleDeliveryChange}
+                      />
+                    </div>
+                  )}
                 </div>
               </>
             )}

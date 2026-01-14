@@ -175,8 +175,10 @@ export const apiUrls = {
   ViewExpenseList_Accounts: "/ManageExpense/ViewExpenseList_Accounts",
   UpdateStatus: "/ManageExpense/UpdateStatus",
   ExpenseSummary: "/ManageExpense/ExpenseSummary",
-  GetManagerMonthlyExpenseSummary: "/ManageExpense/GetManagerMonthlyExpenseSummary",
-  GetExpenseReportWithTravelDetails: "/ManageExpense/GetExpenseReportWithTravelDetails",
+  GetManagerMonthlyExpenseSummary:
+    "/ManageExpense/GetManagerMonthlyExpenseSummary",
+  GetExpenseReportWithTravelDetails:
+    "/ManageExpense/GetExpenseReportWithTravelDetails",
   GetEmployeeExpenseCalendar: "/ManageExpense/GetEmployeeExpenseCalendar",
   BulkExpenseApprove: "/ManageExpense/BulkExpenseApprove",
   LeaveRequest_ApproveALL: "/CRMAttendance/LeaveRequest_ApproveALL",
@@ -318,6 +320,7 @@ export const apiUrls = {
   GetProjectInfo: "/ProjectMaster/GetProjectInfo",
   ProjectMasterUpdate: "/ProjectMasterUpdate/SaveProject",
   getViewProject: "/ProjectMasterUpdate/ViewProject",
+  GetProjectDetail: "/ProjectMasterUpdate/GetProjectDetail",
   ShowImpleStepsMaster_select: "/ImplementationSteps/StepDetail_Project_Select",
   ImplementationTracker_Insert: "/ImplementationSteps/Step_Remark",
   ImplementationSteps_Insert_details:
@@ -494,4 +497,40 @@ export const apiUrls = {
   OpenPI_SelectPINo: "/AdvanceAmount/OpenPI_SelectPINo",
   POAttachementUpload: "/AccountsPaymentInstallment/POAttachementUpload",
   ViewExpenseListSummary: "/ManageExpense/ViewExpenseListSummary",
+  EmployeeFeedbackAggregates:
+    "/EmployeeFeedbackDashboard/EmployeeFeedbackAggregates",
+  EmployeeFeedbackList: "/EmployeeFeedbackDashboard/EmployeeFeedbackList",
+  ThreeMonthEmployeeGoodFeedbackList:
+    "/EmployeeFeedbackDashboard/ThreeMonthEmployeeGoodFeedbackList",
+  EmployeeFeedbackStatsGraph:
+    "/EmployeeFeedbackDashboard/EmployeeFeedbackStatsGraph",
+  EmployeeFeedbackRatingGraph:
+    "/EmployeeFeedbackDashboard/EmployeeFeedbackRatingGraph",
+
+  ////Smart Report //////
+
+  CreateSmartReportProjectMap: "/SmartReport/CreateSmartReportProjectMap",
+  GetSmartReportProjectList: "/SmartReport/GetSmartReportProjectList",
+  UpdateSmartReportProjectMap: "/SmartReport/UpdateSmartReportProjectMap",
+  BindProjectSmartReport: "/SmartReport/BindProjectSmartReport",
+
+  AddTest: "/SmartReport/AddTest",
+  UpdateTest: "/SmartReport/UpdateTest",
+
+  BindInvestigation: "/SmartReport/BindInvestigation",
+  Investigation_Description: "/SmartReport/Investigation_Description",
+  BindTestgrid: "/SmartReport/BindTestgrid",
+
+  GetDescription: "/SmartReport/GetDescription",
+
+  GetRiskFactor: "/SmartReport/GetRiskFactor",
+  Investigation_Riskfactor: "/SmartReport/Investigation_Riskfactor",
+
+  BindQRCodeGrid: "/SmartReport/BindQRCodeGrid",
+
+  Centre_QRCode: "/SmartReport/Centre_QRCode",
+  Centre_DoctorSignature: "/SmartReport/Centre_DoctorSignature",
+  BindDoctorSignature: "/SmartReport/BindDoctorSignature",
+  GetReportHeader: "/SmartReport/GetReportHeader",
+  Smartreport_header: "/SmartReport/Smartreport_header",
 };
