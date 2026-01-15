@@ -217,11 +217,19 @@ const CentreMasterPage = () => {
       return;
     }
     if (!formData?.FrontPage) {
-      toast.error("Please Select Test.");
+      toast.error("Please Select FrontPage.");
       return;
     }
     if (!formData?.HealthAnalysis) {
-      toast.error("Please Enter Description.");
+      toast.error("Please Enter HealthAnalysis.");
+      return;
+    }
+    if (!formData?.Document_Base64) {
+      toast.error("Please Upload Logo.");
+      return;
+    }
+    if (!formData?.SigDocument_Base64) {
+      toast.error("Please Upload LetterHead.");
       return;
     }
     setLoading(true);
@@ -241,16 +249,6 @@ const CentreMasterPage = () => {
       .then((res) => {
         if (res.data.success === true) {
           toast.success(res?.data?.message);
-          setFormData({
-            SelectFile: "",
-            SelectFileSig: "",
-
-            Document_Base64: "",
-            FileExtension: "",
-
-            SigDocument_Base64: "",
-            FileExtensionSig: "",
-          });
           setLoading(false);
           setGetStateDetails([]);
           handleSearch();
@@ -272,6 +270,7 @@ const CentreMasterPage = () => {
             SigDocument_Base64: "",
             FileExtensionSig: "",
           });
+          setRowHandler(false);
         } else {
           toast.error(res?.data?.message);
           setLoading(false);
@@ -299,16 +298,7 @@ const CentreMasterPage = () => {
       .then((res) => {
         if (res.data.success === true) {
           toast.success(res?.data?.message);
-          setFormData({
-            SelectFile: "",
-            SelectFileSig: "",
 
-            Document_Base64: "",
-            FileExtension: "",
-
-            SigDocument_Base64: "",
-            FileExtensionSig: "",
-          });
           setGetStateDetails([]);
           setLoading(false);
           handleSearch();
@@ -331,6 +321,7 @@ const CentreMasterPage = () => {
             SigDocument_Base64: "",
             FileExtensionSig: "",
           });
+          setRowHandler(false);
         } else {
           toast.error(res?.data?.message);
           setLoading(false);
@@ -407,6 +398,20 @@ const CentreMasterPage = () => {
     });
     setEditData(true);
   };
+
+  const handleRemoveImage = () => {
+    setFormData((prev) => ({
+      ...prev,
+      Document_Base64: "",
+    }));
+  };
+  const handleRemoveLogo = () => {
+    setFormData((prev) => ({
+      ...prev,
+      SigDocument_Base64: "",
+    }));
+  };
+
   return (
     <>
       <div className="">
@@ -558,6 +563,15 @@ const CentreMasterPage = () => {
           ) : (
             ""
           )}
+          {/* {formData?.Document_Base64 ? (
+            <span
+              className="fa fa-times ml-2"
+              onClick={handleRemoveImage}
+              style={{ cursor: "pointer" }}
+            ></span>
+          ) : (
+            ""
+          )} */}
           <div className="mt-2">
             <div className=" ml-3 mr-2" style={{ display: "flex" }}>
               <div style={{ width: "100%", marginRight: "3px" }}>
@@ -624,6 +638,15 @@ const CentreMasterPage = () => {
           ) : (
             ""
           )}
+          {/* {formData?.SigDocument_Base64 ? (
+            <span
+              className="fa fa-times ml-2"
+              onClick={handleRemoveLogo}
+              style={{ cursor: "pointer" }}
+            ></span>
+          ) : (
+            ""
+          )} */}
           <div className="search-col mt-2" style={{ marginLeft: "8px" }}>
             <div style={{ display: "flex", alignItems: "center" }}>
               <label className="switch" style={{ marginTop: "7px" }}>

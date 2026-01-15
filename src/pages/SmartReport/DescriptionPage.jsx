@@ -5,10 +5,10 @@ import { apiUrls } from "../../networkServices/apiEndpoints";
 import ReactSelect from "../../components/formComponent/ReactSelect";
 import { useTranslation } from "react-i18next";
 import Input from "../../components/formComponent/Input";
-import NoRecordFound from "../../components/formComponent/NoRecordFound";
 import Heading from "../../components/UI/Heading";
 import Tables from "../../components/UI/customTable";
 import Loading from "../../components/loader/Loading";
+import Tooltip from "../Tooltip";
 
 const DescriptionPage = () => {
   const [t] = useTranslation();
@@ -94,9 +94,12 @@ const DescriptionPage = () => {
         console.log(err);
       });
   };
+
+  const shortenNamesummary = (name) => {
+    return name?.length > 250 ? name?.substring(0, 150) + "..." : name;
+  };
   const handleDeliveryChange = (name, e) => {
     const { value } = e;
-
     if (name === "ProjectID") {
       setFormData({
         ...formData,
@@ -130,6 +133,18 @@ const DescriptionPage = () => {
   };
 
   const handleSubmit = () => {
+    if (!formData?.ProjectID) {
+      toast.error("Please Select Project.");
+      return;
+    }
+    if (!formData?.TestName) {
+      toast.error("Please Select TestName.");
+      return;
+    }
+    if (!formData?.Description) {
+      toast.error("Please Enter Description.");
+      return;
+    }
     setLoading(true);
     axiosInstances
       .post(apiUrls.Investigation_Description, {
@@ -159,6 +174,7 @@ const DescriptionPage = () => {
             SigDocument_Base64: "",
             FileExtensionSig: "",
           });
+          setRowHandler(false);
           setLoading(false);
         } else {
           toast.error(res.data.message);
@@ -170,6 +186,18 @@ const DescriptionPage = () => {
       });
   };
   const handleUpdate = () => {
+    if (!formData?.ProjectID) {
+      toast.error("Please Select Project.");
+      return;
+    }
+    if (!formData?.TestName) {
+      toast.error("Please Select TestName.");
+      return;
+    }
+    if (!formData?.Description) {
+      toast.error("Please Enter Description.");
+      return;
+    }
     setLoading(true);
     axiosInstances
       .post(apiUrls.Investigation_Description, {
@@ -199,6 +227,7 @@ const DescriptionPage = () => {
             SigDocument_Base64: "",
             FileExtensionSig: "",
           });
+          setRowHandler(false);
           setEditData(false);
           setLoading(false);
         } else {
@@ -299,9 +328,15 @@ const DescriptionPage = () => {
       />
     );
   };
+
+  const handleRemoveImage = () => {
+    setFormData((prev) => ({
+      ...prev,
+      Document_Base64: "",
+    }));
+  };
   useEffect(() => {
     bindProject();
-    // handleSearch();
   }, []);
   return (
     <>
@@ -404,6 +439,15 @@ const DescriptionPage = () => {
           ) : (
             ""
           )}
+          {/* {formData?.Document_Base64 ? (
+            <span
+              className="fa fa-times ml-2"
+              onClick={handleRemoveImage}
+              style={{ cursor: "pointer" }}
+            ></span>
+          ) : (
+            ""
+          )} */}
           {editData ? (
             <>
               {loading ? (
@@ -445,7 +489,17 @@ const DescriptionPage = () => {
               "S.No.": index + 1,
               ProjectName: ele?.PrjectName,
               TestName: ele?.Test,
-              Description: ele?.Desription,
+              Description: (
+                <Tooltip label={ele?.Desription}>
+                  <span
+                    id={`Desription-${index}`}
+                    targrt={`Desription-${index}`}
+                    style={{ textAlign: "center" }}
+                  >
+                    {shortenNamesummary(ele?.Desription)}
+                  </span>
+                </Tooltip>
+              ),
               Edit: (
                 <i className="fa fa-edit" onClick={() => handleEdit(ele)}></i>
               ),

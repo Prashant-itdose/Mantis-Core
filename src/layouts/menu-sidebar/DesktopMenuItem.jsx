@@ -436,7 +436,8 @@ const DesktopMenuItem = ({ filteredData }) => {
           pageURL.pathname === "/ManagerDashboard" ||
           pageURL.pathname === "/HrDashboard" ||
           pageURL.pathname === "/ClientFeedbackFlow" ||
-          pageURL.pathname === "/EmployeeFeedbackDashboard") && (
+          pageURL.pathname === "/EmployeeFeedbackDashboard"  ||
+          pageURL.pathname === "/SmartReportDashboard") && (
           <ul
             className="ml-auto mr-2"
             style={{ zIndex: "", marginTop: "5px", height: "26px" }}

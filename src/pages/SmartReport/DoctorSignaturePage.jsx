@@ -5,7 +5,6 @@ import { apiUrls } from "../../networkServices/apiEndpoints";
 import ReactSelect from "../../components/formComponent/ReactSelect";
 import { useTranslation } from "react-i18next";
 import Loading from "../../components/loader/Loading";
-import Input from "../../components/formComponent/Input";
 import Tables from "../../components/UI/customTable";
 import Heading from "../../components/UI/Heading";
 

@@ -533,4 +533,6 @@ export const apiUrls = {
   BindDoctorSignature: "/SmartReport/BindDoctorSignature",
   GetReportHeader: "/SmartReport/GetReportHeader",
   Smartreport_header: "/SmartReport/Smartreport_header",
+  GetReportCount: "/SmartReport/GetReportCount",
+  InsertReportcount: "/SmartReport/InsertReportcount",
 };

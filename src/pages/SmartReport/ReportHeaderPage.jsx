@@ -8,6 +8,7 @@ import Loading from "../../components/loader/Loading";
 import Input from "../../components/formComponent/Input";
 import "./ReportHeader.css";
 import FullTextEditor from "../../components/formComponent/FullTextEditor";
+import { useNavigate } from "react-router-dom";
 
 const ReportHeaderPage = () => {
   const [t] = useTranslation();
@@ -59,8 +60,20 @@ const ReportHeaderPage = () => {
     }
   };
 
+  // useEffect(() => {
+  //   if (TemplateBind) {
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       editorValue: TemplateBind?.Template,
+  //       ReportHedaerHeight: TemplateBind?.ReportHeaderHeight,
+  //       ReportHedaerXPosition: TemplateBind?.ReportHeaderXPosition,
+  //       ReportHedaerYPosition: TemplateBind?.ReportHeaderYPosition,
+  //       ReportFooterHeight: TemplateBind?.ReportFoterheight,
+  //     }));
+  //   }
+  // }, [TemplateBind]);
   useEffect(() => {
-    if (TemplateBind) {
+    if (TemplateBind && editData) {
       setFormData((prev) => ({
         ...prev,
         editorValue: TemplateBind?.Template,
@@ -70,7 +83,7 @@ const ReportHeaderPage = () => {
         ReportFooterHeight: TemplateBind?.ReportFoterheight,
       }));
     }
-  }, [TemplateBind]);
+  }, [TemplateBind, editData]);
 
   const handleSearch = (value) => {
     setLoading(true);
@@ -197,6 +210,7 @@ const ReportHeaderPage = () => {
         console.log(err);
       });
   };
+
   const handleUpdate = () => {
     if (!formData?.ProjectID) {
       toast.error("Please Select Project.");
@@ -260,8 +274,8 @@ const ReportHeaderPage = () => {
             ReportHedaerYPosition: "",
             ReportFooterHeight: "",
           });
+          setTableData([]);
           setLoading(false);
-          handleSearch(formData?.ProjectID);
           setEditData(false);
         } else {
           toast.error(res.data.message);
@@ -280,14 +294,14 @@ const ReportHeaderPage = () => {
     setFormData((prev) => ({ ...prev, ...updates }));
   };
   const columns = [
-    "subcategoryid",
-    "plostatus",
-    "MarkSign",
+    "SubCategoryID",
+    "Plo Status",
+    "Mark Sign",
     "LabNo",
     "SRF_ID",
-    "PassportNo",
+    "PassportNo.",
     "PLOID",
-    "laboutscreid",
+    "LaboutscreID",
     "FieldExe",
     "InterpretationID",
     "InterpretationType",
@@ -374,7 +388,7 @@ const ReportHeaderPage = () => {
               <table>
                 <thead>
                   <tr>
-                    <th className="font-weight-bold">S.No</th>
+                    <th className="font-weight-bold">S.No.</th>
                     <th className="font-weight-bold">Report Column</th>
                   </tr>
                 </thead>

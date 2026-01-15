@@ -10,8 +10,6 @@ const SpeedometerChart = ({ getItem }) => {
   const [maxValue, setMaxValue] = useState(100);
   const { memberID } = useSelector((state) => state?.loadingSlice);
 
-  console.log("member id", memberID);
-  console.log("getItem", getItem);
 
   const handleFirstDashboardCount = () => {
     axiosInstances
