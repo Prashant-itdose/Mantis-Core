@@ -523,6 +523,13 @@ function manageRoutePath() {
       component: lazy(() => import("@app/pages/HrDashboard.jsx")),
       exact: true,
     },
+    {
+      Guard: Authenticated,
+      layout: Layout,
+      path: "/SmartReportDashboard",
+      component: lazy(() => import("@app/pages/SmartReportDashboard.jsx")),
+      exact: true,
+    },
 
     {
       Guard: Guest,

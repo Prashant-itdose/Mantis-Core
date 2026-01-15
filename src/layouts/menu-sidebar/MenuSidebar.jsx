@@ -44,6 +44,12 @@ export const MENU = {
           url: "/HrDashboard",
           breadcrumb: t("HR Dashboard"),
         },
+        {
+          childrenName: i18n.t("menusidebar.label.dashboard"),
+          icon: "fas fa-regular fa-user",
+          url: "/SmartReportDashboard",
+          breadcrumb: t("SmartReportDashboard"),
+        },
       ],
     },
   ],
@@ -360,6 +366,7 @@ export const MENU = {
           path: "/EmployeeFeedbackDashboard",
           breadcrumb: "Feedback / Employee Feedback",
         },
+       
       ],
     },
     {

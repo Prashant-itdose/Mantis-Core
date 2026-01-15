@@ -205,7 +205,7 @@ const SmartReport = ({ data, handleViewProject }) => {
                       setOpenPages((prev) => ({ ...prev, [page.name]: false }));
                     }}
                   >
-                    X
+                    Close
                   </button>
                 </div>
                 <div className="">

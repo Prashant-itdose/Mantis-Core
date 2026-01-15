@@ -13,7 +13,7 @@ const RiskFactorPage = () => {
   const [project, setProject] = useState([]);
   const [test, setTest] = useState([]);
   const [tableData, setTableData] = useState([]);
-  const TemplateBind = tableData?.[0]?.Template;
+  const TemplateBind = tableData?.[0];
   const [formData, setFormData] = useState({
     ProjectID: "",
     TestName: "",
@@ -70,7 +70,8 @@ const RiskFactorPage = () => {
       setFormData({
         ...formData,
         TestName: value,
-        TestCode: selectedTest?.TestCode || "",
+        TestCode: selectedTest?.TestCode,
+        Description: "",
       });
       handleSearch(selectedTest?.TestCode);
     } else {
@@ -81,14 +82,23 @@ const RiskFactorPage = () => {
     }
   };
 
+  // useEffect(() => {
+  //   if (TemplateBind) {
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       Description: TemplateBind,
+  //     }));
+  //   }
+  // }, [TemplateBind]);
+
   useEffect(() => {
-    if (TemplateBind) {
+    if (TemplateBind && editData) {
       setFormData((prev) => ({
         ...prev,
-        Description: TemplateBind,
+        Description: TemplateBind?.Template,
       }));
     }
-  }, [TemplateBind]);
+  }, [TemplateBind, editData]);
 
   const handleSearch = (value) => {
     setLoading(true);
@@ -100,6 +110,7 @@ const RiskFactorPage = () => {
       .then((res) => {
         if (res.data.success === true) {
           setTableData(res.data.data);
+          setEditData(true);
           setLoading(false);
         } else {
           toast.error(res.data.message);
@@ -152,6 +163,47 @@ const RiskFactorPage = () => {
         console.log(err);
       });
   };
+  const handleSave = () => {
+    if (!formData?.ProjectID) {
+      toast.error("Please Select Project.");
+      return;
+    }
+    if (!formData?.TestName) {
+      toast.error("Please Select Test.");
+      return;
+    }
+    if (!formData?.Description) {
+      toast.error("Please Enter Description.");
+      return;
+    }
+    setLoading(true);
+    axiosInstances
+      .post(apiUrls.Investigation_Riskfactor, {
+        ProjectId: String(formData?.ProjectID),
+        Test_id: String(formData?.TestName),
+        TestCode: String(formData?.TestCode),
+        Template: String(formData?.Description),
+      })
+      .then((res) => {
+        if (res.data.success === true) {
+          toast.success(res.data.message);
+          setLoading(false);
+          setFormData({
+            ...formData,
+            ProjectID: "",
+            TestName: "",
+            Description: "",
+          });
+          setLoading(false);
+        } else {
+          toast.error(res.data.message);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const updateState = (updates) => {
     setFormData((prev) => ({ ...prev, ...updates }));
   };
@@ -180,7 +232,6 @@ const RiskFactorPage = () => {
             dynamicOptions={test}
             value={formData?.TestName}
             handleChange={handleDeliveryChange}
-            isDisabled={editData === true}
           />
         </div>
         <FullTextEditor
@@ -189,15 +240,32 @@ const RiskFactorPage = () => {
           clear={formData.clear}
         />
 
-        {loading ? (
-          <Loading />
+        {editData ? (
+          <>
+            {loading ? (
+              <Loading />
+            ) : (
+              <button
+                className="btn btn-sm btn-success ml-3 mt-2 mb-2"
+                onClick={handleUpdate}
+              >
+                Update
+              </button>
+            )}
+          </>
         ) : (
-          <button
-            className="btn btn-sm btn-success ml-3 mt-2 mb-2"
-            onClick={handleUpdate}
-          >
-            Submit
-          </button>
+          <>
+            {loading ? (
+              <Loading />
+            ) : (
+              <button
+                className="btn btn-sm btn-success ml-3 mt-2 mb-2"
+                onClick={handleSave}
+              >
+                Save
+              </button>
+            )}
+          </>
         )}
       </div>
     </>

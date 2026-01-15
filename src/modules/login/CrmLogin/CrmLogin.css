@@ -126,7 +126,7 @@
   font-size: 24px !important;
   font-weight: 700;
   /* color: #966fd6; */
-  color: #966fd6;
+  color: #3bf783;
   margin-bottom: 5px;
   letter-spacing: -0.5px;
 }
@@ -159,13 +159,13 @@
   display: block;
   font-size: 14px;
   font-weight: 600;
-  color: #966fd6;
+  color: #3bf783;
   margin-bottom: 8px;
   letter-spacing: 0.3px;
 }
 
 .Monday_theme .pacific-required {
-  color: #966fd6;
+  color: #3bf783;
 }
 
 .Monday_theme .pacific-input-wrapper {
@@ -201,14 +201,14 @@
 
 .Monday_theme .pacific-form-input:focus {
   background: white;
-  border-color: #966fd6;
+  border-color: #3bf783;
   box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
   transform: translateY(-2px);
 }
 
 .Monday_theme .pacific-form-input:focus ~ .Monday_theme .pacific-input-icon,
 .Monday_theme .pacific-form-input:focus + .Monday_theme .pacific-input-icon {
-  color: #966fd6;
+  color: #3bf783;
 }
 
 .Monday_theme .pacific-toggle-password {
@@ -217,7 +217,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: #966fd6;
+  color: #3bf783;
   font-size: 18px;
   padding: 8px;
   display: flex;
@@ -229,7 +229,7 @@
 }
 
 .Monday_theme .pacific-toggle-password:hover {
-  color: #966fd6;
+  color: #3bf783;
   background: rgba(102, 126, 234, 0.1);
   transform: scale(1.1);
 }
@@ -259,16 +259,16 @@
   width: 18px;
   height: 18px;
   cursor: pointer;
-  accent-color: #966fd6;
+  accent-color: #3bf783;
 }
 
 .Monday_theme .pacific-checkbox-label {
-  color: #966fd6;
+  color: #3bf783;
   font-weight: 500;
 }
 
 .Monday_theme .pacific-forgot-link {
-  color: #966fd6;
+  color: #3bf783;
   text-decoration: none;
   border: none;
   font-weight: 600;
@@ -283,12 +283,12 @@
   left: 0;
   width: 0;
   height: 2px;
-  background: #966fd6;
+  background: #3bf783;
   transition: width 0.3s ease;
 }
 
 .Monday_theme .pacific-forgot-link:hover {
-  color: #966fd6;
+  color: #3bf783;
 }
 
 .Monday_theme .pacific-forgot-link:hover::after {
@@ -301,7 +301,7 @@
   padding: 16px 24px;
   border: none;
   border-radius: 12px;
-  background: linear-gradient(135deg, #966fd6 0%, #966fd6 100%);
+  background: linear-gradient(135deg, #3bf783 0%, #3bf783 100%);
   color: white;
   font-size: 16px;
   font-weight: 600;
@@ -387,7 +387,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #966fd6;
+  color: #3bf783;
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
@@ -402,7 +402,7 @@
 }
 
 .Monday_theme .pacific-back-link:hover {
-  color: #966fd6;
+  color: #3bf783;
   background: rgba(102, 126, 234, 0.1);
   transform: translateX(-4px);
 }
@@ -419,7 +419,7 @@
 /* Image Section */
 .Monday_theme .pacific-image-section {
   flex: 1;
-  background: linear-gradient(135deg, #966fd6 0%, #966fd6 100%);
+  background: linear-gradient(135deg, #3bf783 0%, #3bf783 100%);
   position: relative;
   display: flex;
   align-items: center;
@@ -430,7 +430,7 @@
 .Monday_theme .pacific-gradient-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, #966fd6 0%, #966fd6 100%);
+  background: linear-gradient(135deg, #3bf783 0%, #3bf783 100%);
   z-index: 1;
 }
 
@@ -503,7 +503,7 @@
 }
 
 .Monday_theme .pacific-powered-text strong {
-  color: #966fd6;
+  color: #3bf783;
   font-weight: 700;
 }
 

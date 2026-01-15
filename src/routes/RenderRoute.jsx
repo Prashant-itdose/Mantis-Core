@@ -159,6 +159,13 @@ const allRoutes = {
     {
       Guard: Authenticated,
       layout: Layout,
+      path: "/SmartReportDashboard",
+      component: lazy(() => import("@app/pages/SmartReportDashboard.jsx")),
+      exact: true,
+    },
+    {
+      Guard: Authenticated,
+      layout: Layout,
       path: "/ManagerDashboard",
       component: lazy(() => import("@app/pages/ManagerDashboard.jsx")),
       exact: true,
