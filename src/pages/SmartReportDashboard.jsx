@@ -224,8 +224,6 @@ import "./SmartReportDashboard.css";
 // import logo from "../../assets/image/logo.png";
 import logo from "../../src/assets/image/logo-itdose.png";
 import moment from "moment";
-import TransactionHistory from "./AiReportDashboard/NewDashboard/Modals/TransactionHistory";
-import AddCreditsModal from "./AiReportDashboard/NewDashboard/Modals/AddCreditsModal";
 import SettingsModal from "./AiReportDashboard/NewDashboard/Modals/SettingsModal";
 import RateCardMasterModal from "./AiReportDashboard/NewDashboard/Modals/RateCardMasterModal";
 import PatientVisitAIToday from "./AiReportDashboard/NewDashboard/Modals/PatientVisitAIToday";
@@ -238,6 +236,8 @@ import Modal from "../components/modalComponent/Modal";
 import { apiUrls } from "../networkServices/apiEndpoints";
 import { axiosInstances } from "../networkServices/axiosInstance";
 import { useTranslation } from "react-i18next";
+import SmartReportTransactionHistory from "./SmartReport/SmartReportTransactionHistory";
+import SmartReportAddCreditModal from "./SmartReport/SmartReportAddCreditModal";
 
 const SmartReportDashboard = () => {
   const [t] = useTranslation();
@@ -451,7 +451,7 @@ const SmartReportDashboard = () => {
           setVisible={setVisible}
           Header="Add Credits"
         >
-          <AddCreditsModal
+          <SmartReportAddCreditModal
             visible={visible}
             setVisible={setVisible}
             clientCode={"617c6783237cce08f9198d57cbb0a90b"}
@@ -461,12 +461,15 @@ const SmartReportDashboard = () => {
       )}
       {visible?.transactionVisible && (
         <Modal
-          modalWidth={"1000px"}
+          modalWidth={"800px"}
           visible={visible}
           setVisible={setVisible}
           Header="Transaction History"
         >
-          <TransactionHistory visible={visible} setVisible={setVisible} />
+          <SmartReportTransactionHistory
+            visible={visible}
+            setVisible={setVisible}
+          />
         </Modal>
       )}
       {visible?.settingsVisible && (
@@ -558,7 +561,7 @@ const SmartReportDashboard = () => {
                 <History size={16} />
                 Credit History
               </button>
-              <button
+              {/* <button
                 className="action-button"
                 onClick={() => {
                   setVisible({
@@ -573,8 +576,8 @@ const SmartReportDashboard = () => {
               >
                 <Settings size={16} />
                 Settings
-              </button>
-              <button
+              </button> */}
+              {/* <button
                 className="action-button"
                 onClick={() => {
                   setVisible({
@@ -589,7 +592,7 @@ const SmartReportDashboard = () => {
               >
                 <RateCardSVg />
                 Rate Card
-              </button>
+              </button> */}
             </div>
           </div>
         </header>
@@ -647,7 +650,7 @@ const SmartReportDashboard = () => {
           {/* Section 1: Patient Visit in AI */}
           <section className="dashboard-section">
             <div className="section-header section-header-cyan">
-              <h2 className="section-title">1. Project Visit in AI</h2>
+              <h2 className="section-title">1. Project Visit in Smart Report</h2>
             </div>
 
             <div className="metrics-grid">
@@ -669,11 +672,11 @@ const SmartReportDashboard = () => {
                     <Users
                       size={20}
                       className="card-title-blue mr-2"
-                      onClick={() => {
-                        setVisible({
-                          showVisible: true,
-                        });
-                      }}
+                      // onClick={() => {
+                      //   setVisible({
+                      //     showVisible: true,
+                      //   });
+                      // }}
                       style={{
                         marginLeft: "10px",
                         color: "red",
@@ -702,11 +705,11 @@ const SmartReportDashboard = () => {
                     <Users
                       size={20}
                       className="card-title-blue mr-2"
-                      onClick={() => {
-                        setVisible({
-                          removeVisible: true,
-                        });
-                      }}
+                      // onClick={() => {
+                      //   setVisible({
+                      //     removeVisible: true,
+                      //   });
+                      // }}
                       style={{
                         marginLeft: "10px",
                         color: "red",

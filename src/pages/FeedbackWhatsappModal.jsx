@@ -10,7 +10,6 @@ import { useTranslation } from "react-i18next";
 import { inputBoxValidation } from "../utils/utils";
 import { MOBILE_NUMBER_VALIDATION_REGX } from "../utils/constant";
 import { axiosInstances } from "../networkServices/axiosInstance";
-import { formatDate } from "date-fns";
 
 const FeedbackWhatsappModal = (showData) => {
   // console.log("showdata", showData);
@@ -27,6 +26,7 @@ const FeedbackWhatsappModal = (showData) => {
         ProjectID: Number(showData?.visible?.showData?.ProjectID),
         ProjectName: String(showData?.visible?.showData?.ProjectName),
         MobileNo: String(formData?.WhatsappNumber),
+        ToEmailId: String(showData?.visible?.showData?.ToEmailID),
         Content: String(showData?.visible?.showData?.Content),
       })
 
