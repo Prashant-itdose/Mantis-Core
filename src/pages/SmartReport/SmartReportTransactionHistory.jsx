@@ -40,8 +40,8 @@ const SmartReportTransactionHistory = () => {
   };
 
   const handleSearch = () => {
-    if (!formData?.ProjectID) {
-      toast.error("Please Select Project.");
+    if (!formData?.Type) {
+      toast.error("Please Select Type.");
       return;
     }
     setLoading(true);
@@ -78,9 +78,8 @@ const SmartReportTransactionHistory = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const descriptionTHEAD = [
+  const historyTHEAD = [
     "S.No.",
-    "ProjectID",
     "ProjectName",
     "Total Report Count",
     "Generated Report Count",
@@ -96,23 +95,21 @@ const SmartReportTransactionHistory = () => {
       <div className="row p-2">
         <ReactSelect
           respclass="col-xl-3 col-md-4 col-sm-6 col-12"
+          name="Type"
+          placeholderName={t("Type")}
+          dynamicOptions={[
+            { label: "Credit History", value: "1" },
+            { label: "Transaction History", value: "2" },
+          ]}
+          value={formData?.Type}
+          handleChange={handleDeliveryChange}
+        />
+        <ReactSelect
+          respclass="col-xl-3 col-md-4 col-sm-6 col-12"
           name="ProjectID"
           placeholderName={t("Project")}
           dynamicOptions={project}
           value={formData?.ProjectID}
-          handleChange={handleDeliveryChange}
-          requiredClassName={"required-fields"}
-          searchable={true}
-        />
-        <ReactSelect
-          respclass="col-xl-3 col-md-4 col-sm-6 col-12"
-          name="Type"
-          placeholderName={t("Type")}
-          dynamicOptions={[
-            { label: "Recharge History", value: "1" },
-            { label: "Transaction History", value: "2" },
-          ]}
-          value={formData?.Type}
           handleChange={handleDeliveryChange}
         />
 
@@ -156,10 +153,9 @@ const SmartReportTransactionHistory = () => {
             title={<span className="font-weight-bold">Search Details</span>}
           />
           <Tables
-            thead={descriptionTHEAD}
+            thead={historyTHEAD}
             tbody={tableData?.map((ele, index) => ({
               "S.No.": index + 1,
-              ProjectID: ele?.ProjectId,
               ProjectName: ele?.PrjectName,
               "Total Report Count": ele?.TotalReportCount,
               "Generated Report Count": ele?.GeneratedReportCount,

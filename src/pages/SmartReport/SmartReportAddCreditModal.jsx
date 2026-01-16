@@ -134,7 +134,10 @@ const SmartReportAddCreditModal = () => {
 
     setFormData(newFormData);
   };
-
+  function getlabel(id, dropdownData) {
+    const ele = dropdownData.filter((item) => item.value === id);
+    return ele.length > 0 ? ele[0].label : "";
+  }
   const handleSubmit = () => {
     if (!formData?.ProjectID) {
       toast.error("Please Select Project.");
@@ -153,10 +156,11 @@ const SmartReportAddCreditModal = () => {
     axiosInstances
       .post(apiUrls.InsertReportcount, {
         ProjectId: String(formData?.ProjectID),
+        // ProjectName: String(getlabel(formData?.ProjectID), project),
         ReportCount: String(formData?.ReportCount),
         Amount: String(formData?.Amount),
         PerTokenRate: String(formData?.Token),
-        TotalReportCount:String("1")
+        TotalReportCount: String("1"),
       })
       .then((res) => {
         if (res.data.success === true) {
