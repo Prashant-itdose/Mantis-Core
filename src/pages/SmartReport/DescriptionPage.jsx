@@ -9,6 +9,8 @@ import Heading from "../../components/UI/Heading";
 import Tables from "../../components/UI/customTable";
 import Loading from "../../components/loader/Loading";
 import Tooltip from "../Tooltip";
+import DescriptionTemplateModal from "./DescriptionTemplateModal";
+import Modal from "../../components/modalComponent/Modal";
 
 const DescriptionPage = () => {
   const [t] = useTranslation();
@@ -96,7 +98,7 @@ const DescriptionPage = () => {
   };
 
   const shortenNamesummary = (name) => {
-    return name?.length > 250 ? name?.substring(0, 150) + "..." : name;
+    return name?.length > 20 ? name?.substring(0, 25) + "..." : name;
   };
   const handleDeliveryChange = (name, e) => {
     const { value } = e;
@@ -338,8 +340,22 @@ const DescriptionPage = () => {
   useEffect(() => {
     bindProject();
   }, []);
+  const [visible, setVisible] = useState({
+    summaryVisible: false,
+    showData: {},
+  });
   return (
     <>
+      {visible?.summaryVisible && (
+        <Modal
+          modalWidth={"600px"}
+          visible={visible}
+          setVisible={setVisible}
+          Header="Description Details"
+        >
+          <DescriptionTemplateModal visible={visible} setVisible={setVisible} />
+        </Modal>
+      )}
       <div className="">
         <div className="row p-2">
           <ReactSelect
@@ -489,16 +505,45 @@ const DescriptionPage = () => {
               "S.No.": index + 1,
               ProjectName: ele?.PrjectName,
               TestName: ele?.Test,
+              // Description: (
+              //   <Tooltip label={ele?.Desription}>
+              //     <span
+              //       id={`Desription-${index}`}
+              //       targrt={`Desription-${index}`}
+              //       style={{ textAlign: "center" }}
+              //     >
+              //       {shortenNamesummary(ele?.Desription)}
+              //     </span>
+              //   </Tooltip>
+              // ),
               Description: (
-                <Tooltip label={ele?.Desription}>
-                  <span
-                    id={`Desription-${index}`}
-                    targrt={`Desription-${index}`}
-                    style={{ textAlign: "center" }}
-                  >
-                    {shortenNamesummary(ele?.Desription)}
-                  </span>
-                </Tooltip>
+                <>
+                  {/* <Tooltip label={ele?.Desription}>
+                    <span
+                      id={`Desription-${index}`}
+                      targrt={`Desription-${index}`}
+                      style={{ textAlign: "center" }}
+                    >
+                      {shortenNamesummary(ele?.Desription)}
+                    </span>
+                  </Tooltip> */}
+                  <i
+                    className="fa fa-eye"
+                    onClick={() => {
+                      setVisible({
+                        summaryVisible: true,
+                        showData: ele,
+                        ele,
+                      });
+                    }}
+                    style={{
+                      cursor: "pointer",
+                      color: "black",
+                      marginLeft: "2px",
+                    }}
+                    title="View Description Details"
+                  ></i>
+                </>
               ),
               Edit: (
                 <i className="fa fa-edit" onClick={() => handleEdit(ele)}></i>
