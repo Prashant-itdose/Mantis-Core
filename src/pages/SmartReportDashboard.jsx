@@ -238,157 +238,14 @@ import Modal from "../components/modalComponent/Modal";
 import { apiUrls } from "../networkServices/apiEndpoints";
 import { axiosInstances } from "../networkServices/axiosInstance";
 import { useTranslation } from "react-i18next";
-import Heading from "../components/UI/Heading";
-import ReactSelect from "../components/formComponent/ReactSelect";
-import Input from "../components/formComponent/Input";
-import Loading from "../components/loader/Loading";
-import SmartReportChart from "../components/Dashboard/SmartReportChart";
-import { toast } from "react-toastify";
 
 const SmartReportDashboard = () => {
-  /////////////////////////////////////////
   const [t] = useTranslation();
-  const [filterdata, setfilterdata] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [project, setProject] = useState([]);
-
-  const [formData, setFormData] = useState({
-    ProjectID: "",
-    TestName: "",
-    chart: "Pie Chart",
-  });
-  const handleSelectChange = (e) => {
-    const { name, value, checked, type } = e?.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? (checked ? 1 : 0) : value,
-    });
-  };
-  const bindProject = () => {
-    axiosInstances
-      .post(apiUrls.BindProjectSmartReport, {})
-      .then((res) => {
-        const datas = res?.data?.data;
-        const poc3s = datas?.map((item) => {
-          return { label: item?.PrjectName, value: item?.ProjectId };
-        });
-        setProject(poc3s);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const handleSearch = (value) => {
-    setLoading(true);
-    axiosInstances
-      .post(apiUrls.GetReportCount, {
-        ProjectId: String(value) || "",
-      })
-      .then((res) => {
-        if (res.data.success === true) {
-          setfilterdata(res.data.data);
-          setLoading(false);
-        } else {
-          toast.error(res.data.message);
-          setLoading(false);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const handleDeliveryChange = (name, e) => {
-    const { value } = e;
-    if (name === "ProjectID") {
-      setFormData({
-        ...formData,
-        ProjectID: value,
-        TestName: "",
-      });
-      handleSearch(value);
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
-    }
-  };
-  const getChart = (s, filterdata) => {
-    switch (s) {
-      case "Pie Chart":
-        return <SmartReportChart state={filterdata} />;
-        break;
-    }
-  };
-
-  const handleClear = () => {
-    setFormData({
-      ...formData,
-      ProjectID: "",
-      TestName: "",
-      chart: "Pie Chart",
-    });
-    setfilterdata(null);
-  };
-  const handleSubmit = () => {
-    if (!formData?.ProjectID) {
-      toast.error("Please Select Project.");
-      return;
-    }
-    if (!formData?.TestName) {
-      toast.error("Please Enter Report Count.");
-      return;
-    }
-
-    setLoading(true);
-    axiosInstances
-      .post(apiUrls.InsertReportcount, {
-        ProjectId: String(formData?.ProjectID),
-        Totalreportcount: String(formData?.TestName),
-      })
-      .then((res) => {
-        if (res.data.success === true) {
-          toast.success(res.data.message);
-          setLoading(false);
-          handleSearch(formData?.ProjectID);
-          setFormData({
-            ...formData,
-            ProjectID: "",
-            TestName: "",
-          });
-          setLoading(false);
-        } else {
-          toast.error(res.data.message);
-          setLoading(false);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const descriptionTHEAD = [
-    "S.No.",
-    "ProjectID",
-    "ProjectName",
-    "Total Report Count",
-    "Generated Report Count",
-    "Remaining Report Count",
-    // "Edit",
-  ];
-
-  useEffect(() => {
-    bindProject();
-  }, []);
-
-  ///////////////////////////////////////////////////////////////////////////
   const [selectedPeriod, setSelectedPeriod] = useState(15);
   const [fromDate, setFromDate] = useState(
     new Date(new Date().setDate(new Date().getDate() - 15))
   );
-  // e2d141b29e54b236424a42d7282fa415
+
   const [toDate, setToDate] = useState(new Date());
   const [apiURL, setApiURL] = useState("");
   const [dashboardData, setDashboardData] = useState([]);
@@ -589,7 +446,7 @@ const SmartReportDashboard = () => {
       )}
       {visible?.creditVisible && (
         <Modal
-          modalWidth={"500px"}
+          modalWidth={"900px"}
           visible={visible}
           setVisible={setVisible}
           Header="Add Credits"
@@ -862,55 +719,6 @@ const SmartReportDashboard = () => {
             </div>
           </section>
         </div>
-      </div>
-      <div className="card mt-2">
-        <Heading
-          isBreadcrumb={false}
-          title={
-            <span className="font-weight-bold m-2">Smart Report Add Count</span>
-          }
-        />
-        <div className="row p-2">
-          <ReactSelect
-            respclass="col-xl-2 col-md-4 col-sm-6 col-12"
-            name="ProjectID"
-            placeholderName={t("Project")}
-            dynamicOptions={project}
-            value={formData?.ProjectID}
-            handleChange={handleDeliveryChange}
-            requiredClassName={"required-fields"}
-            searchable={true}
-          />
-          <Input
-            type="text"
-            className="form-control"
-            id="TestName"
-            name="TestName"
-            lable="Report Count"
-            placeholder=" "
-            onChange={handleSelectChange}
-            value={formData?.TestName}
-            respclass="col-xl-2 col-md-4 col-sm-4 col-12"
-          />
-
-          {loading ? (
-            <Loading />
-          ) : (
-            <button
-              className="btn btn-sm btn-success ml-3"
-              onClick={handleSubmit}
-            >
-              Add
-            </button>
-          )}
-
-          <button className="btn btn-sm btn-success ml-3" onClick={handleClear}>
-            Clear
-          </button>
-        </div>
-      </div>
-      <div className="card">
-        <div>{getChart(formData?.chart, filterdata)}</div>
       </div>
     </>
   );
