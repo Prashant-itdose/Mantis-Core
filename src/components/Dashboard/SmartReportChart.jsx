@@ -61,7 +61,12 @@ const SmartReportChart = ({ state }) => {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { display: false },
+      legend: {
+        display: false,
+        datalabels: {
+          display: false, // 👈 disables value labels on bars
+        },
+      },
       title: { display: false },
       tooltip: {
         enabled: true,

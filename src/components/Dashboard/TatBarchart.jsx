@@ -26,7 +26,6 @@ const TATBarChart = () => {
         DeveloperID: String(memberID || "0"),
       })
       .then((res) => {
-       
         setCountData(res?.data?.data?.dtDelayed?.[0]);
       })
       .catch((err) => {
@@ -81,6 +80,9 @@ const TATBarChart = () => {
                   size: 6, // Set font size to 7px
                 },
                 color: "black", // Set font color
+              },
+              datalabels: {
+                display: false, // 👈 disables value labels on bars
               },
             },
           },
