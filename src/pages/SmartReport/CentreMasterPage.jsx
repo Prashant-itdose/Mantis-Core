@@ -7,7 +7,7 @@ import Input from "../../components/formComponent/Input";
 import Loading from "../../components/loader/Loading";
 import { toast } from "react-toastify";
 import Tables from "../../components/UI/customTable";
-import NoRecordFound from "../../components/formComponent/NoRecordFound";
+import "./SmartReport.css";
 import Heading from "../../components/UI/Heading";
 
 const CentreMasterPage = () => {
@@ -557,9 +557,7 @@ const CentreMasterPage = () => {
             </div>
           )}
           {formData?.Document_Base64 ? (
-            <span style={{ width: "30px", height: "20px" }}>
-              {FileDisplay()}
-            </span>
+            <span className="ml-2 mt-2 zoom-container">{FileDisplay()}</span>
           ) : (
             ""
           )}
@@ -632,7 +630,7 @@ const CentreMasterPage = () => {
             </div>
           )}
           {formData?.SigDocument_Base64 ? (
-            <span style={{ width: "30px", height: "20px" }}>
+            <span className="ml-2 mt-2 zoom-container">
               {FileDisplayHeader()}
             </span>
           ) : (

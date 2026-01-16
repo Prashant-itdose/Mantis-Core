@@ -116,26 +116,10 @@ const UserMapping = ({ data }) => {
     if (formData?.User == "") {
       toast.error("Please Select User.");
     } else {
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "RoleID",
-      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-      //   ),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("ProjectID", data?.Id || data?.ProjectID),
-      //   form.append("EmployeeID", formData?.User),
-      //   form.append("ActionType", "AddUserMapping"),
-      //   axios
-      //     .post(apiUrls?.ProjectMasterUpdate, form, { headers })
-
       axiosInstances
         .post(apiUrls?.ProjectMasterUpdate, {
           ProjectID: Number(data?.Id || data?.ProjectID),
-          EmployeeID: Number(formData?.User),
+          EmployeeID: String(formData?.User),
           ActionType: "AddUserMapping",
         })
         .then((res) => {
@@ -159,22 +143,6 @@ const UserMapping = ({ data }) => {
     } else if (formData?.AccessType == "") {
       toast.error("Please Select AccessType.");
     } else {
-      // let form = new FormData();
-      // form.append("ID", useCryptoLocalStorage("user_Data", "get", "ID")),
-      //   form.append(
-      //     "RoleID",
-      //     useCryptoLocalStorage("user_Data", "get", "RoleID")
-      //   ),
-      //   form.append(
-      //     "LoginName",
-      //     useCryptoLocalStorage("user_Data", "get", "realname")
-      //   ),
-      //   form.append("ProjectID", data?.Id || data?.ProjectID),
-      //   form.append("TargetProjectID", formData?.Project),
-      //   form.append("ActionType", "CopyUserMapping"),
-      //   form.append("AccessType", formData?.AccessType),
-      // axios
-      //   .post(apiUrls?.ProjectMasterUpdate, form, { headers })
       axiosInstances
         .post(apiUrls?.ProjectMasterUpdate, {
           ProjectID: Number(data?.Id || data?.ProjectID),
@@ -287,7 +255,6 @@ const UserMapping = ({ data }) => {
     </label>,
   ];
   const handleDeleteSelected = () => {
-    
     setLoading(true);
     const selectedIds = tableData
       .filter((row) => row.remove)
@@ -301,7 +268,7 @@ const UserMapping = ({ data }) => {
     axiosInstances
       .post(apiUrls?.ProjectMasterUpdate, {
         ProjectID: Number(data?.Id || data?.ProjectID),
-        EmployeeID: Number(selectedIds.join(",")),
+        EmployeeID: String(selectedIds.join(",")),
         ActionType: "DeleteUserMapping",
       })
       .then((res) => {
