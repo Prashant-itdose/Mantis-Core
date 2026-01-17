@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { axiosInstances } from "../../networkServices/axiosInstance";
 import { apiUrls } from "../../networkServices/apiEndpoints";
 import ReactSelect from "../../components/formComponent/ReactSelect";
-import Input from "../../components/formComponent/Input";
 import Loading from "../../components/loader/Loading";
 import Heading from "../../components/UI/Heading";
 import Tables from "../../components/UI/customTable";
@@ -40,15 +39,15 @@ const SmartReportTransactionHistory = () => {
   };
 
   const handleSearch = () => {
-    if (!formData?.Type) {
-      toast.error("Please Select Type.");
+    if (!formData?.ProjectID) {
+      toast.error("Please Select Project.");
       return;
     }
     setLoading(true);
     axiosInstances
       .post(apiUrls.GetReportCount, {
         ProjectId: String(formData?.ProjectID) || "",
-        Type: String(formData?.Type) || "",
+        // Type: String(formData?.Type) || "",
         FromDate: String(moment(formData?.FromDate).format("YYYY-MM-DD")) || "",
         ToDate: String(moment(formData?.ToDate).format("YYYY-MM-DD")) || "",
       })
@@ -80,10 +79,14 @@ const SmartReportTransactionHistory = () => {
 
   const historyTHEAD = [
     "S.No.",
-    "ProjectName",
-    "Total Report Count",
-    "Generated Report Count",
-    "Remaining Report Count",
+    "Project Name",
+    "Transaction Date",
+    "Transaction No.",
+    "Transaction Type",
+    "Remark",
+    "Credit",
+    "Debit",
+    "Running Balance",
   ];
 
   useEffect(() => {
@@ -93,7 +96,7 @@ const SmartReportTransactionHistory = () => {
   return (
     <>
       <div className="row p-2">
-        <ReactSelect
+        {/* <ReactSelect
           respclass="col-xl-3 col-md-4 col-sm-6 col-12"
           name="Type"
           placeholderName={t("Type")}
@@ -103,7 +106,7 @@ const SmartReportTransactionHistory = () => {
           ]}
           value={formData?.Type}
           handleChange={handleDeliveryChange}
-        />
+        /> */}
         <ReactSelect
           respclass="col-xl-3 col-md-4 col-sm-6 col-12"
           name="ProjectID"
@@ -139,7 +142,7 @@ const SmartReportTransactionHistory = () => {
           <Loading />
         ) : (
           <button
-            className="btn btn-sm btn-success ml-2 mt-2"
+            className="btn btn-sm btn-success ml-2"
             onClick={handleSearch}
           >
             Search
@@ -156,10 +159,14 @@ const SmartReportTransactionHistory = () => {
             thead={historyTHEAD}
             tbody={tableData?.map((ele, index) => ({
               "S.No.": index + 1,
-              ProjectName: ele?.PrjectName,
-              "Total Report Count": ele?.TotalReportCount,
-              "Generated Report Count": ele?.GeneratedReportCount,
-              "Remaining Report Count": ele?.RemainingReportCount,
+              "Project Name": ele?.PrjectName,
+              "Transaction Date": ele?.Project,
+              "Transaction No.": ele?.Project,
+              "Transaction Type": ele?.Project,
+              Remark: ele?.Project,
+              Credit: ele?.Project,
+              Debit: ele?.Project,
+              "Running Balance": ele?.Project,
             }))}
             tableHeight={"tableHeight"}
           />
